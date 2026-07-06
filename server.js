@@ -1050,11 +1050,11 @@ body {
         <p>أفضل المنتجات بأسعار لا تُقاوم</p>
     </div>
     <div class="products-filter fade-in">
-        <button class="filter-btn active" onclick="filterProducts('all', this)">الكل</button>
-        <button class="filter-btn" onclick="filterProducts('electronics', this)">إلكترونيات</button>
-        <button class="filter-btn" onclick="filterProducts('fashion', this)">أزياء</button>
-        <button class="filter-btn" onclick="filterProducts('home', this)">منزل</button>
-        <button class="filter-btn" onclick="filterProducts('beauty', this)">جمال</button>
+        <button class="filter-btn active" data-category="all" onclick="filterProducts('all', this)">الكل</button>
+        <button class="filter-btn" data-category="electronics" onclick="filterProducts('electronics', this)">إلكترونيات</button>
+        <button class="filter-btn" data-category="fashion" onclick="filterProducts('fashion', this)">أزياء</button>
+        <button class="filter-btn" data-category="home" onclick="filterProducts('home', this)">منزل</button>
+        <button class="filter-btn" data-category="beauty" onclick="filterProducts('beauty', this)">جمال</button>
     </div>
     <div class="products-grid" id="productsGrid"></div>
 </section>
@@ -1173,17 +1173,6 @@ const productsData = [
 ];
 
 function loadCategories() {
-    const cats = [
-        { id: 'electronics', name: 'إلكترونيات', icon: '💻', count: 3 },
-        { id: 'fashion', name: 'أزياء', icon: '👕', count: 2 },
-        { id: 'home', name: 'منزل وديكور', icon: '🏠', count: 2 },
-        { id: 'beauty', name: 'جمال وعناية', icon: '💄', count: 2 }
-    ];
-    renderCategories(cats);
-}
-
-function renderCategories(categories) {
-    const grid = document.getElementById('categoriesGrid');
     const catClasses = {
         electronics: 'cat-electronics',
         fashion: 'cat-fashion',
@@ -1196,10 +1185,34 @@ function renderCategories(categories) {
         home: 'fa-couch',
         beauty: 'fa-spa'
     };
+    const catNames = {
+        electronics: 'إلكترونيات',
+        fashion: 'أزياء',
+        home: 'منزل وديكور',
+        beauty: 'جمال وعناية'
+    };
 
-    grid.innerHTML = categories.map((cat, index) => {
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        return `<div class="category-card fade-in" onclick="filterProducts('${cat.id}', document.querySelectorAll('.filter-btn')[${index + 1}])">
+    // حساب عدد المنتجات لكل تصنيف ديناميكياً
+    const counts = {};
+    productsData.forEach(p => {
+        counts[p.category] = (counts[p.category] || 0) + 1;
+    });
+
+    const cats = Object.keys(catNames).map(id => ({
+        id: id,
+        name: catNames[id],
+        icon: catIcons[id],
+        count: counts[id] || 0
+    }));
+
+    renderCategories(cats, catClasses, catIcons);
+}
+
+function renderCategories(categories, catClasses, catIcons) {
+    const grid = document.getElementById('categoriesGrid');
+
+    grid.innerHTML = categories.map(cat => {
+        return `<div class="category-card fade-in" onclick="filterProductsFromCategory('${cat.id}')">
             <div class="category-icon ${catClasses[cat.id]}">
                 <i class="fas ${catIcons[cat.id]}"></i>
             </div>
@@ -1211,6 +1224,13 @@ function renderCategories(categories) {
     setTimeout(() => {
         document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
     }, 100);
+}
+
+// دالة جديدة للتصفية من بطاقات التصنيف
+function filterProductsFromCategory(category) {
+    // إيجاد زر الفلتر المناسب
+    const filterBtn = document.querySelector(`.filter-btn[data-category="${category}"]`);
+    filterProducts(category, filterBtn);
 }
 
 function renderProducts(products) {
@@ -1268,9 +1288,17 @@ function getCategoryName(cat) {
 }
 
 function filterProducts(category, btn) {
+    // إزالة active من جميع الأزرار
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-    else document.querySelectorAll('.filter-btn')[0].classList.add('active');
+
+    // إضافة active للزر المحدد
+    if (btn) {
+        btn.classList.add('active');
+    } else {
+        // إذا لم يُمرر زر، نبحث عن الزر المناسب
+        const targetBtn = document.querySelector(`.filter-btn[data-category="${category}"]`);
+        if (targetBtn) targetBtn.classList.add('active');
+    }
 
     const filtered = category === 'all' ? productsData : productsData.filter(p => p.category === category);
     renderProducts(filtered);
@@ -1401,7 +1429,7 @@ window.addEventListener('scroll', handleScroll);
 
 window.addEventListener('load', () => {
     loadCategories();
-    filterProducts('all');
+    filterProducts('all', document.querySelector('.filter-btn[data-category="all"]'));
     handleScroll();
 });
 
