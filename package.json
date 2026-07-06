@@ -1,8 +1,12 @@
 {
-  "name": "dora-fares-store",
+  "name": "dorah-fares-alshamal-store",
   "version": "1.0.0",
+  "description": "شركة درة فارس الشمال للتجارة",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
   }
 }
