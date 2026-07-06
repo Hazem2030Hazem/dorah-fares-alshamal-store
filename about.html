@@ -1,1184 +1,499 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>عن الشركة | شركة درة فارس الشمال للتجارة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #1e3a5f;
-            --primary-light: #2a4a73;
-            --accent: #c41e3a;
-            --accent-light: #e63950;
-            --gold: #d4af37;
-            --text: #1a1a2e;
-            --text-light: #4a4a6a;
-            --bg: #f8fafc;
-            --white: #ffffff;
-            --shadow: 0 4px 20px rgba(0,0,0,0.08);
-            --shadow-hover: 0 8px 30px rgba(0,0,0,0.12);
-            --radius: 16px;
-        }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Cairo', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.8;
-            overflow-x: hidden;
-        }
-        
-        .navbar {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(20px);
-            z-index: 1000;
-            padding: 1rem 0;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
-            transition: all 0.3s ease;
-        }
-        
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .logo i { color: var(--accent); }
-        
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-        
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text);
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: color 0.3s;
-            position: relative;
-        }
-        
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: var(--accent);
-        }
-        
-        .nav-links a.active::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            right: 0;
-            width: 100%;
-            height: 3px;
-            background: var(--accent);
-            border-radius: 2px;
-        }
-        
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--primary);
-            cursor: pointer;
-        }
-        
-        .hero {
-            min-height: 100vh;
-            background: linear-gradient(135deg, var(--primary) 0%, #0d2137 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            padding-top: 80px;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/></svg>');
-            background-size: 80px 80px;
-            opacity: 0.5;
-        }
-        
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 800px;
-            padding: 2rem;
-        }
-        
-        .hero-badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
-            color: var(--gold);
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            backdrop-filter: blur(10px);
-        }
-        
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            color: var(--white);
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
-        
-        .hero h1 span { color: var(--accent); }
-        
-        .hero-subtitle {
-            font-size: 1.3rem;
-            color: rgba(255,255,255,0.8);
-            margin-bottom: 2rem;
-            font-weight: 300;
-        }
-        
-        .hero-desc {
-            font-size: 1.1rem;
-            color: rgba(255,255,255,0.7);
-            margin-bottom: 2.5rem;
-            line-height: 2;
-        }
-        
-        .hero-email {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--gold);
-            font-size: 1rem;
-            text-decoration: none;
-            font-weight: 600;
-            transition: transform 0.3s;
-        }
-        
-        .hero-email:hover { transform: translateY(-2px); }
-        
-        .scroll-indicator {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: bounce 2s infinite;
-        }
-        
-        .scroll-indicator i {
-            color: rgba(255,255,255,0.5);
-            font-size: 1.5rem;
-        }
-        
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
-            40% { transform: translateX(-50%) translateY(-10px); }
-            60% { transform: translateX(-50%) translateY(-5px); }
-        }
-        
-        section { padding: 5rem 0; }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-        
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-        
-        .section-label {
-            display: inline-block;
-            color: var(--accent);
-            font-weight: 700;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 0.5rem;
-        }
-        
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-        
-        .section-subtitle {
-            color: var(--text-light);
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .about-section { background: var(--white); }
-        
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-        
-        .about-image { position: relative; }
-        
-        .about-image img {
-            width: 100%;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-hover);
-        }
-        
-        .about-image::before {
-            content: '';
-            position: absolute;
-            top: -20px; right: -20px;
-            width: 100%; height: 100%;
-            border: 3px solid var(--accent);
-            border-radius: var(--radius);
-            z-index: -1;
-        }
-        
-        .about-content h3 {
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-        }
-        
-        .about-content p {
-            color: var(--text-light);
-            font-size: 1.05rem;
-            margin-bottom: 1.5rem;
-            line-height: 2;
-        }
-        
-        .about-quote {
-            border-right: 4px solid var(--accent);
-            padding-right: 1.5rem;
-            margin: 2rem 0;
-            font-style: italic;
-            color: var(--primary);
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-        
-        .vision-section {
-            background: linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%);
-        }
-        
-        .vision-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-        }
-        
-        .vision-card {
-            background: var(--white);
-            padding: 3rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .vision-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 5px;
-            background: linear-gradient(90deg, var(--accent), var(--gold));
-        }
-        
-        .vision-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-hover);
-        }
-        
-        .vision-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .vision-icon i {
-            color: var(--white);
-            font-size: 1.5rem;
-        }
-        
-        .vision-card h3 {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-        
-        .vision-card p {
-            color: var(--text-light);
-            line-height: 1.8;
-        }
-        
-        .mission-section { background: var(--white); }
-        
-        .mission-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-        }
-        
-        .mission-card {
-            text-align: center;
-            padding: 2.5rem;
-            background: var(--bg);
-            border-radius: var(--radius);
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-        
-        .mission-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-5px);
-        }
-        
-        .mission-card .number {
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--accent);
-            opacity: 0.3;
-            line-height: 1;
-            margin-bottom: 1rem;
-        }
-        
-        .mission-card h4 {
-            font-size: 1.2rem;
-            color: var(--primary);
-            margin-bottom: 0.8rem;
-        }
-        
-        .mission-card p {
-            color: var(--text-light);
-            font-size: 0.95rem;
-        }
-        
-        .services-section {
-            background: linear-gradient(135deg, var(--primary) 0%, #0d2137 100%);
-            color: var(--white);
-        }
-        
-        .services-section .section-title,
-        .services-section .section-label { color: var(--white); }
-        
-        .services-section .section-subtitle { color: rgba(255,255,255,0.7); }
-        
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-        }
-        
-        .service-card {
-            background: rgba(255,255,255,0.08);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: var(--radius);
-            padding: 2.5rem 2rem;
-            text-align: center;
-            transition: all 0.3s;
-        }
-        
-        .service-card:hover {
-            background: rgba(255,255,255,0.15);
-            transform: translateY(-5px);
-        }
-        
-        .service-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, var(--accent), var(--accent-light));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            font-size: 1.8rem;
-        }
-        
-        .service-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.8rem;
-        }
-        
-        .service-card p {
-            color: rgba(255,255,255,0.7);
-            font-size: 0.9rem;
-        }
-        
-        .sectors-section { background: var(--bg); }
-        
-        .sector-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            margin-bottom: 3rem;
-            transition: box-shadow 0.3s;
-        }
-        
-        .sector-card:hover { box-shadow: var(--shadow-hover); }
-        
-        .sector-header {
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: var(--white);
-            padding: 2rem 3rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .sector-header .sector-num {
-            font-size: 2.5rem;
-            font-weight: 800;
-            opacity: 0.3;
-        }
-        
-        .sector-header h3 { font-size: 1.5rem; }
-        
-        .sector-body { padding: 2rem 3rem; }
-        
-        .sector-body p {
-            color: var(--text-light);
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-        }
-        
-        .sector-features {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-        
-        .feature-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.8rem;
-            padding: 1rem;
-            background: var(--bg);
-            border-radius: 12px;
-        }
-        
-        .feature-item i {
-            color: var(--accent);
-            font-size: 1.2rem;
-            margin-top: 0.2rem;
-        }
-        
-        .feature-item span {
-            color: var(--text);
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-        
-        .products-section {
-            background: linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%);
-        }
-        
-        .product-category {
-            background: var(--white);
-            border-radius: var(--radius);
-            padding: 2.5rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow);
-        }
-        
-        .product-category h3 {
-            color: var(--primary);
-            font-size: 1.4rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-        
-        .product-category h3 i { color: var(--accent); }
-        
-        .product-list {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-        
-        .product-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--bg);
-            border-radius: 12px;
-            transition: all 0.3s;
-        }
-        
-        .product-item:hover {
-            background: var(--primary);
-            color: var(--white);
-        }
-        
-        .product-item:hover span { color: var(--white); }
-        
-        .product-item i {
-            color: var(--accent);
-            font-size: 1.2rem;
-        }
-        
-        .product-item span {
-            color: var(--text);
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-        
-        .clients-section { background: var(--white); }
-        
-        .clients-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-        }
-        
-        .client-category {
-            background: var(--bg);
-            border-radius: var(--radius);
-            padding: 2rem;
-            border-right: 4px solid var(--accent);
-        }
-        
-        .client-category h4 {
-            color: var(--primary);
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .client-category h4 i { color: var(--accent); }
-        
-        .client-category ul { list-style: none; }
-        
-        .client-category li {
-            color: var(--text-light);
-            padding: 0.4rem 0;
-            font-size: 0.9rem;
-            position: relative;
-            padding-right: 1.2rem;
-        }
-        
-        .client-category li::before {
-            content: '•';
-            color: var(--accent);
-            position: absolute;
-            right: 0;
-            font-weight: bold;
-        }
-        
-        .client-logos {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            justify-content: center;
-            margin-top: 3rem;
-            padding: 2rem;
-            background: var(--bg);
-            border-radius: var(--radius);
-        }
-        
-        .client-logo {
-            width: 120px;
-            height: 60px;
-            background: var(--white);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            color: var(--text-light);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            font-weight: 600;
-            transition: transform 0.3s;
-        }
-        
-        .client-logo:hover { transform: translateY(-3px); }
-        
-        .location-section { background: var(--white); }
-        
-        .location-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-        }
-        
-        .location-info h3 {
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-        }
-        
-        .location-info p {
-            color: var(--text-light);
-            margin-bottom: 1.5rem;
-            line-height: 2;
-        }
-        
-        .location-detail {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--bg);
-            border-radius: 12px;
-            margin-bottom: 1rem;
-        }
-        
-        .location-detail i { color: var(--accent); font-size: 1.2rem; }
-        
-        .location-map {
-            background: var(--bg);
-            border-radius: var(--radius);
-            overflow: hidden;
-            height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .location-map iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        
-        .contact-section {
-            background: linear-gradient(135deg, var(--primary) 0%, #0d2137 100%);
-            color: var(--white);
-            text-align: center;
-        }
-        
-        .contact-section .section-title { color: var(--white); }
-        
-        .contact-section .section-subtitle { color: rgba(255,255,255,0.7); }
-        
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-        
-        .contact-card {
-            background: rgba(255,255,255,0.08);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: var(--radius);
-            padding: 2.5rem;
-            transition: all 0.3s;
-        }
-        
-        .contact-card:hover {
-            background: rgba(255,255,255,0.15);
-            transform: translateY(-5px);
-        }
-        
-        .contact-card i {
-            font-size: 2.5rem;
-            color: var(--gold);
-            margin-bottom: 1rem;
-        }
-        
-        .contact-card h4 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .contact-card p,
-        .contact-card a {
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-        }
-        
-        .contact-card a:hover { color: var(--gold); }
-        
-        .footer {
-            background: #0a1929;
-            color: rgba(255,255,255,0.6);
-            padding: 2rem 0;
-            text-align: center;
-        }
-        
-        .footer p { font-size: 0.9rem; }
-        
-        .footer a {
-            color: var(--gold);
-            text-decoration: none;
-        }
-        
-        @media (max-width: 992px) {
-            .about-grid,
-            .vision-grid,
-            .location-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            .services-grid { grid-template-columns: repeat(2, 1fr); }
-            .mission-grid,
-            .clients-grid { grid-template-columns: repeat(2, 1fr); }
-            .hero h1 { font-size: 2.5rem; }
-        }
-        
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .mobile-menu-btn { display: block; }
-            .services-grid,
-            .mission-grid,
-            .clients-grid,
-            .contact-grid { grid-template-columns: 1fr; }
-            .sector-features,
-            .product-list { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 2rem; }
-            .section-title { font-size: 1.8rem; }
-            section { padding: 3rem 0; }
-        }
-        
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-        
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        html { scroll-behavior: smooth; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عن الشركة | شركة درة فارس الشمال للتجارة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#00695c;
+  --primary-light:#e0f2f1;
+  --accent:#ffc107;
+  --accent-dark:#ff8f00;
+  --dark:#0d1b1e;
+  --darker:#091416;
+  --light:#f5f7fa;
+  --white:#ffffff;
+  --glass:rgba(255,255,255,.08);
+  --glass-border:rgba(255,255,255,.15);
+  --shadow:0 8px 32px rgba(0,0,0,.2);
+  --text-muted:#64748b;
+}
+[data-theme="dark"]{
+  --dark:#f5f7fa;
+  --darker:#e2e8f0;
+  --light:#0d1b1e;
+  --white:#1a2a2e;
+  --text-muted:#94a3b8;
+  --glass:rgba(0,0,0,.2);
+  --glass-border:rgba(255,255,255,.08);
+}
+[data-theme="dark"] body{background:#0a1214;color:var(--dark)}
+[data-theme="dark"] .header{background:rgba(10,18,20,.9)}
+[data-theme="dark"] .about-card,
+[data-theme="dark"] .client-logo,
+[data-theme="dark"] .sector-card,
+[data-theme="dark"] .stat-box{background:var(--white);border-color:#1e3a3f}
+[data-theme="dark"] .about-card h3,
+[data-theme="dark"] .sector-card h3,
+[data-theme="dark"] .section-title{color:#f5f7fa}
+[data-theme="dark"] .about-card p,
+[data-theme="dark"] .sector-card p,
+[data-theme="dark"] .section-subtitle{color:#94a3b8}
+[data-theme="dark"] .footer{background:#050a0b}
+[data-theme="dark"] .footer-col a{color:rgba(255,255,255,.5)}
+[data-theme="dark"] .footer-bottom{border-color:#1e3a3f}
+
+body{font-family:'Cairo','Tajawal',sans-serif;background:var(--light);color:var(--dark);overflow-x:hidden;transition:background .3s,color .3s}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+.container{max-width:1200px;margin:auto;padding:0 25px}
+
+/* Header */
+.header{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(13,27,30,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--glass-border);transition:.3s}
+.header-inner{display:flex;justify-content:space-between;align-items:center;height:75px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-icon{width:45px;height:45px;border-radius:12px;background:linear-gradient(135deg,var(--primary),#004d40);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 15px rgba(0,105,92,.4)}
+.logo-text h1{font-size:17px;font-weight:900;color:var(--white);letter-spacing:-.3px}
+.logo-text span{font-size:10px;color:rgba(255,255,255,.6);letter-spacing:1px;text-transform:uppercase}
+.nav-links{display:flex;gap:8px;align-items:center}
+.nav-links a{color:rgba(255,255,255,.8);font-weight:600;font-size:14px;position:relative;transition:.3s;padding:8px 14px;border-radius:8px;display:flex;align-items:center;gap:6px}
+.nav-links a:hover{color:var(--white);background:rgba(255,255,255,.08)}
+.nav-links a.active{color:var(--accent);background:rgba(255,193,7,.1)}
+.theme-toggle{background:var(--glass);border:1px solid var(--glass-border);color:var(--white);width:40px;height:40px;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:.3s;backdrop-filter:blur(10px);margin-right:8px}
+.theme-toggle:hover{background:rgba(255,255,255,.15);transform:scale(1.1)}
+
+/* Hero Section */
+.about-hero{min-height:60vh;background:linear-gradient(135deg,var(--darker),#0a1a1d);position:relative;display:flex;align-items:center;overflow:hidden;padding-top:75px}
+.about-hero::before{content:'';position:absolute;top:-50%;right:-20%;width:600px;height:600px;background:radial-gradient(circle,rgba(0,105,92,.15),transparent 70%)}
+.about-hero::after{content:'';position:absolute;bottom:-30%;left:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(255,193,7,.08),transparent 70%)}
+.about-hero-content{position:relative;z-index:1;text-align:center;max-width:800px;margin:0 auto;padding:60px 25px}
+.about-hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--glass);border:1px solid var(--glass-border);padding:8px 20px;border-radius:50px;color:var(--accent);font-size:13px;font-weight:700;margin-bottom:25px;backdrop-filter:blur(10px)}
+.about-hero h2{font-size:42px;font-weight:900;color:var(--white);line-height:1.3;margin-bottom:20px}
+.about-hero h2 span{color:var(--accent)}
+.about-hero p{font-size:18px;color:rgba(255,255,255,.7);max-width:600px;margin:0 auto 30px;line-height:1.8}
+
+/* Section Styles */
+.section{padding:80px 0}
+.section-header{text-align:center;margin-bottom:60px}
+.section-title{font-size:36px;font-weight:900;color:var(--dark);margin-bottom:15px;position:relative;display:inline-block}
+.section-title::after{content:'';position:absolute;bottom:-10px;right:50%;transform:translateX(50%);width:60px;height:4px;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:2px}
+.section-subtitle{color:var(--text-muted);font-size:16px;max-width:500px;margin:20px auto 0}
+
+/* About Cards */
+.about-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px}
+.about-card{background:var(--white);border-radius:24px;padding:35px;border:1px solid #e2e8f0;transition:.4s;position:relative;overflow:hidden}
+.about-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--primary),var(--accent));transform:scaleX(0);transition:.4s}
+.about-card:hover::before{transform:scaleX(1)}
+.about-card:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,105,92,.12);border-color:var(--primary-light)}
+.about-card .icon{width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,var(--primary-light),#b2dfdb);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:20px;transition:.3s}
+.about-card:hover .icon{background:linear-gradient(135deg,var(--primary),#004d40);transform:scale(1.1)}
+.about-card h3{font-weight:900;font-size:20px;color:var(--dark);margin-bottom:12px}
+.about-card p{font-size:14px;color:var(--text-muted);line-height:1.8}
+
+/* Vision & Mission */
+.vision-section{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--white);padding:80px 0;position:relative;overflow:hidden}
+.vision-section::before{content:'';position:absolute;bottom:-50%;left:-20%;width:500px;height:500px;background:radial-gradient(circle,rgba(0,105,92,.2),transparent 70%)}
+.vision-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;position:relative;z-index:1;align-items:center}
+.vision-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:24px;padding:40px;backdrop-filter:blur(20px);transition:.3s}
+.vision-card:hover{transform:translateY(-5px);background:rgba(255,255,255,.12)}
+.vision-card .icon{font-size:40px;margin-bottom:15px;display:block}
+.vision-card h3{font-weight:900;font-size:24px;margin-bottom:15px;color:var(--accent)}
+.vision-card p{font-size:15px;color:rgba(255,255,255,.7);line-height:1.8}
+
+/* Business Sectors */
+.sectors-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px}
+.sector-card{background:var(--white);border-radius:20px;overflow:hidden;border:1px solid #e2e8f0;transition:.4s}
+.sector-card:hover{transform:translateY(-10px);box-shadow:0 20px 40px rgba(0,105,92,.12);border-color:var(--primary-light)}
+.sector-img{height:180px;background:linear-gradient(135deg,var(--primary-light),#e0f7fa);display:flex;align-items:center;justify-content:center;font-size:60px}
+.sector-body{padding:25px}
+.sector-body h3{font-weight:900;font-size:18px;color:var(--dark);margin-bottom:10px}
+.sector-body p{font-size:13px;color:var(--text-muted);line-height:1.7;margin-bottom:15px}
+.sector-features{list-style:none}
+.sector-features li{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--dark);margin-bottom:8px;font-weight:600}
+.sector-features li::before{content:'✓';width:22px;height:22px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+
+/* Clients */
+.clients-section{background:var(--white);padding:80px 0}
+.clients-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+.client-logo{background:var(--light);border:1px solid #e2e8f0;border-radius:16px;padding:25px;text-align:center;transition:.3s;display:flex;flex-direction:column;align-items:center;gap:10px}
+.client-logo:hover{transform:translateY(-5px);box-shadow:0 10px 30px rgba(0,105,92,.1);border-color:var(--primary-light)}
+.client-logo .icon{font-size:36px}
+.client-logo h4{font-size:14px;font-weight:800;color:var(--dark)}
+.client-logo p{font-size:12px;color:var(--text-muted)}
+
+/* Stats */
+.stats-section{background:linear-gradient(135deg,var(--primary),#004d40);padding:60px 0;color:var(--white)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;text-align:center}
+.stat-box .num{font-size:42px;font-weight:900;display:block;margin-bottom:8px;color:var(--accent)}
+.stat-box .label{font-size:14px;opacity:.9}
+
+/* Contact CTA */
+.cta-section{padding:80px 0;text-align:center;background:var(--light)}
+.cta-box{background:linear-gradient(135deg,var(--darker),var(--dark));border-radius:24px;padding:60px 40px;color:var(--white);max-width:800px;margin:0 auto;position:relative;overflow:hidden}
+.cta-box::before{content:'';position:absolute;top:-50%;right:-20%;width:400px;height:400px;background:radial-gradient(circle,rgba(0,105,92,.2),transparent 70%)}
+.cta-box h3{font-size:32px;font-weight:900;margin-bottom:15px;position:relative;z-index:1}
+.cta-box p{font-size:16px;color:rgba(255,255,255,.7);margin-bottom:30px;position:relative;z-index:1}
+.cta-btn{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:var(--dark);padding:16px 40px;border-radius:12px;font-weight:900;font-size:16px;display:inline-flex;align-items:center;gap:10px;transition:.3s;border:none;cursor:pointer;position:relative;z-index:1}
+.cta-btn:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(255,193,7,.4)}
+
+/* Footer */
+.footer{background:var(--darker);color:rgba(255,255,255,.6);padding:60px 0 25px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:40px;margin-bottom:50px}
+.footer-brand h4{color:var(--white);font-size:20px;font-weight:900;margin-bottom:15px}
+.footer-brand p{font-size:14px;line-height:1.8;margin-bottom:20px}
+.footer-social{display:flex;gap:12px}
+.footer-social a{width:40px;height:40px;border-radius:10px;background:var(--glass);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;color:var(--white);font-size:18px;transition:.3s}
+.footer-social a:hover{background:var(--primary);transform:translateY(-3px)}
+.footer-col h5{color:var(--white);font-size:16px;font-weight:800;margin-bottom:20px}
+.footer-col ul{list-style:none}
+.footer-col li{margin-bottom:12px}
+.footer-col a{font-size:14px;transition:.3s}
+.footer-col a:hover{color:var(--accent)}
+.footer-bottom{border-top:1px solid var(--glass-border);padding-top:25px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
+.footer-bottom p{font-size:13px}
+.footer-bottom a{color:rgba(255,255,255,.6);font-size:13px;transition:.3s}
+.footer-bottom a:hover{color:var(--accent)}
+
+/* PDF Download */
+.pdf-download{background:var(--primary-light);border:2px dashed var(--primary);border-radius:16px;padding:25px;text-align:center;margin:40px auto;max-width:500px;display:flex;flex-direction:column;align-items:center;gap:12px;transition:.3s}
+.pdf-download:hover{background:rgba(0,105,92,.1);transform:translateY(-3px)}
+.pdf-download .icon{font-size:40px}
+.pdf-download h4{font-size:18px;font-weight:900;color:var(--primary)}
+.pdf-download p{font-size:13px;color:var(--text-muted)}
+.pdf-download a{background:linear-gradient(135deg,var(--primary),#004d40);color:var(--white);padding:12px 30px;border-radius:10px;font-weight:800;font-size:14px;display:inline-flex;align-items:center;gap:8px;transition:.3s}
+.pdf-download a:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,105,92,.3)}
+
+@media(max-width:768px){
+  .about-hero h2{font-size:28px}
+  .vision-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+}
+</style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">
-                <i class="fas fa-crown"></i>
-                <span>DFS</span>
-            </a>
-            <ul class="nav-links">
-                <li><a href="index.html">الرئيسية</a></li>
-                <li><a href="about.html" class="active">عن الشركة</a></li>
-                <li><a href="index.html#products">المنتجات</a></li>
-                <li><a href="index.html#contact">تواصل معنا</a></li>
-            </ul>
-            <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
-        </div>
-    </nav>
 
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-badge">
-                <i class="fas fa-building"></i>
-                شركة درة فارس الشمال للتجارة
-            </div>
-            <h1>نقود الطريق في <span>التجارة متعددة القطاعات</span> والخدمات التقنية</h1>
-            <p class="hero-subtitle">من الحلول التقنية المتقدمة إلى المستلزمات الغذائية الأساسية وتميز المكاتب</p>
-            <p class="hero-desc">
-                نقدم كل ما يحتاجه عملك — من أحدث تقنيات الحوسبة والصيانة إلى أثاث المكاتب والمستلزمات الغذائية الخام — 
-                مع التزام بالتميز والموثوقية.
-            </p>
-            <a href="mailto:MOHAMED.ALI@DF-ALSHAMAL.COM" class="hero-email">
-                <i class="fas fa-envelope"></i>
-                MOHAMED.ALI@DF-ALSHAMAL.COM
-            </a>
-        </div>
-        <div class="scroll-indicator">
-            <i class="fas fa-chevron-down"></i>
-        </div>
-    </section>
+<!-- Header -->
+<header class="header">
+<div class="container">
+<div class="header-inner">
+<div class="logo">
+<div class="logo-icon">⚡</div>
+<div class="logo-text">
+<h1>شركة درة فارس الشمال للتجارة</h1>
+<span>Dora Fares Al Shamal</span>
+</div>
+</div>
+<nav class="nav-links">
+<a href="index.html">الرئيسية</a>
+<a href="index.html#products">المنتجات</a>
+<a href="about.html" class="active">عن الشركة</a>
+<a href="index.html#contact">تواصل معنا</a>
+</nav>
+<div style="display:flex;align-items:center;gap:8px">
+<button class="theme-toggle" onclick="toggleTheme()" title="تبديل الوضع">🌙</button>
+</div>
+</div>
+</div>
+</header>
 
-    <section class="about-section" id="about">
-        <div class="container">
-            <div class="about-grid">
-                <div class="about-content fade-in">
-                    <div class="section-header" style="text-align: right; margin-bottom: 2rem;">
-                        <span class="section-label">من نحن</span>
-                        <h2 class="section-title" style="text-align: right;">عن الشركة</h2>
-                    </div>
-                    <p>
-                        شركة <strong>درة فارس الشمال</strong> هي كيان تجاري ديناميكي مكرس لتقديم حلول أعمال متكاملة. 
-                        نحن نجسر الفجوة بين التقنية وسلاسل التوريد التقليدية، ونقدم كل شيء من الإلكترونيات الراقية 
-                        والصيانة المهنية إلى المستلزمات الغذائية الأساسية وأثاث المكاتب الحديث.
-                    </p>
-                    <p>
-                        هدفنا أن نكون المصدر الوحيد والموثوق لجميع احتياجات عملك الشخصية والمؤسسية.
-                    </p>
-                    <div class="about-quote">
-                        "نقدم لعملائنا أفضل المنتجات من أشهر الماركات العالمية بأسعار تنافسية وخدمة ما بعد البيع متميزة"
-                    </div>
-                </div>
-                <div class="about-image fade-in">
-                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=500&fit=crop" alt="مكتب الشركة">
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- Hero -->
+<section class="about-hero">
+<div class="about-hero-content">
+<div class="about-hero-badge">🏢 شركة رائدة في مجال التجارة والخدمات التقنية</div>
+<h2>نحن <span>شركة درة فارس الشمال للتجارة</span></h2>
+<p>شركة ديناميكية متخصصة في تقديم حلول تجارية متكاملة. نعمل على سد الفجوة بين التقنية وسلاسل التوريد التقليدية، حيث نقدم كل شيء من الإلكترونيات عالية الجودة والصيانة المهنية إلى المستلزمات الغذائية الأساسية والأثاث المكتبي الحديث.</p>
+</div>
+</section>
 
-    <section class="vision-section" id="vision">
-        <div class="container">
-            <div class="section-header fade-in">
-                <span class="section-label">رؤيتنا ورسالتنا</span>
-                <h2 class="section-title">نحو المستقبل</h2>
-            </div>
-            <div class="vision-grid">
-                <div class="vision-card fade-in">
-                    <div class="vision-icon">
-                        <i class="fas fa-eye"></i>
-                    </div>
-                    <h3>الرؤية</h3>
-                    <p>
-                        أن نكون الشريك التجاري الرائد متعدد القطاعات في المنطقة، 
-                        معترف بنا بالجودة والتنوع والابتكار في كل ما نقدمه.
-                    </p>
-                </div>
-                <div class="vision-card fade-in">
-                    <div class="vision-icon">
-                        <i class="fas fa-bullseye"></i>
-                    </div>
-                    <h3>الرسالة</h3>
-                    <p>
-                        تقديم منتجات عالية القيمة وخدمات تقنية متخصصة تمكّن عملاءنا 
-                        ودعم نموهم المستدام في السوق.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- About Us -->
+<section class="section" id="about">
+<div class="container">
+<div class="section-header">
+<h2 class="section-title">من نحن</h2>
+<p class="section-subtitle">نبذة عن شركتنا وما نقدمه لعملائنا</p>
+</div>
+<div class="about-grid">
+<div class="about-card">
+<div class="icon">🎯</div>
+<h3>رؤيتنا</h3>
+<p>أن نكون الشريك التجاري متعدد القطاعات الرائد في المنطقة، معترفين بالجودة والتنوع والموثوقية.</p>
+</div>
+<div class="about-card">
+<div class="icon">🚀</div>
+<h3>مهمتنا</h3>
+<p>تقديم منتجات عالية القيمة وخدمات تقنية متخصصة تمكّن عملائنا ودعم نموهم.</p>
+</div>
+<div class="about-card">
+<div class="icon">💼</div>
+<h3>هدفنا</h3>
+<p>أن نكون المصدر الواحد الموثوق لجميع احتياجاتك الشركاتية والفردية.</p>
+</div>
+</div>
+</div>
+</section>
 
-    <section class="mission-section" id="missions">
-        <div class="container">
-            <div class="section-header fade-in">
-                <span class="section-label">مهمتنا</span>
-                <h2 class="section-title">قيمنا الأساسية</h2>
-            </div>
-            <div class="mission-grid">
-                <div class="mission-card fade-in">
-                    <div class="number">01</div>
-                    <h4>التميز المتكامل</h4>
-                    <p>تقديم التميز من خلال الحلول المتكاملة والمنتجات عالية الجودة</p>
-                </div>
-                <div class="mission-card fade-in">
-                    <div class="number">02</div>
-                    <h4>شراكات دائمة</h4>
-                    <p>بناء شراكات دائمة بأن نكون مصدرك الموثوق للابتكار والموثوقية</p>
-                </div>
-                <div class="mission-card fade-in">
-                    <div class="number">03</div>
-                    <h4>رضا العملاء</h4>
-                    <p>تحقيق أعلى مستويات رضا العملاء من خلال الخدمة المتميزة</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- Vision & Mission -->
+<section class="vision-section">
+<div class="container">
+<div class="vision-grid">
+<div class="vision-card">
+<span class="icon">👁️</span>
+<h3>رؤيتنا</h3>
+<p>أن نكون الشريك التجاري متعدد القطاعات الرائد في المنطقة، معترفين بالجودة والتنوع والموثوقية. نسعى لبناء سمعة قوية كمزود موثوق لحلول التقنية والتوريد المتكاملة.</p>
+</div>
+<div class="vision-card">
+<span class="icon">🎯</span>
+<h3>مهمتنا</h3>
+<p>تقديم منتجات عالية القيمة وخدمات تقنية متخصصة تمكّن عملائنا ودعم نموهم. نلتزم بتحقيق التميز من خلال تقديم حلول مبتكرة وموثوقة تلبي احتياجات السوق المتنوعة.</p>
+</div>
+</div>
+</div>
+</section>
 
-    <section class="services-section" id="services">
-        <div class="container">
-            <div class="section-header fade-in">
-                <span class="section-label">خدماتنا</span>
-                <h2 class="section-title">مجالات عملنا</h2>
-                <p class="section-subtitle">نقدم حلولاً متكاملة تغطي جميع احتياجات عملك</p>
-            </div>
-            <div class="services-grid">
-                <div class="service-card fade-in">
-                    <div class="service-icon">
-                        <i class="fas fa-laptop-code"></i>
-                    </div>
-                    <h3>الإلكترونيات المتقدمة</h3>
-                    <p>حلول تكنولوجيا المعلومات والأجهزة الإلكترونية الراقية</p>
-                </div>
-                <div class="service-card fade-in">
-                    <div class="service-icon">
-                        <i class="fas fa-print"></i>
-                    </div>
-                    <h3>حلول الطباعة والتصوير</h3>
-                    <p>أجهزة الطباعة والأحبار والتونر الأصلية</p>
-                </div>
-                <div class="service-card fade-in">
-                    <div class="service-icon">
-                        <i class="fas fa-plug"></i>
-                    </div>
-                    <h3>الملحقات الرقمية والاتصال</h3>
-                    <p>وصلات وملحقات إلكترونية عالية الجودة</p>
-                </div>
-                <div class="service-card fade-in">
-                    <div class="service-icon">
-                        <i class="fas fa-couch"></i>
-                    </div>
-                    <h3>أثاث المكاتب وتصميم workspaces</h3>
-                    <p>أثاث مكتبي عصري ومتكامل</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- Business Sectors -->
+<section class="section">
+<div class="container">
+<div class="section-header">
+<h2 class="section-title">قطاعات أعمالنا</h2>
+<p class="section-subtitle">نقدم حلولاً متكاملة في مجالات متعددة</p>
+</div>
+<div class="sectors-grid">
+<div class="sector-card">
+<div class="sector-img">💻</div>
+<div class="sector-body">
+<h3>الإلكترونيات المتقدمة وحلول تكنولوجيا المعلومات</h3>
+<p>نقدم مجموعة واسعة من منتجات التقنية المتطورة المصممة للاستخدام الشركاتي والشخصي.</p>
+<ul class="sector-features">
+<li>أجهزة كمبيوتر محمولة وسطح مكتب عالية الأداء</li>
+<li>خوادم عالية الأداء</li>
+<li>كاميرات احترافية وحلول طباعة</li>
+<li>أقراص تخزين عالية السعة (HDD/SSD)</li>
+<li>ملحقات الكمبيوتر والهاتف المحمول</li>
+</ul>
+</div>
+</div>
+<div class="sector-card">
+<div class="sector-img">🔧</div>
+<div class="sector-body">
+<h3>الدعم الفني ومركز الصيانة</h3>
+<p>قسم الصيانة المتخصص لدينا هو العمود الفقري لخدماتنا الإلكترونية.</p>
+<ul class="sector-features">
+<li>خدمات إصلاح خبيرة لجميع معدات تكنولوجيا المعلومات</li>
+<li>عقود صيانة وقائية للشركات</li>
+<li>استبدال قطع غيار أصلية لضمان طول عمر الجهاز</li>
+<li>استجابة سريعة وخدمة موثوقة</li>
+</ul>
+</div>
+</div>
+<div class="sector-card">
+<div class="sector-img">🪑</div>
+<div class="sector-body">
+<h3>أثاث المكاتب وحلول التصميم الداخلي</h3>
+<p>خلق بيئة عمل منتجة مع إعدادات مكتبية عالية الجودة.</p>
+<ul class="sector-features">
+<li>كراسي مريحة وطاولات تنفيذية</li>
+<li>حلول محطات عمل متكاملة ووحدات تخزين</li>
+<li>مواد متينة مصممة للجماليات المكتبية الحديثة</li>
+<li>حلول مخصصة حسب متطلبات العميل</li>
+</ul>
+</div>
+</div>
+<div class="sector-card">
+<div class="sector-img">🌾</div>
+<div class="sector-body">
+<h3>المستلزمات العامة والمواد الغذائية</h3>
+<p>سلسلة توريد قوية توفر السلع الأساسية والمواد الخام.</p>
+<ul class="sector-features">
+<li>توريد بالجملة للمنتجات الغذائية عالية الجودة</li>
+<li>مواد خام للتصنيع والاحتياجات الشركاتية</li>
+<li>توريد موثوق للمشاريع الكبرى</li>
+<li>التزام بأعلى معايير الجودة والسلامة</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
 
-    <section class="sectors-section" id="sectors">
-        <div class="container">
-            <div class="section-header fade-in">
-                <span class="section-label">قطاعات الأعمال</span>
-                <h2 class="section-title">تخصصاتنا بالتفصيل</h2>
-            </div>
+<!-- Products & Services -->
+<section class="section" style="background:var(--white)">
+<div class="container">
+<div class="section-header">
+<h2 class="section-title">المنتجات والخدمات التقنية</h2>
+<p class="section-subtitle">مجموعة شاملة من المنتجات والخدمات المتخصصة</p>
+</div>
+<div class="sectors-grid">
+<div class="sector-card">
+<div class="sector-img">🖥️</div>
+<div class="sector-body">
+<h3>أجهزة الكمبيوتر والأجهزة المحمولة</h3>
+<p>حواسيب محمولة عالية الأداء من أفضل العلامات التجارية العالمية للأعمال والمحترفين الإبداعيين.</p>
+<ul class="sector-features">
+<li>حواسيب محمولة للأعمال</li>
+<li>حلول PC المكتبية ومحطات العمل</li>
+<li>أقراص تخزين داخلية وخارجية عالية السعة</li>
+<li>وحدات فلاش عالية السرعة</li>
+</ul>
+</div>
+</div>
+<div class="sector-card">
+<div class="sector-img">🖨️</div>
+<div class="sector-body">
+<h3>حلول الطباعة والتصوير</h3>
+<p>مجموعة واسعة من طابعات المكاتب والصناعة بما في ذلك تقنيات الليزر والحبر.</p>
+<ul class="sector-features">
+<li>طابعات ليزر ونافثة حبر</li>
+<li>أحبار ومساحيق حبر عالية الجودة</li>
+<li>كاميرات رقمية احترافية</li>
+<li>كاميرات مراقبة للتطبيقات المختلفة</li>
+</ul>
+</div>
+</div>
+<div class="sector-card">
+<div class="sector-img">📡</div>
+<div class="sector-body">
+<h3>أنظمة المراقبة والأمان المتقدمة</h3>
+<p>تقنيات مراقبة عالية الجودة مصممة لحماية أصولك وضمان السلامة.</p>
+<ul class="sector-features">
+<li>كاميرات IP والشبكات مع مراقبة عن بعد</li>
+<li>رؤية ليلية وتصوير حراري</li>
+<li>حلول لاسلكية وذكية مع تخزين سحابي</li>
+<li>أنظمة PTZ (بان-تيلت-زوم)</li>
+</ul>
+</div>
+</div>
+<div class="sector-card">
+<div class="sector-img">🎨</div>
+<div class="sector-body">
+<h3>مستلزمات الطباعة المتميزة</h3>
+<p>مخزون واسع من مستلزمات الطباعة لتحقيق أداء عالي ونتائج مبهرة.</p>
+<ul class="sector-features">
+<li>خراطيش حبر نافثة عالية العائد</li>
+<li>مساحيق حبر ليزر قياسية وXL</li>
+<li>أحبار كبيرة الحجم للمخططات الهندسية</li>
+<li>أنظمة تزويد مستمر بالحبر (CISS)</li>
+</ul>
+</div>
+</div>
+<div class="sector-card">
+<div class="sector-img">🔌</div>
+<div class="sector-body">
+<h3>الملحقات الرقمية والاتصال</h3>
+<p>مجموعة شاملة من ملحقات التخزين والاتصال والصوت.</p>
+<ul class="sector-features">
+<li>أقراص صلبة خارجية وSSD ومحركات أقراص فلاش</li>
+<li>بطاقات ذاكرة SD وMicroSD</li>
+<li>أطقم لوحة مفاتيح وماوس مريحة</li>
+<li>سماعات رأس لاسلكية وسماعات أذن</li>
+</ul>
+</div>
+</div>
+<div class="sector-card">
+<div class="sector-img">🏢</div>
+<div class="sector-body">
+<h3>أثاث المكاتب وتصميم مساحات العمل</h3>
+<p>مجموعة مختارة من الأثاث المكتبي الحديث يجمع بين الفخامة الجمالية والمتانة الوظيفية.</p>
+<ul class="sector-features">
+<li>أجنحة مكتب تنفيذية فاخرة</li>
+<li>كراسي مريحة مع دعم قطني متقدم</li>
+<li>طاولات اجتماعات وغرف المجالس</li>
+<li>أنظمة تخزين وترتيب ذكية</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
 
-            <div class="sector-card fade-in">
-                <div class="sector-header">
-                    <span class="sector-num">01</span>
-                    <h3>الإلكترونيات المتقدمة وحلول تكنولوجيا المعلومات</h3>
-                </div>
-                <div class="sector-body">
-                    <p>نقدم مجموعة واسعة من منتجات التكنولوجيا المتطورة المصممة للاستخدام المؤسسي والشخصي.</p>
-                    <div class="sector-features">
-                        <div class="feature-item">
-                            <i class="fas fa-desktop"></i>
-                            <span>أجهزة كمبيوتر متميزة وأجهزة مكتبية وخوادم عالية الأداء</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-camera"></i>
-                            <span>كاميرات احترافية وحلول طباعة كاملة مع أحبار وتونر أصلية</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-hdd"></i>
-                            <span>أقراص تخزين عالية السعة (HDD/SSD) وأجهزة تخزين فلاش آمنة</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-keyboard"></i>
-                            <span>مجموعة كاملة من ملحقات الكمبيوتر والهواتف المحمولة</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!-- Stats -->
+<section class="stats-section">
+<div class="container">
+<div class="stats-grid">
+<div class="stat-box"><span class="num">+10</span><span class="label">سنوات خبرة</span></div>
+<div class="stat-box"><span class="num">+500</span><span class="label">عميل سعيد</span></div>
+<div class="stat-box"><span class="num">+50</span><span class="label">عميل رئيسي</span></div>
+<div class="stat-box"><span class="num">4</span><span class="label">قطاعات رئيسية</span></div>
+</div>
+</div>
+</section>
 
-            <div class="sector-card fade-in">
-                <div class="sector-header">
-                    <span class="sector-num">02</span>
-                    <h3>مركز الدعم الفني والصيانة</h3>
-                </div>
-                <div class="sector-body">
-                    <p>قسم الصيانة المتخصص لدينا هو العمود الفقري لخدماتنا الإلكترونية.</p>
-                    <div class="sector-features">
-                        <div class="feature-item">
-                            <i class="fas fa-tools"></i>
-                            <span>خدمات إصلاح خبيرة لجميع معدات تكنولوجيا المعلومات والأجهزة</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-clipboard-check"></i>
-                            <span>عقود صيانة وقائية للشركات</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-cog"></i>
-                            <span>استبدال قطع غيار أصلية لضمان عمر الجهاز</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-shield-alt"></i>
-                            <span>ضمان شامل على جميع المنتجات والخدمات</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!-- Clients -->
+<section class="clients-section">
+<div class="container">
+<div class="section-header">
+<h2 class="section-title">عملاؤنا</h2>
+<p class="section-subtitle">نفخر بالتعاون مع كبرى المؤسسات والشركات</p>
+</div>
+<div class="clients-grid">
+<div class="client-logo"><span class="icon">🏗️</span><h4>مشروع نيوم</h4><p>التوريد والدعم</p></div>
+<div class="client-logo"><span class="icon">🏥</span><h4>مستشفى نيوم</h4><p>القطاع الصحي</p></div>
+<div class="client-logo"><span class="icon">🏛️</span><h4>وزارة الصحة</h4><p>المؤسسات الحكومية</p></div>
+<div class="client-logo"><span class="icon">🏫</span><h4>وزارة التعليم</h4><p>المدارس الحكومية</p></div>
+<div class="client-logo"><span class="icon">🏢</span><h4>غرفة التجارة</h4><p>المؤسسات الحكومية</p></div>
+<div class="client-logo"><span class="icon">🏗️</span><h4>شركة الرواف للمقاولات</h4><p>قطاع البناء</p></div>
+<div class="client-logo"><span class="icon">🏗️</span><h4>شبه الجزيرة للمقاولات</h4><p>قطاع البناء</p></div>
+<div class="client-logo"><span class="icon">🏦</span><h4>البنك الأهلي</h4><p>القطاع المصرفي</p></div>
+<div class="client-logo"><span class="icon">🏦</span><h4>بنك الرياض</h4><p>القطاع المصرفي</p></div>
+<div class="client-logo"><span class="icon">⚡</span><h4>الشركة السعودية للكهرباء</h4><p>القطاع الحكومي</p></div>
+<div class="client-logo"><span class="icon">🏭</span><h4>أسمنت الجوف</h4><p>الصناعة</p></div>
+<div class="client-logo"><span class="icon">🎓</span><h4>جامعة تبوك</h4><p>التعليم</p></div>
+</div>
+</div>
+</section>
 
-            <div class="sector-card fade-in">
-                <div class="sector-header">
-                    <span class="sector-num">03</span>
-                    <h3>أثاث المكاتب وحلول التصميم الداخلي</h3>
-                </div>
-                <div class="sector-body">
-                    <p>خلق بيئة عمل منتجة مع مجموعات مكتبية عالية الجودة.</p>
-                    <div class="sector-features">
-                        <div class="feature-item">
-                            <i class="fas fa-chair"></i>
-                            <span>كراسي مريحة وطاولات تنفيذية بتصاميم عصرية</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-th-large"></i>
-                            <span>حلول محطات عمل متكاملة ووحدات تخزين</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-palette"></i>
-                            <span>مواد متينة بتصاميم جمالية عصرية</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-ruler-combined"></i>
-                            <span>حلول مخصصة حسب أبعاد ونمط شركتك</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!-- PDF Download -->
+<div class="container">
+<div class="pdf-download">
+<span class="icon">📄</span>
+<h4>تحميل الملف التعريفي للشركة</h4>
+<p>يمكنك تحميل الملف التعريفي الكامل للشركة بصيغة PDF</p>
+<a href="DFS_PROFILE.pdf" download>📥 تحميل الملف التعريفي</a>
+</div>
+</div>
 
-            <div class="sector-card fade-in">
-                <div class="sector-header">
-                    <span class="sector-num">04</span>
-                    <h3>المستلزمات العامة والمواد الغذائية</h3>
-                </div>
-                <div class="sector-body">
-                    <p>سلسلة توريد قوية توفر السلع الأساسية والمواد الخام.</p>
-                    <div class="sector-features">
-                        <div class="feature-item">
-                            <i class="fas fa-utensils"></i>
-                            <span>توريد بالجملة للمنتجات الغذائية عالية الجودة والمواد الخام</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-industry"></i>
-                            <span>توريد صناعي موثوق لاحتياجات التصنيع والشركات</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-truck"></i>
-                            <span>توصيل سريع لجميع المناطق</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-award"></i>
-                            <span>توريد حبوب متميزة ومواد غذائية أساسية بأعلى معايير الجودة</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- CTA -->
+<section class="cta-section">
+<div class="container">
+<div class="cta-box">
+<h3>هل تبحث عن شريك موثوق؟</h3>
+<p>نحن هنا لمساعدتك في جميع احتياجاتك التقنية والتجارية. تواصل معنا اليوم!</p>
+<a href="index.html#contact" class="cta-btn">📞 تواصل معنا الآن</a>
+</div>
+</div>
+</section>
 
-    <section class="products-section" id="products-detailed">
-        <div class="container">
-            <div class="section-header fade-in">
-                <span class="section-label">المنتجات والخدمات التقنية</span>
-                <h2 class="section-title">منتجاتنا بالتفصيل</h2>
-            </div>
+<!-- Footer -->
+<footer class="footer">
+<div class="container">
+<div class="footer-grid">
+<div class="footer-brand"><h4>شركة درة فارس الشمال للتجارة</h4><p>وجهتك الأولى لكل ما يتعلق بالتقنية والتوريد. نقدم منتجات عالية الجودة بأسعار تنافسية.</p><div class="footer-social"><a href="#">𝕏</a><a href="#">📷</a><a href="#">f</a><a href="#">in</a></div></div>
+<div class="footer-col"><h5>روابط سريعة</h5><ul><li><a href="index.html">الرئيسية</a></li><li><a href="index.html#products">المنتجات</a></li><li><a href="about.html">عن الشركة</a></li><li><a href="index.html#contact">تواصل معنا</a></li></ul></div>
+<div class="footer-col"><h5>الخدمات</h5><ul><li><a href="#">الإلكترونيات</a></li><li><a href="#">الصيانة</a></li><li><a href="#">أثاث المكاتب</a></li><li><a href="#">المستلزمات الغذائية</a></li></ul></div>
+<div class="footer-col"><h5>تواصل معنا</h5><ul><li><a href="tel:0568717449">📞 056-871-7449</a></li><li><a href="tel:0545358773">📞 054-535-8773</a></li><li><a href="mailto:MOHAMED.ALI@DF-ALSHAMAL.COM">✉️ MOHAMED.ALI@DF-ALSHAMAL.COM</a></li><li><a href="https://maps.app.goo.gl/wKPBFH9751rpFgMM7" target="_blank">📍 الموقع الجغرافي</a></li></ul></div>
+</div>
+<div class="footer-bottom"><p>© 2024 شركة درة فارس الشمال للتجارة. جميع الحقوق محفوظة.</p><div><a href="#">سياسة الخصوصية</a><a href="#">شروط الاستخدام</a></div></div>
+</div>
+</footer>
 
-            <div class="product-category fade-in">
-                <h3><i class="fas fa-video"></i> أنظمة المراقبة والأمان المتقدمة</h3>
-                <p style="color: var(--text-light); margin-bottom: 1.5rem;">
-                    نقدم تقنيات مراقبة عالية الجودة مصممة لحماية أصولك وضمان السلامة ومراقبة العمليات بأقصى دقة. 
-                    أنظمتنا مخصصة للبيئات الصناعية والمؤسسية والسكنية.
-                </p>
-                <div class="product-list">
-                    <div class="product-item">
-                        <i class="fas fa-network-wired"></i>
-                        <span>كاميرات IP وشبكات: كاميرات رقمية عالية الدقة مع مراقبة عن بعد</span>
-                    </div>
-                    <div class="product-item">
-                        <i class="fas fa-moon"></i>
-                        <span>الرؤية الليلية والتصوير الحراري: مراقبة موثوقة في ظروف الإضاءة الصفرية</span>
-                    </div>
-                    <div class="product-item">
-                        <i class="fas fa-wifi"></i>
-                        <span>حلول لاسلكية وذكية: تخزين سحابي ووصول عبر الجوال</span>
-                    </div>
-                    <div class="product-item">
-                        <i class="fas fa-expand-arrows-alt"></i>
-                        <span>أنظمة PTZ (بان-تيلت-زوم): تغطية كاملة للمساحات الصناعية والخارجية</span>
-                    </div>
-                </div>
-                <div style="margin-top: 1.5rem; padding: 1.5rem; background: var(--bg); border-radius: 12px;">
-                    <h4 style="color: var(--primary); margin-bottom: 1rem;"><i class="fas fa-cogs" style="color: var(--accent);"></i> الخدمات المتكاملة:</h4>
-                    <div class="product-list">
-                        <div class="product-item">
-                            <i class="fas fa-drafting-compass"></i>
-                            <span>تصميم النظام: تخطيط أمني مخصص حسب موقع العميل</span>
-                        </div>
-                        <div class="product-item">
-                            <i class="fas fa-wrench"></i>
-                            <span>التركيب التقني: إعداد وتهيئة احترافية من فريق الخبراء</span>
-                        </div>
-                        <div class="product-item">
-                            <i class="fas fa-headset"></i>
-                            <span>الدعم بعد التركيب: صيانة مستمرة وترقيات للأجهزة</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-category fade-in">
-                <h3><i class="fas fa-tint"></i> مستلزمات الطباعة المتميزة</h3>
-                <p style="color: var(--text-light); margin-bottom: 1.5rem;">
-                    نقدم مخزوناً واسعاً من مستلزمات الطباعة المصممة لتقديم أداء عالي الإنتاجية وألوان نابضة ونصوص حادة. 
-                    منتجاتنا تضمن عمر أجهزة الطباعة وجودة إخراج متسقة للبيئات المهنية.
-                </p>
-                <div class="product-list">
-                    <div class="product-item">
-                        <i class="fas fa-print"></i>
-                        <span>خراطيش الحبر: أحبار عالية الإنتاجية للطباعة الصورية واليومية</span>
-                    </div>
-                    <div class="product-item">
-                        <i class="fas fa-circle"></i>
-                        <span>تونر الطابعات الليزرية: تونر عادي وXL متوافق مع HP وCanon وBrother وSamsung</span>
-                    </div>
-                    <div class="product-item">
-                        <i class="fas fa-paint-brush"></i>
-                        <span>أحبار البلوتر والتنسيق الواسع: حلول متخصصة للمخططات الهندسية والتصاميم المعمارية</span>
-                    </div>
-                    <div class="product-item">
-                        <i class="fas fa-fill-drip"></i>
-                        <span>أنظمة إمداد الحبر المستمر (CISS): حلول حبر بالجملة فعالة من حيث التكلفة</span>
-                    </div>
-                </div>
-                <div style="margin-top: 1.5rem; padding: 1.5rem; background: #e8f5e9; border-radius: 12px; border-right: 4px solid #4caf50;">
-                    <h4 style="color: var(--primary); margin-bottom: 1rem;"><i class="fas fa-check-circle" style="color: #4caf50;"></i> التزامنا بالجودة:</h4>
-                    <ul style="list-style: none; color: var(--text-light);">
-                        <li style="padding: 0.3rem 0;"><i class="fas fa-check" style="color: #4caf50; margin-left: 0.5rem;"></i> قطع غيار أصلية OEM لأقصى موثوقية</li>
-                        <li style="padding: 0.3rem 0;"><i class="fas fa-check" style="color: #4caf50; margin-left: 0.5rem;"></i> خيارات صديقة للبيئة: تونر معاد تدويره عالي الجودة</li>
-                        <li style="padding: 0.3rem 0;"><i class="fas fa-check" style="color: #4caf50; margin-left: 0.5rem;"></i> دقة الألوان 100% للعلامة التجارية والتسويق</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="product-category fade-in">
-                <h3><i class="fas fa-plug"></i> الملحقات الرقمية والاتصال</h3>
-                <div class="product-list">
-                    <div class="product-item">
-                        <i class="fas fa-hdd"></i>
-                        <span>أقراص صلبة خارجية وSSD: تخزين عالي السعة مقاوم للصدمات</span>
-                    </div>
-                    <div class="product-item">
-                        <i class="fas fa-usb"></i>
-                        <span>فلاش درايف عالي السرعة: نقل بيانات سريع وموثوق</span>
-                    </div>
-                    <div class="product-item">
-                        <i class="fas fa-sd-card"></i>
-                        <span>بطاقات ذاكرة: SD وMicroSD للكاميرات والهواتف</span>
-                    </div>
-                    <div class="product-item">
-                        <i class="fas fa-keyboard"></i>
-                        <span>أطقم كيبورد وماوس: خيارات مريحة وسلكية وميكانيكية</span>
-                    </div>
-                    <div class="product-item">
-                        <i class="fas fa-headphones"></i>
-                        <span>سماعات رأس وإيرفون: إلغاء الضو
+<script>
+function toggleTheme(){
+  const html=document.documentElement;
+  const current=html.getAttribute('data-theme');
+  const next=current==='dark'?'light':'dark';
+  html.setAttribute('data-theme',next);
+  localStorage.setItem('doraTheme',next);
+  document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';
+}
+(function initTheme(){
+  const saved=localStorage.getItem('doraTheme')||'light';
+  document.documentElement.setAttribute('data-theme',saved);
+  document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';
+})();
+</script>
+</body>
+</html>
