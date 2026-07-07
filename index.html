@@ -2987,14 +2987,20 @@ document.addEventListener('DOMContentLoaded', () => {
 let audioPlaying = false;
 const bgAudio = document.getElementById('bgAudio');
 
-// Play audio on first user interaction (browser policy)
-document.addEventListener('click', function() {
-  if (!audioPlaying && bgAudio) {
-    bgAudio.volume = 0.15; // Very low volume
-    bgAudio.play().catch(e => console.log('Audio play failed:', e));
-    audioPlaying = true;
-  }
-}, { once: true });
+// Try autoplay immediately
+bgAudio.volume = 0.15; // Very low volume
+bgAudio.play().then(() => {
+  audioPlaying = true;
+}).catch(e => {
+  console.log('Autoplay blocked, waiting for user interaction');
+  // Fallback: play on first click
+  document.addEventListener('click', function() {
+    if (!audioPlaying && bgAudio) {
+      bgAudio.play();
+      audioPlaying = true;
+    }
+  }, { once: true });
+});
 
 // Audio toggle button (optional)
 function toggleAudio() {
