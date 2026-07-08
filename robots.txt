@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://alshamal-df.com/sitemap.xml
+
+# Allow all search engines to crawl the site
+# Disallow any private directories if needed
+# Disallow: /private/
+# Disallow: /admin/
