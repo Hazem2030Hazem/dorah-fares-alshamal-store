@@ -1,44 +1,69 @@
 const CACHE_NAME = 'dora-fares-v1';
-const urlsToCache = [
+const STATIC_ASSETS = [
   '/',
   '/index.html',
-  '/about.html',
-  '/logo.png',
-  'https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@400;500;700;800&display=swap'
+  '/manifest.json'
 ];
 
-// Install event - cache assets
+// Install - cache static assets
 self.addEventListener('install', function(event) {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(function(cache) {
-        console.log('Cache opened');
-        return cache.addAll(urlsToCache);
+        console.log('[SW] Cache opened');
+        return cache.addAll(STATIC_ASSETS);
+      })
+      .catch(function(err) {
+        console.log('[SW] Cache failed:', err);
       })
   );
   self.skipWaiting();
 });
 
-// Fetch event - serve from cache when offline
+// Fetch - serve from cache or network
 self.addEventListener('fetch', function(event) {
+  // Skip non-GET requests
+  if (event.request.method !== 'GET') return;
+
+  // Skip external image APIs that might fail
+  const url = new URL(event.request.url);
+  if (url.hostname.includes('placehold.co') || 
+      url.hostname.includes('unsplash.com') ||
+      url.hostname.includes('picsum.photos')) {
+    // Don't cache external images, just fetch
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then(function(response) {
-        // Return cached version or fetch from network
         if (response) {
           return response;
         }
-        return fetch(event.request).catch(function() {
-          // If offline and not in cache, return offline page
-          if (event.request.mode === 'navigate') {
-            return caches.match('/index.html');
-          }
-        });
+        return fetch(event.request)
+          .then(function(networkResponse) {
+            // Don't cache failed responses
+            if (!networkResponse || networkResponse.status !== 200) {
+              return networkResponse;
+            }
+            // Cache successful responses
+            const responseClone = networkResponse.clone();
+            caches.open(CACHE_NAME).then(function(cache) {
+              cache.put(event.request, responseClone);
+            });
+            return networkResponse;
+          })
+          .catch(function() {
+            // Offline fallback
+            if (event.request.mode === 'navigate') {
+              return caches.match('/index.html');
+            }
+          });
       })
   );
 });
 
-// Activate event - clean old caches
+// Activate - clean old caches
 self.addEventListener('activate', function(event) {
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
