@@ -9,7 +9,11 @@
     <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:url('https://i.imgur.com/PCW2FZb.jpeg') center/cover no-repeat fixed !important;font-family:'Cairo','Tajawal',sans-serif;color:#f8fafc;overflow-x:hidden;line-height:1.6}
+body{background:linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e, #16213e, #0f3460, #e94560, #0f0c29) !important;background-size: 400% 400% !important;animation: gradientBG 15s ease infinite !important;font-family:'Cairo','Tajawal',sans-serif;color:#f8fafc;overflow-x:hidden;line-height:1.6;min-height:100vh}
+@keyframes gradientBG{0%{background-position:0% 50%}25%{background-position:50% 100%}50%{background-position:100% 50%}75%{background-position:50% 0%}100%{background-position:0% 50%}}
+.particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1;overflow:hidden}
+.particle{position:absolute;width:4px;height:4px;background:rgba(255,255,255,0.3);border-radius:50%;animation:float-particle 8s ease-in-out infinite}
+@keyframes float-particle{0%,100%{transform:translateY(0) translateX(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-100vh) translateX(50px);opacity:0}}
 a{text-decoration:none;color:inherit}
 img{max-width:100%;display:block}
 .container{max-width:1300px;margin:auto;padding:0 25px}
@@ -1611,6 +1615,7 @@ img{max-width:100%;display:block}
     </style>
 </head>
 <body>
+<div class="particles" id="particles"></div>
     <div class="ocean-bg"></div>
 
     <header class="header" id="header">
@@ -1841,6 +1846,29 @@ if ('serviceWorker' in navigator) {
    });
  });
 }
+</script>
+
+<script>
+// Create floating particles
+(function() {
+    const container = document.getElementById('particles');
+    if (!container) return;
+    const particleCount = 50;
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        particle.style.width = Math.random() * 6 + 2 + 'px';
+        particle.style.height = particle.style.width;
+        particle.style.animationDelay = Math.random() * 8 + 's';
+        particle.style.animationDuration = Math.random() * 10 + 5 + 's';
+        const colors = ['233, 69, 96', '15, 52, 96', '16, 185, 129', '245, 158, 11'];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.background = `rgba(${color}, ${Math.random() * 0.5 + 0.2})`;
+        container.appendChild(particle);
+    }
+})();
 </script>
 </body>
 </html>
