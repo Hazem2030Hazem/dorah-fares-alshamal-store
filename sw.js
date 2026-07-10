@@ -1,8 +1,19 @@
-const CACHE_NAME = 'dora-fares-v1';
+const CACHE_NAME = 'dora-fares-v2';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
-  '/manifest.json'
+  '/manifest.json',
+  '/service_barcode.html',
+  '/service_cameras.html',
+  '/service_maintenance.html',
+  '/service_network.html',
+  '/service_pos.html',
+  '/service_printing.html',
+  '/services.html',
+  '/about.html',
+  '/contact.html',
+  '/sw.js',
+  '/sitemap.xml'
 ];
 
 // Install - cache static assets
@@ -30,7 +41,6 @@ self.addEventListener('fetch', function(event) {
   if (url.hostname.includes('placehold.co') || 
       url.hostname.includes('unsplash.com') ||
       url.hostname.includes('picsum.photos')) {
-    // Don't cache external images, just fetch
     return;
   }
 
@@ -42,11 +52,9 @@ self.addEventListener('fetch', function(event) {
         }
         return fetch(event.request)
           .then(function(networkResponse) {
-            // Don't cache failed responses
             if (!networkResponse || networkResponse.status !== 200) {
               return networkResponse;
             }
-            // Cache successful responses
             const responseClone = networkResponse.clone();
             caches.open(CACHE_NAME).then(function(cache) {
               cache.put(event.request, responseClone);
@@ -54,7 +62,6 @@ self.addEventListener('fetch', function(event) {
             return networkResponse;
           })
           .catch(function() {
-            // Offline fallback
             if (event.request.mode === 'navigate') {
               return caches.match('/index.html');
             }
