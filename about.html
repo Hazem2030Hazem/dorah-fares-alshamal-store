@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,6 +21,7 @@
             overflow-x: hidden;
             line-height: 1.6;
             min-height: 100vh;
+            background: url('https://i.imgur.com/PCW2FZb.jpeg') center/cover no-repeat fixed !important;
         }
 
         /* Red Tech Background */
@@ -28,19 +29,15 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100vh; min-height: 100%;
-            background: url('https://i.postimg.cc/rwxKrRbt/Whats-App-Image-2026-07-10-at-4-38-47-AM.jpg') center/cover no-repeat fixed;
+            background: url('" + new_bg_url + "') center/cover no-repeat fixed;
             z-index: -1;
         }
-        .ocean-bg::after {
-            content: '';
-            position: absolute; inset: 0;
-            background: transparent;
-        }
+        /* NO OVERLAY */
 
         /* Header */
         .header {
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-            background: rgba(15,23,42,0.3);
+            background: rgba(0,0,0,0.2);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255,255,255,0.1);
             box-shadow: 0 4px 30px rgba(0,0,0,.3);
@@ -215,7 +212,7 @@
 
         /* Footer */
         .footer {
-            background: rgba(15,23,42,0.95);
+            background: rgba(0,0,0,0.2);
             backdrop-filter: blur(10px);
             padding: 40px 25px; text-align: center;
             border-top: 1px solid rgba(255,255,255,0.1);
@@ -305,7 +302,7 @@
                 <a href="index.html#contact">تواصل معنا</a>
             </nav>
             <div class="control-btns">
-                <button class="control-btn" id="themeToggle" title="تبديل الوضع"  style="background:transparent !important;border:none !important;padding:0 !important;width:40px !important;height:40px !important;overflow:hidden !important;border-radius:12px !important;cursor:pointer !important;z-index:9999 !important;position:relative !important;">
+                <button class="control-btn" id="themeToggle" title="تبديل الوضع" onclick="toggleTheme()" style="background:transparent !important;border:none !important;padding:0 !important;width:40px !important;height:40px !important;overflow:hidden !important;border-radius:12px !important;cursor:pointer !important;z-index:9999 !important;position:relative !important;">
                     <img src="https://i.imgur.com/0EaJuGh.gif" alt="الوضع" style="width:100%;height:100%;object-fit:cover;border-radius:12px;pointer-events:none;" id="themeIcon">
                 </button>
                 <button class="control-btn" id="muteToggle" title="كتم/تشغيل الصوت"  style="background:transparent !important;border:none !important;padding:0 !important;width:40px !important;height:40px !important;overflow:hidden !important;border-radius:12px !important;cursor:pointer !important;margin-left:8px !important;">
@@ -460,14 +457,41 @@
             console.log('Mute toggled:', isMuted);
         });
 
-        // Theme toggle - icon stays fixed, function works
-        let isDark = true;
-        document.getElementById('themeToggle').addEventListener('click', function(e) {
-            e.stopPropagation();
-            isDark = !isDark;
-            document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
-            console.log('Theme toggled:', isDark ? 'dark' : 'light');
-        });
+        // Theme toggle - WORKING with red colors
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme') || 'dark';
+            const next = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('doraTheme', next);
+
+            const themeIcon = document.getElementById('themeIcon');
+            if (themeIcon) {
+                themeIcon.src = next === 'dark' ? 'https://i.imgur.com/0EaJuGh.gif' : 'https://i.imgur.com/MG2fQ7j.jpeg';
+            }
+
+            if (next === 'dark') {
+                document.body.style.background = 'url(https://i.imgur.com/PCW2FZb.jpeg) center/cover no-repeat fixed';
+            } else {
+                document.body.style.background = 'linear-gradient(135deg, #fff5f5 0%, #ffe0e0 25%, #ffc0c0 50%, #ffe0e0 75%, #fff5f5 100%)';
+            }
+        }
+
+        // Init theme
+        function initTheme() {
+            const saved = localStorage.getItem('doraTheme') || 'dark';
+            document.documentElement.setAttribute('data-theme', saved);
+            const themeIcon = document.getElementById('themeIcon');
+            if (themeIcon) {
+                themeIcon.src = saved === 'dark' ? 'https://i.imgur.com/0EaJuGh.gif' : 'https://i.imgur.com/MG2fQ7j.jpeg';
+            }
+            if (saved === 'light') {
+                document.body.style.background = 'linear-gradient(135deg, #fff5f5 0%, #ffe0e0 25%, #ffc0c0 50%, #ffe0e0 75%, #fff5f5 100%)';
+            }
+        }
+
+        // Run on load
+        initTheme();
     </script>
 </body>
 </html>
