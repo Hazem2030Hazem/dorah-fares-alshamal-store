@@ -433,31 +433,40 @@
     </audio>
 
     <script>
-        // Music control
+        // Music control - Auto play
         const bgMusic = document.getElementById('bgMusic');
         bgMusic.volume = 0.15;
         let isMuted = false;
 
-        // Play music on user interaction
+        // Auto play on page load
+        window.addEventListener('load', function() {
+            bgMusic.play().catch(e => {
+                console.log('Auto play failed, will try on interaction:', e);
+            });
+        });
+
+        // Also play on first click if auto failed
         document.addEventListener('click', function() {
             if (bgMusic.paused) {
                 bgMusic.play().catch(e => console.log('Audio play failed:', e));
             }
         }, { once: true });
 
-        // Mute toggle - keep icon fixed
-        document.getElementById('muteToggle').addEventListener('click', function() {
+        // Mute toggle - icon stays fixed, function works
+        document.getElementById('muteToggle').addEventListener('click', function(e) {
+            e.stopPropagation();
             isMuted = !isMuted;
             bgMusic.muted = isMuted;
-            // Icon stays the same (fixed image)
+            console.log('Mute toggled:', isMuted);
         });
 
-        // Theme toggle - keep icon fixed
+        // Theme toggle - icon stays fixed, function works
         let isDark = true;
-        document.getElementById('themeToggle').addEventListener('click', function() {
+        document.getElementById('themeToggle').addEventListener('click', function(e) {
+            e.stopPropagation();
             isDark = !isDark;
             document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
-            // Icon stays the same (fixed image)
+            console.log('Theme toggled:', isDark ? 'dark' : 'light');
         });
     </script>
 </body>
