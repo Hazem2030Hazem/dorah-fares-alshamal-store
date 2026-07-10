@@ -4,8 +4,8 @@
 (function() {
     'use strict';
 
-    // Audio URL - replace with your GitHub raw URL after uploading the MP3 file
-    const AUDIO_URL = 'https://raw.githubusercontent.com/Hazem2030Hazem/dorah-fares-alshamal-store/main/background-music.mp3';
+    // Stable audio URL (SoundHelix - free music)
+    const AUDIO_URL = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
 
     let audio = null;
     let isPlaying = false;
