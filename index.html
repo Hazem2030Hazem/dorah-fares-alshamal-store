@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="light">
 <head>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
@@ -3006,7 +3006,7 @@ function toggleTheme() {
 }
 
 function initTheme() {
- const saved = localStorage.getItem('doraTheme') || 'dark';
+ const saved = localStorage.getItem('doraTheme') || 'light';
  document.documentElement.setAttribute('data-theme', saved);
  const themeIcon = document.getElementById('themeIcon');
  if (themeIcon) {
