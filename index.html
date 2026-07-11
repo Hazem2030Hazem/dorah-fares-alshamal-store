@@ -143,14 +143,14 @@
    --accent-dark:#059669;
    --dark:#111827;
    --light:#FAFAFA;
-   --white:#FFFFFF;
-   --surface:#FFFFFF;
-   --surface-elevated:#FFFFFF;
+   --white:var(--secondary);
+   --surface:var(--secondary);
+   --surface-elevated:var(--secondary);
    --glass:rgba(255,255,255,.8);
    --glass-border:rgba(0,0,0,.05);
    --shadow:0 1px 3px rgba(0,0,0,.05);
    --shadow-lg:0 4px 20px rgba(0,0,0,.08);
-   --danger:#FFFFFF;
+   --danger:var(--secondary);
    --danger-light:#FEE2E2;
    --warning:#F59E0B;
    --warning-light:#FEF3C7;
@@ -357,7 +357,7 @@
   .stock-value{font-size:12px;font-weight:800;color:#ffffff !important}
   .stock-bar-bg{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
   .stock-bar-fill{height:100%;border-radius:3px;transition:width .5s ease}
-  .stock-low{background:var(--danger-light);color:var(--danger);border-color:rgba(211,47,47,.2)}
+  .stock-low{background:var(--danger-light);color:#FFFFFF;border-color:rgba(211,47,47,.2)}
   .stock-low .stock-bar-fill{background:var(--danger)}
   .stock-medium{background:var(--warning-light);color:var(--warning);border-color:rgba(245,124,0,.2)}
   .stock-medium .stock-bar-fill{background:var(--warning)}
@@ -384,7 +384,7 @@
   .product-modal{background:transparent;border-radius:var(--radius-xl);max-width:900px;width:100%;max-height:90vh;overflow-y:auto;position:relative;transform:scale(.9);transition:var(--transition-normal);box-shadow:var(--shadow-lg)}
   .product-modal-overlay.active .product-modal{transform:scale(1)}
   .modal-close{position:absolute;top:20px;left:20px;width:40px;height:40px;border-radius:50%;background:transparent;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;color:var(--text-muted);transition:var(--transition-fast);z-index:10}
-  .modal-close:hover{background:var(--danger-light);color:var(--danger);transform:rotate(90deg)}
+  .modal-close:hover{background:var(--danger-light);color:#FFFFFF;transform:rotate(90deg)}
   .product-modal-content{display:grid;grid-template-columns:1fr 1fr;gap:0}
   .modal-image{height:100%;min-height:400px;background:linear-gradient(135deg,var(--primary-light),#E3F2FD);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
   .modal-image img{width:100%;height:100%;object-fit:cover}
@@ -425,13 +425,13 @@
   .compare-item{display:flex;align-items:center;gap:8px;background:transparent;padding:8px 14px;border-radius:var(--radius-sm);border:1px solid var(--border)}
   .compare-item img{width:40px;height:40px;border-radius:var(--radius-sm);object-fit:cover}
   .compare-item-name{font-size:13px;font-weight:700;color:var(--text-primary)}
-  .compare-item-remove{background:none;border:none;cursor:pointer;color:var(--danger);font-size:16px;transition:var(--transition-fast)}
+  .compare-item-remove{background:none;border:none;cursor:pointer;color:#FFFFFF;font-size:16px;transition:var(--transition-fast)}
   .compare-item-remove:hover{transform:scale(1.2)}
   .compare-actions{display:flex;gap:10px}
   .compare-btn-action{background:transparent;color:var(--white);border:none;padding:10px 24px;border-radius:var(--radius-sm);font-weight:700;cursor:pointer;transition:var(--transition-fast)}
   .compare-btn-action:hover{background:var(--primary-dark)}
   .compare-btn-clear{background:transparent;color:var(--text-muted);border:1px solid var(--border);padding:10px 20px;border-radius:var(--radius-sm);font-weight:700;cursor:pointer;transition:var(--transition-fast)}
-  .compare-btn-clear:hover{border-color:var(--danger);color:var(--danger)}
+  .compare-btn-clear:hover{border-color:#FFFFFF;color:#FFFFFF}
 
   .compare-modal-overlay{position:fixed;inset:0;background: transparent;z-index:3001;display:none;align-items:center;justify-content:center;opacity:0;transition:var(--transition-normal);padding:20px}
   .compare-modal-overlay.active{display:flex;opacity:1}
@@ -531,7 +531,7 @@
   .admin-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(30,136,229,.3)}
   .admin-btn.secondary{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:var(--white)}
   .admin-close{position:absolute;top:15px;left:15px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-muted);transition:var(--transition-fast)}
-  .admin-close:hover{color:var(--danger);transform:rotate(90deg)}
+  .admin-close:hover{color:#FFFFFF;transform:rotate(90deg)}
   .admin-product-list{max-height:200px;overflow-y:auto;margin-top:15px;border-top:1px solid var(--border);padding-top:10px}
   .admin-product-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border-light);font-size:13px}
   .admin-product-item span{font-weight:700;color:var(--text-primary)}
@@ -551,7 +551,7 @@
   .password-box input{width:100%;padding:14px 18px;border-radius:var(--radius-md);border:2px solid var(--border);background:transparent;color:var(--text-primary);font-size:16px;font-family:inherit;text-align:center;letter-spacing:4px;margin-bottom:15px;transition:var(--transition-fast)}
   .password-box input:focus{outline:none;border-color:var(--primary);background:transparent}
   .password-box input::placeholder{color:var(--text-muted);letter-spacing:0}
-  .password-box .error{color:var(--danger);font-size:13px;margin-bottom:10px;display:none}
+  .password-box .error{color:#FFFFFF;font-size:13px;margin-bottom:10px;display:none}
   .password-box .error.show{display:block}
   .password-box button{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:var(--white);border:none;padding:14px;border-radius:var(--radius-md);font-weight:900;font-size:15px;cursor:pointer;width:100%;transition:var(--transition-normal)}
   .password-box button:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(30,136,229,.3)}
@@ -579,7 +579,7 @@
   .cart-item-actions{display:flex;align-items:center;gap:12px;margin-top:10px}
   .qty-btn{width:28px;height:28px;border:1px solid var(--border);background:transparent;border-radius:var(--radius-sm);cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:800;transition:var(--transition-fast);color:var(--text-primary)}
   .qty-btn:hover{border-color:var(--primary);color:var(--primary)}
-  .remove-btn{color:var(--danger);cursor:pointer;margin-right:auto;font-size:18px;transition:var(--transition-fast)}
+  .remove-btn{color:#FFFFFF;cursor:pointer;margin-right:auto;font-size:18px;transition:var(--transition-fast)}
   .remove-btn:hover{transform:scale(1.2)}
   .cart-footer{padding:25px;border-top:1px solid var(--border);background:transparent}
   .cart-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
@@ -620,7 +620,7 @@
   .coupon-btn{background:transparent;color:var(--white);border:none;padding:10px 20px;border-radius:var(--radius-sm);font-weight:700;font-size:13px;cursor:pointer;transition:var(--transition-fast)}
   .coupon-btn:hover{background:var(--primary-dark)}
   .coupon-applied{display:flex;align-items:center;gap:8px;padding:10px;background:var(--success-light);border-radius:var(--radius-sm);color:var(--success);font-size:13px;font-weight:700}
-  .coupon-applied .remove-coupon{background:none;border:none;color:var(--danger);cursor:pointer;font-size:16px}
+  .coupon-applied .remove-coupon{background:none;border:none;color:#FFFFFF;cursor:pointer;font-size:16px}
 
   .install-btn {
    background: rgba(255, 255, 255, 0.05) !important;
@@ -870,7 +870,7 @@
   [data-theme="dark"] .admin-btn{background:transparent}
   [data-theme="dark"] .admin-toggle{background:var(--primary-light);border-color:var(--border);color:var(--primary)}
   [data-theme="dark"] .admin-toggle:hover{background:var(--primary-light)}
-  [data-theme="dark"] .stock-low{background:var(--danger-light);color:var(--danger);border-color:var(--danger)}
+  [data-theme="dark"] .stock-low{background:var(--danger-light);color:#FFFFFF;border-color:#FFFFFF}
   [data-theme="dark"] .stock-medium{background:var(--warning-light);color:var(--warning);border-color:var(--warning)}
   [data-theme="dark"] .stock-high{background:var(--success-light);color:var(--success);border-color:var(--success)}
   [data-theme="dark"] .stock-out{background:transparent;color:var(--text-muted);border-color:var(--border)}
@@ -2218,7 +2218,7 @@
    <div class="partner-item" style="border-color:var(--primary);color:var(--primary)">🏆 وكيل معتمد HP</div>
    <div class="partner-item" style="border-color:var(--warning);color:var(--warning)">🏆 وكيل معتمد Zebra</div>
    <div class="partner-item" style="border-color:var(--accent);color:var(--accent)">🏆 وكيل معتمد Honeywell</div>
-   <div class="partner-item" style="border-color:var(--danger);color:var(--danger)">🛡️ ضمان شامل</div>
+   <div class="partner-item" style="border-color:#FFFFFF;color:#FFFFFF">🛡️ ضمان شامل</div>
    <div class="partner-item" style="border-color:var(--primary);color:var(--primary)">📋 سجل تجاري</div>
   </div>
  </div>
@@ -3553,7 +3553,7 @@ function dismissInstallPrompt() {
 <section class="projects-section" style="padding:80px 0;background:linear-gradient(135deg, rgba(15,12,41,0.95), rgba(30,136,229,0.05));position:relative;overflow:hidden;">
  <div class="container" style="position:relative;z-index:2;">
   <div class="section-header" style="text-align:center;margin-bottom:50px;">
-   <span class="section-badge" style="background:linear-gradient(135deg, #FFFFFF, #F8FAFC);color:white;padding:6px 20px;border-radius:50px;font-size:13px;font-weight:700;display:inline-block;margin-bottom:15px;">🏗️ مشاريعنا</span>
+   <span class="section-badge" style="background:linear-gradient(135deg, var(--secondary), var(--secondary-dark));color:white;padding:6px 20px;border-radius:50px;font-size:13px;font-weight:700;display:inline-block;margin-bottom:15px;">🏗️ مشاريعنا</span>
    <h2 class="section-title" style="font-size:32px;font-weight:900;color:var(--text-primary);margin-bottom:15px;">مشاريع منفذة</h2>
    <p class="section-subtitle" style="color:var(--text-secondary);font-size:16px;max-width:600px;margin:0 auto;">أكثر من 1000 مشروع ناجح في جميع أنحاء المملكة</p>
   </div>
@@ -3581,7 +3581,7 @@ function dismissInstallPrompt() {
 
    <!-- Project 2 -->
    <div class="project-card" style="background:rgba(255,255,255,0.05);backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;transition:all 0.3s ease;">
-    <div class="project-image" style="height:200px;background:linear-gradient(135deg, #FFFFFF, #F8FAFC);display:flex;align-items:center;justify-content:center;color:white;font-size:60px;">
+    <div class="project-image" style="height:200px;background:linear-gradient(135deg, #FFFFFF, var(--secondary-dark));display:flex;align-items:center;justify-content:center;color:white;font-size:60px;">
      💳
     </div>
     <div class="project-content" style="padding:25px;">
@@ -3655,7 +3655,7 @@ function dismissInstallPrompt() {
 
    <!-- Blog 2 -->
    <div class="blog-card" style="background:rgba(255,255,255,0.05);backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;transition:all 0.3s ease;">
-    <div class="blog-image" style="height:180px;background:linear-gradient(135deg, #FFFFFF, #F8FAFC);display:flex;align-items:center;justify-content:center;color:white;font-size:50px;">
+    <div class="blog-image" style="height:180px;background:linear-gradient(135deg, #FFFFFF, var(--secondary-dark));display:flex;align-items:center;justify-content:center;color:white;font-size:50px;">
      📊
     </div>
     <div class="blog-content" style="padding:25px;">
@@ -3758,7 +3758,7 @@ function dismissInstallPrompt() {
     <div class="stars" style="color:#FFD700;font-size:20px;margin-bottom:15px;">⭐⭐⭐⭐⭐</div>
     <p class="testimonial-text" style="color:var(--text-secondary);font-size:15px;line-height:1.8;margin-bottom:20px;font-style:italic;">"جهزوا لنا نظام نقاط البيع كامل مع الباركود والطابعات. الأسعار منافسة جداً والجودة عالية. شكراً درة فارس الشمال."</p>
     <div class="testimonial-author" style="display:flex;align-items:center;gap:15px;">
-     <div class="author-avatar" style="width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg, #FFFFFF, #F8FAFC);display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:20px;">م</div>
+     <div class="author-avatar" style="width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg, #FFFFFF, var(--secondary-dark));display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:20px;">م</div>
      <div class="author-info">
       <h4 style="color:var(--text-primary);font-weight:800;margin:0;font-size:16px;">محمد السبيعي</h4>
       <span style="color:var(--text-secondary);font-size:13px;">صاحب سلسلة مطاعم</span>
