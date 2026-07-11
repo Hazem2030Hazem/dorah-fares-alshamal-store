@@ -273,3 +273,151 @@ document.addEventListener('click', function(e) {
         e.target.classList.remove('active');
     }
 });
+
+// ===== ADMIN SHORTCUT =====
+// Press Ctrl+Shift+A to show admin button
+let adminButtonVisible = false;
+
+document.addEventListener('keydown', function(e) {
+    // Check for Ctrl+Shift+A
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') {
+        e.preventDefault();
+        toggleAdminButton();
+    }
+});
+
+function toggleAdminButton() {
+    let adminBtn = document.getElementById('doraAdminBtn');
+
+    if (!adminBtn) {
+        // Create admin button
+        adminBtn = document.createElement('button');
+        adminBtn.id = 'doraAdminBtn';
+        adminBtn.innerHTML = '⚙️';
+        adminBtn.title = 'لوحة الإدارة';
+        adminBtn.style.cssText = `
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 9999;
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(239,68,68,0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+        `;
+        adminBtn.onclick = openAdminLoginModal;
+        document.body.appendChild(adminBtn);
+
+        // Add tooltip
+        const tooltip = document.createElement('div');
+        tooltip.id = 'doraAdminTooltip';
+        tooltip.textContent = 'لوحة الإدارة';
+        tooltip.style.cssText = `
+            position: fixed;
+            top: 70px;
+            left: 20px;
+            z-index: 9999;
+            background: rgba(15,12,41,0.95);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            border: 1px solid rgba(239,68,68,0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        `;
+        document.body.appendChild(tooltip);
+
+        adminBtn.onmouseenter = function() {
+            this.style.transform = 'scale(1.1)';
+            this.style.boxShadow = '0 6px 20px rgba(239,68,68,0.6)';
+            tooltip.style.opacity = '1';
+            tooltip.style.visibility = 'visible';
+        };
+        adminBtn.onmouseleave = function() {
+            this.style.transform = 'scale(1)';
+            this.style.boxShadow = '0 4px 15px rgba(239,68,68,0.4)';
+            tooltip.style.opacity = '0';
+            tooltip.style.visibility = 'hidden';
+        };
+    }
+
+    // Toggle visibility
+    adminButtonVisible = !adminButtonVisible;
+    adminBtn.style.display = adminButtonVisible ? 'flex' : 'none';
+
+    if (adminButtonVisible) {
+        showToast('⚙️ زر الإدارة ظاهر! اضغط عليه للدخول', 'success');
+    }
+}
+
+// Admin Login Modal
+function openAdminLoginModal() {
+    const existing = document.getElementById('doraAdminLoginModal');
+    if (existing) existing.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'doraAdminLoginModal';
+    modal.className = 'dora-modal active';
+    modal.innerHTML = `
+        <div class="dora-modal-content" style="max-width:400px;">
+            <div class="dora-modal-header">
+                <h3>🔐 تسجيل الدخول</h3>
+                <button class="dora-modal-close" onclick="closeAdminLoginModal()">✕</button>
+            </div>
+            <form id="adminLoginForm" onsubmit="return handleAdminLogin(event)">
+                <div class="dora-form-group">
+                    <label>👤 اسم المستخدم</label>
+                    <input type="text" id="adminLoginUser" placeholder="admin" required>
+                </div>
+                <div class="dora-form-group">
+                    <label>🔒 كلمة المرور</label>
+                    <input type="password" id="adminLoginPass" placeholder="••••••" required>
+                </div>
+                <div id="adminLoginError" style="color:#EF4444;font-size:13px;text-align:center;margin-bottom:10px;display:none;">
+                    ❌ اسم المستخدم أو كلمة المرور غير صحيحة
+                </div>
+                <button type="submit" class="dora-btn-submit">🔓 دخول</button>
+            </form>
+            <p style="text-align:center;color:rgba(255,255,255,0.5);font-size:12px;margin-top:15px;">
+                اضغط Ctrl+Shift+A لإخفاء الزر
+            </p>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+function closeAdminLoginModal() {
+    const modal = document.getElementById('doraAdminLoginModal');
+    if (modal) modal.remove();
+}
+
+function handleAdminLogin(e) {
+    e.preventDefault();
+    const user = document.getElementById('adminLoginUser').value;
+    const pass = document.getElementById('adminLoginPass').value;
+
+    if (user === 'admin' && pass === 'dora2024') {
+        localStorage.setItem('adminLoggedIn', 'true');
+        closeAdminLoginModal();
+        window.open('admin.html?secret=dora2024', '_blank');
+        showToast('✅ تم تسجيل الدخول! جاري فتح لوحة الإدارة...', 'success');
+    } else {
+        document.getElementById('adminLoginError').style.display = 'block';
+    }
+    return false;
+}
