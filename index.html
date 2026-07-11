@@ -636,7 +636,7 @@
    font-size: 20px !important;
    transition: all 0.3s ease !important;
    visibility: visible !important;
-   opacity: 1 !important;
+   opacity: 0.5 !important;
    overflow: hidden !important;
    padding: 0 !important;
    box-shadow: none !important;
@@ -645,6 +645,7 @@
   .install-btn:hover {
    transform: scale(1.1) !important;
    box-shadow: none !important;
+   opacity: 1 !important;
   }
 
   .install-btn img {
@@ -652,17 +653,31 @@
    height: 100% !important;
    object-fit: cover !important;
    border-radius: 12px !important;
+   opacity: 0.5 !important;
+   transition: opacity 0.3s ease !important;
+  }
+
+  .install-btn:hover img {
+   opacity: 1 !important;
   }
 
   .install-btn.show {
    display: flex !important;
    visibility: visible !important;
+   opacity: 0.5 !important;
+  }
+
+  .install-btn.show:hover {
    opacity: 1 !important;
   }
 
   #installBtn {
    display: inline-flex !important;
    visibility: visible !important;
+   opacity: 0.5 !important;
+  }
+
+  #installBtn:hover {
    opacity: 1 !important;
   }
 
@@ -1031,7 +1046,9 @@
    left: 50%;
    transform: translateX(-50%);
    z-index: 9998;
-   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+   background: rgba(30, 136, 229, 0.15) !important;
+   backdrop-filter: blur(10px) !important;
+   -webkit-backdrop-filter: blur(10px) !important;
    color: white;
    padding: 14px 28px;
    border-radius: 50px;
@@ -1040,17 +1057,21 @@
    display: flex;
    align-items: center;
    gap: 10px;
-   box-shadow: 0 8px 30px rgba(30, 136, 229, 0.4);
+   box-shadow: 0 4px 15px rgba(30, 136, 229, 0.2);
    cursor: pointer;
    transition: all 0.3s ease;
-   border: none;
+   border: 1px solid rgba(255, 255, 255, 0.2);
    animation: cta-bounce 3s infinite;
    text-decoration: none;
+   opacity: 0.7;
   }
 
   .sticky-cta:hover {
    transform: translateX(-50%) translateY(-3px);
-   box-shadow: 0 12px 40px rgba(30, 136, 229, 0.5);
+   box-shadow: 0 8px 25px rgba(30, 136, 229, 0.3);
+   background: rgba(30, 136, 229, 0.3) !important;
+   opacity: 1;
+   border-color: rgba(255, 255, 255, 0.4);
   }
 
   @keyframes cta-bounce {
