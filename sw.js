@@ -53,23 +53,24 @@ self.addEventListener('fetch', function(event) {
         return fetch(event.request)
           .then(function(networkResponse) {
             if (!networkResponse || networkResponse.status !== 200) {
-              return networkResponse;
-            }
-            const responseClone = networkResponse.clone();
-            caches.open(CACHE_NAME).then(function(cache) {
-              cache.put(event.request, responseClone);
-            });
+             // السطر 56-72 المصلح:
+return fetch(event.request)
+    .then(function(networkResponse) {
+        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
             return networkResponse;
-          })
-          .catch(function() {
-            if (event.request.mode === 'navigate') {
-              return caches.match('/index.html');
-            }
-          });
-      })
-  );
-});
-
+        }
+        
+        const responseClone = networkResponse.clone();
+        
+        caches.open(CACHE_NAME).then(function(cache) {
+            cache.put(event.request, responseClone);
+        });
+        
+        return networkResponse;
+    })
+    .catch(function() {
+        return caches.match('/index.html');
+    });
 // Activate - clean old caches
 self.addEventListener('activate', function(event) {
   event.waitUntil(
