@@ -39,9 +39,11 @@ img{max-width:100%;display:block}
 .login-box h2 span{color:#EF4444}
 .form-group{margin-bottom:20px}
 .form-group label{display:block;color:rgba(255,255,255,0.8);font-size:14px;margin-bottom:8px;font-weight:600}
-.form-group input{width:100%;padding:14px 18px;border-radius:12px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:#ffffff;font-size:16px;font-family:inherit;transition:all 0.3s ease}
-.form-group input:focus{outline:none;border-color:#EF4444;box-shadow:0 0 15px rgba(239,68,68,0.3)}
-.form-group input::placeholder{color:rgba(255,255,255,0.4)}
+.form-group input, .form-group textarea, .form-group select{width:100%;padding:14px 18px;border-radius:12px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:#ffffff;font-size:16px;font-family:inherit;transition:all 0.3s ease}
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus{outline:none;border-color:#EF4444;box-shadow:0 0 15px rgba(239,68,68,0.3)}
+.form-group input::placeholder, .form-group textarea::placeholder{color:rgba(255,255,255,0.4)}
+.form-group textarea{resize:vertical;min-height:100px}
+.form-group select option{background:#1a1a2e;color:#ffffff}
 .btn-login{width:100%;padding:16px;background:linear-gradient(135deg, #EF4444, #DC2626);color:white;border:none;border-radius:12px;font-size:18px;font-weight:700;cursor:pointer;transition:all 0.3s ease;font-family:inherit}
 .btn-login:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(239,68,68,0.4)}
 .error-msg{color:#EF4444;font-size:14px;text-align:center;margin-top:15px;display:none}
@@ -92,6 +94,10 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .btn-edit:hover{background:rgba(59,130,246,0.3)}
 .btn-delete{padding:6px 12px;background:rgba(239,68,68,0.2);color:#EF4444;border:1px solid rgba(239,68,68,0.3);border-radius:8px;font-size:12px;cursor:pointer;transition:all 0.3s ease;font-family:inherit}
 .btn-delete:hover{background:rgba(239,68,68,0.3)}
+.btn-view{padding:6px 12px;background:rgba(16,185,129,0.2);color:#10B981;border:1px solid rgba(16,185,129,0.3);border-radius:8px;font-size:12px;cursor:pointer;transition:all 0.3s ease;font-family:inherit;margin-left:5px}
+.btn-view:hover{background:rgba(16,185,129,0.3)}
+.btn-reply{padding:6px 12px;background:rgba(245,158,11,0.2);color:#F59E0B;border:1px solid rgba(245,158,11,0.3);border-radius:8px;font-size:12px;cursor:pointer;transition:all 0.3s ease;font-family:inherit;margin-left:5px}
+.btn-reply:hover{background:rgba(245,158,11,0.3)}
 
 /* Modal */
 .modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;padding:20px}
@@ -105,7 +111,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 /* Form in modal */
 .modal .form-group{margin-bottom:18px}
 .modal .form-group label{font-size:13px;margin-bottom:6px}
-.modal .form-group input{padding:12px 16px;font-size:14px}
+.modal .form-group input, .modal .form-group textarea, .modal .form-group select{padding:12px 16px;font-size:14px}
 .modal .form-group select{width:100%;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:#ffffff;font-size:14px;font-family:inherit}
 .modal .form-group select option{background:#1a1a2e;color:#ffffff}
 .btn-save{width:100%;padding:14px;background:linear-gradient(135deg, #10B981, #059669);color:white;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.3s ease;font-family:inherit;margin-top:10px}
@@ -120,9 +126,41 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .status-completed{background:rgba(16,185,129,0.2);color:#10B981;border:1px solid rgba(16,185,129,0.3)}
 .status-cancelled{background:rgba(239,68,68,0.2);color:#EF4444;border:1px solid rgba(239,68,68,0.3)}
 
+/* Reviews */
+.review-card{background:rgba(15,12,41,0.4) !important;backdrop-filter:blur(15px) !important;border:1px solid rgba(255,255,255,0.15) !important;border-radius:16px;padding:20px;margin-bottom:15px}
+.review-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.review-author{font-size:16px;font-weight:700;color:#ffffff}
+.review-date{font-size:13px;color:rgba(255,255,255,0.6)}
+.review-rating{color:#F59E0B;font-size:18px;margin-bottom:10px}
+.review-text{font-size:14px;color:rgba(255,255,255,0.8);line-height:1.6;margin-bottom:10px}
+.review-product{font-size:13px;color:#10B981;margin-bottom:10px}
+.review-actions{display:flex;gap:10px;justify-content:flex-end}
+
+/* Messages */
+.message-card{background:rgba(15,12,41,0.4) !important;backdrop-filter:blur(15px) !important;border:1px solid rgba(255,255,255,0.15) !important;border-radius:16px;padding:20px;margin-bottom:15px}
+.message-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.message-sender{font-size:16px;font-weight:700;color:#ffffff}
+.message-date{font-size:13px;color:rgba(255,255,255,0.6)}
+.message-subject{font-size:14px;color:#F59E0B;margin-bottom:8px;font-weight:600}
+.message-text{font-size:14px;color:rgba(255,255,255,0.8);line-height:1.6;margin-bottom:10px}
+.message-contact{font-size:13px;color:#3B82F6;margin-bottom:10px}
+.message-status{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;display:inline-block;margin-bottom:10px}
+.status-new{background:rgba(59,130,246,0.2);color:#3B82F6;border:1px solid rgba(59,130,246,0.3)}
+.status-read{background:rgba(16,185,129,0.2);color:#10B981;border:1px solid rgba(16,185,129,0.3)}
+.status-replied{background:rgba(245,158,11,0.2);color:#F59E0B;border:1px solid rgba(245,158,11,0.3)}
+
+/* Settings Sections */
+.settings-section{background:rgba(15,12,41,0.4) !important;backdrop-filter:blur(15px) !important;border:1px solid rgba(255,255,255,0.15) !important;border-radius:16px;padding:25px;margin-bottom:20px}
+.settings-section h4{font-size:18px;font-weight:800;color:#ffffff;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.1)}
+
 /* Footer */
 .footer{background:transparent;color:rgba(255,255,255,0.6);padding:40px 25px;text-align:center;border-top:1px solid rgba(255,255,255,0.1)}
 .footer a{color:#EF4444;text-decoration:none}
+
+/* Star Rating */
+.star-rating{display:flex;gap:5px;font-size:24px;cursor:pointer}
+.star-rating .star{color:rgba(255,255,255,0.3);transition:all 0.2s ease}
+.star-rating .star.active, .star-rating .star:hover{color:#F59E0B}
 
 /* Responsive */
 @media(max-width:768px){
@@ -134,18 +172,16 @@ tr:hover td{background:rgba(255,255,255,0.02)}
  .logo img{width:50px;height:50px}
  .logo-text h1{font-size:16px}
  .nav-links{display:none}
+ .tabs{overflow-x:auto;flex-wrap:nowrap;padding-bottom:10px}
 }
 </style>
 </head>
 <body>
 <script>
 // ===== SECURITY CHECK =====
-// Only allow access with secret parameter from Ctrl+Alt+1 shortcut
 (function() {
     const urlParams = new URLSearchParams(window.location.search);
     const secret = urlParams.get('secret');
-
-    // If no secret or wrong secret, redirect to homepage
     if (secret !== 'dora2024') {
         window.location.href = 'index.html';
     }
@@ -212,12 +248,12 @@ tr:hover td{background:rgba(255,255,255,0.02)}
                 <span class="label">الطلبات الجديدة</span>
             </div>
             <div class="stat-card">
-                <span class="num" id="totalRevenue">0</span>
-                <span class="label">إجمالي المبيعات</span>
+                <span class="num" id="totalReviews">0</span>
+                <span class="label">التقييمات</span>
             </div>
             <div class="stat-card">
-                <span class="num" id="totalCustomers">0</span>
-                <span class="label">العملاء</span>
+                <span class="num" id="totalMessages">0</span>
+                <span class="label">الرسائل الجديدة</span>
             </div>
         </div>
 
@@ -225,6 +261,8 @@ tr:hover td{background:rgba(255,255,255,0.02)}
         <div class="tabs">
             <button class="tab-btn active" onclick="showTab('products')">📦 المنتجات</button>
             <button class="tab-btn" onclick="showTab('orders')">🛒 الطلبات</button>
+            <button class="tab-btn" onclick="showTab('reviews')">⭐ التقييمات</button>
+            <button class="tab-btn" onclick="showTab('messages')">📨 الرسائل</button>
             <button class="tab-btn" onclick="showTab('settings')">⚙️ الإعدادات</button>
         </div>
 
@@ -248,7 +286,6 @@ tr:hover td{background:rgba(255,255,255,0.02)}
                             </tr>
                         </thead>
                         <tbody id="productsTable">
-                            <!-- Products will be loaded here -->
                         </tbody>
                     </table>
                 </div>
@@ -257,33 +294,90 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 
         <!-- Orders Tab -->
         <div class="tab-content" id="ordersTab">
-            <div id="ordersList">
-                <!-- Orders will be loaded here -->
+            <div id="ordersList"></div>
+        </div>
+
+        <!-- Reviews Tab -->
+        <div class="tab-content" id="reviewsTab">
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>⭐ التقييمات</h3>
+                    <button class="btn-add" onclick="exportReviews()">📥 تصدير التقييمات</button>
+                </div>
+                <div id="reviewsList"></div>
+            </div>
+        </div>
+
+        <!-- Messages Tab -->
+        <div class="tab-content" id="messagesTab">
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>📨 الرسائل والشكاوى</h3>
+                    <button class="btn-add" onclick="exportMessages()">📥 تصدير الرسائل</button>
+                </div>
+                <div id="messagesList"></div>
             </div>
         </div>
 
         <!-- Settings Tab -->
         <div class="tab-content" id="settingsTab">
-            <div class="table-container">
-                <div class="table-header">
-                    <h3>⚙️ إعدادات الموقع</h3>
+            <div class="settings-section">
+                <h4>🏢 معلومات الشركة</h4>
+                <div class="form-group">
+                    <label>اسم الشركة</label>
+                    <input type="text" id="companyName" value="شركة درة فارس الشمال">
                 </div>
-                <div style="padding:25px">
-                    <div class="form-group">
-                        <label>اسم الشركة</label>
-                        <input type="text" id="companyName" value="شركة درة فارس الشمال">
-                    </div>
-                    <div class="form-group">
-                        <label>رقم الهاتف</label>
-                        <input type="text" id="companyPhone" value="966568717449">
-                    </div>
-                    <div class="form-group">
-                        <label>البريد الإلكتروني</label>
-                        <input type="email" id="companyEmail" value="info@alshamal-df.com">
-                    </div>
-                    <button class="btn-save" onclick="saveSettings()">💾 حفظ الإعدادات</button>
+                <div class="form-group">
+                    <label>العنوان</label>
+                    <input type="text" id="companyAddress" value="الرياض، المملكة العربية السعودية">
                 </div>
             </div>
+
+            <div class="settings-section">
+                <h4>📞 أرقام التواصل</h4>
+                <div class="form-group">
+                    <label>رقم الهاتف الأول (واتساب)</label>
+                    <input type="text" id="companyPhone1" value="966568717449">
+                </div>
+                <div class="form-group">
+                    <label>رقم الهاتف الثاني</label>
+                    <input type="text" id="companyPhone2" value="966545358773">
+                </div>
+                <div class="form-group">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" id="companyEmail" value="info@alshamal-df.com">
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h4>🌐 روابط التواصل الاجتماعي</h4>
+                <div class="form-group">
+                    <label>تويتر (X)</label>
+                    <input type="text" id="socialTwitter" value="https://twitter.com/dorafares">
+                </div>
+                <div class="form-group">
+                    <label>انستقرام</label>
+                    <input type="text" id="socialInstagram" value="https://instagram.com/dorafares">
+                </div>
+                <div class="form-group">
+                    <label>فيسبوك</label>
+                    <input type="text" id="socialFacebook" value="https://facebook.com/dorafares">
+                </div>
+                <div class="form-group">
+                    <label>لينكدإن</label>
+                    <input type="text" id="socialLinkedin" value="https://linkedin.com/company/dorafares">
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h4>💬 رسالة واتساب التلقائية</h4>
+                <div class="form-group">
+                    <label>نص الرسالة الافتراضي</label>
+                    <textarea id="whatsappMessage" rows="3">مرحباً شركة درة فارس الشمال، أرغب في الاستفسار عن منتجاتكم</textarea>
+                </div>
+            </div>
+
+            <button class="btn-save" onclick="saveSettings()">💾 حفظ جميع الإعدادات</button>
         </div>
     </div>
 </section>
@@ -325,6 +419,29 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     </div>
 </div>
 
+<!-- Reply Message Modal -->
+<div class="modal" id="replyModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>📨 الرد على الرسالة</h3>
+            <button class="btn-close" onclick="closeReplyModal()">✕</button>
+        </div>
+        <div class="form-group">
+            <label>المرسل</label>
+            <input type="text" id="replySender" readonly>
+        </div>
+        <div class="form-group">
+            <label>الرسالة الأصلية</label>
+            <textarea id="replyOriginal" readonly rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label>ردك</label>
+            <textarea id="replyText" rows="4" placeholder="اكتب ردك هنا..."></textarea>
+        </div>
+        <button class="btn-save" onclick="sendReply()">📨 إرسال الرد</button>
+    </div>
+</div>
+
 <!-- Footer -->
 <footer class="footer">
     <div class="container">
@@ -336,12 +453,12 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 // ===== LOGIN =====
 const ADMIN_USER = 'admin';
 const ADMIN_PASS = 'dora2024';
+let currentReplyId = null;
 
 function handleLogin(e) {
     e.preventDefault();
     const user = document.getElementById('username').value;
     const pass = document.getElementById('password').value;
-
     if (user === ADMIN_USER && pass === ADMIN_PASS) {
         localStorage.setItem('adminLoggedIn', 'true');
         showDashboard();
@@ -356,6 +473,9 @@ function showDashboard() {
     document.getElementById('dashboard').style.display = 'block';
     loadProducts();
     loadOrders();
+    loadReviews();
+    loadMessages();
+    loadSettings();
     updateStats();
 }
 
@@ -364,12 +484,10 @@ function logout() {
     location.reload();
 }
 
-// Check if already logged in
 if (localStorage.getItem('adminLoggedIn') === 'true') {
     showDashboard();
 }
 
-// Clean URL after security check (remove secret parameter)
 if (window.history.replaceState) {
     window.history.replaceState({}, document.title, window.location.pathname);
 }
@@ -378,9 +496,11 @@ if (window.history.replaceState) {
 function showTab(tabName) {
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-
     event.target.classList.add('active');
     document.getElementById(tabName + 'Tab').classList.add('active');
+
+    if (tabName === 'reviews') loadReviews();
+    if (tabName === 'messages') loadMessages();
 }
 
 // ===== PRODUCTS =====
@@ -393,7 +513,6 @@ let products = JSON.parse(localStorage.getItem('adminProducts')) || [
 function loadProducts() {
     const tbody = document.getElementById('productsTable');
     tbody.innerHTML = '';
-
     products.forEach((product, index) => {
         tbody.innerHTML += `
             <tr>
@@ -409,7 +528,6 @@ function loadProducts() {
             </tr>
         `;
     });
-
     updateStats();
 }
 
@@ -427,7 +545,6 @@ function closeModal() {
 function editProduct(id) {
     const product = products.find(p => p.id === id);
     if (!product) return;
-
     document.getElementById('modalTitle').textContent = '✏️ تعديل منتج';
     document.getElementById('productId').value = product.id;
     document.getElementById('productImage').value = product.image;
@@ -439,7 +556,6 @@ function editProduct(id) {
 
 function saveProduct(e) {
     e.preventDefault();
-
     const id = document.getElementById('productId').value;
     const image = document.getElementById('productImage').value || 'https://via.placeholder.com/50';
     const name = document.getElementById('productName').value;
@@ -447,13 +563,11 @@ function saveProduct(e) {
     const category = document.getElementById('productCategory').value;
 
     if (id) {
-        // Edit
         const index = products.findIndex(p => p.id == id);
         if (index !== -1) {
             products[index] = {id: parseInt(id), name, price, category, image};
         }
     } else {
-        // Add
         const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
         products.push({id: newId, name, price, category, image});
     }
@@ -480,13 +594,11 @@ let orders = JSON.parse(localStorage.getItem('adminOrders')) || [
 function loadOrders() {
     const container = document.getElementById('ordersList');
     container.innerHTML = '';
-
     orders.forEach(order => {
         const statusClass = order.status === 'completed' ? 'status-completed' : 
                            order.status === 'cancelled' ? 'status-cancelled' : 'status-pending';
         const statusText = order.status === 'completed' ? '✅ مكتمل' : 
                           order.status === 'cancelled' ? '❌ ملغي' : '⏳ قيد الانتظار';
-
         container.innerHTML += `
             <div class="order-card">
                 <div class="order-info">
@@ -515,30 +627,218 @@ function updateOrder(id, status) {
     }
 }
 
+// ===== REVIEWS =====
+function loadReviews() {
+    const reviews = JSON.parse(localStorage.getItem('doraReviews')) || [];
+    const container = document.getElementById('reviewsList');
+
+    if (reviews.length === 0) {
+        container.innerHTML = '<div style="text-align:center;padding:40px;color:rgba(255,255,255,0.6)">لا توجد تقييمات بعد</div>';
+        return;
+    }
+
+    container.innerHTML = reviews.map((review, index) => {
+        const stars = '⭐'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+        return `
+            <div class="review-card">
+                <div class="review-header">
+                    <span class="review-author">👤 ${review.name}</span>
+                    <span class="review-date">📅 ${review.date}</span>
+                </div>
+                <div class="review-rating">${stars}</div>
+                <div class="review-product">📦 ${review.product || 'منتج عام'}</div>
+                <div class="review-text">"${review.text}"</div>
+                <div class="review-actions">
+                    <button class="btn-delete" onclick="deleteReview(${index})">🗑️ حذف</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function deleteReview(index) {
+    if (!confirm('هل أنت متأكد من حذف هذا التقييم؟')) return;
+    const reviews = JSON.parse(localStorage.getItem('doraReviews')) || [];
+    reviews.splice(index, 1);
+    localStorage.setItem('doraReviews', JSON.stringify(reviews));
+    loadReviews();
+    updateStats();
+}
+
+function exportReviews() {
+    const reviews = JSON.parse(localStorage.getItem('doraReviews')) || [];
+    const data = {reviews, exportDate: new Date().toISOString()};
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'dora-reviews-' + new Date().toISOString().split('T')[0] + '.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    alert('✅ تم تصدير التقييمات');
+}
+
+// ===== MESSAGES =====
+function loadMessages() {
+    const messages = JSON.parse(localStorage.getItem('doraMessages')) || [];
+    const container = document.getElementById('messagesList');
+
+    if (messages.length === 0) {
+        container.innerHTML = '<div style="text-align:center;padding:40px;color:rgba(255,255,255,0.6)">لا توجد رسائل بعد</div>';
+        return;
+    }
+
+    container.innerHTML = messages.map((msg, index) => {
+        const statusClass = msg.status === 'new' ? 'status-new' : 
+                           msg.status === 'replied' ? 'status-replied' : 'status-read';
+        const statusText = msg.status === 'new' ? '🆕 جديدة' : 
+                          msg.status === 'replied' ? '✅ تم الرد' : '👁️ مقروءة';
+        return `
+            <div class="message-card">
+                <div class="message-header">
+                    <span class="message-sender">👤 ${msg.name}</span>
+                    <span class="message-date">📅 ${msg.date}</span>
+                </div>
+                <div class="message-status ${statusClass}">${statusText}</div>
+                <div class="message-subject">📌 ${msg.subject}</div>
+                <div class="message-text">"${msg.message}"</div>
+                <div class="message-contact">📞 ${msg.phone} | ✉️ ${msg.email}</div>
+                <div class="review-actions">
+                    <button class="btn-view" onclick="markMessageRead(${index})">👁️ تحديد مقروء</button>
+                    <button class="btn-reply" onclick="openReplyModal(${index})">📨 رد</button>
+                    <button class="btn-delete" onclick="deleteMessage(${index})">🗑️ حذف</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function markMessageRead(index) {
+    const messages = JSON.parse(localStorage.getItem('doraMessages')) || [];
+    if (messages[index]) {
+        messages[index].status = 'read';
+        localStorage.setItem('doraMessages', JSON.stringify(messages));
+        loadMessages();
+        updateStats();
+    }
+}
+
+function openReplyModal(index) {
+    const messages = JSON.parse(localStorage.getItem('doraMessages')) || [];
+    const msg = messages[index];
+    if (!msg) return;
+
+    currentReplyId = index;
+    document.getElementById('replySender').value = msg.name;
+    document.getElementById('replyOriginal').value = msg.message;
+    document.getElementById('replyText').value = '';
+    document.getElementById('replyModal').classList.add('active');
+}
+
+function closeReplyModal() {
+    document.getElementById('replyModal').classList.remove('active');
+    currentReplyId = null;
+}
+
+function sendReply() {
+    if (currentReplyId === null) return;
+    const replyText = document.getElementById('replyText').value.trim();
+    if (!replyText) {
+        alert('❌ الرجاء كتابة الرد');
+        return;
+    }
+
+    const messages = JSON.parse(localStorage.getItem('doraMessages')) || [];
+    if (messages[currentReplyId]) {
+        messages[currentReplyId].status = 'replied';
+        messages[currentReplyId].reply = replyText;
+        messages[currentReplyId].replyDate = new Date().toLocaleDateString('ar-SA');
+        localStorage.setItem('doraMessages', JSON.stringify(messages));
+
+        // Open WhatsApp with reply
+        const phone = messages[currentReplyId].phone;
+        const text = `مرحباً ${messages[currentReplyId].name}،
+
+شكراً لتواصلك معنا.
+
+رداً على رسالتك:
+${replyText}
+
+مع تحيات،
+شركة درة فارس الشمال`;
+        window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(text), '_blank');
+
+        closeReplyModal();
+        loadMessages();
+        updateStats();
+        alert('✅ تم إرسال الرد');
+    }
+}
+
+function deleteMessage(index) {
+    if (!confirm('هل أنت متأكد من حذف هذه الرسالة؟')) return;
+    const messages = JSON.parse(localStorage.getItem('doraMessages')) || [];
+    messages.splice(index, 1);
+    localStorage.setItem('doraMessages', JSON.stringify(messages));
+    loadMessages();
+    updateStats();
+}
+
+function exportMessages() {
+    const messages = JSON.parse(localStorage.getItem('doraMessages')) || [];
+    const data = {messages, exportDate: new Date().toISOString()};
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'dora-messages-' + new Date().toISOString().split('T')[0] + '.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    alert('✅ تم تصدير الرسائل');
+}
+
 // ===== STATS =====
 function updateStats() {
     document.getElementById('totalProducts').textContent = products.length;
     document.getElementById('totalOrders').textContent = orders.filter(o => o.status === 'pending').length;
-    document.getElementById('totalRevenue').textContent = orders.filter(o => o.status === 'completed').reduce((sum, o) => sum + o.total, 0) + ' ر.س';
-    document.getElementById('totalCustomers').textContent = new Set(orders.map(o => o.phone)).size;
+
+    const reviews = JSON.parse(localStorage.getItem('doraReviews')) || [];
+    document.getElementById('totalReviews').textContent = reviews.length;
+
+    const messages = JSON.parse(localStorage.getItem('doraMessages')) || [];
+    document.getElementById('totalMessages').textContent = messages.filter(m => m.status === 'new').length;
 }
 
 // ===== SETTINGS =====
-function saveSettings() {
-    const name = document.getElementById('companyName').value;
-    const phone = document.getElementById('companyPhone').value;
-    const email = document.getElementById('companyEmail').value;
-
-    localStorage.setItem('companySettings', JSON.stringify({name, phone, email}));
-    alert('✅ تم حفظ الإعدادات بنجاح!');
+function loadSettings() {
+    const savedSettings = JSON.parse(localStorage.getItem('doraSettings')) || {};
+    if (savedSettings.companyName) document.getElementById('companyName').value = savedSettings.companyName;
+    if (savedSettings.companyAddress) document.getElementById('companyAddress').value = savedSettings.companyAddress;
+    if (savedSettings.companyPhone1) document.getElementById('companyPhone1').value = savedSettings.companyPhone1;
+    if (savedSettings.companyPhone2) document.getElementById('companyPhone2').value = savedSettings.companyPhone2;
+    if (savedSettings.companyEmail) document.getElementById('companyEmail').value = savedSettings.companyEmail;
+    if (savedSettings.socialTwitter) document.getElementById('socialTwitter').value = savedSettings.socialTwitter;
+    if (savedSettings.socialInstagram) document.getElementById('socialInstagram').value = savedSettings.socialInstagram;
+    if (savedSettings.socialFacebook) document.getElementById('socialFacebook').value = savedSettings.socialFacebook;
+    if (savedSettings.socialLinkedin) document.getElementById('socialLinkedin').value = savedSettings.socialLinkedin;
+    if (savedSettings.whatsappMessage) document.getElementById('whatsappMessage').value = savedSettings.whatsappMessage;
 }
 
-// Load settings
-const savedSettings = JSON.parse(localStorage.getItem('companySettings'));
-if (savedSettings) {
-    document.getElementById('companyName').value = savedSettings.name;
-    document.getElementById('companyPhone').value = savedSettings.phone;
-    document.getElementById('companyEmail').value = savedSettings.email;
+function saveSettings() {
+    const settings = {
+        companyName: document.getElementById('companyName').value,
+        companyAddress: document.getElementById('companyAddress').value,
+        companyPhone1: document.getElementById('companyPhone1').value,
+        companyPhone2: document.getElementById('companyPhone2').value,
+        companyEmail: document.getElementById('companyEmail').value,
+        socialTwitter: document.getElementById('socialTwitter').value,
+        socialInstagram: document.getElementById('socialInstagram').value,
+        socialFacebook: document.getElementById('socialFacebook').value,
+        socialLinkedin: document.getElementById('socialLinkedin').value,
+        whatsappMessage: document.getElementById('whatsappMessage').value
+    };
+    localStorage.setItem('doraSettings', JSON.stringify(settings));
+    alert('✅ تم حفظ جميع الإعدادات بنجاح!');
 }
 
 // ===== PARTICLES =====
