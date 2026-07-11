@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="light">
+<html lang="ar" dir="rtl">
 <head>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <meta name="google-site-verification" content="XXXXXXXXXXXXXXXXXXXXXXXXXXXX" />
   <meta charset="UTF-8">
-  <meta name="cache-version" content="v3.0">
+  <meta name="cache-version" content="v2.1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="شركة درة فارس الشمال - متجر التقنية في السعودية. نقدم حلول تقنية متكاملة: طابعات، كمبيوتر، كاميرات مراقبة، نقاط بيع، شبكات">
   <meta name="keywords" content="شركة درة فارس الشمال, متجر تقنية, طابعات, كمبيوتر, كاميرات مراقبة, نقاط بيع, شبكات, السعودية, تبوك">
@@ -143,14 +143,14 @@
    --accent-dark:#059669;
    --dark:#111827;
    --light:#FAFAFA;
-   --white:var(--secondary);
-   --surface:var(--secondary);
-   --surface-elevated:var(--secondary);
+   --white:#FFFFFF;
+   --surface:#FFFFFF;
+   --surface-elevated:#FFFFFF;
    --glass:rgba(255,255,255,.8);
    --glass-border:rgba(0,0,0,.05);
    --shadow:0 1px 3px rgba(0,0,0,.05);
    --shadow-lg:0 4px 20px rgba(0,0,0,.08);
-   --danger:var(--secondary);
+   --danger:#EF4444;
    --danger-light:#FEE2E2;
    --warning:#F59E0B;
    --warning-light:#FEF3C7;
@@ -182,7 +182,7 @@
   [data-theme="light"]{
    --dark:#7f1d1d;--darker:#991b1b;--light:#fff5f5;--white:#ffffff;
    --surface:#fff5f5;--surface-elevated:#ffe0e0;
-   --text-primary:#7f1d1d;--text-secondary:#991b1b;--text-muted:#f8fafc;
+   --text-primary:#7f1d1d;--text-secondary:#991b1b;--text-muted:#dc2626;
    --border:#fecaca;--border-light:#fee2e2;
    --glass:rgba(255,255,255,.8);--glass-border:rgba(0,0,0,.05);
    --shadow:0 1px 3px rgba(0,0,0,.1);--shadow-lg:0 4px 20px rgba(0,0,0,.15);
@@ -213,8 +213,8 @@
   .dropdown-divider{height:1px;background:var(--border);margin:6px 0}
 
   .header-controls{display:flex;align-items:center;gap:8px}
-  .theme-toggle{background:transparent !important;border:1px solid rgba(255,255,255,.15) !important;color:#f8fafc;width:40px;height:40px;border-radius:var(--radius-sm);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:var(--transition-normal);opacity:0.4;}
-  .theme-toggle:hover{background:rgba(255,255,255,.05) !important;transform:scale(1.1) rotate(15deg);opacity:0.8;}
+  .theme-toggle{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#f8fafc;width:40px;height:40px;border-radius:var(--radius-sm);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:var(--transition-normal);}
+  .theme-toggle:hover{background:rgba(255,255,255,.15);transform:scale(1.1) rotate(15deg)}
   .cart-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#f8fafc;padding:10px 18px;border-radius:var(--radius-sm);cursor:pointer;font-size:14px;display:flex;align-items:center;gap:8px;transition:var(--transition-normal);box-shadow:var(--shadow);position:relative}
   .cart-btn:hover{background:rgba(255,255,255,.15);transform:translateY(-2px)}
   .cart-count{background:var(--accent);color:var(--white);padding:2px 8px;border-radius:50%;font-weight:800;font-size:11px;animation:pulse-badge 2s infinite}
@@ -251,9 +251,9 @@
 
   @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 
-  .btn-primary{background:linear-gradient(135deg,rgba(255, 255, 255, 0.8),rgba(220,38,38,0.9));color:#ffffff;padding:14px 32px;border-radius:var(--radius-md);font-weight:600;font-size:15px;display:inline-flex;align-items:center;gap:10px;transition:var(--transition-normal);border:1px solid rgba(255, 255, 255, 0.3);cursor:pointer;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(255, 255, 255, 0.3)}
+  .btn-primary{background:linear-gradient(135deg,rgba(239,68,68,0.8),rgba(220,38,38,0.9));color:#ffffff;padding:14px 32px;border-radius:var(--radius-md);font-weight:600;font-size:15px;display:inline-flex;align-items:center;gap:10px;transition:var(--transition-normal);border:1px solid rgba(239,68,68,0.3);cursor:pointer;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(239,68,68,0.3)}
   .btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,.2));opacity:0;transition:var(--transition-normal)}
-  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(255, 255, 255, 0.5)}
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(239,68,68,0.5)}
   .btn-primary:hover::before{opacity:1}
   .btn-primary:active{transform:translateY(-1px)}
 
@@ -289,7 +289,7 @@
 
   .breadcrumb{background:transparent;border-bottom:1px solid var(--border);padding:15px 0;position:sticky;top:75px;z-index:999}
   .breadcrumb-inner{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-muted)}
-  .breadcrumb-inner a{color:rgba(255,255,255,0.8);transition:var(--transition-fast)}
+  .breadcrumb-inner a{color:var(--text-secondary);transition:var(--transition-fast)}
   .breadcrumb-inner a:hover{color:var(--primary)}
   .breadcrumb-inner .sep{color:var(--text-muted)}
   .breadcrumb-inner .current{color:var(--primary);font-weight:700}
@@ -346,7 +346,7 @@
   .wishlist-btn.active{background:var(--accent);border-color:var(--accent);color:var(--white)}
 
   .prod-body{padding:25px;flex:1;display:flex;flex-direction:column}
-  .prod-tag{display:inline-block;background:rgba(255, 255, 255, 0.2);color:#ffffff !important;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;margin-bottom:12px;align-self:flex-start}
+  .prod-tag{display:inline-block;background:rgba(239,68,68,0.2);color:#ffffff !important;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;margin-bottom:12px;align-self:flex-start}
   .prod-name{font-weight:800;font-size:17px;color:#ffffff !important;margin-bottom:8px;line-height:1.4;cursor:pointer;transition:var(--transition-fast)}
   .prod-name:hover{color:var(--primary)}
   .prod-desc{font-size:13px;color:rgba(255,255,255,0.9) !important;margin-bottom:12px;line-height:1.6}
@@ -357,7 +357,7 @@
   .stock-value{font-size:12px;font-weight:800;color:#ffffff !important}
   .stock-bar-bg{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
   .stock-bar-fill{height:100%;border-radius:3px;transition:width .5s ease}
-  .stock-low{background:var(--danger-light);color:#FFFFFF;border-color:rgba(211,47,47,.2)}
+  .stock-low{background:var(--danger-light);color:var(--danger);border-color:rgba(211,47,47,.2)}
   .stock-low .stock-bar-fill{background:var(--danger)}
   .stock-medium{background:var(--warning-light);color:var(--warning);border-color:rgba(245,124,0,.2)}
   .stock-medium .stock-bar-fill{background:var(--warning)}
@@ -371,8 +371,8 @@
   .prod-price span{font-size:14px;color:var(--text-muted);font-weight:400}
   .prod-price .old-price{text-decoration:line-through;color:rgba(255,255,255,0.6) !important;font-size:14px;margin-right:8px;font-weight:400}
 
-  .add-btn{background:linear-gradient(135deg,rgba(255, 255, 255, 0.9),rgba(220,38,38,0.9));color:var(--white);border:none;padding:10px 22px;border-radius:var(--radius-sm);cursor:pointer;font-weight:700;font-size:13px;display:flex;align-items:center;gap:6px;transition:var(--transition-normal);box-shadow:0 4px 15px rgba(255, 255, 255, .3)}
-  .add-btn:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(255, 255, 255, .4)}
+  .add-btn{background:linear-gradient(135deg,rgba(239,68,68,0.9),rgba(220,38,38,0.9));color:var(--white);border:none;padding:10px 22px;border-radius:var(--radius-sm);cursor:pointer;font-weight:700;font-size:13px;display:flex;align-items:center;gap:6px;transition:var(--transition-normal);box-shadow:0 4px 15px rgba(239,68,68,.3)}
+  .add-btn:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(239,68,68,.4)}
   .add-btn:disabled{background:var(--text-muted);cursor:not-allowed;transform:none;box-shadow:none}
 
   .compare-btn{background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:8px 14px;border-radius:var(--radius-sm);cursor:pointer;font-size:12px;display:flex;align-items:center;gap:4px;transition:var(--transition-fast);margin-right:8px}
@@ -384,7 +384,7 @@
   .product-modal{background:transparent;border-radius:var(--radius-xl);max-width:900px;width:100%;max-height:90vh;overflow-y:auto;position:relative;transform:scale(.9);transition:var(--transition-normal);box-shadow:var(--shadow-lg)}
   .product-modal-overlay.active .product-modal{transform:scale(1)}
   .modal-close{position:absolute;top:20px;left:20px;width:40px;height:40px;border-radius:50%;background:transparent;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;color:var(--text-muted);transition:var(--transition-fast);z-index:10}
-  .modal-close:hover{background:var(--danger-light);color:#FFFFFF;transform:rotate(90deg)}
+  .modal-close:hover{background:var(--danger-light);color:var(--danger);transform:rotate(90deg)}
   .product-modal-content{display:grid;grid-template-columns:1fr 1fr;gap:0}
   .modal-image{height:100%;min-height:400px;background:linear-gradient(135deg,var(--primary-light),#E3F2FD);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
   .modal-image img{width:100%;height:100%;object-fit:cover}
@@ -399,8 +399,8 @@
   .modal-price span{font-size:18px;color:rgba(255,255,255,0.6) !important;font-weight:400}
   .modal-actions{display:flex;gap:12px;margin-top:auto}
   .modal-btn{flex:1;padding:14px;border-radius:var(--radius-md);font-weight:800;font-size:15px;cursor:pointer;border:none;transition:var(--transition-normal);display:flex;align-items:center;justify-content:center;gap:8px}
-  .modal-btn-primary{background:linear-gradient(135deg,rgba(255, 255, 255, 0.9),rgba(220,38,38,0.9));color:var(--white);box-shadow:0 8px 25px rgba(255, 255, 255, .3)}
-  .modal-btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(255, 255, 255, .4)}
+  .modal-btn-primary{background:linear-gradient(135deg,rgba(239,68,68,0.9),rgba(220,38,38,0.9));color:var(--white);box-shadow:0 8px 25px rgba(239,68,68,.3)}
+  .modal-btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(239,68,68,.4)}
   .modal-btn-secondary{background:transparent;color:var(--text-primary);border:1px solid var(--border)}
   .modal-btn-secondary:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
 
@@ -425,13 +425,13 @@
   .compare-item{display:flex;align-items:center;gap:8px;background:transparent;padding:8px 14px;border-radius:var(--radius-sm);border:1px solid var(--border)}
   .compare-item img{width:40px;height:40px;border-radius:var(--radius-sm);object-fit:cover}
   .compare-item-name{font-size:13px;font-weight:700;color:var(--text-primary)}
-  .compare-item-remove{background:none;border:none;cursor:pointer;color:#FFFFFF;font-size:16px;transition:var(--transition-fast)}
+  .compare-item-remove{background:none;border:none;cursor:pointer;color:var(--danger);font-size:16px;transition:var(--transition-fast)}
   .compare-item-remove:hover{transform:scale(1.2)}
   .compare-actions{display:flex;gap:10px}
   .compare-btn-action{background:transparent;color:var(--white);border:none;padding:10px 24px;border-radius:var(--radius-sm);font-weight:700;cursor:pointer;transition:var(--transition-fast)}
   .compare-btn-action:hover{background:var(--primary-dark)}
   .compare-btn-clear{background:transparent;color:var(--text-muted);border:1px solid var(--border);padding:10px 20px;border-radius:var(--radius-sm);font-weight:700;cursor:pointer;transition:var(--transition-fast)}
-  .compare-btn-clear:hover{border-color:#FFFFFF;color:#FFFFFF}
+  .compare-btn-clear:hover{border-color:var(--danger);color:var(--danger)}
 
   .compare-modal-overlay{position:fixed;inset:0;background: transparent;z-index:3001;display:none;align-items:center;justify-content:center;opacity:0;transition:var(--transition-normal);padding:20px}
   .compare-modal-overlay.active{display:flex;opacity:1}
@@ -442,7 +442,7 @@
   .compare-table th{background:var(--primary-light);color:var(--primary);font-weight:800;font-size:14px}
   .compare-table td{font-size:13px;color:var(--text-secondary)}
   .compare-table .compare-product-img{width:80px;height:100px;border-radius:var(--radius-sm);object-fit:cover;margin:0 auto 10px}
-  .compare-table .compare-product-name{font-weight:800;color:#FFFFFF;margin-bottom:5px}
+  .compare-table .compare-product-name{font-weight:800;color:var(--text-primary);margin-bottom:5px}
   .compare-table .compare-product-price{font-weight:900;color:#ffffff !important;font-size:18px}
   .compare-table .winner{background:var(--success-light);color:var(--success);font-weight:800}
 
@@ -479,7 +479,7 @@
   .info-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
   .info-card .icon{font-size:28px;margin-bottom:12px;display:block}
   .info-card h4{font-weight:700;margin-bottom:8px;font-size:16px;color:var(--text-primary)}
-  .info-card p{font-size:14px;color:rgba(255,255,255,0.8);margin-bottom:10px}
+  .info-card p{font-size:14px;color:var(--text-secondary);margin-bottom:10px}
   .info-card a{color:var(--accent);font-weight:600;font-size:14px;transition:var(--transition-fast)}
   .info-card a:hover{color:var(--accent-dark)}
 
@@ -496,7 +496,7 @@
   .submit-btn{background:var(--accent);color:var(--white);border:none;padding:16px;border-radius:var(--radius-md);font-weight:600;font-size:16px;cursor:pointer;width:100%;transition:var(--transition-normal);margin-top:10px}
   .submit-btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(16,185,129,.3)}
 
-  .footer{background:transparent;color:rgba(255,255,255,0.8);padding:80px 0 30px;border-top:1px solid var(--border)}
+  .footer{background:transparent;color:var(--text-secondary);padding:80px 0 30px;border-top:1px solid var(--border)}
   .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:40px;margin-bottom:50px}
   .footer-brand h4{color:#ffffff;font-size:24px;font-weight:900;margin-bottom:15px;text-shadow:0 2px 10px rgba(255,255,255,0.2)}
   .footer-brand p{font-size:14px;line-height:1.8;margin-bottom:20px}
@@ -531,7 +531,7 @@
   .admin-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(30,136,229,.3)}
   .admin-btn.secondary{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:var(--white)}
   .admin-close{position:absolute;top:15px;left:15px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-muted);transition:var(--transition-fast)}
-  .admin-close:hover{color:#FFFFFF;transform:rotate(90deg)}
+  .admin-close:hover{color:var(--danger);transform:rotate(90deg)}
   .admin-product-list{max-height:200px;overflow-y:auto;margin-top:15px;border-top:1px solid var(--border);padding-top:10px}
   .admin-product-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border-light);font-size:13px}
   .admin-product-item span{font-weight:700;color:var(--text-primary)}
@@ -546,12 +546,12 @@
   .password-modal.show{display:flex;opacity:1}
   .password-box{background:transparent;border:1px solid var(--border);border-radius:var(--radius-xl);padding:40px;width:360px;max-width:90%;text-align:center;box-shadow:0 25px 60px rgba(0,0,0,.3);transform:scale(.9);transition:var(--transition-normal)}
   .password-modal.show .password-box{transform:scale(1)}
-  .password-box h4{font-size:22px;font-weight:900;color:#FFFFFF;margin-bottom:8px}
+  .password-box h4{font-size:22px;font-weight:900;color:var(--text-primary);margin-bottom:8px}
   .password-box p{color:var(--text-muted);font-size:14px;margin-bottom:25px}
   .password-box input{width:100%;padding:14px 18px;border-radius:var(--radius-md);border:2px solid var(--border);background:transparent;color:var(--text-primary);font-size:16px;font-family:inherit;text-align:center;letter-spacing:4px;margin-bottom:15px;transition:var(--transition-fast)}
   .password-box input:focus{outline:none;border-color:var(--primary);background:transparent}
   .password-box input::placeholder{color:var(--text-muted);letter-spacing:0}
-  .password-box .error{color:#FFFFFF;font-size:13px;margin-bottom:10px;display:none}
+  .password-box .error{color:var(--danger);font-size:13px;margin-bottom:10px;display:none}
   .password-box .error.show{display:block}
   .password-box button{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:var(--white);border:none;padding:14px;border-radius:var(--radius-md);font-weight:900;font-size:15px;cursor:pointer;width:100%;transition:var(--transition-normal)}
   .password-box button:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(30,136,229,.3)}
@@ -579,7 +579,7 @@
   .cart-item-actions{display:flex;align-items:center;gap:12px;margin-top:10px}
   .qty-btn{width:28px;height:28px;border:1px solid var(--border);background:transparent;border-radius:var(--radius-sm);cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:800;transition:var(--transition-fast);color:var(--text-primary)}
   .qty-btn:hover{border-color:var(--primary);color:var(--primary)}
-  .remove-btn{color:#FFFFFF;cursor:pointer;margin-right:auto;font-size:18px;transition:var(--transition-fast)}
+  .remove-btn{color:var(--danger);cursor:pointer;margin-right:auto;font-size:18px;transition:var(--transition-fast)}
   .remove-btn:hover{transform:scale(1.2)}
   .cart-footer{padding:25px;border-top:1px solid var(--border);background:transparent}
   .cart-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
@@ -620,13 +620,11 @@
   .coupon-btn{background:transparent;color:var(--white);border:none;padding:10px 20px;border-radius:var(--radius-sm);font-weight:700;font-size:13px;cursor:pointer;transition:var(--transition-fast)}
   .coupon-btn:hover{background:var(--primary-dark)}
   .coupon-applied{display:flex;align-items:center;gap:8px;padding:10px;background:var(--success-light);border-radius:var(--radius-sm);color:var(--success);font-size:13px;font-weight:700}
-  .coupon-applied .remove-coupon{background:none;border:none;color:#FFFFFF;cursor:pointer;font-size:16px}
+  .coupon-applied .remove-coupon{background:none;border:none;color:var(--danger);cursor:pointer;font-size:16px}
 
   .install-btn {
-   background: rgba(255, 255, 255, 0.05) !important;
-   backdrop-filter: blur(15px) !important;
-   -webkit-backdrop-filter: blur(15px) !important;
-   border: 1px solid rgba(255, 255, 255, 0.15) !important;
+   background: transparent !important;
+   border: none !important;
    color: #f8fafc !important;
    width: 40px !important;
    height: 40px !important;
@@ -638,7 +636,7 @@
    font-size: 20px !important;
    transition: all 0.3s ease !important;
    visibility: visible !important;
-   opacity: 0.3 !important;
+   opacity: 1 !important;
    overflow: hidden !important;
    padding: 0 !important;
    box-shadow: none !important;
@@ -646,10 +644,7 @@
 
   .install-btn:hover {
    transform: scale(1.1) !important;
-   box-shadow: 0 4px 20px rgba(30, 136, 229, 0.2) !important;
-   opacity: 0.9 !important;
-   background: rgba(255, 255, 255, 0.1) !important;
-   border-color: rgba(255, 255, 255, 0.3) !important;
+   box-shadow: none !important;
   }
 
   .install-btn img {
@@ -657,32 +652,18 @@
    height: 100% !important;
    object-fit: cover !important;
    border-radius: 12px !important;
-   opacity: 0.5 !important;
-   transition: opacity 0.3s ease !important;
-  }
-
-  .install-btn:hover img {
-   opacity: 1 !important;
   }
 
   .install-btn.show {
    display: flex !important;
    visibility: visible !important;
-   opacity: 0.3 !important;
-  }
-
-  .install-btn.show:hover {
-   opacity: 0.9 !important;
+   opacity: 1 !important;
   }
 
   #installBtn {
    display: inline-flex !important;
    visibility: visible !important;
-   opacity: 0.3 !important;
-  }
-
-  #installBtn:hover {
-   opacity: 0.9 !important;
+   opacity: 1 !important;
   }
 
   .install-prompt {
@@ -691,9 +672,7 @@
    left: 50%;
    transform: translateX(-50%) translateY(100px);
    z-index: 9997;
-   background: rgba(30, 136, 229, 0.15) !important;
-   backdrop-filter: blur(15px) !important;
-   -webkit-backdrop-filter: blur(15px) !important;
+   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
    color: white;
    padding: 16px 24px;
    border-radius: 16px;
@@ -702,28 +681,22 @@
    display: flex;
    align-items: center;
    gap: 12px;
-   box-shadow: 0 4px 20px rgba(30, 136, 229, 0.2);
+   box-shadow: 0 8px 30px rgba(30, 136, 229, 0.4);
    transition: all 0.5s ease;
    opacity: 0;
-   border: 1px solid rgba(255, 255, 255, 0.2);
+   border: none;
    max-width: 90%;
    width: auto;
   }
 
   .install-prompt.show {
    transform: translateX(-50%) translateY(0);
-   opacity: 0.85;
-  }
-
-  .install-prompt:hover {
-   opacity: 1 !important;
-   background: rgba(30, 136, 229, 0.25) !important;
-   border-color: rgba(255, 255, 255, 0.3);
+   opacity: 1;
   }
 
   .install-prompt .close-prompt {
-   background: rgba(255,255,255,0.1);
-   border: 1px solid rgba(255,255,255,0.2);
+   background: rgba(255,255,255,0.2);
+   border: none;
    color: white;
    width: 28px;
    height: 28px;
@@ -737,7 +710,7 @@
   }
 
   .install-prompt .close-prompt:hover {
-   background: rgba(255,255,255,0.2);
+   background: rgba(255,255,255,0.3);
    transform: scale(1.1);
   }
 
@@ -870,7 +843,7 @@
   [data-theme="dark"] .admin-btn{background:transparent}
   [data-theme="dark"] .admin-toggle{background:var(--primary-light);border-color:var(--border);color:var(--primary)}
   [data-theme="dark"] .admin-toggle:hover{background:var(--primary-light)}
-  [data-theme="dark"] .stock-low{background:var(--danger-light);color:#FFFFFF;border-color:#FFFFFF}
+  [data-theme="dark"] .stock-low{background:var(--danger-light);color:var(--danger);border-color:var(--danger)}
   [data-theme="dark"] .stock-medium{background:var(--warning-light);color:var(--warning);border-color:var(--warning)}
   [data-theme="dark"] .stock-high{background:var(--success-light);color:var(--success);border-color:var(--success)}
   [data-theme="dark"] .stock-out{background:transparent;color:var(--text-muted);border-color:var(--border)}
@@ -895,7 +868,7 @@
   [data-theme="dark"] .compare-item{background:var(--surface-elevated);border-color:var(--border)}
   [data-theme="dark"] .compare-modal{background:transparent}
   [data-theme="dark"] .compare-table th{background:var(--primary-light);color:var(--primary)}
-  [data-theme="dark"] .compare-table td{color:rgba(255,255,255,0.8);border-color:var(--border)}
+  [data-theme="dark"] .compare-table td{color:var(--text-secondary);border-color:var(--border)}
   [data-theme="dark"] .coupon-section{background:var(--primary-light);border-color:var(--border)}
   [data-theme="dark"] .coupon-input{background:var(--surface-elevated);border-color:var(--border)}
 
@@ -1058,9 +1031,7 @@
    left: 50%;
    transform: translateX(-50%);
    z-index: 9998;
-   background: rgba(30, 136, 229, 0.15) !important;
-   backdrop-filter: blur(10px) !important;
-   -webkit-backdrop-filter: blur(10px) !important;
+   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
    color: white;
    padding: 14px 28px;
    border-radius: 50px;
@@ -1069,21 +1040,17 @@
    display: flex;
    align-items: center;
    gap: 10px;
-   box-shadow: 0 4px 15px rgba(30, 136, 229, 0.2);
+   box-shadow: 0 8px 30px rgba(30, 136, 229, 0.4);
    cursor: pointer;
    transition: all 0.3s ease;
-   border: 1px solid rgba(255, 255, 255, 0.2);
+   border: none;
    animation: cta-bounce 3s infinite;
    text-decoration: none;
-   opacity: 0.7;
   }
 
   .sticky-cta:hover {
    transform: translateX(-50%) translateY(-3px);
-   box-shadow: 0 8px 25px rgba(30, 136, 229, 0.3);
-   background: rgba(30, 136, 229, 0.3) !important;
-   opacity: 1;
-   border-color: rgba(255, 255, 255, 0.4);
+   box-shadow: 0 12px 40px rgba(30, 136, 229, 0.5);
   }
 
   @keyframes cta-bounce {
@@ -1536,7 +1503,7 @@
    content: '';
    position: absolute;
    inset: -3px;
-   background: linear-gradient(45deg, #0ea5e9, #ffffff, #10b981, #0ea5e9);
+   background: linear-gradient(45deg, #0ea5e9, #ef4444, #10b981, #0ea5e9);
    background-size: 400% 400%;
    border-radius: 15px;
    z-index: -1;
@@ -1706,7 +1673,7 @@
 
 <header class="header" id="header">
 <div class="container">
-<div class="header-inner" style="gap:25px;">
+<div class="header-inner">
 <div class="logo">
 <img src="logo.png" alt="شركة درة فارس الشمال" style="width:65px;height:65px;border-radius:14px;object-fit:contain;">
 <div class="logo-particles">
@@ -1716,18 +1683,18 @@
  <div class="logo-particle"></div>
 </div>
 <div class="logo-text">
-<h1 style="font-size:16px;white-space:nowrap;">شركة درة فارس الشمال</h1>
+<h1>شركة درة فارس الشمال</h1>
 <span>Dora Fares Al Shamal</span>
 </div>
 </div>
-<nav class="nav-links" style="flex-shrink:0;">
+<nav class="nav-links">
 <a href="#home" aria-label="الرئيسية">الرئيسية</a>
 <div class="nav-item">
  <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="التصنيفات">
   التصنيفات <span class="arrow">▼</span>
  </button>
  <div class="dropdown-menu">
-  <a href="service_printing.html" aria-label="خدمات الطباعة"><div class="cat-icon-small"><img src="https://kimi-web-img.moonshot.cn/img/toppng.com/9fe4668df0df75352751c6bdf5cbe497d0223441.png" alt="طابعة" style="width:80px;height:80px;object-fit:contain;mix-blend-mode:multiply;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.3));"></div> خدمات الطباعة</a>
+  <a href="service_printing.html" aria-label="خدمات الطباعة"><div class="cat-icon-small">🖨️</div> خدمات الطباعة</a>
   <a href="service_cameras.html" aria-label="كاميرات المراقبة"><div class="cat-icon-small">📹</div> كاميرات المراقبة</a>
   <a href="service_pos.html" aria-label="نقاط البيع"><div class="cat-icon-small">💳</div> نقاط البيع</a>
   <a href="service_network.html" aria-label="شبكات"><div class="cat-icon-small">🌐</div> شبكات</a>
@@ -1742,8 +1709,8 @@
 <a href="#contact" aria-label="تواصل معنا">تواصل معنا</a>
 </nav>
 <div class="header-controls">
-<a href="https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk" download class="install-btn" title="تحميل تطبيق Android" aria-label="تحميل تطبيق Android" style="display:inline-flex !important;visibility:visible !important;opacity:0.5 !important;margin-left:8px;position:relative;z-index:9999;background:rgba(255,255,255,0.05) !important;border:1px solid rgba(255,255,255,0.15) !important;overflow:hidden;padding:0 !important;width:40px !important;height:40px !important;border-radius:12px !important;cursor:pointer !important;text-decoration:none;backdrop-filter:blur(10px) !important;-webkit-backdrop-filter:blur(10px) !important;transition:all 0.3s ease !important;">
- <img src="https://i.imgur.com/Z4C4wTh.jpg" alt="تحميل التطبيق" style="width:100%;height:100%;object-fit:cover;border-radius:12px;opacity:0.7;transition:opacity 0.3s ease;">
+<a href="https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk" download class="install-btn" title="تحميل تطبيق Android" aria-label="تحميل تطبيق Android" style="display:inline-flex !important;visibility:visible !important;opacity:1 !important;margin-left:8px;position:relative;z-index:9999;background:transparent !important;border:none !important;overflow:hidden;padding:0 !important;width:40px !important;height:40px !important;border-radius:12px !important;cursor:pointer !important;text-decoration:none;">
+ <img src="https://i.imgur.com/Z4C4wTh.jpg" alt="تحميل التطبيق" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">
 </a>
 <button class="audio-toggle" onclick="toggleAudio()" title="تشغيل/إيقاف الصوت" aria-label="تشغيل/إيقاف الصوت" style="margin-left:8px;background:transparent !important;border:none !important;padding:0 !important;width:40px !important;height:40px !important;overflow:hidden !important;border-radius:12px !important;cursor:pointer !important;">
  <img src="https://i.imgur.com/aYm7tcl.jpg" alt="الصوت" style="width:100%;height:100%;object-fit:cover;border-radius:12px;opacity:0.9;transition:all 0.3s ease;filter:brightness(1.3) contrast(1.1);mix-blend-mode:screen;" id="speakerIcon">
@@ -1800,7 +1767,7 @@
 </div>
 </div>
 <div class="hero-visual">
-<div class="float-card"><span class="icon"><img src="https://kimi-web-img.moonshot.cn/img/toppng.com/9fe4668df0df75352751c6bdf5cbe497d0223441.png" alt="طابعة" style="width:80px;height:80px;object-fit:contain;mix-blend-mode:multiply;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.3));"></span><h4>طابعات</h4><p>HP, Canon, Epson</p></div>
+<div class="float-card"><span class="icon">🖨️</span><h4>طابعات</h4><p>HP, Canon, Epson</p></div>
 <div class="float-card"><span class="icon">💻</span><h4>كمبيوتر</h4><p>أجهزة ولابتوب</p></div>
 <div class="float-card"><span class="icon">🧠</span><h4>رامات</h4><p>DDR4, DDR5</p></div>
 <div class="float-card"><span class="icon">💾</span><h4>هاردات</h4><p>SSD, HDD</p></div>
@@ -1818,7 +1785,7 @@
 <p>اختر التصنيف المناسب واكتشف مجموعة واسعة من المنتجات التقنية عالية الجودة</p>
 </div>
 <div class="cat-grid">
-<div class="cat-card" onclick="filterProducts('printers')" role="button" tabindex="0" aria-label="طابعات"><div class="cat-icon"><span><img src="https://kimi-web-img.moonshot.cn/img/toppng.com/9fe4668df0df75352751c6bdf5cbe497d0223441.png" alt="طابعة" style="width:80px;height:80px;object-fit:contain;mix-blend-mode:multiply;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.3));"></span></div><span class="cat-name">طابعات</span><span class="cat-count" id="cat-printers">4 منتجات</span></div>
+<div class="cat-card" onclick="filterProducts('printers')" role="button" tabindex="0" aria-label="طابعات"><div class="cat-icon"><span>🖨️</span></div><span class="cat-name">طابعات</span><span class="cat-count" id="cat-printers">4 منتجات</span></div>
 <div class="cat-card" onclick="filterProducts('computers')" role="button" tabindex="0" aria-label="كمبيوتر"><div class="cat-icon"><span>💻</span></div><span class="cat-name">كمبيوتر</span><span class="cat-count" id="cat-computers">4 منتجات</span></div>
 <div class="cat-card" onclick="filterProducts('ram')" role="button" tabindex="0" aria-label="رامات"><div class="cat-icon"><span>🧠</span></div><span class="cat-name">رامات</span><span class="cat-count" id="cat-ram">4 منتجات</span></div>
 <div class="cat-card" onclick="filterProducts('storage')" role="button" tabindex="0" aria-label="هاردات"><div class="cat-icon"><span>💾</span></div><span class="cat-name">هاردات</span><span class="cat-count" id="cat-storage">4 منتجات</span></div>
@@ -2077,7 +2044,7 @@
   <div class="projects-grid">
    <div class="project-card">
     <div class="project-img">
-     <img src="https://kimi-web-img.moonshot.cn/img/toppng.com/9fe4668df0df75352751c6bdf5cbe497d0223441.png" alt="طابعة" style="width:80px;height:80px;object-fit:contain;mix-blend-mode:multiply;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.3));">
+     🖨️
      <span class="project-badge">تم التنفيذ</span>
     </div>
     <div class="project-body">
@@ -2133,7 +2100,7 @@
   <div class="projects-grid">
    <div class="project-card" style="cursor:pointer" onclick="showToast('📖 المقال قريباً - أفضل طابعة للشركات الصغيرة والمتوسطة')">
     <div class="project-img" style="font-size:24px;font-weight:800;color:var(--primary)">
-     <img src="https://kimi-web-img.moonshot.cn/img/toppng.com/9fe4668df0df75352751c6bdf5cbe497d0223441.png" alt="طابعة" style="width:80px;height:80px;object-fit:contain;mix-blend-mode:multiply;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.3));"><br><span style="font-size:14px">أفضل طابعة للشركات</span>
+     🖨️<br><span style="font-size:14px">أفضل طابعة للشركات</span>
     </div>
     <div class="project-body">
      <h4>أفضل طابعة للشركات الصغيرة والمتوسطة</h4>
@@ -2218,7 +2185,7 @@
    <div class="partner-item" style="border-color:var(--primary);color:var(--primary)">🏆 وكيل معتمد HP</div>
    <div class="partner-item" style="border-color:var(--warning);color:var(--warning)">🏆 وكيل معتمد Zebra</div>
    <div class="partner-item" style="border-color:var(--accent);color:var(--accent)">🏆 وكيل معتمد Honeywell</div>
-   <div class="partner-item" style="border-color:#FFFFFF;color:#FFFFFF">🛡️ ضمان شامل</div>
+   <div class="partner-item" style="border-color:var(--danger);color:var(--danger)">🛡️ ضمان شامل</div>
    <div class="partner-item" style="border-color:var(--primary);color:var(--primary)">📋 سجل تجاري</div>
   </div>
  </div>
@@ -3039,7 +3006,7 @@ function toggleTheme() {
 }
 
 function initTheme() {
- const saved = localStorage.getItem('doraTheme') || 'light';
+ const saved = localStorage.getItem('doraTheme') || 'dark';
  document.documentElement.setAttribute('data-theme', saved);
  const themeIcon = document.getElementById('themeIcon');
  if (themeIcon) {
@@ -3458,7 +3425,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <div class="install-prompt show" id="installPrompt">
  <span>💻 حمّل تطبيق درة فارس الشمال!</span>
- <button id="pwaInstallBtn" onclick="installPWA()" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.25);color:white;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:700;font-size:13px;transition:all 0.3s ease;text-decoration:none;display:inline-block;backdrop-filter:blur(5px);font-family:inherit;">📱 تثبيت</button>
+ <a href="https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk" download style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.3);color:white;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:700;font-size:13px;transition:all 0.3s ease;text-decoration:none;display:inline-block;">📱 تحميل</a>
  <button class="close-prompt" onclick="dismissInstallPrompt()" aria-label="إغلاق">✕</button>
 </div>
 
@@ -3483,304 +3450,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 })();
 </script>
-<script>
-let deferredPrompt = null;
-
-window.addEventListener('beforeinstallprompt', (e) => {
- e.preventDefault();
- deferredPrompt = e;
-});
-
-function installPWA() {
- if (deferredPrompt) {
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then((choiceResult) => {
-   if (choiceResult.outcome === 'accepted') {
-    showToast('✅ تم تثبيت التطبيق بنجاح!');
-   } else {
-    showToast('❌ تم إلغاء التثبيت');
-   }
-   deferredPrompt = null;
-  });
- } else {
-  showToast('⚠️ التثبيت غير متاح حالياً. جرب من قائمة المتصفح.');
- }
-}
-
-function dismissInstallPrompt() {
- document.getElementById('installPrompt').classList.remove('show');
-}
-</script>
-
-
-
-<!-- PARTNERS SECTION -->
-<section class="partners-section" style="padding:60px 0;background:linear-gradient(135deg, rgba(15,12,41,0.3), rgba(0,82,155,0.1));position:relative;overflow:hidden;">
- <div class="container" style="position:relative;z-index:2;">
-  <div class="section-header" style="text-align:center;margin-bottom:40px;">
-   <span class="section-badge" style="background:linear-gradient(135deg, #00529B, #007DBA);color:white;padding:6px 20px;border-radius:50px;font-size:13px;font-weight:700;display:inline-block;margin-bottom:15px;">🤝 شركاؤنا</span>
-   <h2 class="section-title" style="font-size:28px;font-weight:900;color:#FFFFFF;margin-bottom:10px;">شركاء النجاح</h2>
-   <p class="section-subtitle" style="color:rgba(255,255,255,0.8);font-size:15px;max-width:500px;margin:0 auto;">نفخر بالشراكة مع أكبر العلامات التجارية العالمية</p>
-  </div>
-
-  <div class="partners-grid" style="display:flex;justify-content:center;align-items:center;gap:40px;flex-wrap:wrap;">
-
-   <!-- HP Partner Certificate -->
-   <a href="hp-certificate.html" style="text-decoration:none;max-width:400px;width:100%;">
-   <div class="partner-card" style="background:rgba(255,255,255,0.03);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:30px;text-align:center;transition:all 0.3s ease;cursor:pointer;">
-    <a href="hp-certificate.html" style="text-decoration:none;"><div style="margin-bottom:20px;">
-     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/HP_logo_2012.svg/1200px-HP_logo_2012.svg.png" alt="HP" style="width:80px;height:auto;margin-bottom:15px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));">
-     <div style="background:linear-gradient(135deg, #00529B, #007DBA);color:white;padding:8px 20px;border-radius:50px;font-size:14px;font-weight:800;display:inline-block;backdrop-filter:blur(5px);">Business Partner</div>
-    </div>
-    <h3 style="color:var(--text-primary);font-weight:800;margin-bottom:10px;font-size:18px;">HP Business Partner</h3>
-    <p style="color:rgba(255,255,255,0.8);font-size:14px;line-height:1.7;margin-bottom:15px;">شركة درة فارس الشمال معتمدة رسمياً كشريك أعمال HP لعام 2026</p>
-    <span style="color:var(--primary);font-weight:700;font-size:14px;">عرض الشهادة →</span>
-   </div></a>
-  </a>
-
-   <!-- Placeholder for more partners -->
-   <div class="partner-card" style="background:rgba(255,255,255,0.03);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:30px;text-align:center;transition:all 0.3s ease;max-width:400px;opacity:0.6;">
-    <div style="margin-bottom:20px;font-size:60px;">🏢</div>
-    <h3 style="color:var(--text-primary);font-weight:800;margin-bottom:10px;font-size:18px;">شركاء آخرون</h3>
-    <p style="color:rgba(255,255,255,0.8);font-size:14px;line-height:1.7;">قريباً...</p>
-   </div>
-
-  </div>
- </div>
-</section>
-
-<!-- PROJECTS SECTION -->
-<section class="projects-section" style="padding:80px 0;background:linear-gradient(135deg, rgba(15,12,41,0.3), rgba(30,136,229,0.05));position:relative;overflow:hidden;">
- <div class="container" style="position:relative;z-index:2;">
-  <div class="section-header" style="text-align:center;margin-bottom:50px;">
-   <span class="section-badge" style="background:linear-gradient(135deg, var(--secondary), var(--secondary-dark));color:white;padding:6px 20px;border-radius:50px;font-size:13px;font-weight:700;display:inline-block;margin-bottom:15px;">🏗️ مشاريعنا</span>
-   <h2 class="section-title" style="font-size:32px;font-weight:900;color:#FFFFFF;margin-bottom:15px;">مشاريع منفذة</h2>
-   <p class="section-subtitle" style="color:rgba(255,255,255,0.8);font-size:16px;max-width:600px;margin:0 auto;">أكثر من 1000 مشروع ناجح في جميع أنحاء المملكة</p>
-  </div>
-
-  <div class="projects-grid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(350px, 1fr));gap:30px;">
-
-   <!-- Project 1 -->
-   <div class="project-card" style="background:rgba(255,255,255,0.05);backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;transition:all 0.3s ease;">
-    <div class="project-image" style="height:200px;background:linear-gradient(135deg, var(--primary), var(--primary-dark));display:flex;align-items:center;justify-content:center;color:white;font-size:60px;">
-     📹
-    </div>
-    <div class="project-content" style="padding:25px;">
-     <div class="project-tags" style="display:flex;gap:8px;margin-bottom:15px;flex-wrap:wrap;">
-      <span style="background:rgba(30,136,229,0.2);color:var(--primary);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;">كاميرات مراقبة</span>
-      <span style="background:rgba(16,185,129,0.2);color:#10B981;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;">مكتمل</span>
-     </div>
-     <h3 style="color:var(--text-primary);font-weight:800;margin-bottom:10px;font-size:18px;">تركيب 32 كاميرا لمجمع تجاري</h3>
-     <p style="color:rgba(255,255,255,0.8);font-size:14px;line-height:1.7;margin-bottom:15px;">تركيب نظام كاميرات IP متكامل مع تسجيل 30 يوم وربط بالجوال للمجمع التجاري في الرياض.</p>
-     <div class="project-meta" style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,0.1);padding-top:15px;">
-      <span style="color:rgba(255,255,255,0.8);font-size:13px;">📍 الرياض</span>
-      <span style="color:rgba(255,255,255,0.8);font-size:13px;">📅 يناير 2026</span>
-     </div>
-    </div>
-   </div>
-
-   <!-- Project 2 -->
-   <div class="project-card" style="background:rgba(255,255,255,0.05);backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;transition:all 0.3s ease;">
-    <div class="project-image" style="height:200px;background:linear-gradient(135deg, #FFFFFF, var(--secondary-dark));display:flex;align-items:center;justify-content:center;color:white;font-size:60px;">
-     💳
-    </div>
-    <div class="project-content" style="padding:25px;">
-     <div class="project-tags" style="display:flex;gap:8px;margin-bottom:15px;flex-wrap:wrap;">
-      <span style="background:rgba(255, 255, 255, 0.2);color:#FFFFFF;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;">نقاط بيع</span>
-      <span style="background:rgba(16,185,129,0.2);color:#10B981;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;">مكتمل</span>
-     </div>
-     <h3 style="color:var(--text-primary);font-weight:800;margin-bottom:10px;font-size:18px;">نظام POS لسلسلة مطاعم</h3>
-     <p style="color:rgba(255,255,255,0.8);font-size:14px;line-height:1.7;margin-bottom:15px;">تجهيز 5 فروع بنظام نقاط بيع متكامل مع طابعات حرارية وباركود وربط بالمحاسبة.</p>
-     <div class="project-meta" style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,0.1);padding-top:15px;">
-      <span style="color:rgba(255,255,255,0.8);font-size:13px;">📍 جدة</span>
-      <span style="color:rgba(255,255,255,0.8);font-size:13px;">📅 ديسمبر 2025</span>
-     </div>
-    </div>
-   </div>
-
-   <!-- Project 3 -->
-   <div class="project-card" style="background:rgba(255,255,255,0.05);backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;transition:all 0.3s ease;">
-    <div class="project-image" style="height:200px;background:linear-gradient(135deg, #10B981, #059669);display:flex;align-items:center;justify-content:center;color:white;font-size:60px;">
-     🖨️
-    </div>
-    <div class="project-content" style="padding:25px;">
-     <div class="project-tags" style="display:flex;gap:8px;margin-bottom:15px;flex-wrap:wrap;">
-      <span style="background:rgba(30,136,229,0.2);color:var(--primary);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;">طابعات</span>
-      <span style="background:rgba(16,185,129,0.2);color:#10B981;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;">مكتمل</span>
-     </div>
-     <h3 style="color:var(--text-primary);font-weight:800;margin-bottom:10px;font-size:18px;">صيانة طابعات لشركة طباعة</h3>
-     <p style="color:rgba(255,255,255,0.8);font-size:14px;line-height:1.7;margin-bottom:15px;">صيانة دورية لـ 12 طابعة Epson وCanon مع توفير قطع غيار أصلية وعقود صيانة سنوية.</p>
-     <div class="project-meta" style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,0.1);padding-top:15px;">
-      <span style="color:rgba(255,255,255,0.8);font-size:13px;">📍 الدمام</span>
-      <span style="color:rgba(255,255,255,0.8);font-size:13px;">📅 نوفمبر 2025</span>
-     </div>
-    </div>
-   </div>
-
-  </div>
-
-  <div style="text-align:center;margin-top:40px;">
-   <a href="projects.html" style="display:inline-block;background:linear-gradient(135deg, var(--primary), var(--primary-dark));color:white;padding:14px 35px;border-radius:50px;font-weight:800;font-size:16px;text-decoration:none;transition:all 0.3s ease;">عرض جميع المشاريع →</a>
-  </div>
- </div>
-</section>
-
-
-<!-- BLOG SECTION -->
-<section class="blog-section" style="padding:80px 0;background:linear-gradient(135deg, rgba(15,12,41,0.3), rgba(255, 255, 255, 0.05));position:relative;overflow:hidden;">
- <div class="container" style="position:relative;z-index:2;">
-  <div class="section-header" style="text-align:center;margin-bottom:50px;">
-   <span class="section-badge" style="background:linear-gradient(135deg, #10B981, #059669);color:white;padding:6px 20px;border-radius:50px;font-size:13px;font-weight:700;display:inline-block;margin-bottom:15px;">📝 المدونة</span>
-   <h2 class="section-title" style="font-size:32px;font-weight:900;color:#FFFFFF;margin-bottom:15px;">أحدث المقالات</h2>
-   <p class="section-subtitle" style="color:rgba(255,255,255,0.8);font-size:16px;max-width:600px;margin:0 auto;">نصائح و guides لمساعدتك في اختيار الأفضل</p>
-  </div>
-
-  <div class="blog-grid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:25px;">
-
-   <!-- Blog 1 -->
-   <div class="blog-card" style="background:rgba(255,255,255,0.05);backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;transition:all 0.3s ease;">
-    <div class="blog-image" style="height:180px;background:linear-gradient(135deg, var(--primary), var(--primary-dark));display:flex;align-items:center;justify-content:center;color:white;font-size:50px;">
-     🖨️
-    </div>
-    <div class="blog-content" style="padding:25px;">
-     <div class="blog-meta" style="display:flex;gap:15px;margin-bottom:15px;color:rgba(255,255,255,0.8);font-size:12px;">
-      <span>📅 15 يوليو 2026</span>
-      <span>👁️ 1,234 مشاهدة</span>
-     </div>
-     <h3 style="color:var(--text-primary);font-weight:800;margin-bottom:12px;font-size:17px;line-height:1.5;">أفضل طابعة للشركات الصغيرة والمتوسطة 2026</h3>
-     <p style="color:rgba(255,255,255,0.8);font-size:14px;line-height:1.7;margin-bottom:20px;">دليل شامل لاختيار الطابعة المثالية: مقارنة بين Epson وHP وCanon مع مميزات كل واحدة...</p>
-     <a href="blog-printer-guide.html" style="color:var(--primary);font-weight:700;font-size:14px;text-decoration:none;display:flex;align-items:center;gap:5px;">اقرأ المزيد →</a>
-    </div>
-   </div>
-
-   <!-- Blog 2 -->
-   <div class="blog-card" style="background:rgba(255,255,255,0.05);backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;transition:all 0.3s ease;">
-    <div class="blog-image" style="height:180px;background:linear-gradient(135deg, #FFFFFF, var(--secondary-dark));display:flex;align-items:center;justify-content:center;color:white;font-size:50px;">
-     📊
-    </div>
-    <div class="blog-content" style="padding:25px;">
-     <div class="blog-meta" style="display:flex;gap:15px;margin-bottom:15px;color:rgba(255,255,255,0.8);font-size:12px;">
-      <span>📅 10 يوليو 2026</span>
-      <span>👁️ 987 مشاهدة</span>
-     </div>
-     <h3 style="color:var(--text-primary);font-weight:800;margin-bottom:12px;font-size:17px;line-height:1.5;">الفرق بين Zebra وHoneywell في أجهزة الباركود</h3>
-     <p style="color:rgba(255,255,255,0.8);font-size:14px;line-height:1.7;margin-bottom:20px;">مقارنة تفصيلية بين أكبر علامتين تجاريتين: الأداء، السعر، الدعم الفني، وأي واحدة تناسبك...</p>
-     <a href="blog-barcode-compare.html" style="color:var(--primary);font-weight:700;font-size:14px;text-decoration:none;display:flex;align-items:center;gap:5px;">اقرأ المزيد →</a>
-    </div>
-   </div>
-
-   <!-- Blog 3 -->
-   <div class="blog-card" style="background:rgba(255,255,255,0.05);backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;transition:all 0.3s ease;">
-    <div class="blog-image" style="height:180px;background:linear-gradient(135deg, #10B981, #059669);display:flex;align-items:center;justify-content:center;color:white;font-size:50px;">
-     📹
-    </div>
-    <div class="blog-content" style="padding:25px;">
-     <div class="blog-meta" style="display:flex;gap:15px;margin-bottom:15px;color:rgba(255,255,255,0.8);font-size:12px;">
-      <span>📅 5 يوليو 2026</span>
-      <span>👁️ 756 مشاهدة</span>
-     </div>
-     <h3 style="color:var(--text-primary);font-weight:800;margin-bottom:12px;font-size:17px;line-height:1.5;">كيفية اختيار نظام كاميرات المراقبة المناسب</h3>
-     <p style="color:rgba(255,255,255,0.8);font-size:14px;line-height:1.7;margin-bottom:20px;">IP vs Analog: الفرق، التكلفة، الجودة، ونصائح للحماية من الاختراق...</p>
-     <a href="blog-camera-guide.html" style="color:var(--primary);font-weight:700;font-size:14px;text-decoration:none;display:flex;align-items:center;gap:5px;">اقرأ المزيد →</a>
-    </div>
-   </div>
-
-  </div>
-
-  <div style="text-align:center;margin-top:40px;">
-   <a href="blog.html" style="display:inline-block;background:linear-gradient(135deg, #10B981, #059669);color:white;padding:14px 35px;border-radius:50px;font-weight:800;font-size:16px;text-decoration:none;transition:all 0.3s ease;">جميع المقالات →</a>
-  </div>
- </div>
-</section>
-
-
-<!-- HP CERTIFICATE SHOWCASE -->
-<section class="certificate-showcase" style="padding:60px 0;background:linear-gradient(135deg, rgba(0,82,155,0.1), rgba(30,136,229,0.05));position:relative;overflow:hidden;">
- <div class="container" style="position:relative;z-index:2;">
-  <div class="section-header" style="text-align:center;margin-bottom:40px;">
-   <span class="section-badge" style="background:linear-gradient(135deg, #00529B, #007DBA);color:white;padding:6px 20px;border-radius:50px;font-size:13px;font-weight:700;display:inline-block;margin-bottom:15px;">🏆 اعتماد رسمي</span>
-   <h2 class="section-title" style="font-size:28px;font-weight:900;color:#FFFFFF;margin-bottom:10px;">شهادات الشراكة</h2>
-   <p class="section-subtitle" style="color:rgba(255,255,255,0.8);font-size:15px;max-width:500px;margin:0 auto;">معتمدون رسمياً من أكبر الشركات العالمية</p>
-  </div>
-
-  <div style="display:flex;justify-content:center;gap:30px;flex-wrap:wrap;">
-
-   <!-- HP Certificate Card -->
-   <a href="hp-certificate.html" style="text-decoration:none;max-width:400px;width:100%;">
-    <div style="background:rgba(255,255,255,0.03);backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:30px;text-align:center;transition:all 0.3s ease;cursor:pointer;">
-     <div style="margin-bottom:20px;">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/HP_logo_2012.svg/1200px-HP_logo_2012.svg.png" alt="HP" style="width:80px;height:auto;margin-bottom:15px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));">
-      <div style="background:linear-gradient(135deg, #00529B, #007DBA);color:white;padding:8px 20px;border-radius:50px;font-size:14px;font-weight:800;display:inline-block;">Business Partner</div>
-     </div>
-     <h3 style="color:var(--text-primary);font-weight:800;margin-bottom:10px;font-size:18px;">HP Business Partner</h3>
-     <p style="color:rgba(255,255,255,0.8);font-size:14px;line-height:1.7;margin-bottom:15px;">شركة درة فارس الشمال معتمدة رسمياً كشريك أعمال HP لعام 2026</p>
-     <span style="color:var(--primary);font-weight:700;font-size:14px;">عرض الشهادة →</span>
-    </div>
-   </a>
-
-   <!-- Zebra Certificate Card -->
-   <div style="background:rgba(255,255,255,0.03);backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:30px;text-align:center;transition:all 0.3s ease;max-width:400px;opacity:0.6;">
-    <div style="margin-bottom:20px;font-size:60px;">🏢</div>
-    <h3 style="color:var(--text-primary);font-weight:800;margin-bottom:10px;font-size:18px;">Zebra Technologies</h3>
-    <p style="color:rgba(255,255,255,0.8);font-size:14px;line-height:1.7;">قريباً...</p>
-   </div>
-
-  </div>
- </div>
-</section>
-
-<!-- TESTIMONIALS SECTION -->
-<section class="testimonials-section" style="padding:80px 0;background:linear-gradient(135deg, rgba(15,12,41,0.3), rgba(30,136,229,0.1));position:relative;overflow:hidden;">
- <div class="container" style="position:relative;z-index:2;">
-  <div class="section-header" style="text-align:center;margin-bottom:50px;">
-   <span class="section-badge" style="background:linear-gradient(135deg, var(--primary), var(--primary-dark));color:white;padding:6px 20px;border-radius:50px;font-size:13px;font-weight:700;display:inline-block;margin-bottom:15px;">💬 آراء العملاء</span>
-   <h2 class="section-title" style="font-size:32px;font-weight:900;color:#FFFFFF;margin-bottom:15px;">ماذا يقول عملاؤنا؟</h2>
-   <p class="section-subtitle" style="color:rgba(255,255,255,0.8);font-size:16px;max-width:600px;margin:0 auto;">ثقة أكثر من 500 عميل في خدماتنا</p>
-  </div>
-
-  <div class="testimonials-grid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:25px;">
-
-   <!-- Testimonial 1 -->
-   <div class="testimonial-card" style="background:rgba(255,255,255,0.05);backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:30px;transition:all 0.3s ease;">
-    <div class="stars" style="color:#FFD700;font-size:20px;margin-bottom:15px;">⭐⭐⭐⭐⭐</div>
-    <p class="testimonial-text" style="color:rgba(255,255,255,0.8);font-size:15px;line-height:1.8;margin-bottom:20px;font-style:italic;">"تم تركيب نظام كاميرات المراقبة بالكامل خلال يوم واحد فقط. الخدمة ممتازة والفنيين محترفين جداً. أنصح بالتعامل معهم بشدة."</p>
-    <div class="testimonial-author" style="display:flex;align-items:center;gap:15px;">
-     <div class="author-avatar" style="width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg, var(--primary), var(--primary-dark));display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:20px;">ع</div>
-     <div class="author-info">
-      <h4 style="color:var(--text-primary);font-weight:800;margin:0;font-size:16px;">عبدالله المطيري</h4>
-      <span style="color:rgba(255,255,255,0.8);font-size:13px;">مدير متجر أجهزة إلكترونية</span>
-     </div>
-    </div>
-   </div>
-
-   <!-- Testimonial 2 -->
-   <div class="testimonial-card" style="background:rgba(255,255,255,0.05);backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:30px;transition:all 0.3s ease;">
-    <div class="stars" style="color:#FFD700;font-size:20px;margin-bottom:15px;">⭐⭐⭐⭐⭐</div>
-    <p class="testimonial-text" style="color:rgba(255,255,255,0.8);font-size:15px;line-height:1.8;margin-bottom:20px;font-style:italic;">"جهزوا لنا نظام نقاط البيع كامل مع الباركود والطابعات. الأسعار منافسة جداً والجودة عالية. شكراً درة فارس الشمال."</p>
-    <div class="testimonial-author" style="display:flex;align-items:center;gap:15px;">
-     <div class="author-avatar" style="width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg, #FFFFFF, var(--secondary-dark));display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:20px;">م</div>
-     <div class="author-info">
-      <h4 style="color:var(--text-primary);font-weight:800;margin:0;font-size:16px;">محمد السبيعي</h4>
-      <span style="color:rgba(255,255,255,0.8);font-size:13px;">صاحب سلسلة مطاعم</span>
-     </div>
-    </div>
-   </div>
-
-   <!-- Testimonial 3 -->
-   <div class="testimonial-card" style="background:rgba(255,255,255,0.05);backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:30px;transition:all 0.3s ease;">
-    <div class="stars" style="color:#FFD700;font-size:20px;margin-bottom:15px;">⭐⭐⭐⭐⭐</div>
-    <p class="testimonial-text" style="color:rgba(255,255,255,0.8);font-size:15px;line-height:1.8;margin-bottom:20px;font-style:italic;">"صيانة سريعة وقطع غيار أصلية. جهزوا لي طابعة HP خلال ساعات بعد ما كانت متوقفة لأيام. خدمة ما بعد البيع ممتازة."</p>
-    <div class="testimonial-author" style="display:flex;align-items:center;gap:15px;">
-     <div class="author-avatar" style="width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg, #10B981, #059669);display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:20px;">ف</div>
-     <div class="author-info">
-      <h4 style="color:var(--text-primary);font-weight:800;margin:0;font-size:16px;">فهد العتيبي</h4>
-      <span style="color:rgba(255,255,255,0.8);font-size:13px;">مدير شركة طباعة</span>
-     </div>
-    </div>
-   </div>
-
-  </div>
- </div>
-</section>
-
 </html>
