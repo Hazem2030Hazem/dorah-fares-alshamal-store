@@ -3458,7 +3458,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <div class="install-prompt show" id="installPrompt">
  <span>💻 حمّل تطبيق درة فارس الشمال!</span>
- <a href="https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk" download style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.25);color:white;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:700;font-size:13px;transition:all 0.3s ease;text-decoration:none;display:inline-block;backdrop-filter:blur(5px);">📱 تحميل</a>
+ <button id="pwaInstallBtn" onclick="installPWA()" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.25);color:white;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:700;font-size:13px;transition:all 0.3s ease;text-decoration:none;display:inline-block;backdrop-filter:blur(5px);font-family:inherit;">📱 تثبيت</button>
  <button class="close-prompt" onclick="dismissInstallPrompt()" aria-label="إغلاق">✕</button>
 </div>
 
@@ -3482,5 +3482,33 @@ document.addEventListener('DOMContentLoaded', () => {
         container.appendChild(particle);
     }
 })();
+</script>
+<script>
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+ e.preventDefault();
+ deferredPrompt = e;
+});
+
+function installPWA() {
+ if (deferredPrompt) {
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then((choiceResult) => {
+   if (choiceResult.outcome === 'accepted') {
+    showToast('✅ تم تثبيت التطبيق بنجاح!');
+   } else {
+    showToast('❌ تم إلغاء التثبيت');
+   }
+   deferredPrompt = null;
+  });
+ } else {
+  showToast('⚠️ التثبيت غير متاح حالياً. جرب من قائمة المتصفح.');
+ }
+}
+
+function dismissInstallPrompt() {
+ document.getElementById('installPrompt').classList.remove('show');
+}
 </script>
 </html>
