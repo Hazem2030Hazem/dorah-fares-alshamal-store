@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
+<html lang="ar" dir="rtl" data-theme="dark"><head>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="google-site-verification" content="XXXXXXXXXXXXXXXXXXXXXXXXXXXX" />
+  <meta name="google-site-verification" content="XXXXXXXXXXXXXXXXXXXXXXXXXXXX">
   <meta charset="UTF-8">
   <meta name="cache-version" content="v2.1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -34,7 +32,7 @@
   <link rel="canonical" href="https://dorafares.com">
   <link rel="manifest" href="manifest.json?v=3.0">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20fill%3D%27%25231E88E5%27%20rx%3D%2715%27%20width%3D%27100%27%20height%3D%27100%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27white%27%3E%E2%9A%A1%3C%2Ftext%3E%3C%2Fsvg%3E">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
   <title>شركة درة فارس الشمال | متجر التقنية</title>
   
   <!-- ========== AUDIO AUTO-PLAY SCRIPT (مباشر في الصفحة) ========== -->
@@ -1629,9 +1627,39 @@
   }
   </style>
 <base target="_blank">
-</head>
+<style>
+            .dora-modal {display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:9999;align-items:center;justify-content:center;padding:20px}
+            .dora-modal.active {display:flex}
+            .dora-modal-content {background:rgba(15,12,41,0.95);backdrop-filter:blur(20px);border:1px solid rgba(239,68,68,0.3);border-radius:24px;padding:30px;width:100%;max-width:450px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+            .dora-modal-header {display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+            .dora-modal-header h3 {font-size:20px;font-weight:900;color:#fff}
+            .dora-modal-close {background:none;border:none;color:#fff;font-size:24px;cursor:pointer;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all 0.3s}
+            .dora-modal-close:hover {background:rgba(255,255,255,0.1)}
+            .dora-form-group {margin-bottom:15px}
+            .dora-form-group label {display:block;color:rgba(255,255,255,0.8);font-size:13px;margin-bottom:6px;font-weight:600}
+            .dora-form-group input, .dora-form-group textarea, .dora-form-group select {width:100%;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:#fff;font-size:14px;font-family:'Cairo','Tajawal',sans-serif;transition:all 0.3s}
+            .dora-form-group input:focus, .dora-form-group textarea:focus, .dora-form-group select:focus {outline:none;border-color:#EF4444;box-shadow:0 0 15px rgba(239,68,68,0.3)}
+            .dora-form-group input::placeholder, .dora-form-group textarea::placeholder {color:rgba(255,255,255,0.4)}
+            .dora-form-group select option {background:#1a1a2e;color:#fff}
+            .dora-star-rating {display:flex;gap:8px;font-size:28px;cursor:pointer;justify-content:center;margin:10px 0}
+            .dora-star-rating .dora-star {color:rgba(255,255,255,0.3);transition:all 0.2s;cursor:pointer}
+            .dora-star-rating .dora-star.active, .dora-star-rating .dora-star:hover {color:#F59E0B}
+            .dora-btn-submit {width:100%;padding:14px;background:linear-gradient(135deg, #EF4444, #DC2626);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.3s;font-family:'Cairo','Tajawal',sans-serif;margin-top:10px}
+            .dora-btn-submit:hover {transform:translateY(-2px);box-shadow:0 8px 25px rgba(239,68,68,0.4)}
+            .dora-btn-float {position:fixed;bottom:100px;left:30px;z-index:9998;width:55px;height:55px;background:linear-gradient(135deg, #F59E0B, #D97706);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;cursor:pointer;box-shadow:0 4px 20px rgba(245,158,11,0.4);transition:all 0.3s;border:none;animation:dora-pulse 2s infinite}
+            .dora-btn-float:hover {transform:scale(1.1);box-shadow:0 8px 30px rgba(245,158,11,0.6)}
+            .dora-btn-float.msg-btn {bottom:170px;background:linear-gradient(135deg, #3B82F6, #2563EB);box-shadow:0 4px 20px rgba(59,130,246,0.4)}
+            .dora-btn-float.msg-btn:hover {box-shadow:0 8px 30px rgba(59,130,246,0.6)}
+            @keyframes dora-pulse {0%,100%{box-shadow:0 4px 20px rgba(245,158,11,0.4)}50%{box-shadow:0 4px 30px rgba(245,158,11,0.7)}}
+            .dora-toast {position:fixed;bottom:30px;right:30px;background:rgba(15,12,41,0.95);color:#fff;padding:15px 25px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.5);display:flex;align-items:center;gap:10px;transform:translateY(100px);opacity:0;transition:all 0.4s;z-index:10000;border:1px solid rgba(239,68,68,0.3);font-family:'Cairo','Tajawal',sans-serif}
+            .dora-toast.show {transform:translateY(0);opacity:1}
+            .dora-toast-icon {font-size:20px}
+            .dora-tooltip {position:absolute;right:65px;background:#fff;color:#333;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;white-space:nowrap;opacity:0;visibility:hidden;transition:all 0.3s;box-shadow:0 2px 10px rgba(0,0,0,0.1);font-family:'Cairo','Tajawal',sans-serif}
+            .dora-btn-float:hover .dora-tooltip {opacity:1;visibility:visible;right:70px}
+            @media(max-width:768px){.dora-tooltip{display:none}}
+        </style></head>
 <body>
-<div class="particles" id="particles"></div>
+<div class="particles" id="particles"><div class="particle" style="left: 12.2413%; top: 40.0533%; width: 6.70319px; height: 6.70319px; animation-delay: 6.59061s; animation-duration: 10.0243s; background: rgba(16, 185, 129, 0.306);"></div><div class="particle" style="left: 5.34176%; top: 64.0994%; width: 4.85692px; height: 4.85692px; animation-delay: 2.94898s; animation-duration: 6.61419s; background: rgba(16, 185, 129, 0.333);"></div><div class="particle" style="left: 50.2871%; top: 11.7503%; width: 6.85082px; height: 6.85082px; animation-delay: 1.91964s; animation-duration: 9.65115s; background: rgba(245, 158, 11, 0.227);"></div><div class="particle" style="left: 59.1187%; top: 68.3191%; width: 3.56397px; height: 3.56397px; animation-delay: 6.04281s; animation-duration: 11.1046s; background: rgba(245, 158, 11, 0.247);"></div><div class="particle" style="left: 32.2652%; top: 49.4295%; width: 7.78573px; height: 7.78573px; animation-delay: 4.43755s; animation-duration: 14.4008s; background: rgba(233, 69, 96, 0.37);"></div><div class="particle" style="left: 34.5081%; top: 3.14188%; width: 2.19002px; height: 2.19002px; animation-delay: 5.55369s; animation-duration: 7.02247s; background: rgba(15, 52, 96, 0.655);"></div><div class="particle" style="left: 91.7009%; top: 37.8557%; width: 5.52749px; height: 5.52749px; animation-delay: 4.65295s; animation-duration: 10.7707s; background: rgba(233, 69, 96, 0.255);"></div><div class="particle" style="left: 99.1096%; top: 15.9939%; width: 2.15337px; height: 2.15337px; animation-delay: 3.92906s; animation-duration: 13.1889s; background: rgba(245, 158, 11, 0.64);"></div><div class="particle" style="left: 21.7022%; top: 12.7219%; width: 6.35288px; height: 6.35288px; animation-delay: 4.56839s; animation-duration: 13.4639s; background: rgba(233, 69, 96, 0.475);"></div><div class="particle" style="left: 87.1581%; top: 33.7385%; width: 2.48599px; height: 2.48599px; animation-delay: 2.80453s; animation-duration: 11.2285s; background: rgba(245, 158, 11, 0.337);"></div><div class="particle" style="left: 16.7264%; top: 50.4443%; width: 7.90621px; height: 7.90621px; animation-delay: 3.19617s; animation-duration: 14.0089s; background: rgba(15, 52, 96, 0.56);"></div><div class="particle" style="left: 67.5909%; top: 21.9548%; width: 6.23903px; height: 6.23903px; animation-delay: 3.33519s; animation-duration: 9.25462s; background: rgba(15, 52, 96, 0.396);"></div><div class="particle" style="left: 37.1295%; top: 0.79289%; width: 6.83847px; height: 6.83847px; animation-delay: 2.00473s; animation-duration: 13.6161s; background: rgba(245, 158, 11, 0.655);"></div><div class="particle" style="left: 61.5114%; top: 33.598%; width: 4.50906px; height: 4.50906px; animation-delay: 6.59138s; animation-duration: 8.68535s; background: rgba(245, 158, 11, 0.2);"></div><div class="particle" style="left: 8.70673%; top: 30.0273%; width: 4.79779px; height: 4.79779px; animation-delay: 4.01684s; animation-duration: 13.3709s; background: rgba(233, 69, 96, 0.267);"></div><div class="particle" style="left: 8.59424%; top: 86.5755%; width: 6.25767px; height: 6.25767px; animation-delay: 0.781486s; animation-duration: 11.0248s; background: rgba(245, 158, 11, 0.424);"></div><div class="particle" style="left: 50.8942%; top: 6.54617%; width: 6.40805px; height: 6.40805px; animation-delay: 7.76286s; animation-duration: 14.9047s; background: rgba(15, 52, 96, 0.525);"></div><div class="particle" style="left: 0.606878%; top: 97.6794%; width: 4.40008px; height: 4.40008px; animation-delay: 6.66675s; animation-duration: 9.58269s; background: rgba(15, 52, 96, 0.396);"></div><div class="particle" style="left: 77.4291%; top: 43.4939%; width: 7.69977px; height: 7.69977px; animation-delay: 0.144974s; animation-duration: 14.582s; background: rgba(245, 158, 11, 0.64);"></div><div class="particle" style="left: 59.7479%; top: 56.0894%; width: 4.38711px; height: 4.38711px; animation-delay: 5.30514s; animation-duration: 8.36633s; background: rgba(245, 158, 11, 0.204);"></div><div class="particle" style="left: 42.4848%; top: 24.1493%; width: 5.52203px; height: 5.52203px; animation-delay: 7.09018s; animation-duration: 13.9628s; background: rgba(16, 185, 129, 0.647);"></div><div class="particle" style="left: 41.0432%; top: 33.0141%; width: 7.56393px; height: 7.56393px; animation-delay: 3.26098s; animation-duration: 7.59164s; background: rgba(245, 158, 11, 0.28);"></div><div class="particle" style="left: 88.9341%; top: 76.3276%; width: 2.86574px; height: 2.86574px; animation-delay: 2.82946s; animation-duration: 9.53711s; background: rgba(15, 52, 96, 0.404);"></div><div class="particle" style="left: 0.376856%; top: 4.06475%; width: 2.19222px; height: 2.19222px; animation-delay: 6.4583s; animation-duration: 14.7836s; background: rgba(245, 158, 11, 0.455);"></div><div class="particle" style="left: 92.5223%; top: 42.0924%; width: 3.70049px; height: 3.70049px; animation-delay: 3.34049s; animation-duration: 5.37801s; background: rgba(16, 185, 129, 0.306);"></div><div class="particle" style="left: 79.7694%; top: 40.6506%; width: 2.40056px; height: 2.40056px; animation-delay: 0.386419s; animation-duration: 14.066s; background: rgba(245, 158, 11, 0.32);"></div><div class="particle" style="left: 18.733%; top: 88.059%; width: 2.73709px; height: 2.73709px; animation-delay: 2.2798s; animation-duration: 14.2325s; background: rgba(16, 185, 129, 0.61);"></div><div class="particle" style="left: 79.6281%; top: 85.5034%; width: 2.11105px; height: 2.11105px; animation-delay: 0.0517711s; animation-duration: 9.03275s; background: rgba(15, 52, 96, 0.55);"></div><div class="particle" style="left: 17.4612%; top: 97.0408%; width: 7.35201px; height: 7.35201px; animation-delay: 2.3066s; animation-duration: 10.5992s; background: rgba(16, 185, 129, 0.608);"></div><div class="particle" style="left: 98.6127%; top: 13.9556%; width: 4.36806px; height: 4.36806px; animation-delay: 2.91822s; animation-duration: 12.2725s; background: rgba(245, 158, 11, 0.333);"></div><div class="particle" style="left: 10.9337%; top: 58.6047%; width: 7.67977px; height: 7.67977px; animation-delay: 6.68722s; animation-duration: 11.1237s; background: rgba(245, 158, 11, 0.514);"></div><div class="particle" style="left: 99.3907%; top: 41.8235%; width: 2.07194px; height: 2.07194px; animation-delay: 0.272697s; animation-duration: 7.80354s; background: rgba(16, 185, 129, 0.498);"></div><div class="particle" style="left: 95.7064%; top: 61.0132%; width: 4.58595px; height: 4.58595px; animation-delay: 4.08853s; animation-duration: 10.8351s; background: rgba(15, 52, 96, 0.663);"></div><div class="particle" style="left: 69.5274%; top: 24.9785%; width: 5.04039px; height: 5.04039px; animation-delay: 4.9394s; animation-duration: 7.57419s; background: rgba(245, 158, 11, 0.27);"></div><div class="particle" style="left: 27.5987%; top: 97.748%; width: 4.79804px; height: 4.79804px; animation-delay: 4.88608s; animation-duration: 6.16283s; background: rgba(233, 69, 96, 0.44);"></div><div class="particle" style="left: 80.8218%; top: 53.4615%; width: 2.7065px; height: 2.7065px; animation-delay: 5.68912s; animation-duration: 13.6549s; background: rgba(245, 158, 11, 0.525);"></div><div class="particle" style="left: 73.7856%; top: 42.408%; width: 3.25711px; height: 3.25711px; animation-delay: 1.1268s; animation-duration: 8.6179s; background: rgba(16, 185, 129, 0.427);"></div><div class="particle" style="left: 62.1991%; top: 52.0556%; width: 7.25695px; height: 7.25695px; animation-delay: 3.62704s; animation-duration: 14.3646s; background: rgba(16, 185, 129, 0.38);"></div><div class="particle" style="left: 17.256%; top: 96.8639%; width: 3.41176px; height: 3.41176px; animation-delay: 4.32049s; animation-duration: 8.94701s; background: rgba(233, 69, 96, 0.498);"></div><div class="particle" style="left: 85.115%; top: 99.449%; width: 2.05931px; height: 2.05931px; animation-delay: 6.34464s; animation-duration: 13.0073s; background: rgba(16, 185, 129, 0.643);"></div><div class="particle" style="left: 71.5135%; top: 16.3306%; width: 7.84465px; height: 7.84465px; animation-delay: 6.73235s; animation-duration: 11.5874s; background: rgba(245, 158, 11, 0.337);"></div><div class="particle" style="left: 7.5469%; top: 34.7106%; width: 2.13668px; height: 2.13668px; animation-delay: 5.65407s; animation-duration: 14.9555s; background: rgba(15, 52, 96, 0.596);"></div><div class="particle" style="left: 41.4567%; top: 33.7242%; width: 6.43218px; height: 6.43218px; animation-delay: 2.31457s; animation-duration: 10.1291s; background: rgba(233, 69, 96, 0.345);"></div><div class="particle" style="left: 36.6337%; top: 41.4249%; width: 7.41018px; height: 7.41018px; animation-delay: 4.5631s; animation-duration: 10.7581s; background: rgba(15, 52, 96, 0.376);"></div><div class="particle" style="left: 58.5171%; top: 18.0616%; width: 2.91478px; height: 2.91478px; animation-delay: 2.39799s; animation-duration: 11.0399s; background: rgba(245, 158, 11, 0.694);"></div><div class="particle" style="left: 84.7857%; top: 8.2349%; width: 7.80766px; height: 7.80766px; animation-delay: 7.94669s; animation-duration: 8.82595s; background: rgba(233, 69, 96, 0.3);"></div><div class="particle" style="left: 20.745%; top: 1.97561%; width: 2.2098px; height: 2.2098px; animation-delay: 7.14071s; animation-duration: 11.3774s; background: rgba(245, 158, 11, 0.573);"></div><div class="particle" style="left: 45.7088%; top: 99.3126%; width: 4.1796px; height: 4.1796px; animation-delay: 2.92352s; animation-duration: 12.6576s; background: rgba(233, 69, 96, 0.57);"></div><div class="particle" style="left: 19.5766%; top: 65.9875%; width: 5.61184px; height: 5.61184px; animation-delay: 0.468222s; animation-duration: 5.68734s; background: rgba(15, 52, 96, 0.6);"></div><div class="particle" style="left: 76.349%; top: 78.1047%; width: 3.32989px; height: 3.32989px; animation-delay: 0.36264s; animation-duration: 14.616s; background: rgba(233, 69, 96, 0.282);"></div></div>
 
 <script>
 (function() {
@@ -1678,7 +1706,7 @@
 <div class="container">
 <div class="header-inner">
 <div class="logo">
-<img src="logo.png" alt="شركة درة فارس الشمال" style="width:65px;height:65px;border-radius:14px;object-fit:contain;">
+<img src="https://www.alshamal-df.com/logo.png?v=2.1_1783834267413" alt="شركة درة فارس الشمال" style="width:65px;height:65px;border-radius:14px;object-fit:contain;">
 <div class="logo-particles">
  <div class="logo-particle"></div>
  <div class="logo-particle"></div>
@@ -1697,7 +1725,7 @@
   التصنيفات <span class="arrow">▼</span>
  </button>
  <div class="dropdown-menu">
-  <a href="service_printing.html" aria-label="خدمات الطباعة"><div class="cat-icon-small"><img src="https://kimi-web-img.moonshot.cn/img/toppng.com/9fe4668df0df75352751c6bdf5cbe497d0223441.png" alt="طابعة" style="width:80px;height:80px;object-fit:contain;mix-blend-mode:multiply;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.3));"></div> خدمات الطباعة</a>
+  <a href="service_printing.html" aria-label="خدمات الطباعة"><div class="cat-icon-small"><img src="https://kimi-web-img.moonshot.cn/img/toppng.com/9fe4668df0df75352751c6bdf5cbe497d0223441.png?v=2.1_1783834267413" alt="طابعة" style="width:80px;height:80px;object-fit:contain;mix-blend-mode:multiply;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.3));"></div> خدمات الطباعة</a>
   <a href="service_cameras.html" aria-label="كاميرات المراقبة"><div class="cat-icon-small">📹</div> كاميرات المراقبة</a>
   <a href="service_pos.html" aria-label="نقاط البيع"><div class="cat-icon-small">💳</div> نقاط البيع</a>
   <a href="service_network.html" aria-label="شبكات"><div class="cat-icon-small">🌐</div> شبكات</a>
@@ -1713,10 +1741,10 @@
 </nav>
 <div class="header-controls">
 <button onclick="location.href='https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk'" class="install-btn" title="تثبيت تطبيق درة فارس الشمال" aria-label="تثبيت تطبيق درة فارس الشمال" style="display:inline-flex !important;visibility:visible !important;opacity:1 !important;margin-left:8px;position:relative;z-index:9999;background:transparent !important;border:none !important;overflow:hidden;padding:0 !important;width:40px !important;height:40px !important;border-radius:12px !important;cursor:pointer !important;text-decoration:none;">
- <img src="https://i.imgur.com/Z4C4wTh.jpg" alt="تثبيت التطبيق" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">
+ <img src="https://i.imgur.com/Z4C4wTh.jpg?v=2.1_1783834267413" alt="تثبيت التطبيق" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">
 </button>
 <button class="audio-toggle" onclick="toggleAudio()" title="تشغيل/إيقاف الصوت" aria-label="تشغيل/إيقاف الصوت" style="margin-left:8px;background:transparent !important;border:none !important;padding:0 !important;width:40px !important;height:40px !important;overflow:hidden !important;border-radius:12px !important;cursor:pointer !important;">
- <img src="https://i.imgur.com/aYm7tcl.jpg" alt="الصوت" style="width:100%;height:100%;object-fit:cover;border-radius:12px;opacity:0.9;transition:all 0.3s ease;filter:brightness(1.3) contrast(1.1);mix-blend-mode:screen;" id="speakerIcon">
+ <img src="https://i.imgur.com/aYm7tcl.jpg?v=2.1_1783834267413" alt="الصوت" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; opacity: 1; transition: 0.3s; filter: brightness(1.5) contrast(1.2); mix-blend-mode: screen;" id="speakerIcon">
 </button>
 <div class="search-bar">
  <input type="text" id="searchInput" placeholder="ابحث عن منتج..." oninput="handleSearch(this.value)" aria-label="البحث عن منتج">
@@ -1764,13 +1792,13 @@
 <a href="services.html" class="btn-secondary">🛠️ خدماتنا</a>
 </div>
 <div class="hero-stats">
-<div class="hero-stat"><strong id="statProducts">+28</strong><span>منتج متنوع</span></div>
+<div class="hero-stat"><strong id="statProducts">+36</strong><span>منتج متنوع</span></div>
 <div class="hero-stat"><strong id="statAvailable">+36</strong><span>متاح الآن</span></div>
 <div class="hero-stat"><strong>+500</strong><span>عميل سعيد</span></div>
 </div>
 </div>
 <div class="hero-visual">
-<div class="float-card"><span class="icon"><img src="https://kimi-web-img.moonshot.cn/img/toppng.com/9fe4668df0df75352751c6bdf5cbe497d0223441.png" alt="طابعة" style="width:80px;height:80px;object-fit:contain;mix-blend-mode:multiply;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.3));"></span><h4>طابعات</h4><p>HP, Canon, Epson</p></div>
+<div class="float-card"><span class="icon"><img src="https://kimi-web-img.moonshot.cn/img/toppng.com/9fe4668df0df75352751c6bdf5cbe497d0223441.png?v=2.1_1783834267413" alt="طابعة" style="width:80px;height:80px;object-fit:contain;mix-blend-mode:multiply;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.3));"></span><h4>طابعات</h4><p>HP, Canon, Epson</p></div>
 <div class="float-card"><span class="icon">💻</span><h4>كمبيوتر</h4><p>أجهزة ولابتوب</p></div>
 <div class="float-card"><span class="icon">🧠</span><h4>رامات</h4><p>DDR4, DDR5</p></div>
 <div class="float-card"><span class="icon">💾</span><h4>هاردات</h4><p>SSD, HDD</p></div>
@@ -1878,7 +1906,1663 @@
 </div>
 </div>
 </div>
-<div class="prod-grid" id="productsGrid"></div>
+<div class="prod-grid" id="productsGrid">
+   <div class="prod-card " data-category="printers" data-id="1">
+    <div class="prod-img" onclick="openProductModal(1)">
+     <div class="prod-badge ">الأكثر مبيعاً</div>
+     
+     <img src="https://images.unsplash.com/photo-1612815154858-60aa4c43e64e?w=400&amp;h=300&amp;fit=crop" alt="طابعة HP LaserJet Pro M404n" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(1, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">طابعات</span>
+     <h4 class="prod-name" onclick="openProductModal(1)">طابعة HP LaserJet Pro M404n</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.8 (2 تقييم)</span>
+     </div>
+     <p class="prod-desc">طابعة ليزر أحادية اللون، سرعة طباعة 40 صفحة/دقيقة، دعم الشبكة السلكية</p>
+     <div class="stock-indicator stock-low">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">الكمية محدودة (5 متبقي)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:10%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">١٬٤٩٩ ر.س</span>
+       ١٬٢٩٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(1, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(1, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(1)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="printers" data-id="2">
+    <div class="prod-img" onclick="openProductModal(2)">
+     <div class="prod-badge new">جديد</div>
+     
+     <img src="https://images.unsplash.com/photo-1569091791842-7cfb64e04797?w=400&amp;h=300&amp;fit=crop" alt="طابعة Canon PIXMA G6020" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(2, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">طابعات</span>
+     <h4 class="prod-name" onclick="openProductModal(2)">طابعة Canon PIXMA G6020</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.5 (1 تقييم)</span>
+     </div>
+     <p class="prod-desc">طابعة حبر فائقة الاقتصاد، خزان حبر قابل لإعادة الملء، طباعة حتى 7700 صفحة</p>
+     <div class="stock-indicator stock-medium">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر (12 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:24%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">١٬١٩٩ ر.س</span>
+       ٩٩٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(2, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(2, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(2)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="printers" data-id="3">
+    <div class="prod-img" onclick="openProductModal(3)">
+     <div class="prod-badge discount">خصم -15%</div>
+     
+     <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&amp;h=300&amp;fit=crop" alt="طابعة Epson EcoTank L3250" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(3, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">طابعات</span>
+     <h4 class="prod-name" onclick="openProductModal(3)">طابعة Epson EcoTank L3250</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.3 (0 تقييم)</span>
+     </div>
+     <p class="prod-desc">طابعة 3 في 1 بتقنية EcoTank، تكلفة طباعة منخفضة جداً</p>
+     <div class="stock-indicator stock-low">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">الكمية محدودة (3 متبقي)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:6%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">٩٩٩ ر.س</span>
+       ٨٤٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(3, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(3, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(3)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="printers" data-id="4">
+    <div class="prod-img" onclick="openProductModal(4)">
+     
+     
+     <img src="https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=400&amp;h=300&amp;fit=crop" alt="طابعة Brother HL-L2350DW" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(4, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">طابعات</span>
+     <h4 class="prod-name" onclick="openProductModal(4)">طابعة Brother HL-L2350DW</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.6 (1 تقييم)</span>
+     </div>
+     <p class="prod-desc">طابعة ليزر مع WiFi، طباعة تلقائية على الوجهين، مثالية للمنزل</p>
+     <div class="stock-indicator stock-medium">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر (8 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:16%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       
+       ٧٤٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(4, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(4, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(4)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="computers" data-id="5">
+    <div class="prod-img" onclick="openProductModal(5)">
+     <div class="prod-badge ">الأكثر مبيعاً</div>
+     
+     <img src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?w=400&amp;h=300&amp;fit=crop" alt="كمبيوتر Dell OptiPlex 7090" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(5, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">كمبيوتر</span>
+     <h4 class="prod-name" onclick="openProductModal(5)">كمبيوتر Dell OptiPlex 7090</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.9 (1 تقييم)</span>
+     </div>
+     <p class="prod-desc">كمبيوتر مكتبي للأعمال، Intel Core i7، 16GB رام، 512GB SSD</p>
+     <div class="stock-indicator stock-medium">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر (7 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:14.000000000000002%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">٣٬٩٩٩ ر.س</span>
+       ٣٬٤٩٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(5, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(5, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(5)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="computers" data-id="6">
+    <div class="prod-img" onclick="openProductModal(6)">
+     <div class="prod-badge new">جديد</div>
+     
+     <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&amp;h=300&amp;fit=crop" alt="لابتوب HP ProBook 450 G8" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(6, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">كمبيوتر</span>
+     <h4 class="prod-name" onclick="openProductModal(6)">لابتوب HP ProBook 450 G8</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.4 (0 تقييم)</span>
+     </div>
+     <p class="prod-desc">لابتوب أعمال 15.6 بوصة، Intel Core i5، شاشة FHD، بطارية تدوم طوال اليوم</p>
+     <div class="stock-indicator stock-low">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">الكمية محدودة (4 متبقي)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:8%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">٣٬٢٩٩ ر.س</span>
+       ٢٬٨٩٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(6, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(6, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(6)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="computers" data-id="7">
+    <div class="prod-img" onclick="openProductModal(7)">
+     <div class="prod-badge discount">خصم -12%</div>
+     
+     <img src="https://images.unsplash.com/photo-1587831990711-23ca6441447b?w=400&amp;h=300&amp;fit=crop" alt="كمبيوتر Lenovo ThinkCentre M70q" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(7, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">كمبيوتر</span>
+     <h4 class="prod-name" onclick="openProductModal(7)">كمبيوتر Lenovo ThinkCentre M70q</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.2 (1 تقييم)</span>
+     </div>
+     <p class="prod-desc">كمبيوتر صغير الحجم (Tiny)، أداء قوي بتصميم مدمج للمساحات المحدودة</p>
+     <div class="stock-indicator stock-low">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">الكمية محدودة (2 متبقي)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:4%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">٢٬٤٩٩ ر.س</span>
+       ٢٬١٩٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(7, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(7, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(7)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="computers" data-id="8">
+    <div class="prod-img" onclick="openProductModal(8)">
+     
+     
+     <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&amp;h=300&amp;fit=crop" alt="لابتوب Dell Latitude 3520" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(8, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">كمبيوتر</span>
+     <h4 class="prod-name" onclick="openProductModal(8)">لابتوب Dell Latitude 3520</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.5 (0 تقييم)</span>
+     </div>
+     <p class="prod-desc">لابتوب أعمال موثوق، شاشة 15.6 بوصة FHD، معالج Intel Core i5</p>
+     <div class="stock-indicator stock-medium">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر (9 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:18%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       
+       ٢٬٥٩٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(8, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(8, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(8)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="ram" data-id="9">
+    <div class="prod-img" onclick="openProductModal(9)">
+     <div class="prod-badge ">الأكثر مبيعاً</div>
+     
+     <img src="https://images.unsplash.com/photo-1562976540-3602a999dd8c?w=400&amp;h=300&amp;fit=crop" alt="رام Kingston DDR4 16GB 3200MHz" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(9, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">رامات</span>
+     <h4 class="prod-name" onclick="openProductModal(9)">رام Kingston DDR4 16GB 3200MHz</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.7 (1 تقييم)</span>
+     </div>
+     <p class="prod-desc">ذاكرة Kingston FURY Beast DDR4، سرعة 3200MHz، مثالية للألعاب</p>
+     <div class="stock-indicator stock-high">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر بكثرة (25 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:50%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">٣٤٩ ر.س</span>
+       ٢٩٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(9, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(9, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(9)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="ram" data-id="10">
+    <div class="prod-img" onclick="openProductModal(10)">
+     <div class="prod-badge new">جديد</div>
+     
+     <img src="https://images.unsplash.com/photo-1592664857866-c6e56c5f9f7?w=400&amp;h=300&amp;fit=crop" alt="رام Corsair Vengeance DDR4 32GB" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(10, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">رامات</span>
+     <h4 class="prod-name" onclick="openProductModal(10)">رام Corsair Vengeance DDR4 32GB</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.8 (0 تقييم)</span>
+     </div>
+     <p class="prod-desc">ذاكرة Corsair Vengeance RGB Pro، 32GB، سرعة 3600MHz، إضاءة RGB</p>
+     <div class="stock-indicator stock-medium">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر (15 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:30%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">٦٤٩ ر.س</span>
+       ٥٤٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(10, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(10, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(10)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="ram" data-id="11">
+    <div class="prod-img" onclick="openProductModal(11)">
+     <div class="prod-badge discount">خصم -25%</div>
+     
+     <img src="https://images.unsplash.com/photo-1628556270448-4d4e6a4d57c1?w=400&amp;h=300&amp;fit=crop" alt="رام Crucial DDR4 8GB 2666MHz" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(11, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">رامات</span>
+     <h4 class="prod-name" onclick="openProductModal(11)">رام Crucial DDR4 8GB 2666MHz</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.1 (1 تقييم)</span>
+     </div>
+     <p class="prod-desc">ذاكرة Crucial DDR4 موثوقة، 8GB، سرعة 2666MHz، متوافقة مع الأجهزة المحمولة</p>
+     <div class="stock-indicator stock-high">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر بكثرة (30 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:60%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">١٩٩ ر.س</span>
+       ١٤٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(11, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(11, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(11)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="ram" data-id="12">
+    <div class="prod-img" onclick="openProductModal(12)">
+     <div class="prod-badge new">جديد</div>
+     
+     <img src="https://images.unsplash.com/photo-1624705002806-5d72df19c3ad?w=400&amp;h=300&amp;fit=crop" alt="رام G.Skill Trident Z5 DDR5 32GB" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(12, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">رامات</span>
+     <h4 class="prod-name" onclick="openProductModal(12)">رام G.Skill Trident Z5 DDR5 32GB</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.9 (0 تقييم)</span>
+     </div>
+     <p class="prod-desc">ذاكرة DDR5 الجيل الجديد، 32GB، سرعة 5600MHz، أداء فائق</p>
+     <div class="stock-indicator stock-medium">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر (6 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:12%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">٨٩٩ ر.س</span>
+       ٧٩٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(12, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(12, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(12)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="storage" data-id="13">
+    <div class="prod-img" onclick="openProductModal(13)">
+     <div class="prod-badge ">الأكثر مبيعاً</div>
+     
+     <img src="https://images.unsplash.com/photo-1597872252721-5c3e0f4353f2?w=400&amp;h=300&amp;fit=crop" alt="SSD Samsung 980 NVMe 1TB" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(13, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">هاردات</span>
+     <h4 class="prod-name" onclick="openProductModal(13)">SSD Samsung 980 NVMe 1TB</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.8 (1 تقييم)</span>
+     </div>
+     <p class="prod-desc">قرص SSD NVMe M.2 سعة 1TB، سرعة قراءة 3500MB/s، سرعة كتابة 3000MB/s</p>
+     <div class="stock-indicator stock-high">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر بكثرة (18 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:36%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">٤٩٩ ر.س</span>
+       ٤٤٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(13, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(13, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(13)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="storage" data-id="14">
+    <div class="prod-img" onclick="openProductModal(14)">
+     <div class="prod-badge new">جديد</div>
+     
+     <img src="https://images.unsplash.com/photo-1531492746076-161ca9bcad29?w=400&amp;h=300&amp;fit=crop" alt="SSD Kingston NV2 500GB" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(14, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">هاردات</span>
+     <h4 class="prod-name" onclick="openProductModal(14)">SSD Kingston NV2 500GB</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.3 (0 تقييم)</span>
+     </div>
+     <p class="prod-desc">قرص SSD NVMe PCIe 4.0، سعة 500GB، سرعة قراءة 3500MB/s</p>
+     <div class="stock-indicator stock-high">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر بكثرة (22 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:44%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">٢٤٩ ر.س</span>
+       ١٩٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(14, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(14, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(14)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="storage" data-id="15">
+    <div class="prod-img" onclick="openProductModal(15)">
+     <div class="prod-badge discount">خصم -14%</div>
+     
+     <img src="https://images.unsplash.com/photo-1555664424-778a69022365?w=400&amp;h=300&amp;fit=crop" alt="هارد ديسك WD Blue 2TB" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(15, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">هاردات</span>
+     <h4 class="prod-name" onclick="openProductModal(15)">هارد ديسك WD Blue 2TB</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.4 (1 تقييم)</span>
+     </div>
+     <p class="prod-desc">قرص صلب 3.5 بوصة سعة 2TB، سرعة 7200RPM، كاش 256MB</p>
+     <div class="stock-indicator stock-medium">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر (14 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:28.000000000000004%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">٣٤٩ ر.س</span>
+       ٢٩٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(15, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(15, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(15)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="storage" data-id="16">
+    <div class="prod-img" onclick="openProductModal(16)">
+     
+     
+     <img src="https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=400&amp;h=300&amp;fit=crop" alt="SSD Crucial MX500 1TB SATA" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(16, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">هاردات</span>
+     <h4 class="prod-name" onclick="openProductModal(16)">SSD Crucial MX500 1TB SATA</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.5 (0 تقييم)</span>
+     </div>
+     <p class="prod-desc">قرص SSD SATA 2.5 بوصة سعة 1TB، سرعة قراءة 560MB/s، ضمان 5 سنوات</p>
+     <div class="stock-indicator stock-medium">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر (11 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:22%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       
+       ٣٧٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(16, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(16, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(16)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="cables" data-id="17">
+    <div class="prod-img" onclick="openProductModal(17)">
+     <div class="prod-badge ">الأكثر مبيعاً</div>
+     
+     <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&amp;h=300&amp;fit=crop" alt="كابل HDMI 2.1 UGREEN 2M" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(17, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">وصلات</span>
+     <h4 class="prod-name" onclick="openProductModal(17)">كابل HDMI 2.1 UGREEN 2M</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.6 (1 تقييم)</span>
+     </div>
+     <p class="prod-desc">كابل HDMI 2.1 عالي الجودة، يدعم 8K@60Hz و 4K@120Hz، طول 2 متر</p>
+     <div class="stock-indicator stock-high">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر بكثرة (50 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:100%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">١٠٩ ر.س</span>
+       ٨٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(17, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(17, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(17)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="cables" data-id="18">
+    <div class="prod-img" onclick="openProductModal(18)">
+     <div class="prod-badge discount">خصم -25%</div>
+     
+     <img src="https://images.unsplash.com/photo-1625153666466-233456c5f9f7?w=400&amp;h=300&amp;fit=crop" alt="كابل USB-C to USB-C 3.1" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(18, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">وصلات</span>
+     <h4 class="prod-name" onclick="openProductModal(18)">كابل USB-C to USB-C 3.1</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.2 (0 تقييم)</span>
+     </div>
+     <p class="prod-desc">كابل USB-C عالي السرعة، يدعم الشحن السريع 60W ونقل البيانات 10Gbps</p>
+     <div class="stock-indicator stock-high">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر بكثرة (35 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:70%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">٧٩ ر.س</span>
+       ٥٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(18, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(18, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(18)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="cables" data-id="19">
+    <div class="prod-img" onclick="openProductModal(19)">
+     <div class="prod-badge new">جديد</div>
+     
+     <img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=400&amp;h=300&amp;fit=crop" alt="كابل DisplayPort 1.4 4K" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(19, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">وصلات</span>
+     <h4 class="prod-name" onclick="openProductModal(19)">كابل DisplayPort 1.4 4K</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.5 (0 تقييم)</span>
+     </div>
+     <p class="prod-desc">كابل DisplayPort 1.4، يدعم 4K@144Hz و 8K@60Hz، مثالي للألعاب</p>
+     <div class="stock-indicator stock-high">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر بكثرة (28 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:56.00000000000001%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       
+       ٧٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(19, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(19, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(19)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="cables" data-id="20">
+    <div class="prod-img" onclick="openProductModal(20)">
+     
+     
+     <img src="https://images.unsplash.com/photo-1550009158-9ebf690569ba?w=400&amp;h=300&amp;fit=crop" alt="وصلة VGA to HDMI محول" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(20, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">وصلات</span>
+     <h4 class="prod-name" onclick="openProductModal(20)">وصلة VGA to HDMI محول</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★☆☆</span>
+      <span class="rating-text">3.9 (1 تقييم)</span>
+     </div>
+     <p class="prod-desc">محول VGA إلى HDMI مع صوت، لتوصيل الأجهزة القديمة بشاشات حديثة</p>
+     <div class="stock-indicator stock-high">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر بكثرة (42 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:84%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       
+       ٦٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(20, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(20, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(20)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="projectors" data-id="21">
+    <div class="prod-img" onclick="openProductModal(21)">
+     <div class="prod-badge ">الأكثر مبيعاً</div>
+     
+     <img src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=400&amp;h=300&amp;fit=crop" alt="بروجكتور Epson EB-E01 XGA" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(21, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">بروجكتور</span>
+     <h4 class="prod-name" onclick="openProductModal(21)">بروجكتور Epson EB-E01 XGA</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.7 (1 تقييم)</span>
+     </div>
+     <p class="prod-desc">بروجكتور Epson للأعمال والتعليم، سطوع 3300 لومن، دقة XGA</p>
+     <div class="stock-indicator stock-low">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">الكمية محدودة (5 متبقي)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:10%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">٢٬١٩٩ ر.س</span>
+       ١٬٨٩٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(21, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(21, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(21)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="projectors" data-id="22">
+    <div class="prod-img" onclick="openProductModal(22)">
+     <div class="prod-badge new">جديد</div>
+     
+     <img src="https://images.unsplash.com/photo-1517604931442-710c8ef5ad25?w=400&amp;h=300&amp;fit=crop" alt="بروجكتور ViewSonic PA503W WXGA" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(22, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">بروجكتور</span>
+     <h4 class="prod-name" onclick="openProductModal(22)">بروجكتور ViewSonic PA503W WXGA</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.4 (0 تقييم)</span>
+     </div>
+     <p class="prod-desc">بروجكتور ViewSonic متعدد الاستخدامات، سطوع 3600 لومن، دقة WXGA</p>
+     <div class="stock-indicator stock-low">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">الكمية محدودة (3 متبقي)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:6%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">١٬٧٩٩ ر.س</span>
+       ١٬٤٩٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(22, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(22, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(22)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="projectors" data-id="23">
+    <div class="prod-img" onclick="openProductModal(23)">
+     <div class="prod-badge discount">خصم -17%</div>
+     
+     <img src="https://images.unsplash.com/photo-1535016120720-40c646be5580?w=400&amp;h=300&amp;fit=crop" alt="بروجكتور BenQ MS560 SVGA" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(23, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">بروجكتور</span>
+     <h4 class="prod-name" onclick="openProductModal(23)">بروجكتور BenQ MS560 SVGA</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4 (1 تقييم)</span>
+     </div>
+     <p class="prod-desc">بروجكتور BenQ اقتصادي، سطوع 4000 لومن، دقة SVGA</p>
+     <div class="stock-indicator stock-medium">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر (7 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:14.000000000000002%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">١٬١٩٩ ر.س</span>
+       ٩٩٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(23, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(23, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(23)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="projectors" data-id="24">
+    <div class="prod-img" onclick="openProductModal(24)">
+     <div class="prod-badge new">جديد</div>
+     
+     <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=400&amp;h=300&amp;fit=crop" alt="بروجكتور محمول Anker Nebula" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(24, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">بروجكتور</span>
+     <h4 class="prod-name" onclick="openProductModal(24)">بروجكتور محمول Anker Nebula</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.6 (0 تقييم)</span>
+     </div>
+     <p class="prod-desc">بروجكتور ذكي محمول، Android TV مدمج، سطوع 200 ANSI لومن، بطارية 2.5 ساعة</p>
+     <div class="stock-indicator stock-low">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">الكمية محدودة (4 متبقي)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:8%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">١٬٤٩٩ ر.س</span>
+       ١٬٢٩٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(24, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(24, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(24)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="accessories" data-id="25">
+    <div class="prod-img" onclick="openProductModal(25)">
+     <div class="prod-badge ">الأكثر مبيعاً</div>
+     
+     <img src="https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400&amp;h=300&amp;fit=crop" alt="ماوس لاسلكي Logitech MX Master 3S" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(25, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">إكسسوارات</span>
+     <h4 class="prod-name" onclick="openProductModal(25)">ماوس لاسلكي Logitech MX Master 3S</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.9 (1 تقييم)</span>
+     </div>
+     <p class="prod-desc">ماوس احترافي لاسلكي، استشعار 8000 DPI، عجلة MagSpeed</p>
+     <div class="stock-indicator stock-high">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر بكثرة (20 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:40%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">٤٤٩ ر.س</span>
+       ٣٩٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(25, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(25, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(25)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="accessories" data-id="26">
+    <div class="prod-img" onclick="openProductModal(26)">
+     <div class="prod-badge new">جديد</div>
+     
+     <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400&amp;h=300&amp;fit=crop" alt="كيبورد ميكانيكي Keychron K2" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(26, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">إكسسوارات</span>
+     <h4 class="prod-name" onclick="openProductModal(26)">كيبورد ميكانيكي Keychron K2</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.7 (0 تقييم)</span>
+     </div>
+     <p class="prod-desc">كيبورد ميكانيكي لاسلكي 75%، مفاتيح Gateron G Pro، إضاءة RGB</p>
+     <div class="stock-indicator stock-medium">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر (8 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:16%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">٤٩٩ ر.س</span>
+       ٤٤٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(26, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(26, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(26)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="accessories" data-id="27">
+    <div class="prod-img" onclick="openProductModal(27)">
+     <div class="prod-badge discount">خصم -13%</div>
+     
+     <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&amp;h=300&amp;fit=crop" alt="سماعات رأس JBL Tune 760NC" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(27, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">إكسسوارات</span>
+     <h4 class="prod-name" onclick="openProductModal(27)">سماعات رأس JBL Tune 760NC</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.3 (1 تقييم)</span>
+     </div>
+     <p class="prod-desc">سماعات رأس لاسلكية مع إلغاء الضوضاء النشط، صوت JBL Pure Bass، بطارية 35 ساعة</p>
+     <div class="stock-indicator stock-high">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر بكثرة (16 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:32%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">٣٩٩ ر.س</span>
+       ٣٤٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(27, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(27, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(27)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="accessories" data-id="28">
+    <div class="prod-img" onclick="openProductModal(28)">
+     
+     
+     <img src="https://images.unsplash.com/photo-1625723044792-44de16ccb4e9?w=400&amp;h=300&amp;fit=crop" alt="هاب USB 3.0 Anker 7-Port" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(28, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">إكسسوارات</span>
+     <h4 class="prod-name" onclick="openProductModal(28)">هاب USB 3.0 Anker 7-Port</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.4 (0 تقييم)</span>
+     </div>
+     <p class="prod-desc">هاب USB 3.0 بـ 7 منافذ، سرعة نقل 5Gbps، مصدر طاقة 36W مدمج</p>
+     <div class="stock-indicator stock-high">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر بكثرة (33 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:66%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       
+       ١٤٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(28, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(28, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(28)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="ink" data-id="29">
+    <div class="prod-img" onclick="openProductModal(29)">
+     <div class="prod-badge ">الأكثر مبيعاً</div>
+     
+     <img src="https://images.unsplash.com/photo-1612815154858-60aa4c43e64e?w=400&amp;h=300&amp;fit=crop" alt="حبر HP 305XL أسود عالي الإنتاجية" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(29, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">أحبار الطابعات</span>
+     <h4 class="prod-name" onclick="openProductModal(29)">حبر HP 305XL أسود عالي الإنتاجية</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.7 (1 تقييم)</span>
+     </div>
+     <p class="prod-desc">حبر أصلي HP 305XL أسود، يطبع حتى 400 صفحة، متوافق مع طابعات HP DeskJet</p>
+     <div class="stock-indicator stock-high">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر بكثرة (45 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:90%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">١١٩ ر.س</span>
+       ٨٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(29, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(29, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(29)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="ink" data-id="30">
+    <div class="prod-img" onclick="openProductModal(30)">
+     
+     
+     <img src="https://images.unsplash.com/photo-1569091791842-7cfb64e04797?w=400&amp;h=300&amp;fit=crop" alt="حبر Canon PG-445 ملون" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(30, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">أحبار الطابعات</span>
+     <h4 class="prod-name" onclick="openProductModal(30)">حبر Canon PG-445 ملون</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.3 (0 تقييم)</span>
+     </div>
+     <p class="prod-desc">حبر Canon أصلي ملون (C/M/Y)، يطبع حتى 180 صفحة ملونة</p>
+     <div class="stock-indicator stock-high">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر بكثرة (38 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:76%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       
+       ٧٥ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(30, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(30, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(30)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="ink" data-id="31">
+    <div class="prod-img" onclick="openProductModal(31)">
+     <div class="prod-badge discount">خصم -24%</div>
+     
+     <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&amp;h=300&amp;fit=crop" alt="حبر Epson 103 عبوة إعادة ملء" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(31, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">أحبار الطابعات</span>
+     <h4 class="prod-name" onclick="openProductModal(31)">حبر Epson 103 عبوة إعادة ملء</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.5 (1 تقييم)</span>
+     </div>
+     <p class="prod-desc">حبر Epson 103 للطابعات EcoTank، عبوة إعادة ملء اقتصادية</p>
+     <div class="stock-indicator stock-high">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر بكثرة (52 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:100%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">٥٩ ر.س</span>
+       ٤٥ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(31, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(31, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(31)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="ink" data-id="32">
+    <div class="prod-img" onclick="openProductModal(32)">
+     <div class="prod-badge new">جديد</div>
+     
+     <img src="https://images.unsplash.com/photo-1589652717521-10c0d092dea9?w=400&amp;h=300&amp;fit=crop" alt="حبر Brother TN-2420 أسود" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(32, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">أحبار الطابعات</span>
+     <h4 class="prod-name" onclick="openProductModal(32)">حبر Brother TN-2420 أسود</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.6 (0 تقييم)</span>
+     </div>
+     <p class="prod-desc"> toner Brother TN-2420 أسود، يطبع حتى 3000 صفحة، متوافق مع طابعات Brother الليزر</p>
+     <div class="stock-indicator stock-high">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر بكثرة (22 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:44%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       
+       ١٢٩ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(32, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(32, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(32)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="food" data-id="33">
+    <div class="prod-img" onclick="openProductModal(33)">
+     <div class="prod-badge ">الأكثر مبيعاً</div>
+     
+     <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400&amp;h=300&amp;fit=crop" alt="عسل سدر طبيعي 100%" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(33, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">المواد الغذائية</span>
+     <h4 class="prod-name" onclick="openProductModal(33)">عسل سدر طبيعي 100%</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.9 (1 تقييم)</span>
+     </div>
+     <p class="prod-desc">عسل سدر طبيعي 100% من إنتاج محلي، وزن 500 جرام، جودة ممتازة</p>
+     <div class="stock-indicator stock-high">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر بكثرة (20 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:40%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">١٥٠ ر.س</span>
+       ١٢٠ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(33, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(33, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(33)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="food" data-id="34">
+    <div class="prod-img" onclick="openProductModal(34)">
+     
+     
+     <img src="https://images.unsplash.com/photo-1596386461350-326256694e69?w=400&amp;h=300&amp;fit=crop" alt="تمور صقعي فاخرة 1 كجم" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(34, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">المواد الغذائية</span>
+     <h4 class="prod-name" onclick="openProductModal(34)">تمور صقعي فاخرة 1 كجم</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.7 (0 تقييم)</span>
+     </div>
+     <p class="prod-desc">تمور صقعي فاخرة من المدينة المنورة، طازجة وعالية الجودة، وزن 1 كجم</p>
+     <div class="stock-indicator stock-high">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر بكثرة (35 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:70%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       
+       ٨٥ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(34, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(34, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(34)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="food" data-id="35">
+    <div class="prod-img" onclick="openProductModal(35)">
+     <div class="prod-badge discount">خصم -18%</div>
+     
+     <img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&amp;h=300&amp;fit=crop" alt="زيت زيتون بكر ممتاز 1 لتر" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(35, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">المواد الغذائية</span>
+     <h4 class="prod-name" onclick="openProductModal(35)">زيت زيتون بكر ممتاز 1 لتر</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.5 (1 تقييم)</span>
+     </div>
+     <p class="prod-desc">زيت زيتون بكر ممتاز، عصرة أولى، إنتاج مزارع محلية، 1 لتر</p>
+     <div class="stock-indicator stock-high">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر بكثرة (28 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:56.00000000000001%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       <span class="old-price">٧٩ ر.س</span>
+       ٦٥ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(35, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(35, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(35)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  
+   <div class="prod-card " data-category="food" data-id="36">
+    <div class="prod-img" onclick="openProductModal(36)">
+     <div class="prod-badge new">جديد</div>
+     
+     <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&amp;h=300&amp;fit=crop" alt="قهوة عربية فاخرة 250 جرام" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='&lt;div style=font-size:60px&gt;📦&lt;/div&gt;'">
+    </div>
+    <button class="wishlist-btn " onclick="toggleWishlist(36, event)" aria-label="إضافة للمفضلة">
+     🤍
+    </button>
+    <div class="prod-body">
+     <span class="prod-tag">المواد الغذائية</span>
+     <h4 class="prod-name" onclick="openProductModal(36)">قهوة عربية فاخرة 250 جرام</h4>
+     <div class="modal-rating" style="margin-bottom:8px">
+      <span class="stars">★★★★☆</span>
+      <span class="rating-text">4.8 (0 تقييم)</span>
+     </div>
+     <p class="prod-desc">قهوة عربية فاخرة محمصة، مزيج تقليدي أصيل، وزن 250 جرام</p>
+     <div class="stock-indicator stock-high">
+      <div class="stock-header">
+       <span class="stock-label">📦 المخزون</span>
+       <span class="stock-value">متوفر بكثرة (40 قطعة)</span>
+      </div>
+      <div class="stock-bar-bg">
+       <div class="stock-bar-fill" style="width:80%"></div>
+      </div>
+     </div>
+     <div class="prod-footer">
+      <div class="prod-price">
+       
+       ٥٥ ر.س
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+       <button class="quote-btn" onclick="requestQuote(36, event)" aria-label="اطلب عرض سعر">
+        📋 عرض سعر
+       </button>
+       <button class="compare-btn " onclick="toggleCompare(36, event)" aria-label="مقارنة">
+        ⚖️
+       </button>
+       <button class="add-btn" onclick="addToCart(36)" aria-label="أضف للسلة">
+        🛒 أضف
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
 </div>
 </section>
 
@@ -2157,18 +3841,18 @@
 <div class="contact-form">
 <form id="contactForm" onsubmit="handleSubmit(event)">
 <div class="form-row">
-<input type="text" id="contactName" placeholder="الاسم الكامل" required pattern="[\u0600-\u06FF\s]{3,50}" title="الرجاء إدخال اسم صحيح (3-50 حرف)">
-<input type="tel" id="contactPhone" placeholder="رقم الجوال" required pattern="05[0-9]{8}" title="الرجاء إدخال رقم جوال سعودي صحيح">
+<input type="text" id="contactName" placeholder="الاسم الكامل" required="" pattern="[\u0600-\u06FF\s]{3,50}" title="الرجاء إدخال اسم صحيح (3-50 حرف)">
+<input type="tel" id="contactPhone" placeholder="رقم الجوال" required="" pattern="05[0-9]{8}" title="الرجاء إدخال رقم جوال سعودي صحيح">
 </div>
-<input type="email" id="contactEmail" placeholder="البريد الإلكتروني" required style="margin-bottom:15px" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
-<select id="contactSubject" style="margin-bottom:15px" required>
+<input type="email" id="contactEmail" placeholder="البريد الإلكتروني" required="" style="margin-bottom:15px" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+<select id="contactSubject" style="margin-bottom:15px" required="">
 <option value="">اختر الموضوع</option>
 <option value="order">طلب منتج</option>
 <option value="inquiry">استفسار عام</option>
 <option value="support">دعم فني</option>
 <option value="complaint">شكوى</option>
 </select>
-<textarea id="contactMessage" placeholder="اكتب رسالتك هنا..." required minlength="10" maxlength="500"></textarea>
+<textarea id="contactMessage" placeholder="اكتب رسالتك هنا..." required="" minlength="10" maxlength="500"></textarea>
 <div class="error-msg" id="formError"></div>
 <button type="submit" class="submit-btn">📨 إرسال الرسالة</button>
 </form>
@@ -2205,7 +3889,7 @@
 <div class="footer-bottom"><p>© 2024 شركة درة فارس الشمال. جميع الحقوق محفوظة.</p><div><a href="#" onclick="showPrivacyPolicy();return false">سياسة الخصوصية</a><a href="#" onclick="showTerms();return false">شروط الاستخدام</a></div></div>
 <div style="text-align:center;padding:20px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));margin-top:20px;border-radius:12px;">
  <p style="color:white;font-size:16px;margin-bottom:10px;">📲 حمّل تطبيق درة فارس الشمال على جوالك!</p>
- <a href="https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk" download class="btn-primary" style="display:inline-block;margin-top:10px;">📱 تحميل تطبيق Android</a>
+ <a href="https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk" download="" class="btn-primary" style="display:inline-block;margin-top:10px;">📱 تحميل تطبيق Android</a>
  <p style="color:rgba(255,255,255,0.7);font-size:12px;margin-top:10px;">اضغط للتثبيت على الشاشة الرئيسية</p>
 </div>
 </div>
@@ -2227,10 +3911,10 @@
 <div class="admin-panel" id="adminPanel">
 <button class="admin-close" onclick="toggleAdmin()" aria-label="إغلاق لوحة الإدارة">✕</button>
 <h4>⚙️ لوحة إدارة المنتجات</h4>
-<div class="form-group"><label>اسم المنتج</label><input type="text" id="adminName" placeholder="مثال: طابعة HP LaserJet" required></div>
+<div class="form-group"><label>اسم المنتج</label><input type="text" id="adminName" placeholder="مثال: طابعة HP LaserJet" required=""></div>
 <div class="form-row">
-<div class="form-group"><label>السعر (ر.س)</label><input type="number" id="adminPrice" placeholder="0" min="0" step="0.01" required></div>
-<div class="form-group"><label>الكمية في المخزن</label><input type="number" id="adminStock" placeholder="0" min="0" required></div>
+<div class="form-group"><label>السعر (ر.س)</label><input type="number" id="adminPrice" placeholder="0" min="0" step="0.01" required=""></div>
+<div class="form-group"><label>الكمية في المخزن</label><input type="number" id="adminStock" placeholder="0" min="0" required=""></div>
 </div>
 <div class="form-row">
 <div class="form-group"><label>التصنيف</label><select id="adminCategory"><option value="printers">طابعات</option><option value="computers">كمبيوتر</option><option value="ram">رامات</option><option value="storage">هاردات</option><option value="cables">وصلات</option><option value="projectors">بروجكتور</option><option value="accessories">إكسسوارات</option></select></div>
@@ -2279,17 +3963,20 @@
 <div class="cart-sidebar" id="cartSidebar">
 <div class="cart-header"><h3>🛒 سلة المشتريات</h3><button class="close-cart" onclick="toggleCart()" aria-label="إغلاق السلة">✕</button></div>
 <div class="cart-items" id="cartItems">
-<div class="cart-empty"><span class="icon">🛒</span><p>السلة فارغة</p><small>أضف منتجات لبدء التسوق</small></div>
-</div>
-<div class="coupon-section" id="couponSection">
+   <div class="cart-empty">
+    <span class="icon">🛒</span>
+    <p>السلة فارغة</p>
+    <small>أضف منتجات لبدء التسوق</small>
+   </div></div>
+<div class="coupon-section" id="couponSection" style="display: none;">
 <div class="coupon-input-wrapper">
 <input type="text" class="coupon-input" id="couponInput" placeholder="أدخل كود الخصم">
 <button class="coupon-btn" onclick="applyCoupon()">تطبيق</button>
 </div>
 </div>
 <div class="cart-footer">
-<div class="cart-total"><span>المجموع:</span><strong id="cartTotal">0 ر.س</strong></div>
-<div class="cart-tax" id="cartTax">شامل الضريبة (15%): 0 ر.س</div>
+<div class="cart-total"><span>المجموع:</span><strong id="cartTotal">٠ ر.س</strong></div>
+<div class="cart-tax" id="cartTax">شامل الضريبة (15%): ٠ ر.س</div>
 <button class="checkout-btn" onclick="checkout()">💬 اطلب الآن عبر واتساب</button>
 </div>
 </div>
@@ -3422,19 +5109,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-<a href="https://wa.me/966568717449?text=مرحباً%20شركة%20درة%20فارس%20الشمال%2C%20أرغب%20في%20الاستفسار%20عن%20منتجاتكم" 
-  class="whatsapp-float" 
-  target="_blank" 
-  rel="noopener"
-  aria-label="تواصل عبر واتساب">
+<a href="https://wa.me/966568717449?text=مرحباً%20شركة%20درة%20فارس%20الشمال%2C%20أرغب%20في%20الاستفسار%20عن%20منتجاتكم" class="whatsapp-float" target="_blank" rel="noopener" aria-label="تواصل عبر واتساب">
  💬
  <span class="tooltip">تواصل معنا على واتساب</span>
 </a>
 
-<a href="https://wa.me/966568717449?text=مرحباً%20أرغب%20في%20طلب%20عرض%20سعر%20من%20شركة%20درة%20فارس%20الشمال" 
-  class="sticky-cta" 
-  target="_blank" 
-  rel="noopener">
+<a href="https://wa.me/966568717449?text=مرحباً%20أرغب%20في%20طلب%20عرض%20سعر%20من%20شركة%20درة%20فارس%20الشمال" class="sticky-cta" target="_blank" rel="noopener">
  📋 اطلب عرض سعر الآن
 </a>
 
@@ -3464,7 +5144,77 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 })();
 </script>
-<script src="dora-forms.js"></script>
+<script src="dora-forms.js"></script><div id="reviewModal" class="dora-modal">
+            <div class="dora-modal-content">
+                <div class="dora-modal-header">
+                    <h3>⭐ أضف تقييمك</h3>
+                    <button class="dora-modal-close" onclick="closeReviewModal()">✕</button>
+                </div>
+                <form id="reviewForm" onsubmit="return submitReview(event)">
+                    <div class="dora-form-group">
+                        <label>👤 اسمك</label>
+                        <input type="text" id="reviewName" placeholder="أدخل اسمك" required="">
+                    </div>
+                    <div class="dora-form-group">
+                        <label>⭐ التقييم</label>
+                        <div class="dora-star-rating" id="starRating">
+                            <span class="dora-star active" data-value="1">★</span>
+                            <span class="dora-star active" data-value="2">★</span>
+                            <span class="dora-star active" data-value="3">★</span>
+                            <span class="dora-star active" data-value="4">★</span>
+                            <span class="dora-star active" data-value="5">★</span>
+                        </div>
+                        <input type="hidden" id="reviewRating" value="5">
+                    </div>
+                    <div class="dora-form-group">
+                        <label>📦 المنتج/الخدمة</label>
+                        <input type="text" id="reviewProduct" placeholder="اسم المنتج أو الخدمة">
+                    </div>
+                    <div class="dora-form-group">
+                        <label>💬 رأيك</label>
+                        <textarea id="reviewText" rows="4" placeholder="اكتب تقييمك هنا..." required=""></textarea>
+                    </div>
+                    <button type="submit" class="dora-btn-submit">📨 إرسال التقييم</button>
+                </form>
+            </div>
+        </div><div id="messageModal" class="dora-modal">
+            <div class="dora-modal-content">
+                <div class="dora-modal-header">
+                    <h3>📨 تواصل معنا</h3>
+                    <button class="dora-modal-close" onclick="closeMessageModal()">✕</button>
+                </div>
+                <form id="messageForm" onsubmit="return submitMessage(event)">
+                    <div class="dora-form-group">
+                        <label>👤 اسمك</label>
+                        <input type="text" id="msgName" placeholder="أدخل اسمك" required="">
+                    </div>
+                    <div class="dora-form-group">
+                        <label>📱 رقم الجوال</label>
+                        <input type="tel" id="msgPhone" placeholder="05xxxxxxxx" required="" pattern="05[0-9]{8}">
+                    </div>
+                    <div class="dora-form-group">
+                        <label>✉️ البريد الإلكتروني</label>
+                        <input type="email" id="msgEmail" placeholder="your@email.com" required="">
+                    </div>
+                    <div class="dora-form-group">
+                        <label>📌 الموضوع</label>
+                        <select id="msgSubject" required="">
+                            <option value="">اختر الموضوع</option>
+                            <option value="استفسار">❓ استفسار</option>
+                            <option value="شكوى">😞 شكوى</option>
+                            <option value="اقتراح">💡 اقتراح</option>
+                            <option value="طلب منتج">📦 طلب منتج</option>
+                            <option value="أخرى">📝 أخرى</option>
+                        </select>
+                    </div>
+                    <div class="dora-form-group">
+                        <label>💬 الرسالة</label>
+                        <textarea id="msgText" rows="4" placeholder="اكتب رسالتك هنا..." required=""></textarea>
+                    </div>
+                    <button type="submit" class="dora-btn-submit">📨 إرسال الرسالة</button>
+                </form>
+            </div>
+        </div>
 
 <script>
 // PWA Install Handler
@@ -3596,4 +5346,4 @@ function checkPWAInstallState() {
   }
 }
 </script>
-</html>
+</body></html>
