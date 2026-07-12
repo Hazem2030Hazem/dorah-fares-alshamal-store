@@ -672,7 +672,9 @@
    left: 50%;
    transform: translateX(-50%) translateY(100px);
    z-index: 9997;
-   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+   background: rgba(15, 12, 41, 0.15) !important;
+   backdrop-filter: blur(10px) !important;
+   -webkit-backdrop-filter: blur(10px) !important;
    color: white;
    padding: 16px 24px;
    border-radius: 16px;
@@ -681,10 +683,10 @@
    display: flex;
    align-items: center;
    gap: 12px;
-   box-shadow: 0 8px 30px rgba(30, 136, 229, 0.4);
+   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
    transition: all 0.5s ease;
    opacity: 0;
-   border: none;
+   border: 1px solid rgba(255, 255, 255, 0.1) !important;
    max-width: 90%;
    width: auto;
   }
@@ -719,6 +721,10 @@
     bottom: 140px;
     padding: 12px 18px;
     font-size: 13px;
+    background: rgba(15, 12, 41, 0.3) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
    }
   }
 
