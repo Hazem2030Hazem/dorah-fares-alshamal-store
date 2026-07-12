@@ -1712,7 +1712,7 @@
 <a href="#contact" aria-label="تواصل معنا">تواصل معنا</a>
 </nav>
 <div class="header-controls">
-<button onclick="window.open('https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk','_blank')" class="install-btn" title="تثبيت تطبيق درة فارس الشمال" aria-label="تثبيت تطبيق درة فارس الشمال" style="display:inline-flex !important;visibility:visible !important;opacity:1 !important;margin-left:8px;position:relative;z-index:9999;background:transparent !important;border:none !important;overflow:hidden;padding:0 !important;width:40px !important;height:40px !important;border-radius:12px !important;cursor:pointer !important;text-decoration:none;">
+<button onclick="location.href='https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk'" class="install-btn" title="تثبيت تطبيق درة فارس الشمال" aria-label="تثبيت تطبيق درة فارس الشمال" style="display:inline-flex !important;visibility:visible !important;opacity:1 !important;margin-left:8px;position:relative;z-index:9999;background:transparent !important;border:none !important;overflow:hidden;padding:0 !important;width:40px !important;height:40px !important;border-radius:12px !important;cursor:pointer !important;text-decoration:none;">
  <img src="https://i.imgur.com/Z4C4wTh.jpg" alt="تثبيت التطبيق" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">
 </button>
 <button class="audio-toggle" onclick="toggleAudio()" title="تشغيل/إيقاف الصوت" aria-label="تشغيل/إيقاف الصوت" style="margin-left:8px;background:transparent !important;border:none !important;padding:0 !important;width:40px !important;height:40px !important;overflow:hidden !important;border-radius:12px !important;cursor:pointer !important;">
@@ -3426,10 +3426,9 @@ document.addEventListener('DOMContentLoaded', () => {
  📋 اطلب عرض سعر الآن
 </a>
 
-<div class="install-prompt show" id="installPrompt">
+<div class="install-prompt show" id="installPrompt" onclick="installPWA()" style="cursor:pointer;">
  <span>💻 حمّل تطبيق درة فارس الشمال!</span>
- <button id="pwaInstallBtn" onclick="installPWA()" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.25);color:white;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:700;font-size:13px;transition:all 0.3s ease;text-decoration:none;display:inline-block;backdrop-filter:blur(5px);font-family:inherit;">📱 تثبيت</button>
- <button class="close-prompt" onclick="dismissInstallPrompt()" aria-label="إغلاق">✕</button>
+ <button class="close-prompt" onclick="event.stopPropagation();dismissInstallPrompt()" aria-label="إغلاق">✕</button>
 </div>
 
 <script>
