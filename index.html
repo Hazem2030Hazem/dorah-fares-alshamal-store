@@ -3390,6 +3390,7 @@ function initHeaderScroll() {
 
 document.addEventListener('DOMContentLoaded', () => {
  initTheme();
+ checkPWAInstallState();
  renderProducts('all');
  updateCartUI();
  updateCompareBar();
@@ -3455,8 +3456,69 @@ document.addEventListener('DOMContentLoaded', () => {
 <script src="dora-forms.js"></script>
 
 // PWA Install Handler
+let deferredPrompt = null;
+
+// Capture the beforeinstallprompt event
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  deferredPrompt = e;
+  console.log('✅ PWA install prompt captured');
+
+  // Show the install prompt UI
+  const prompt = document.getElementById('installPrompt');
+  if (prompt && !localStorage.getItem('doraInstallPromptDismissed')) {
+    prompt.classList.add('show');
+  }
+});
+
+// Handle app installed event
+window.addEventListener('appinstalled', function() {
+  deferredPrompt = null;
+  console.log('✅ PWA installed successfully');
+  showToast('✅ تم تثبيت التطبيق بنجاح!');
+
+  // Hide the install prompt
+  const prompt = document.getElementById('installPrompt');
+  if (prompt) {
+    prompt.classList.remove('show');
+  }
+});
+
 function installPWA() {
-  location.href='https://www.alshamal-df.com/index.html';
+  if (deferredPrompt) {
+    // Show the browser's native install prompt
+    deferredPrompt.prompt();
+
+    // Wait for user response
+    deferredPrompt.userChoice.then(function(choiceResult) {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('✅ User accepted PWA install');
+        showToast('✅ جاري تثبيت التطبيق...');
+      } else {
+        console.log('❌ User dismissed PWA install');
+        showToast('❌ تم إلغاء التثبيت');
+      }
+      deferredPrompt = null;
+    });
+  } else {
+    // Fallback: if no deferred prompt, try to open the manifest or guide user
+    console.log('⚠️ No install prompt available');
+
+    // Check if already installed
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      showToast('✅ التطبيق مثبت بالفعل!');
+    } else {
+      showToast('📱 اضغط على قائمة المتصفح (⋮) ثم "تثبيت التطبيق" أو "Install App"');
+
+      // For Chrome/Edge desktop: try to trigger via manifest
+      if ('serviceWorker' in navigator && 'BeforeInstallPromptEvent' in window) {
+        showToast('📱 جاري محاولة التثبيت...');
+      } else {
+        // Safari/iOS fallback
+        showToast('📱 على iPhone: اضغط زر المشاركة (⬆️) ثم "Add to Home Screen"');
+      }
+    }
+  }
 }
 
 function dismissInstallPrompt() {
@@ -3464,6 +3526,41 @@ function dismissInstallPrompt() {
   if (prompt) {
     prompt.classList.remove('show');
     localStorage.setItem('doraInstallPromptDismissed', 'true');
+  }
+}
+
+
+
+function checkPWAInstallState() {
+  // Check if app is already installed
+  if (window.matchMedia('(display-mode: standalone)').matches || 
+      window.navigator.standalone === true) {
+    console.log('✅ PWA is running in standalone mode');
+    // Hide install prompt if app is already installed
+    const prompt = document.getElementById('installPrompt');
+    if (prompt) {
+      prompt.classList.remove('show');
+    }
+    return;
+  }
+
+  // Check if user previously dismissed the prompt
+  if (localStorage.getItem('doraInstallPromptDismissed')) {
+    console.log('ℹ️ Install prompt was previously dismissed');
+    const prompt = document.getElementById('installPrompt');
+    if (prompt) {
+      prompt.classList.remove('show');
+    }
+    return;
+  }
+
+  // If we have a deferred prompt, show the UI
+  if (deferredPrompt) {
+    console.log('✅ Install prompt available');
+    const prompt = document.getElementById('installPrompt');
+    if (prompt) {
+      prompt.classList.add('show');
+    }
   }
 }
 
