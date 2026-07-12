@@ -3453,4 +3453,19 @@ document.addEventListener('DOMContentLoaded', () => {
 })();
 </script>
 <script src="dora-forms.js"></script>
+
+// PWA Install Handler
+function installPWA() {
+  // Open the website in a new window where user can install it
+  window.open('https://www.alshamal-df.com', '_blank');
+}
+
+function dismissInstallPrompt() {
+  const prompt = document.getElementById('installPrompt');
+  if (prompt) {
+    prompt.classList.remove('show');
+    localStorage.setItem('doraInstallPromptDismissed', 'true');
+  }
+}
+
 </html>
