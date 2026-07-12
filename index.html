@@ -3391,6 +3391,17 @@ function initHeaderScroll() {
 document.addEventListener('DOMContentLoaded', () => {
  initTheme();
  checkPWAInstallState();
+
+ // Register Service Worker for PWA
+ if ('serviceWorker' in navigator) {
+   navigator.serviceWorker.register('sw.js')
+     .then(function(registration) {
+       console.log('✅ Service Worker registered:', registration.scope);
+     })
+     .catch(function(error) {
+       console.log('❌ Service Worker registration failed:', error);
+     });
+ }
  renderProducts('all');
  updateCartUI();
  updateCompareBar();
@@ -3457,12 +3468,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // PWA Install Handler
 let deferredPrompt = null;
+let installPromptReady = false;
 
-// Capture the beforeinstallprompt event
+// Capture the beforeinstallprompt event from browser
 window.addEventListener('beforeinstallprompt', function(e) {
+  console.log('✅ beforeinstallprompt event fired!');
   e.preventDefault();
   deferredPrompt = e;
-  console.log('✅ PWA install prompt captured');
+  installPromptReady = true;
 
   // Show the install prompt UI
   const prompt = document.getElementById('installPrompt');
@@ -3471,13 +3484,13 @@ window.addEventListener('beforeinstallprompt', function(e) {
   }
 });
 
-// Handle app installed event
+// Handle successful installation
 window.addEventListener('appinstalled', function() {
-  deferredPrompt = null;
   console.log('✅ PWA installed successfully');
+  deferredPrompt = null;
+  installPromptReady = false;
   showToast('✅ تم تثبيت التطبيق بنجاح!');
 
-  // Hide the install prompt
   const prompt = document.getElementById('installPrompt');
   if (prompt) {
     prompt.classList.remove('show');
@@ -3485,40 +3498,60 @@ window.addEventListener('appinstalled', function() {
 });
 
 function installPWA() {
-  if (deferredPrompt) {
-    // Show the browser's native install prompt
+  console.log('🖱️ Install button clicked');
+
+  // If we have the deferred prompt, use it immediately
+  if (deferredPrompt && installPromptReady) {
+    console.log('✅ Using deferred prompt...');
     deferredPrompt.prompt();
 
-    // Wait for user response
     deferredPrompt.userChoice.then(function(choiceResult) {
       if (choiceResult.outcome === 'accepted') {
-        console.log('✅ User accepted PWA install');
+        console.log('✅ User accepted install');
         showToast('✅ جاري تثبيت التطبيق...');
       } else {
-        console.log('❌ User dismissed PWA install');
+        console.log('❌ User dismissed install');
         showToast('❌ تم إلغاء التثبيت');
       }
       deferredPrompt = null;
+      installPromptReady = false;
+    }).catch(function(err) {
+      console.log('❌ Prompt error:', err);
+      showToast('❌ حدث خطأ، حاول مرة أخرى');
     });
-  } else {
-    // Fallback: if no deferred prompt, try to open the manifest or guide user
-    console.log('⚠️ No install prompt available');
-
-    // Check if already installed
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      showToast('✅ التطبيق مثبت بالفعل!');
-    } else {
-      showToast('📱 اضغط على قائمة المتصفح (⋮) ثم "تثبيت التطبيق" أو "Install App"');
-
-      // For Chrome/Edge desktop: try to trigger via manifest
-      if ('serviceWorker' in navigator && 'BeforeInstallPromptEvent' in window) {
-        showToast('📱 جاري محاولة التثبيت...');
-      } else {
-        // Safari/iOS fallback
-        showToast('📱 على iPhone: اضغط زر المشاركة (⬆️) ثم "Add to Home Screen"');
-      }
-    }
+    return;
   }
+
+  // If already installed
+  if (window.matchMedia('(display-mode: standalone)').matches || 
+      window.navigator.standalone === true) {
+    showToast('✅ التطبيق مثبت بالفعل!');
+    return;
+  }
+
+  // If prompt not ready yet, wait and retry
+  showToast('⏳ جاري تحضير التثبيت...');
+  console.log('⏳ Waiting for beforeinstallprompt...');
+
+  // Retry after 2 seconds
+  setTimeout(function() {
+    if (deferredPrompt && installPromptReady) {
+      console.log('✅ Prompt ready on retry, installing...');
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function(choiceResult) {
+        if (choiceResult.outcome === 'accepted') {
+          showToast('✅ جاري تثبيت التطبيق...');
+        } else {
+          showToast('❌ تم إلغاء التثبيت');
+        }
+        deferredPrompt = null;
+        installPromptReady = false;
+      });
+    } else {
+      console.log('❌ PWA install not available');
+      showToast('📱 اضغط على قائمة المتصفح (⋮) ثم "تثبيت التطبيق"');
+    }
+  }, 2000);
 }
 
 function dismissInstallPrompt() {
@@ -3529,18 +3562,38 @@ function dismissInstallPrompt() {
   }
 }
 
-
-
 function checkPWAInstallState() {
-  // Check if app is already installed
+  // Check if already installed
   if (window.matchMedia('(display-mode: standalone)').matches || 
       window.navigator.standalone === true) {
-    console.log('✅ PWA is running in standalone mode');
-    // Hide install prompt if app is already installed
+    console.log('✅ PWA already installed');
     const prompt = document.getElementById('installPrompt');
     if (prompt) {
       prompt.classList.remove('show');
     }
+    return;
+  }
+
+  // Check if user dismissed before
+  if (localStorage.getItem('doraInstallPromptDismissed')) {
+    console.log('ℹ️ Prompt previously dismissed');
+    const prompt = document.getElementById('installPrompt');
+    if (prompt) {
+      prompt.classList.remove('show');
+    }
+    return;
+  }
+
+  // Show prompt by default (it will work when clicked)
+  console.log('ℹ️ Checking PWA install state...');
+  const prompt = document.getElementById('installPrompt');
+  if (prompt) {
+    // Only show if we have deferred prompt or after a delay
+    if (deferredPrompt) {
+      prompt.classList.add('show');
+    }
+  }
+}
     return;
   }
 
