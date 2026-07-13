@@ -16,9 +16,95 @@
     <title>عن الشركة | درة فارس الشمال</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     
-    <!-- Audio Autoplay Script -->
-    <script src="audio-autoplay.js"></script>
-    
+<!-- ========== AUDIO AUTO-PLAY SCRIPT (مباشر في الصفحة) ========== -->
+<script>
+(function() {
+    'use strict';
+    const AUDIO_URL = 'https://raw.githubusercontent.com/Hazem2030Hazem/dorah-fares-alshamal-store/refs/heads/main/music.mp3';
+    let audio = null;
+    let isPlaying = false;
+    let isMuted = false;
+
+    // Expose audio element globally for volume control
+    window.doraAudio = null;
+    window.doraAudioPlaying = false;
+    window.doraAudioMuted = false;
+
+    function createAudio() {
+        if (audio) return audio;
+        audio = new Audio(AUDIO_URL);
+        audio.loop = true;
+        audio.volume = 0.30;
+        audio.preload = 'auto';
+        // Expose globally
+        window.doraAudio = audio;
+        return audio;
+    }
+
+    function tryPlay() {
+        if (isPlaying || !audio || isMuted) return;
+        audio.play().then(() => {
+            isPlaying = true;
+            console.log('✅ Audio playing');
+            updateSpeakerIcon();
+        }).catch((err) => {
+            console.log('⚠️ Autoplay blocked, waiting for user interaction...');
+            document.addEventListener('click', function playOnClick() {
+                if (!isMuted && audio) {
+                    audio.play().then(() => {
+                        isPlaying = true;
+                        console.log('✅ Audio playing after click');
+                        updateSpeakerIcon();
+                    }).catch((e) => console.log('❌ Audio failed:', e));
+                }
+                document.removeEventListener('click', playOnClick);
+            }, { once: true });
+        });
+    }
+
+    window.toggleAudio = function() {
+        if (!audio) audio = createAudio();
+        if (isPlaying) {
+            audio.pause();
+            isPlaying = false;
+            isMuted = true;
+        } else {
+            isMuted = false;
+            audio.play().then(() => {
+                isPlaying = true;
+                window.doraAudioPlaying = true;
+                updateSpeakerIcon();
+            }).catch((e) => console.log('❌ Toggle failed:', e));
+        }
+        window.doraAudioPlaying = isPlaying;
+        window.doraAudioMuted = isMuted;
+        updateSpeakerIcon();
+    };
+
+    function updateSpeakerIcon() {
+        const icon = document.getElementById('speakerIcon');
+        if (icon) {
+            icon.style.opacity = isPlaying ? '1' : '0.5';
+            icon.style.filter = isPlaying ? 'brightness(1.5) contrast(1.2)' : 'brightness(1) contrast(1)';
+        }
+    }
+
+    function init() {
+        createAudio();
+        tryPlay();
+        setTimeout(tryPlay, 1000);
+        window.doraAudioPlaying = isPlaying;
+        window.doraAudioMuted = isMuted;
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+</script>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
@@ -31,7 +117,7 @@
             background: url('https://i.imgur.com/PCW2FZb.jpeg') center/cover no-repeat fixed !important;
         }
 
-        /* ===== AUDIO VOLUME POPUP ===== */
+        /* ===== AUDIO VOLUME POPUP (exact from index.html) ===== */
         .audio-volume-popup {
             position: absolute;
             top: 55px;
@@ -127,7 +213,7 @@
             display: inline-block;
         }
 
-        /* ===== HEADER ===== */
+        /* ===== EXACT HEADER FROM index.html ===== */
         .header {
             position: fixed;
             top: 0;
@@ -135,9 +221,10 @@
             right: 0;
             z-index: 1000;
             background: rgba(15,12,41,0.3) !important;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border-bottom: 1px solid rgba(233,69,96,0.3) !important;
+            transition: all 0.3s ease;
             box-shadow: 0 4px 30px rgba(0,0,0,.3);
         }
         .header-inner {
@@ -159,22 +246,20 @@
             flex-shrink: 0;
             text-decoration: none;
         }
-        .logo img {
-            width: 85px;
-            height: 85px;
-            border-radius: 14px;
-            object-fit: contain;
-            background: white;
-            box-shadow: 0 4px 15px rgba(255,255,255,0.2);
-            animation: logoGlow 2s ease-in-out infinite alternate;
-            transition: transform 0.3s ease;
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #1E88E5, #0D47A1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            box-shadow: 0 4px 20px rgba(30,136,229,.4);
+            transition: all 0.3s ease;
         }
-        .logo img:hover {
-            transform: scale(1.1);
-        }
-        @keyframes logoGlow {
-            from { box-shadow: 0 4px 15px rgba(255,255,255,0.2); }
-            to { box-shadow: 0 4px 25px rgba(255,255,255,0.5), 0 0 40px rgba(255,255,255,0.1); }
+        .logo-icon:hover {
+            transform: rotate(-10deg) scale(1.1);
         }
         .logo-text h1 {
             font-size: 22px;
@@ -183,45 +268,120 @@
             letter-spacing: 0;
             text-shadow: 0 2px 10px rgba(255,255,255,0.3);
             white-space: nowrap;
-            animation: textGlow 2s ease-in-out infinite alternate;
         }
         .logo-text span {
-            font-size: 13px;
+            font-size: 16px;
             color: #ffffff;
-            opacity: 0.8;
             letter-spacing: 1px;
             text-transform: uppercase;
-            animation: textGlow 2s ease-in-out infinite alternate;
-        }
-        @keyframes textGlow {
-            from { text-shadow: 0 0 10px rgba(255,255,255,0.3); }
-            to { text-shadow: 0 0 20px rgba(255,255,255,0.6), 0 0 40px rgba(30,136,229,0.3); }
+            opacity: 0.8;
+            margin-top: 2px;
         }
 
         .nav-links {
             display: flex;
-            gap: 4px;
+            gap: 6px;
             align-items: center;
             margin-right: auto;
             margin-left: 20px;
         }
-        .nav-links a {
+        .nav-item {
+            position: relative;
+        }
+        .nav-links a, .nav-trigger {
             color: #cbd5e1;
             font-weight: 500;
-            font-size: 14px;
-            padding: 8px 14px;
-            border-radius: 12px;
-            text-decoration: none;
+            font-size: 12px;
+            position: relative;
             transition: all 0.3s ease;
+            padding: 6px 10px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-family: inherit;
             white-space: nowrap;
+            text-decoration: none;
         }
-        .nav-links a:hover {
+        .nav-links a:hover, .nav-trigger:hover {
             color: #f8fafc;
             background: rgba(255,255,255,.1);
         }
-        .nav-links a.active {
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            right: 50%;
+            transform: translateX(50%);
+            width: 0;
+            height: 2px;
+            background: #10B981;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+        .nav-links a:hover::after {
+            width: 60%;
+        }
+        .nav-trigger .arrow {
+            font-size: 10px;
+            transition: all 0.3s ease;
+        }
+        .nav-item:hover .arrow {
+            transform: rotate(180deg);
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: transparent;
+            border: 1px solid rgba(56,189,248,.2);
+            border-radius: 16px;
+            padding: 8px;
+            min-width: 220px;
+            box-shadow: 0 4px 20px rgba(0,0,0,.08);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+        .nav-item:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 13px;
             color: #f8fafc;
-            background: rgba(255,255,255,.1);
+            margin-bottom: 2px;
+            transition: all 0.15s ease;
+        }
+        .dropdown-menu a:hover {
+            background: rgba(255,255,255,0.1);
+            color: #1E88E5;
+        }
+        .dropdown-menu .cat-icon-small {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), #BBDEFB);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        .dropdown-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+            margin: 6px 0;
         }
 
         .header-controls {
@@ -231,8 +391,175 @@
             margin-right: 0;
             flex-shrink: 0;
         }
+        .theme-toggle {
+            background: transparent !important;
+            border: none !important;
+            color: #f8fafc;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            padding: 0;
+        }
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+        }
+        /* Theme Toggle - Glowing Icons */
+        .theme-toggle {
+            position: relative;
+            overflow: visible !important;
+        }
+        .theme-toggle .icon-svg {
+            transition: all 0.4s ease;
+            filter: drop-shadow(0 0 2px currentColor);
+        }
+        .theme-toggle:hover .icon-svg {
+            transform: scale(1.2) rotate(5deg);
+        }
+        .theme-toggle:hover .icon-glow {
+            opacity: 1;
+            transform: scale(1.5);
+        }
 
-        /* Audio Toggle Button */
+        /* Moon (dark mode) - Blue GLOWING */
+        [data-theme="dark"] .theme-toggle .icon-svg {
+            stroke: #60a5fa;
+            filter: drop-shadow(0 0 5px #3b82f6) drop-shadow(0 0 10px #2563eb) drop-shadow(0 0 20px #1d4ed8) drop-shadow(0 0 40px rgba(37,99,235,0.5));
+            animation: moonPulse 2s ease-in-out infinite;
+        }
+        [data-theme="dark"] .theme-toggle:hover .icon-svg {
+            stroke: #93c5fd;
+            filter: drop-shadow(0 0 10px #60a5fa) drop-shadow(0 0 20px #3b82f6) drop-shadow(0 0 40px #2563eb) drop-shadow(0 0 60px rgba(37,99,235,0.6));
+            animation: moonPulse 1s ease-in-out infinite;
+        }
+        [data-theme="dark"] .theme-toggle:hover .icon-glow {
+            background: radial-gradient(circle, rgba(59,130,246,0.8) 0%, rgba(37,99,235,0.5) 40%, rgba(29,78,216,0.2) 70%, transparent 80%);
+        }
+        @keyframes moonPulse {
+            0%, 100% { filter: drop-shadow(0 0 5px #3b82f6) drop-shadow(0 0 10px #2563eb) drop-shadow(0 0 20px #1d4ed8); }
+            50% { filter: drop-shadow(0 0 10px #60a5fa) drop-shadow(0 0 20px #3b82f6) drop-shadow(0 0 40px #2563eb); }
+        }
+
+        /* Sun (light mode) - Yellow GLOWING */
+        [data-theme="light"] .theme-toggle .icon-svg {
+            stroke: #fbbf24;
+            filter: drop-shadow(0 0 5px #f59e0b) drop-shadow(0 0 10px #d97706) drop-shadow(0 0 20px #b45309) drop-shadow(0 0 40px rgba(245,158,11,0.5));
+            animation: sunPulse 2s ease-in-out infinite;
+        }
+        [data-theme="light"] .theme-toggle:hover .icon-svg {
+            stroke: #fcd34d;
+            filter: drop-shadow(0 0 10px #fbbf24) drop-shadow(0 0 20px #f59e0b) drop-shadow(0 0 40px #d97706) drop-shadow(0 0 60px rgba(245,158,11,0.6));
+            animation: sunPulse 1s ease-in-out infinite;
+        }
+        [data-theme="light"] .theme-toggle:hover .icon-glow {
+            background: radial-gradient(circle, rgba(251,191,36,0.8) 0%, rgba(245,158,11,0.5) 40%, rgba(217,119,6,0.2) 70%, transparent 80%);
+        }
+        @keyframes sunPulse {
+            0%, 100% { filter: drop-shadow(0 0 5px #f59e0b) drop-shadow(0 0 10px #d97706) drop-shadow(0 0 20px #b45309); }
+            50% { filter: drop-shadow(0 0 10px #fbbf24) drop-shadow(0 0 20px #f59e0b) drop-shadow(0 0 40px #d97706); }
+        }
+        .cart-btn {
+            background: rgba(255,255,255,.1);
+            border: 1px solid rgba(255,255,255,.2);
+            color: #f8fafc;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,.05);
+            position: relative;
+            text-decoration: none;
+        }
+        .cart-btn:hover {
+            background: rgba(255,255,255,.15);
+            transform: translateY(-2px);
+        }
+        .cart-count {
+            background: #10B981;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 50%;
+            font-weight: 800;
+            font-size: 11px;
+            animation: pulse-badge 2s infinite;
+        }
+        @keyframes pulse-badge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .search-bar {
+            position: relative;
+            width: 280px;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 10px 40px 10px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,.2);
+            background: rgba(255,255,255,.1);
+            color: #f8fafc;
+            font-size: 13px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+        .search-bar input::placeholder {
+            color: #94a3b8;
+        }
+        .search-bar input:focus {
+            outline: none;
+            border-color: #38bdf8;
+            background: rgba(255,255,255,.15);
+        }
+        .search-bar .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 16px;
+        }
+
+        .install-btn {
+            background: transparent !important;
+            border: none !important;
+            color: #f8fafc !important;
+            width: 30px !important;
+            height: 30px !important;
+            border-radius: 8px !important;
+            cursor: pointer !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 16px !important;
+            transition: all 0.3s ease !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            overflow: hidden !important;
+            padding: 0 !important;
+            box-shadow: none !important;
+        }
+        .install-btn:hover {
+            transform: scale(1.1) !important;
+            box-shadow: none !important;
+        }
+        .install-btn img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            border-radius: 8px !important;
+        }
+
         .audio-toggle {
             background: transparent !important;
             border: none !important;
@@ -265,105 +592,7 @@
             opacity: 1 !important;
         }
 
-        /* Install Button - Transparent */
-        .install-btn {
-            background: transparent !important;
-            border: none !important;
-            color: #f8fafc !important;
-            width: 30px !important;
-            height: 30px !important;
-            border-radius: 8px !important;
-            cursor: pointer !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            font-size: 16px !important;
-            transition: all 0.3s ease !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            overflow: hidden !important;
-            padding: 0 !important;
-            box-shadow: none !important;
-        }
-        .install-btn:hover {
-            transform: scale(1.1) !important;
-            box-shadow: none !important;
-        }
-        .install-btn img {
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: cover !important;
-            border-radius: 8px !important;
-        }
-
-        /* Theme Toggle */
-        .theme-toggle {
-            background: transparent !important;
-            border: none !important;
-            color: #f8fafc;
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            transition: all 0.3s ease;
-            overflow: hidden !important;
-            padding: 0 !important;
-            box-shadow: none !important;
-            z-index: 9999 !important;
-            position: relative !important;
-        }
-        .theme-toggle:hover {
-            transform: scale(1.1) rotate(15deg) !important;
-            box-shadow: none !important;
-        }
-        .theme-toggle img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 12px;
-            pointer-events: none;
-        }
-
-        /* Cart Button */
-        .cart-btn {
-            background: rgba(255,255,255,.1);
-            border: 1px solid rgba(255,255,255,.2);
-            color: #f8fafc;
-            padding: 10px 18px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 1px 3px rgba(0,0,0,.05);
-            position: relative;
-            text-decoration: none;
-        }
-        .cart-btn:hover {
-            background: rgba(255,255,255,.15);
-            transform: translateY(-2px);
-        }
-        .cart-count {
-            background: #10B981;
-            color: #fff;
-            padding: 2px 8px;
-            border-radius: 50%;
-            font-weight: 800;
-            font-size: 11px;
-            animation: pulse-badge 2s infinite;
-        }
-        @keyframes pulse-badge {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-        }
-
-        /* ===== SIDEBAR ICONS ===== */
+        /* ===== SIDEBAR ICONS (exact from index.html) ===== */
         .sidebar-icons {
             position: fixed;
             left: 20px;
@@ -415,6 +644,14 @@
         .sidebar-icon:nth-child(4) { --glow-color: rgba(255,69,0,0.4); }
         .sidebar-icon:nth-child(5) { --glow-color: rgba(255,140,0,0.4); }
         .sidebar-icon:nth-child(6) { --glow-color: rgba(255,215,0,0.4); }
+        .sidebar-icon.theme-toggle-icon { --glow-color: rgba(30,136,229,0.4); }
+        .sidebar-icon.theme-toggle-icon:hover .icon-svg {
+            stroke: #60a5fa;
+        }
+        [data-theme="light"] .sidebar-icon.theme-toggle-icon { --glow-color: rgba(251,191,36,0.4); }
+        [data-theme="light"] .sidebar-icon.theme-toggle-icon:hover .icon-svg {
+            stroke: #fbbf24;
+        }
 
         .sidebar-icon:hover .icon-svg {
             stroke: #ffffff;
@@ -541,15 +778,15 @@
             color: #ffffff;
         }
 
-        /* ===== MAIN CONTENT ===== */
-        .main { padding-top: 160px; min-height: 100vh; }
+        /* ===== MAIN CONTENT (about page) ===== */
+        .main { padding-top: 110px; min-height: 100vh; }
 
         .section {
-            padding: 80px 25px;
+            padding: 40px 25px;
             max-width: 1300px;
             margin: 0 auto;
         }
-        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header { text-align: center; margin-bottom: 30px; }
         .section-header h1 {
             font-size: 42px;
             font-weight: 900;
@@ -614,7 +851,7 @@
         .stat-box .num { font-size: 36px; font-weight: 700; color: #f8fafc; display: block; margin-bottom: 8px; }
         .stat-box .label { font-size: 14px; color: rgba(255,255,255,0.7); }
 
-        .features-section { padding: 80px 25px; }
+        .features-section { padding: 40px 25px; }
         .features-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -640,7 +877,7 @@
         .feature-card h3 { font-size: 18px; font-weight: 800; color: #f8fafc; margin-bottom: 10px; }
         .feature-card p { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.6; }
 
-        .team-section { padding: 80px 25px; }
+        .team-section { padding: 40px 25px; }
         .team-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -675,7 +912,7 @@
         .team-card span { font-size: 14px; color: #10B981; font-weight: 600; }
 
         .cta-section {
-            padding: 80px 25px;
+            padding: 40px 25px;
             text-align: center;
         }
         .cta-box {
@@ -756,11 +993,14 @@
             .section-header h1 { font-size: 28px; }
             .nav-links { display: none; }
             .install-prompt { bottom: 140px; padding: 12px 18px; font-size: 13px; }
+            .header-inner { padding: 0 10px; }
+            .logo-text h1 { font-size: 16px; }
+            .logo-text span { display: none; }
         }
     </style>
 </head>
 <body>
-    <!-- ===== SIDEBAR ICONS ===== -->
+    <!-- ===== SIDEBAR ICONS (exact from index.html) ===== -->
     <div class="sidebar-icons">
         <div class="sidebar-icon" title="الرئيسية" onclick="window.location.href='index.html'">
             <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -805,13 +1045,14 @@
             </svg>
             <span class="icon-glow"></span>
         </div>
+        
     </div>
 
-    <!-- ===== HEADER ===== -->
+    <!-- ===== EXACT HEADER FROM index.html ===== -->
     <header class="header" id="header">
-        <div class="header-inner">
-            <a href="index.html" class="logo">
-                <img src="https://www.alshamal-df.com/logo.png?v=2.1" alt="شركة درة فارس الشمال">
+        <div class="header-inner" style="width:100%;max-width:100%;">
+            <a href="index.html" class="logo" style="text-decoration:none;">
+                <img src="https://www.alshamal-df.com/logo.png?v=2.1" alt="شركة درة فارس الشمال" style="width:85px;height:85px;border-radius:14px;object-fit:contain;">
                 <div class="logo-text">
                     <h1>شركة درة فارس الشمال</h1>
                     <span>Dora Fares Al Shamal</span>
@@ -819,17 +1060,32 @@
             </a>
             <nav class="nav-links">
                 <a href="index.html">الرئيسية</a>
+                <div class="nav-item">
+                    <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="التصنيفات">
+                        التصنيفات <span class="arrow">▼</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="service_printing.html" aria-label="خدمات الطباعة"><div class="cat-icon-small"><img src="https://kimi-web-img.moonshot.cn/img/toppng.com/9fe4668df0df75352751c6bdf5cbe497d0223441.png?v=2.1" alt="طابعة" style="width:80px;height:80px;object-fit:contain;mix-blend-mode:multiply;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.3));"></div> خدمات الطباعة</a>
+                        <a href="service_cameras.html" aria-label="كاميرات المراقبة"><div class="cat-icon-small">📹</div> كاميرات المراقبة</a>
+                        <a href="service_pos.html" aria-label="نقاط البيع"><div class="cat-icon-small">💳</div> نقاط البيع</a>
+                        <a href="service_network.html" aria-label="شبكات"><div class="cat-icon-small">🌐</div> شبكات</a>
+                        <a href="service_barcode.html" aria-label="باركود"><div class="cat-icon-small">📊</div> باركود</a>
+                        <a href="service_maintenance.html" aria-label="صيانة"><div class="cat-icon-small">🔧</div> صيانة</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="services.html">📋 عرض كل الخدمات</a>
+                    </div>
+                </div>
                 <a href="index.html#products">المنتجات</a>
-                <a href="about.html" class="active">عن الشركة</a>
+                <a href="about.html" style="color:#f8fafc;background:rgba(255,255,255,.1);">عن الشركة</a>
                 <a href="index.html#contact">تواصل معنا</a>
             </nav>
             <div class="header-controls">
-                <button onclick="location.href='https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk'" 
+                <button onclick="installPWA(); return false;" 
                     class="install-btn" 
-                    title="تثبيت تطبيق درة فارس الشمال" 
+                    title="تثبيت تطبيق درة فارس الشمال على سطح المكتب" 
                     aria-label="تثبيت تطبيق درة فارس الشمال"
-                    style="display:inline-flex !important;visibility:visible !important;opacity:1 !important;">
-                    <img src="https://i.imgur.com/Z4C4wTh.jpg" alt="تثبيت التطبيق">
+                    style="display:inline-flex !important;visibility:visible !important;opacity:1 !important;margin-left:8px;position:relative;z-index:9999;cursor:pointer;">
+                    <img src="https://i.imgur.com/Z4C4wTh.jpg" alt="تثبيت التطبيق" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
                 </button>
                 <div class="audio-toggle-wrapper">
                     <button class="audio-toggle" onclick="toggleAudioVolumePopup(event)" title="تشغيل/إيقاف الصوت" aria-label="تشغيل/إيقاف الصوت" style="margin-left:8px;">
@@ -845,17 +1101,32 @@
                         <button class="volume-mute-btn" onclick="toggleMute()">🔇 كتم / تشغيل</button>
                     </div>
                 </div>
-                <button class="theme-toggle" onclick="toggleTheme()" title="تبديل الوضع" aria-label="تبديل الوضع الداكن/الفاتح" id="themeToggleBtn">
-                    <img src="https://i.imgur.com/0EaJuGh.gif" alt="الوضع" style="width:100%;height:100%;object-fit:cover;border-radius:12px;pointer-events:none;" id="themeIcon">
-                </button>
-                <a href="index.html" class="cart-btn" aria-label="سلة المشتريات">
+                <div class="search-bar" style="margin-left:8px;">
+                    <input type="text" id="searchInput" placeholder="ابحث عن منتج..." oninput="handleSearch(this.value)" aria-label="البحث عن منتج">
+                    <span class="search-icon">🔍</span>
+                </div>
+                <div class="sidebar-icon theme-toggle-icon" onclick="toggleTheme()" title="تبديل الوضع" aria-label="تبديل الوضع الداكن/الفاتح" id="themeToggleBtn" style="width:40px;height:40px;flex-shrink:0;">
+                    <svg id="themeIcon" class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <span class="icon-glow"></span>
+                </div>
+                <a href="index.html" class="cart-btn" aria-label="سلة المشتريات" style="text-decoration:none;">
                     🛒 <span class="cart-count" id="cartCount">0</span>
                 </a>
             </div>
         </div>
     </header>
 
-    <!-- ===== MAIN CONTENT ===== -->
+    <!-- ===== MAIN CONTENT (about page) ===== -->
     <main class="main">
         <section class="section">
             <div class="section-header">
@@ -978,7 +1249,7 @@
     </div>
 
     <script>
-        // ===== AUDIO VOLUME CONTROL =====
+        // ===== AUDIO VOLUME CONTROL (exact from index.html) =====
         let currentVolume = 0.30;
         let audioVolumePopupOpen = false;
         let isDraggingVolume = false;
@@ -1098,7 +1369,7 @@
             }
         });
 
-        // ===== PWA INSTALL =====
+        // ===== PWA INSTALL (Enhanced for Desktop + Mobile) =====
         let deferredPrompt = null;
         let installPromptReady = false;
 
@@ -1120,29 +1391,70 @@
             showToast('✅ تم تثبيت التطبيق بنجاح!');
             const prompt = document.getElementById('installPrompt');
             if (prompt) prompt.classList.remove('show');
+            localStorage.setItem('doraInstallPromptDismissed', 'true');
         });
 
         function installPWA() {
             console.log('🖱️ Install button clicked');
-            if (deferredPrompt && installPromptReady) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then(function(choiceResult) {
-                    if (choiceResult.outcome === 'accepted') {
-                        showToast('✅ جاري تثبيت التطبيق على سطح المكتب...');
-                    } else {
-                        showToast('❌ تم إلغاء التثبيت');
-                    }
-                    deferredPrompt = null;
-                    installPromptReady = false;
-                });
-                return;
-            }
+
+            // Check if already installed
             if (window.matchMedia('(display-mode: standalone)').matches || 
                 window.navigator.standalone === true) {
                 showToast('✅ التطبيق مثبت بالفعل!');
                 return;
             }
-            showToast('📱 اضغط Ctrl+Shift+N لفتح نافذة خاصة، ثم افتح الموقع وثبته');
+
+            // Try native install prompt (Chrome/Edge on Android/Desktop)
+            if (deferredPrompt && installPromptReady) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(function(choiceResult) {
+                    if (choiceResult.outcome === 'accepted') {
+                        showToast('✅ جاري تثبيت التطبيق...');
+                    } else {
+                        showToast('❌ تم إلغاء التثبيت');
+                    }
+                    deferredPrompt = null;
+                    installPromptReady = false;
+                }).catch(function(err) {
+                    console.log('❌ Prompt error:', err);
+                    fallbackInstall();
+                });
+                return;
+            }
+
+            // Fallback for browsers that don't support beforeinstallprompt
+            fallbackInstall();
+        }
+
+        function fallbackInstall() {
+            // Check if it's iOS Safari
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+            if (isIOS && isSafari) {
+                // iOS Safari - show instructions
+                showToast('📱 اضغط على زر المشاركة (Share) ثم "Add to Home Screen"');
+                return;
+            }
+
+            // Desktop Chrome/Edge - try to open install dialog
+            if (navigator.userAgent.indexOf('Chrome') > -1 || navigator.userAgent.indexOf('Edg') > -1) {
+                // Try to trigger install through Chrome's menu
+                showToast('📱 اضغط على النقاط الثلاث (⋮) في المتصفح → Install / تثبيت');
+
+                // Also try to open the app in a way that triggers install
+                setTimeout(function() {
+                    // Open the site in a new window which might trigger install prompt
+                    const installWindow = window.open('https://alshamal-df.com', '_blank', 'noopener,noreferrer');
+                    if (installWindow) {
+                        showToast('🌐 تم فتح الموقع في نافذة جديدة، اضغط على ⋮ → Install');
+                    }
+                }, 2000);
+                return;
+            }
+
+            // Generic fallback
+            showToast('📱 افتح الموقع في Chrome/Edge واضغط على ⋮ → Install / تثبيت');
         }
 
         function dismissInstallPrompt() {
@@ -1153,17 +1465,71 @@
             }
         }
 
-        // ===== THEME TOGGLE =====
+        // Check install state on load
+        function checkInstallState() {
+            if (window.matchMedia('(display-mode: standalone)').matches || 
+                window.navigator.standalone === true) {
+                console.log('✅ App is installed');
+                const prompt = document.getElementById('installPrompt');
+                if (prompt) prompt.classList.remove('show');
+            }
+        }
+
+        // Run check on load
+        checkInstallState();
+
+        // ===== THEME TOGGLE (Enhanced with SVG icons) =====
         function toggleTheme() {
             const html = document.documentElement;
             const current = html.getAttribute('data-theme') || 'dark';
             const next = current === 'dark' ? 'light' : 'dark';
             html.setAttribute('data-theme', next);
             localStorage.setItem('doraTheme', next);
+
+            // Update header theme icon
             const themeIcon = document.getElementById('themeIcon');
             if (themeIcon) {
-                themeIcon.src = next === 'dark' ? 'https://i.imgur.com/0EaJuGh.gif' : 'https://i.imgur.com/MG2fQ7j.jpeg';
+                if (next === 'dark') {
+                    // Moon icon for dark mode
+                    themeIcon.innerHTML = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
+                } else {
+                    // Sun icon for light mode
+                    themeIcon.innerHTML = `
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    `;
+                }
             }
+
+            // Update sidebar theme icon
+            const sidebarThemeIcon = document.getElementById('sidebarThemeIcon');
+            if (sidebarThemeIcon) {
+                if (next === 'dark') {
+                    // Moon icon for dark mode
+                    sidebarThemeIcon.innerHTML = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
+                } else {
+                    // Sun icon for light mode
+                    sidebarThemeIcon.innerHTML = `
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    `;
+                }
+            }
+
             if (next === 'dark') {
                 document.body.style.background = 'url(https://i.imgur.com/PCW2FZb.jpeg) center/cover no-repeat fixed';
             } else {
@@ -1174,16 +1540,53 @@
         function initTheme() {
             const saved = localStorage.getItem('doraTheme') || 'dark';
             document.documentElement.setAttribute('data-theme', saved);
+
+            // Set correct header SVG icon on load
             const themeIcon = document.getElementById('themeIcon');
             if (themeIcon) {
-                themeIcon.src = saved === 'dark' ? 'https://i.imgur.com/0EaJuGh.gif' : 'https://i.imgur.com/MG2fQ7j.jpeg';
+                if (saved === 'dark') {
+                    themeIcon.innerHTML = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
+                } else {
+                    themeIcon.innerHTML = `
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    `;
+                }
             }
+
+            // Set correct sidebar SVG icon on load
+            const sidebarThemeIcon = document.getElementById('sidebarThemeIcon');
+            if (sidebarThemeIcon) {
+                if (saved === 'dark') {
+                    sidebarThemeIcon.innerHTML = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
+                } else {
+                    sidebarThemeIcon.innerHTML = `
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    `;
+                }
+            }
+
             if (saved === 'light') {
                 document.body.style.background = 'linear-gradient(135deg, #fff5f5 0%, #ffe0e0 25%, #ffc0c0 50%, #ffe0e0 75%, #fff5f5 100%)';
             }
         }
 
-        // ===== TOAST =====
+        // ===== TOAST (exact from index.html) =====
         function showToast(message, type) {
             const toast = document.getElementById('toast');
             const icon = document.getElementById('toastIcon');
