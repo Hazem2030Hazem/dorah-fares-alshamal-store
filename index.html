@@ -4,7 +4,7 @@
   <meta http-equiv="Expires" content="0">
   <meta name="google-site-verification" content="XXXXXXXXXXXXXXXXXXXXXXXXXXXX">
   <meta charset="UTF-8">
-  <meta name="cache-version" content="v2.1">
+  <meta name="cache-version" content="v3.0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="شركة درة فارس الشمال - متجر التقنية في السعودية. نقدم حلول تقنية متكاملة: طابعات، كمبيوتر، كاميرات مراقبة، نقاط بيع، شبكات">
   <meta name="keywords" content="شركة درة فارس الشمال, متجر تقنية, طابعات, كمبيوتر, كاميرات مراقبة, نقاط بيع, شبكات, السعودية, تبوك">
@@ -30,7 +30,7 @@
   <meta http-equiv="Surrogate-Control" content="no-store">
   <meta http-equiv="Vary" content="*">
   <link rel="canonical" href="https://dorafares.com">
-  <link rel="manifest" href="manifest.json?v=3.0">
+  <link rel="manifest" href="manifest.json?v=4.0">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20fill%3D%27%25231E88E5%27%20rx%3D%2715%27%20width%3D%27100%27%20height%3D%27100%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27white%27%3E%E2%9A%A1%3C%2Ftext%3E%3C%2Fsvg%3E">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
   <title>شركة درة فارس الشمال | متجر التقنية</title>
@@ -44,12 +44,19 @@
       let isPlaying = false;
       let isMuted = false;
 
+      // Expose audio element globally for volume control
+      window.doraAudio = null;
+      window.doraAudioPlaying = false;
+      window.doraAudioMuted = false;
+
       function createAudio() {
           if (audio) return audio;
           audio = new Audio(AUDIO_URL);
           audio.loop = true;
           audio.volume = 0.30;
           audio.preload = 'auto';
+          // Expose globally
+          window.doraAudio = audio;
           return audio;
       }
 
@@ -84,9 +91,12 @@
               isMuted = false;
               audio.play().then(() => {
                   isPlaying = true;
+                  window.doraAudioPlaying = true;
                   updateSpeakerIcon();
               }).catch((e) => console.log('❌ Toggle failed:', e));
           }
+          window.doraAudioPlaying = isPlaying;
+          window.doraAudioMuted = isMuted;
           updateSpeakerIcon();
       };
 
@@ -102,6 +112,8 @@
           createAudio();
           tryPlay();
           setTimeout(tryPlay, 1000);
+          window.doraAudioPlaying = isPlaying;
+          window.doraAudioMuted = isMuted;
       }
 
       if (document.readyState === 'loading') {
@@ -187,14 +199,14 @@
   }
 
   .header{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(15,12,41,0.3) !important;backdrop-filter:blur(20px) !important;-webkit-backdrop-filter:blur(20px) !important;border-bottom:1px solid rgba(233,69,96,0.3) !important;transition:var(--transition-normal);box-shadow:0 4px 30px rgba(0,0,0,.3)}
-  .header-inner{display:flex;justify-content:space-between;align-items:center;height:100px;padding:0 30px;gap:25px}
-  .logo{display:flex;align-items:center;gap:12px}
+  .header-inner{display:flex;justify-content:space-between;align-items:center;height:100px;padding:0 20px;gap:20px;max-width:100%;width:100%}
+  .logo{display:flex;align-items:center;gap:12px;margin-left:0;padding-left:5px;flex-shrink:0}
   .logo-icon{width:45px;height:45px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 20px rgba(30,136,229,.4);transition:var(--transition-normal)}
   .logo-icon:hover{transform:rotate(-10deg) scale(1.1)}
-  .logo-text h1{font-size:16px;font-weight:900;color:#ffffff;letter-spacing:0;text-shadow:0 2px 10px rgba(255,255,255,0.3);white-space:nowrap}
-  .logo-text span{font-size:13px;color:#ffffff;letter-spacing:1px;text-transform:uppercase;opacity:0.8;margin-top:2px}
+  .logo-text h1{font-size:22px;font-weight:900;color:#ffffff;letter-spacing:0;text-shadow:0 2px 10px rgba(255,255,255,0.3);white-space:nowrap}
+  .logo-text span{font-size:16px;color:#ffffff;letter-spacing:1px;text-transform:uppercase;opacity:0.8;margin-top:2px}
 
-  .nav-links{display:flex;gap:4px;align-items:center}
+  .nav-links{display:flex;gap:6px;align-items:center;margin-right:auto;margin-left:20px}
   .nav-item{position:relative}
   .nav-links a,.nav-trigger{color:#cbd5e1;font-weight:500;font-size:12px;position:relative;transition:var(--transition-normal);padding:6px 10px;border-radius:var(--radius-md);display:flex;align-items:center;gap:4px;cursor:pointer;border:none;background:none;font-family:inherit;white-space:nowrap}
   .nav-links a:hover,.nav-trigger:hover{color:#f8fafc;background:rgba(255,255,255,.1)}
@@ -210,7 +222,7 @@
   .dropdown-menu .cat-icon-small{width:32px;height:32px;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--primary-light),#BBDEFB);display:flex;align-items:center;justify-content:center;font-size:16px}
   .dropdown-divider{height:1px;background:var(--border);margin:6px 0}
 
-  .header-controls{display:flex;align-items:center;gap:8px}
+  .header-controls{display:flex;align-items:center;gap:8px;margin-right:0;flex-shrink:0}
   .theme-toggle{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#f8fafc;width:40px;height:40px;border-radius:var(--radius-sm);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:var(--transition-normal);}
   .theme-toggle:hover{background:rgba(255,255,255,.15);transform:scale(1.1) rotate(15deg)}
   .cart-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#f8fafc;padding:10px 18px;border-radius:var(--radius-sm);cursor:pointer;font-size:14px;display:flex;align-items:center;gap:8px;transition:var(--transition-normal);box-shadow:var(--shadow);position:relative}
@@ -587,13 +599,13 @@
   .checkout-btn{background:linear-gradient(135deg,#25D366,#128C7E);color:var(--white);border:none;padding:16px;border-radius:var(--radius-md);font-weight:900;font-size:16px;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:10px;transition:var(--transition-normal);box-shadow:0 8px 25px rgba(37,211,102,.3)}
   .checkout-btn:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(37,211,102,.4)}
 
-  .toast{position:fixed;bottom:30px;right:30px;background:transparent;color:var(--text-primary);padding:18px 28px;border-radius:var(--radius-lg);box-shadow:0 15px 40px rgba(0,0,0,.3);display:flex;align-items:center;gap:12px;transform:translateY(100px);opacity:0;transition:.4s cubic-bezier(.4,0,.2,1);z-index:3000;border:1px solid var(--border)}
+  .toast{position:fixed;bottom:30px;right:30px;background:linear-gradient(135deg, rgba(30,136,229,0.95), rgba(15,12,41,0.95));color:#ffffff;padding:18px 28px;border-radius:var(--radius-lg);box-shadow:0 15px 40px rgba(0,0,0,.5);display:flex;align-items:center;gap:12px;transform:translateY(100px);opacity:0;transition:.4s cubic-bezier(.4,0,.2,1);z-index:3000;border:1px solid rgba(255,255,255,0.2)}
   .toast.show{transform:translateY(0);opacity:1}
   .toast-icon{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-dark));display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--white)}
   .toast-icon.success{background:linear-gradient(135deg,var(--success),#2E7D32)}
   .toast-icon.error{background:linear-gradient(135deg,var(--danger),#C62828)}
   .toast-icon.warning{background:linear-gradient(135deg,var(--warning),#E65100)}
-  .toast-text{font-weight:700;font-size:15px}
+  .toast-text{font-weight:700;font-size:15px;color:#ffffff}
 
   .wishlist-page{padding:100px 0 60px;min-height:60vh}
   .wishlist-page h2{text-align:center;font-size:32px;font-weight:900;margin-bottom:40px;color:var(--text-primary)}
@@ -624,14 +636,14 @@
    background: transparent !important;
    border: none !important;
    color: #f8fafc !important;
-   width: 40px !important;
-   height: 40px !important;
-   border-radius: 12px !important;
+   width: 30px !important;
+   height: 30px !important;
+   border-radius: 8px !important;
    cursor: pointer !important;
    display: flex !important;
    align-items: center !important;
    justify-content: center !important;
-   font-size: 20px !important;
+   font-size: 16px !important;
    transition: all 0.3s ease !important;
    visibility: visible !important;
    opacity: 1 !important;
@@ -649,7 +661,7 @@
    width: 100% !important;
    height: 100% !important;
    object-fit: cover !important;
-   border-radius: 12px !important;
+   border-radius: 8px !important;
   }
 
   .install-btn.show {
@@ -670,19 +682,21 @@
    left: 50%;
    transform: translateX(-50%) translateY(100px);
    z-index: 9997;
-   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+   background: rgba(30, 136, 229, 0.15) !important;
+   backdrop-filter: blur(10px) !important;
+   -webkit-backdrop-filter: blur(10px) !important;
+   border: 1px solid rgba(255, 255, 255, 0.2);
    color: white;
-   padding: 16px 24px;
-   border-radius: 16px;
+   padding: 14px 28px;
+   border-radius: 50px;
    font-weight: 800;
    font-size: 15px;
    display: flex;
    align-items: center;
-   gap: 12px;
-   box-shadow: 0 8px 30px rgba(30, 136, 229, 0.4);
+   gap: 10px;
+   box-shadow: 0 4px 15px rgba(30, 136, 229, 0.2);
    transition: all 0.5s ease;
    opacity: 0;
-   border: none;
    max-width: 90%;
    width: auto;
   }
@@ -1720,6 +1734,115 @@
 .product-rating-btn{background:linear-gradient(135deg,rgba(255,215,0,0.2),rgba(255,215,0,0.1));color:#FFD700;border:1px solid rgba(255,215,0,0.3);padding:10px 20px;border-radius:var(--radius-md);font-weight:700;font-size:14px;cursor:pointer;transition:var(--transition-normal);display:inline-flex;align-items:center;gap:8px}
 .product-rating-btn:hover{background:linear-gradient(135deg,rgba(255,215,0,0.3),rgba(255,215,0,0.2));transform:translateY(-2px)}
 
+
+/* ===== AUDIO VOLUME POPUP ===== */
+.audio-volume-popup {
+  position: absolute;
+  top: 55px;
+  right: 0;
+  width: 220px;
+  background: rgba(15, 12, 41, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(30, 136, 229, 0.15);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px) scale(0.95);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1002;
+}
+
+.audio-volume-popup.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.audio-volume-popup h4 {
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.volume-slider-container {
+  position: relative;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.volume-slider-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #1E88E5, #e94560);
+  border-radius: 3px;
+  width: 30%;
+  box-shadow: 0 0 10px rgba(30, 136, 229, 0.5);
+  transition: width 0.1s ease;
+}
+
+.volume-slider-thumb {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(30, 136, 229, 0.8), 0 0 30px rgba(233, 69, 96, 0.4);
+  cursor: grab;
+  transition: right 0.1s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 10;
+}
+
+.volume-slider-thumb:hover {
+  transform: translateY(-50%) scale(1.3);
+  box-shadow: 0 0 20px rgba(30, 136, 229, 1), 0 0 40px rgba(233, 69, 96, 0.6);
+}
+
+.volume-slider-thumb:active {
+  cursor: grabbing;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.volume-value {
+  text-align: center;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(30, 136, 229, 0.5);
+}
+
+.volume-mute-btn {
+  width: 100%;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 12px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.volume-mute-btn:hover {
+  background: rgba(239, 68, 68, 0.3);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+/* Audio toggle wrapper */
+.audio-toggle-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
 </style>
 <base target="_blank">
 
@@ -1796,10 +1919,9 @@
 <div class="ocean-bg"></div>
 
 <header class="header" id="header">
-<div class="container">
-<div class="header-inner">
+<div class="header-inner" style="width:100%;max-width:100%;">
 <div class="logo">
-<img src="https://www.alshamal-df.com/logo.png?v=2.1_1783834267413" alt="شركة درة فارس الشمال" style="width:65px;height:65px;border-radius:14px;object-fit:contain;">
+<img src="https://www.alshamal-df.com/logo.png?v=2.1_1783834267413" alt="شركة درة فارس الشمال" style="width:85px;height:85px;border-radius:14px;object-fit:contain;">
 <div class="logo-particles">
  <div class="logo-particle"></div>
  <div class="logo-particle"></div>
@@ -1833,12 +1955,23 @@
 <a href="#contact" aria-label="تواصل معنا">تواصل معنا</a>
 </nav>
 <div class="header-controls">
-<button onclick="location.href='https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk'" class="install-btn" title="تثبيت تطبيق درة فارس الشمال" aria-label="تثبيت تطبيق درة فارس الشمال" style="display:inline-flex !important;visibility:visible !important;opacity:1 !important;margin-left:8px;position:relative;z-index:9999;background:transparent !important;border:none !important;overflow:hidden;padding:0 !important;width:40px !important;height:40px !important;border-radius:12px !important;cursor:pointer !important;text-decoration:none;">
- <img src="https://i.imgur.com/Z4C4wTh.jpg?v=2.1_1783834267413" alt="تثبيت التطبيق" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">
+<button onclick="location.href='https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk'" class="install-btn" title="تثبيت تطبيق درة فارس الشمال" aria-label="تثبيت تطبيق درة فارس الشمال" style="display:inline-flex !important;visibility:visible !important;opacity:1 !important;margin-left:8px;position:relative;z-index:9999;background:transparent !important;border:none !important;overflow:hidden;padding:0 !important;width:30px !important;height:30px !important;border-radius:8px !important;cursor:pointer !important;text-decoration:none;">
+ <img src="https://i.imgur.com/Z4C4wTh.jpg?v=2.1_1783834267413" alt="تثبيت التطبيق" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
 </button>
-<button class="audio-toggle" onclick="toggleAudio()" title="تشغيل/إيقاف الصوت" aria-label="تشغيل/إيقاف الصوت" style="margin-left:8px;background:transparent !important;border:none !important;padding:0 !important;width:40px !important;height:40px !important;overflow:hidden !important;border-radius:12px !important;cursor:pointer !important;">
- <img src="https://i.imgur.com/aYm7tcl.jpg?v=2.1_1783834267413" alt="الصوت" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; opacity: 1; transition: 0.3s; filter: brightness(1.5) contrast(1.2); mix-blend-mode: screen;" id="speakerIcon">
-</button>
+<div class="audio-toggle-wrapper">
+ <button class="audio-toggle" onclick="toggleAudioVolumePopup(event)" title="تشغيل/إيقاف الصوت" aria-label="تشغيل/إيقاف الصوت" style="margin-left:8px;background:transparent !important;border:none !important;padding:0 !important;width:40px !important;height:40px !important;overflow:hidden !important;border-radius:12px !important;cursor:pointer !important;">
+  <img src="https://i.imgur.com/aYm7tcl.jpg?v=2.1_1783834267413" alt="الصوت" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; opacity: 1; transition: 0.3s; filter: brightness(1.5) contrast(1.2); mix-blend-mode: screen;" id="speakerIcon">
+ </button>
+ <div class="audio-volume-popup" id="audioVolumePopup">
+  <h4>🔊 مستوى الصوت</h4>
+  <div class="volume-slider-container" id="volumeSlider" onclick="setVolumeFromClick(event)">
+   <div class="volume-slider-fill" id="volumeSliderFill" style="width: 30%"></div>
+   <div class="volume-slider-thumb" id="volumeSliderThumb"></div>
+  </div>
+  <div class="volume-value" id="volumeValue">30%</div>
+  <button class="volume-mute-btn" onclick="toggleMute()">🔇 كتم / تشغيل</button>
+ </div>
+</div>
 <div class="search-bar">
  <input type="text" id="searchInput" placeholder="ابحث عن منتج..." oninput="handleSearch(this.value)" aria-label="البحث عن منتج">
  <span class="search-icon">🔍</span>
@@ -1850,7 +1983,6 @@
 <button class="cart-btn" onclick="toggleCart()" aria-label="سلة المشتريات">
 🛒 <span class="cart-count" id="cartCount">0</span>
 </button>
-</div>
 </div>
 </div>
 </header>
@@ -4891,7 +5023,7 @@ function showToast(message, type) {
  }
 
  toast.classList.add('show');
- setTimeout(() => toast.classList.remove('show'), 3000);
+ setTimeout(() => toast.classList.remove('show'), 10000); // 10 seconds for user to read
 }
 
 function showPrivacyPolicy() {
@@ -5009,6 +5141,199 @@ function initHeaderScroll() {
  }
 }
 
+
+
+// ===== AUDIO VOLUME CONTROL =====
+let currentVolume = 0.30;
+let audioVolumePopupOpen = false;
+let isDraggingVolume = false;
+
+// Get the audio element - use the global one from the autoplay script
+function getAudioElement() {
+  // First try the global audio from the autoplay script
+  if (window.doraAudio) return window.doraAudio;
+
+  // Fallback: find any audio element in the DOM
+  const audios = document.querySelectorAll('audio');
+  if (audios.length > 0) return audios[0];
+
+  // If not found, create one with the same URL
+  const AUDIO_URL = 'https://raw.githubusercontent.com/Hazem2030Hazem/dorah-fares-alshamal-store/refs/heads/main/music.mp3';
+  const newAudio = new Audio(AUDIO_URL);
+  newAudio.loop = true;
+  newAudio.volume = 0.30;
+  newAudio.preload = 'auto';
+  window.doraAudio = newAudio;
+  return newAudio;
+}
+
+// Set volume with higher max (up to 200% using exponential curve)
+function setAudioVolume(percentage) {
+  // percentage is 0-100
+  // Use exponential curve for louder perceived volume
+  // 0% -> 0.0, 50% -> 0.5, 100% -> 1.0 (but we can go higher with exponential)
+  const normalizedVolume = percentage / 100;
+
+  // Use exponential curve: volume = normalizedVolume^2 * 2
+  // This gives: 0% -> 0, 50% -> 0.5, 100% -> 2.0 (200%)
+  const gainValue = Math.min(2.0, normalizedVolume * normalizedVolume * 2);
+
+  const audio = getAudioElement();
+  if (audio) {
+    // Standard audio volume (0.0 - 1.0)
+    audio.volume = Math.min(1.0, gainValue);
+  }
+}
+
+function toggleAudioVolumePopup(e) {
+  if (e) e.stopPropagation();
+  const popup = document.getElementById('audioVolumePopup');
+  if (!popup) return;
+
+  audioVolumePopupOpen = !audioVolumePopupOpen;
+  if (audioVolumePopupOpen) {
+    popup.classList.add('show');
+    // Update slider position based on current volume
+    const audio = getAudioElement();
+    if (audio) {
+      const vol = audio.volume * 100;
+      document.getElementById('volumeSliderFill').style.width = vol + '%';
+      document.getElementById('volumeValue').textContent = Math.round(vol) + '%';
+    }
+  } else {
+    popup.classList.remove('show');
+  }
+}
+
+function setVolumeFromClick(e) {
+  if (e) e.stopPropagation();
+  const slider = document.getElementById('volumeSlider');
+  if (!slider) return;
+
+  const rect = slider.getBoundingClientRect();
+  const sliderWidth = rect.width;
+
+  // For RTL (Arabic): 
+  // The slider is horizontal but RTL means right-to-left
+  // We need to calculate based on the click position relative to the slider width
+
+  const clickX = e.clientX - rect.left;
+
+  // For RTL: 
+  // clickX = 0 means right edge (100% volume)
+  // clickX = sliderWidth means left edge (0% volume)
+  // So percentage = 100 - (clickX / sliderWidth * 100)
+  let percentage = 100 - ((clickX / sliderWidth) * 100);
+  percentage = Math.max(0, Math.min(100, percentage));
+
+  currentVolume = percentage / 100;
+
+  // Update visual elements
+  const fill = document.getElementById('volumeSliderFill');
+  const thumb = document.getElementById('volumeSliderThumb');
+  const value = document.getElementById('volumeValue');
+
+  if (fill) fill.style.width = percentage + '%';
+
+  // Move thumb to follow the fill position
+  // For RTL: thumb position = percentage from the right
+  if (thumb) {
+    thumb.style.left = 'auto';
+    thumb.style.right = (percentage - 1) + '%';
+  }
+
+  if (value) value.textContent = Math.round(percentage) + '%';
+
+  // Update the actual audio volume
+  setAudioVolume(percentage);
+}
+
+function toggleMute() {
+  const audio = getAudioElement();
+  if (!audio) {
+    showToast('❌ الصوت غير متاح حالياً');
+    return;
+  }
+
+  if (currentVolume > 0) {
+    audio._lastVolume = currentVolume;
+    currentVolume = 0;
+    window.doraAudioMuted = true;
+    audio.volume = 0;
+    audio.muted = true;
+
+    const fill = document.getElementById('volumeSliderFill');
+    const thumb = document.getElementById('volumeSliderThumb');
+    const value = document.getElementById('volumeValue');
+    if (fill) fill.style.width = '0%';
+    if (thumb) thumb.style.right = '0%';
+    if (value) value.textContent = '0%';
+    showToast('🔇 تم كتم الصوت');
+  } else {
+    currentVolume = audio._lastVolume || 0.30;
+    window.doraAudioMuted = false;
+    audio.volume = currentVolume;
+    audio.muted = false;
+
+    const fill = document.getElementById('volumeSliderFill');
+    const thumb = document.getElementById('volumeSliderThumb');
+    const value = document.getElementById('volumeValue');
+    if (fill) fill.style.width = (currentVolume * 100) + '%';
+    if (thumb) thumb.style.right = ((currentVolume * 100) - 1) + '%';
+    if (value) value.textContent = Math.round(currentVolume * 100) + '%';
+    showToast('🔊 تم تشغيل الصوت');
+  }
+  updateSpeakerIcon();
+}
+
+// Close popup when clicking outside
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.audio-toggle-wrapper')) {
+    const popup = document.getElementById('audioVolumePopup');
+    if (popup) {
+      popup.classList.remove('show');
+      audioVolumePopupOpen = false;
+    }
+  }
+});
+
+// Drag support for slider
+document.addEventListener('DOMContentLoaded', function() {
+  const slider = document.getElementById('volumeSlider');
+  if (slider) {
+    slider.addEventListener('mousedown', function(e) {
+      isDraggingVolume = true;
+      setVolumeFromClick(e);
+    });
+  }
+
+  document.addEventListener('mousemove', function(e) {
+    if (isDraggingVolume) {
+      setVolumeFromClick(e);
+    }
+  });
+
+  document.addEventListener('mouseup', function() {
+    isDraggingVolume = false;
+  });
+
+  // Touch support for mobile
+  document.addEventListener('touchmove', function(e) {
+    if (isDraggingVolume && e.touches[0]) {
+      const touch = e.touches[0];
+      const mouseEvent = {
+        clientX: touch.clientX,
+        clientY: touch.clientY,
+        stopPropagation: function() {}
+      };
+      setVolumeFromClick(mouseEvent);
+    }
+  });
+
+  document.addEventListener('touchend', function() {
+    isDraggingVolume = false;
+  });
+});
 document.addEventListener('DOMContentLoaded', () => {
  initTheme();
  checkPWAInstallState();
@@ -5488,7 +5813,7 @@ function installPWA() {
     deferredPrompt.userChoice.then(function(choiceResult) {
       if (choiceResult.outcome === 'accepted') {
         console.log('✅ User accepted install');
-        showToast('✅ جاري تثبيت التطبيق...');
+        showToast('✅ جاري تثبيت التطبيق على سطح المكتب...');
       } else {
         console.log('❌ User dismissed install');
         showToast('❌ تم إلغاء التثبيت');
@@ -5497,7 +5822,7 @@ function installPWA() {
       installPromptReady = false;
     }).catch(function(err) {
       console.log('❌ Prompt error:', err);
-      showToast('❌ حدث خطأ، حاول مرة أخرى');
+      showToast('❌ حدث خطأ في التثبيت، حاول مرة أخرى');
     });
     return;
   }
@@ -5509,29 +5834,20 @@ function installPWA() {
     return;
   }
 
-  // If prompt not ready yet, wait and retry
-  showToast('⏳ جاري تحضير التثبيت...');
-  console.log('⏳ Waiting for beforeinstallprompt...');
+  // Open in incognito mode to bypass previous rejection
+  console.log('⏳ Opening in incognito mode to bypass previous rejection...');
 
-  // Retry after 2 seconds
-  setTimeout(function() {
-    if (deferredPrompt && installPromptReady) {
-      console.log('✅ Prompt ready on retry, installing...');
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then(function(choiceResult) {
-        if (choiceResult.outcome === 'accepted') {
-          showToast('✅ جاري تثبيت التطبيق...');
-        } else {
-          showToast('❌ تم إلغاء التثبيت');
-        }
-        deferredPrompt = null;
-        installPromptReady = false;
-      });
+  // Try to open in incognito window (Ctrl+Shift+N)
+  try {
+    const incognitoWindow = window.open('https://alshamal-df.com', '_blank', 'noopener,noreferrer');
+    if (incognitoWindow) {
+      showToast('✅ تم فتح الموقع في نافذة جديدة، اضغط على زرار التثبيت في المتصفح');
     } else {
-      console.log('❌ PWA install not available');
-      showToast('📱 اضغط على قائمة المتصفح (⋮) ثم "تثبيت التطبيق"');
+      showToast('📱 اضغط Ctrl+Shift+N لفتح نافذة خاصة، ثم افتح الموقع وثبته');
     }
-  }, 2000);
+  } catch (e) {
+    showToast('📱 اضغط Ctrl+Shift+N لفتح نافذة خاصة، ثم افتح الموقع وثبته');
+  }
 }
 
 function dismissInstallPrompt() {
