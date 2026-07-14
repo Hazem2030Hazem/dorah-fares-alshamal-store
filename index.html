@@ -5552,13 +5552,14 @@ async function submitSiteRating(event) {
         const review = {
             name: name,
             product: product || 'الموقع عامةً',
-            comment: comment,
+            text: comment,
             rating: rating,
             type: 'site',
+            date: new Date().toLocaleDateString('ar-SA'),
             timestamp: new Date().toISOString()
         };
 
-        await supabaseClient.from('reviews').insert([{name: review.name, product: review.product, text: review.comment, rating: review.rating, date: new Date().toLocaleDateString('ar-SA'), status: 'new'}]);
+        await supabaseClient.from('reviews').insert([{name: review.name, product: review.product, text: review.text, rating: review.rating, date: review.date, status: 'new'}]);
 
         // Close modal first
         closeSiteRatingModal();
@@ -5611,13 +5612,14 @@ async function submitProductRating(event) {
             name: name,
             product: productName,
             productId: productId,
-            comment: comment,
+            text: comment,
             rating: rating,
             type: 'product',
+            date: new Date().toLocaleDateString('ar-SA'),
             timestamp: new Date().toISOString()
         };
 
-        await supabaseClient.from('reviews').insert([{name: review.name, product: review.product, text: review.comment, rating: review.rating, date: new Date().toLocaleDateString('ar-SA'), status: 'new'}]);
+        await supabaseClient.from('reviews').insert([{name: review.name, product: review.product, text: review.text, rating: review.rating, date: review.date, status: 'new'}]);
 
         // Also add to product reviews locally
         if (product) {
@@ -5762,7 +5764,15 @@ async function submitSiteRating(event) {
 
         console.log('📝 Submitting review:', review);
 
-        const { data, error } = await supabaseClient.from('reviews').insert([review]);
+        const { data, error } = const reviewData = {
+            name: review.name,
+            product: review.product,
+            text: review.text || review.comment,
+            rating: review.rating,
+            date: new Date().toLocaleDateString('ar-SA'),
+            status: 'new'
+        };
+        await supabaseClient.from('reviews').insert([reviewData]);
 
         if (error) {
             console.error('❌ Insert error:', error);
@@ -5822,13 +5832,14 @@ async function submitSiteRating(event) {
             name: name,
             product: productName,
             productId: productId,
-            comment: comment,
+            text: comment,
             rating: rating,
             type: 'product',
+            date: new Date().toLocaleDateString('ar-SA'),
             timestamp: new Date().toISOString()
         };
 
-        await supabaseClient.from('reviews').insert([{name: review.name, product: review.product, text: review.comment, rating: review.rating, date: new Date().toLocaleDateString('ar-SA'), status: 'new'}]);
+        await supabaseClient.from('reviews').insert([{name: review.name, product: review.product, text: review.text, rating: review.rating, date: review.date, status: 'new'}]);
 
         // Also add to product reviews locally
         if (product) {
