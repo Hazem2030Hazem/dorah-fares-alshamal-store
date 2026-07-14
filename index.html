@@ -1895,6 +1895,197 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     });
   });
 })();
+
+
+// ===== MODAL FUNCTIONS =====
+function openSiteRatingModal() {
+    document.getElementById('siteRatingModal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+    setRating(5);
+}
+
+function closeSiteRatingModal(e) {
+    if (e && e.target !== e.currentTarget) return;
+    document.getElementById('siteRatingModal').classList.remove('show');
+    document.body.style.overflow = '';
+}
+
+function openProductRatingModal(productId, productName) {
+    currentProductIdForRating = productId;
+    document.getElementById('productRatingTitle').textContent = 'قيّم: ' + productName;
+    document.getElementById('productRatingId').value = productId;
+    document.getElementById('productRatingModal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+    setProductRating(5);
+}
+
+function closeProductRatingModal(e) {
+    if (e && e.target !== e.currentTarget) return;
+    document.getElementById('productRatingModal').classList.remove('show');
+    document.body.style.overflow = '';
+    currentProductIdForRating = null;
+}
+
+function setRating(value) {
+    currentRating = value;
+    document.getElementById('siteRatingValue').value = value;
+    const stars = document.querySelectorAll('#siteRatingStars .star');
+    stars.forEach((star, index) => {
+        if (index < value) {
+            star.classList.add('active');
+            star.style.color = '#FFD700';
+        } else {
+            star.classList.remove('active');
+            star.style.color = 'rgba(255,255,255,0.3)';
+        }
+    });
+}
+
+function setProductRating(value) {
+    currentProductRating = value;
+    document.getElementById('productRatingValue').value = value;
+    const stars = document.querySelectorAll('#productRatingStars .star');
+    stars.forEach((star, index) => {
+        if (index < value) {
+            star.classList.add('active');
+            star.style.color = '#FFD700';
+        } else {
+            star.classList.remove('active');
+            star.style.color = 'rgba(255,255,255,0.3)';
+        }
+    });
+}
+
+async function submitSiteRating(event) {
+    event.preventDefault();
+    const name = document.getElementById('siteRaterName').value.trim();
+    const product = document.getElementById('siteRaterProduct').value.trim();
+    const comment = document.getElementById('siteRaterComment').value.trim();
+    const rating = parseInt(document.getElementById('siteRatingValue').value);
+
+    if (!name || !comment) {
+        showToast('❌ الرجاء ملء جميع الحقول المطلوبة', 'error');
+        return;
+    }
+
+    // Show loading
+    const form = document.getElementById('siteRatingForm');
+    const submitBtn = form.querySelector('.rating-submit-btn');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = '⏳ جاري الإرسال...';
+    submitBtn.disabled = true;
+
+    try {
+        const review = {
+            name: name,
+            product: product || 'الموقع عامةً',
+            text: comment,
+            rating: rating,
+            type: 'site',
+            date: new Date().toLocaleDateString('ar-SA'),
+            timestamp: new Date().toISOString()
+        };
+
+        await supabaseClient.from('reviews').insert([{name: review.name, product: review.product, text: review.text, rating: review.rating, date: review.date, status: 'new'}]);
+
+        // Close modal first
+        closeSiteRatingModal();
+
+        // Reset form
+        document.getElementById('siteRaterName').value = '';
+        document.getElementById('siteRaterProduct').value = '';
+        document.getElementById('siteRaterComment').value = '';
+        setRating(5);
+
+        // Show success message
+        showToast('✅ شكراً لتقييمك! تم حفظ التقييم بنجاح');
+
+        // Refresh reviews
+        await renderReviews();
+
+    } catch (error) {
+        console.error('Error saving review:', error);
+        showToast('❌ حدث خطأ! حاول مرة أخرى', 'error');
+    } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+    }
+}
+
+async function submitProductRating(event) {
+    event.preventDefault();
+    const name = document.getElementById('productRaterName').value.trim();
+    const comment = document.getElementById('productRaterComment').value.trim();
+    const rating = parseInt(document.getElementById('productRatingValue').value);
+    const productId = parseInt(document.getElementById('productRatingId').value);
+
+    if (!name || !comment) {
+        showToast('❌ الرجاء ملء جميع الحقول المطلوبة', 'error');
+        return;
+    }
+
+    const product = productsData.find(p => p.id === productId);
+    const productName = product ? product.name : 'منتج';
+
+    // Show loading
+    const form = document.getElementById('productRatingForm');
+    const submitBtn = form.querySelector('.rating-submit-btn');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = '⏳ جاري الإرسال...';
+    submitBtn.disabled = true;
+
+    try {
+        const review = {
+            name: name,
+            product: productName,
+            productId: productId,
+            text: comment,
+            rating: rating,
+            type: 'product',
+            date: new Date().toLocaleDateString('ar-SA'),
+            timestamp: new Date().toISOString()
+        };
+
+        await supabaseClient.from('reviews').insert([{name: review.name, product: review.product, text: review.text, rating: review.rating, date: review.date, status: 'new'}]);
+
+        // Also add to product reviews locally
+        if (product) {
+            if (!product.reviews) product.reviews = [];
+            product.reviews.push({
+                author: name,
+                date: new Date().toISOString().split('T')[0],
+                stars: rating,
+                text: comment
+            });
+            const totalStars = product.reviews.reduce((sum, r) => sum + r.stars, 0);
+            product.rating = Math.round((totalStars / product.reviews.length) * 10) / 10;
+            localStorage.setItem('doraProducts', JSON.stringify(productsData));
+        }
+
+        // Close modal first
+        closeProductRatingModal();
+
+        // Reset form
+        document.getElementById('productRaterName').value = '';
+        document.getElementById('productRaterComment').value = '';
+        setProductRating(5);
+
+        // Show success message
+        showToast('✅ شكراً لتقييم المنتج! تم حفظ التقييم بنجاح');
+
+        // Refresh
+        await renderReviews();
+        renderProducts(currentFilter);
+    } catch (error) {
+        console.error('Error saving product review:', error);
+        showToast('❌ حدث خطأ! حاول مرة أخرى', 'error');
+    } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+    }
+}
+
+
 </script>
 
 <div class="ocean-bg"></div>
@@ -5468,193 +5659,6 @@ function scrollToSection(sectionId) {
     const section = document.getElementById(sectionId);
     if (section) {
         section.scrollIntoView({ behavior: 'smooth' });
-    }
-}
-
-function openSiteRatingModal() {
-    document.getElementById('siteRatingModal').classList.add('show');
-    document.body.style.overflow = 'hidden';
-    setRating(5);
-}
-
-function closeSiteRatingModal(e) {
-    if (e && e.target !== e.currentTarget) return;
-    document.getElementById('siteRatingModal').classList.remove('show');
-    document.body.style.overflow = '';
-}
-
-function openProductRatingModal(productId, productName) {
-    currentProductIdForRating = productId;
-    document.getElementById('productRatingTitle').textContent = 'قيّم: ' + productName;
-    document.getElementById('productRatingId').value = productId;
-    document.getElementById('productRatingModal').classList.add('show');
-    document.body.style.overflow = 'hidden';
-    setProductRating(5);
-}
-
-function closeProductRatingModal(e) {
-    if (e && e.target !== e.currentTarget) return;
-    document.getElementById('productRatingModal').classList.remove('show');
-    document.body.style.overflow = '';
-    currentProductIdForRating = null;
-}
-
-function setRating(value) {
-    currentRating = value;
-    document.getElementById('siteRatingValue').value = value;
-    const stars = document.querySelectorAll('#siteRatingStars .star');
-    stars.forEach((star, index) => {
-        if (index < value) {
-            star.classList.add('active');
-            star.style.color = '#FFD700';
-        } else {
-            star.classList.remove('active');
-            star.style.color = 'rgba(255,255,255,0.3)';
-        }
-    });
-}
-
-function setProductRating(value) {
-    currentProductRating = value;
-    document.getElementById('productRatingValue').value = value;
-    const stars = document.querySelectorAll('#productRatingStars .star');
-    stars.forEach((star, index) => {
-        if (index < value) {
-            star.classList.add('active');
-            star.style.color = '#FFD700';
-        } else {
-            star.classList.remove('active');
-            star.style.color = 'rgba(255,255,255,0.3)';
-        }
-    });
-}
-
-async function submitSiteRating(event) {
-    event.preventDefault();
-    const name = document.getElementById('siteRaterName').value.trim();
-    const product = document.getElementById('siteRaterProduct').value.trim();
-    const comment = document.getElementById('siteRaterComment').value.trim();
-    const rating = parseInt(document.getElementById('siteRatingValue').value);
-
-    if (!name || !comment) {
-        showToast('❌ الرجاء ملء جميع الحقول المطلوبة', 'error');
-        return;
-    }
-
-    // Show loading
-    const form = document.getElementById('siteRatingForm');
-    const submitBtn = form.querySelector('.rating-submit-btn');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = '⏳ جاري الإرسال...';
-    submitBtn.disabled = true;
-
-    try {
-        const review = {
-            name: name,
-            product: product || 'الموقع عامةً',
-            text: comment,
-            rating: rating,
-            type: 'site',
-            date: new Date().toLocaleDateString('ar-SA'),
-            timestamp: new Date().toISOString()
-        };
-
-        await supabaseClient.from('reviews').insert([{name: review.name, product: review.product, text: review.text, rating: review.rating, date: review.date, status: 'new'}]);
-
-        // Close modal first
-        closeSiteRatingModal();
-
-        // Reset form
-        document.getElementById('siteRaterName').value = '';
-        document.getElementById('siteRaterProduct').value = '';
-        document.getElementById('siteRaterComment').value = '';
-        setRating(5);
-
-        // Show success message
-        showToast('✅ شكراً لتقييمك! تم حفظ التقييم بنجاح');
-
-        // Refresh reviews
-        await renderReviews();
-
-    } catch (error) {
-        console.error('Error saving review:', error);
-        showToast('❌ حدث خطأ! حاول مرة أخرى', 'error');
-    } finally {
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-    }
-}
-
-async function submitProductRating(event) {
-    event.preventDefault();
-    const name = document.getElementById('productRaterName').value.trim();
-    const comment = document.getElementById('productRaterComment').value.trim();
-    const rating = parseInt(document.getElementById('productRatingValue').value);
-    const productId = parseInt(document.getElementById('productRatingId').value);
-
-    if (!name || !comment) {
-        showToast('❌ الرجاء ملء جميع الحقول المطلوبة', 'error');
-        return;
-    }
-
-    const product = productsData.find(p => p.id === productId);
-    const productName = product ? product.name : 'منتج';
-
-    // Show loading
-    const form = document.getElementById('productRatingForm');
-    const submitBtn = form.querySelector('.rating-submit-btn');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = '⏳ جاري الإرسال...';
-    submitBtn.disabled = true;
-
-    try {
-        const review = {
-            name: name,
-            product: productName,
-            productId: productId,
-            text: comment,
-            rating: rating,
-            type: 'product',
-            date: new Date().toLocaleDateString('ar-SA'),
-            timestamp: new Date().toISOString()
-        };
-
-        await supabaseClient.from('reviews').insert([{name: review.name, product: review.product, text: review.text, rating: review.rating, date: review.date, status: 'new'}]);
-
-        // Also add to product reviews locally
-        if (product) {
-            if (!product.reviews) product.reviews = [];
-            product.reviews.push({
-                author: name,
-                date: new Date().toISOString().split('T')[0],
-                stars: rating,
-                text: comment
-            });
-            const totalStars = product.reviews.reduce((sum, r) => sum + r.stars, 0);
-            product.rating = Math.round((totalStars / product.reviews.length) * 10) / 10;
-            localStorage.setItem('doraProducts', JSON.stringify(productsData));
-        }
-
-        // Close modal first
-        closeProductRatingModal();
-
-        // Reset form
-        document.getElementById('productRaterName').value = '';
-        document.getElementById('productRaterComment').value = '';
-        setProductRating(5);
-
-        // Show success message
-        showToast('✅ شكراً لتقييم المنتج! تم حفظ التقييم بنجاح');
-
-        // Refresh
-        await renderReviews();
-        renderProducts(currentFilter);
-    } catch (error) {
-        console.error('Error saving product review:', error);
-        showToast('❌ حدث خطأ! حاول مرة أخرى', 'error');
-    } finally {
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
     }
 }
 
