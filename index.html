@@ -1980,13 +1980,19 @@ async function submitSiteRating(event) {
             name: name,
             product: product || 'الموقع عامةً',
             text: comment,
-            rating: rating,
-            type: 'site',
-            date: new Date().toLocaleDateString('ar-SA'),
-            timestamp: new Date().toISOString()
+            rating: rating
         };
 
-        await supabaseClient.from('reviews').insert([{name: review.name, product: review.product, text: review.text, rating: review.rating, date: review.date, status: 'new'}]);
+        console.log('Submitting review:', review);
+
+        const { data, error } = await supabaseClient.from('reviews').insert([review]);
+
+        if (error) {
+            console.error('Supabase error:', error);
+            throw error;
+        }
+
+        console.log('Review saved:', data);
 
         // Close modal first
         closeSiteRatingModal();
@@ -2005,14 +2011,12 @@ async function submitSiteRating(event) {
 
     } catch (error) {
         console.error('Error saving review:', error);
-        showToast('❌ حدث خطأ! حاول مرة أخرى', 'error');
+        showToast('❌ حدث خطأ! ' + (error.message || 'حاول مرة أخرى'), 'error');
     } finally {
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
     }
-}
-
-async function submitProductRating(event) {
+}async function submitProductRating(event) {
     event.preventDefault();
     const name = document.getElementById('productRaterName').value.trim();
     const comment = document.getElementById('productRaterComment').value.trim();
@@ -5597,74 +5601,56 @@ async function renderReviews() {
     if (!reviewsGrid) return;
 
     try {
-        // Show loading
-        reviewsGrid.innerHTML = '<div style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">⏳ جاري تحميل التقييمات...</div>';
-
-        // Get reviews from Supabase
-        console.log('🔄 Fetching reviews from Supabase...');
-        const { data: reviewsData, error } = await supabaseClient.from('reviews').select('*').order('date', {ascending: false});
+        console.log('Fetching reviews from Supabase...');
+        const { data: reviewsData, error } = await supabaseClient.from('reviews').select('*').order('id', {ascending: false});
 
         if (error) {
-            console.error('❌ Supabase error:', error);
-            showToast('⚠️ جاري عرض التقييمات المحلية', 'warning');
+            console.error('Error fetching reviews:', error);
+            return;
         }
+
+        console.log('Reviews fetched:', reviewsData);
 
         let reviews = [];
 
-        // Add Supabase reviews first
         if (reviewsData && reviewsData.length > 0) {
-            console.log('✅ Found', reviewsData.length, 'reviews in Supabase');
             reviews = reviewsData.map(r => ({
-                id: r.id || Math.random().toString(),
                 name: r.name || 'زائر',
                 product: r.product || 'الموقع عامةً',
-                comment: r.text || r.comment || r.review || '',
+                comment: r.text || '',
                 rating: r.rating || 5,
-                date: r.date || new Date().toLocaleDateString('ar-SA'),
-                type: 'site',
-                source: 'supabase'
+                date: r.date || new Date().toLocaleDateString('ar-SA')
             }));
-        } else {
-            console.log('ℹ️ No reviews found in Supabase, showing defaults');
         }
 
-        // Always add default reviews at the end
-        const defaultReviews = [
-            {id: 'default1', name: 'محمد العتيبي', product: 'طابعة HP LaserJet', comment: 'تم تركيب نظام الطباعة بالكامل خلال يوم واحد فقط. الخدمة ممتازة والفريق محترف جداً.', rating: 5, date: '2024-06-15', type: 'site', source: 'default'},
-            {id: 'default2', name: 'أحمد السبيعي', product: 'كاميرات المراقبة', comment: 'تعاملنا مع درة فارس الشمال في تركيب كاميرات المراقبة لفرعينا. العمل كان احترافي والأسعار منافسة.', rating: 5, date: '2024-06-10', type: 'site', source: 'default'},
-            {id: 'default3', name: 'فهد الدوسري', product: 'نقاط البيع', comment: 'صيانة سريعة ودعم فني على مدار الساعة. جهاز نقاط البيع توقف فجأة وتم حل المشكلة خلال ساعتين.', rating: 5, date: '2024-06-08', type: 'site', source: 'default'}
-        ];
-
-        // Merge: Supabase reviews first, then defaults
-        reviews = [...reviews, ...defaultReviews];
-
-        console.log('📊 Total reviews to display:', reviews.length);
+        // Add default reviews if none exist
+        if (reviews.length === 0) {
+            reviews = [
+                {name: 'محمد العتيبي', product: 'طابعة HP LaserJet', comment: 'تم تركيب نظام الطباعة بالكامل خلال يوم واحد فقط.', rating: 5, date: '2024-06-15'},
+                {name: 'أحمد السبيعي', product: 'كاميرات المراقبة', comment: 'تعاملنا مع درة فارس الشمال في تركيب كاميرات المراقبة.', rating: 5, date: '2024-06-10'},
+                {name: 'فهد الدوسري', product: 'نقاط البيع', comment: 'صيانة سريعة ودعم فني على مدار الساعة.', rating: 5, date: '2024-06-08'}
+            ];
+        }
 
         reviewsGrid.innerHTML = reviews.map(r => {
             const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
-            const sourceBadge = r.source === 'supabase' ? '<span style="color:#00ff88;font-size:11px;margin-right:8px">✓ جديد</span>' : '';
             return `
-                <div class="review-card" data-source="${r.source || 'default'}">
+                <div class="review-card">
                     <div class="review-card-header">
-                        <span class="review-card-author">${sanitizeInput(r.name)}${sourceBadge}</span>
+                        <span class="review-card-author">${r.name}</span>
                         <span class="review-card-date">${r.date}</span>
                     </div>
                     <div class="review-card-stars">${stars}</div>
-                    <p class="review-card-text">${sanitizeInput(r.comment)}</p>
-                    <div class="review-card-product">📦 ${sanitizeInput(r.product)}</div>
+                    <p class="review-card-text">${r.comment}</p>
+                    <div class="review-card-product">📦 ${r.product}</div>
                 </div>
             `;
         }).join('');
 
-        console.log('✅ Reviews rendered successfully');
-
     } catch (error) {
-        console.error('❌ Error loading reviews:', error);
-        reviewsGrid.innerHTML = '<div style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">❌ حدث خطأ في تحميل التقييمات</div>';
+        console.error('Error in renderReviews:', error);
     }
-}
-
-async function submitSiteRating(event) {
+}async function submitSiteRating(event) {
     event.preventDefault();
     const name = document.getElementById('siteRaterName').value.trim();
     const product = document.getElementById('siteRaterProduct').value.trim();
