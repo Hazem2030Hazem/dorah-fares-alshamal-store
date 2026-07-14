@@ -1846,38 +1846,11 @@
 </style>
 <base target="_blank">
 
-<!-- ===== FIREBASE SDK ===== -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyAurVgTjBYnE72Kps53udE6GWAYyKFqmu4",
-    authDomain: "dora-fares-alshamal.firebaseapp.com",
-    projectId: "dora-fares-alshamal",
-    storageBucket: "dora-fares-alshamal.firebasestorage.app",
-    messagingSenderId: "66912772468",
-    appId: "1:66912772468:web:b40a601a1350e0fdd2cc21"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  // Make db available globally
-  window.firebaseDB = db;
-  window.firebaseCollection = collection;
-  window.firebaseAddDoc = addDoc;
-  window.firebaseGetDocs = getDocs;
-  window.firebaseQuery = query;
-  window.firebaseOrderBy = orderBy;
-  window.firebaseServerTimestamp = serverTimestamp;
-</script>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 // Supabase Configuration
 const SUPABASE_URL = 'https://kcbmvxuzjlaooknwhqqb.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_MLki30Et4ArJbDSMuc4Wyw_SbzwXoS5';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjYm12eHV6amxhb29rbndocXFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NzkyMjAsImV4cCI6MjA5OTU1NTIyMH0.ayDpkfCKL90GcUKjbHQs7OvS5sxF1VSraWg58NHJ7ek';
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 </script>
 </head>
@@ -5583,7 +5556,7 @@ async function submitSiteRating() {
             timestamp: window.firebaseServerTimestamp()
         };
 
-        await window.firebaseAddDoc(window.firebaseCollection(window.firebaseDB, 'reviews'), review);
+        await supabase.from('reviews').insert([{name: review.name, product: review.product, text: review.comment, rating: review.rating, date: new Date().toLocaleDateString('ar-SA'), status: 'new'}]);
 
         // Close modal first
         closeSiteRatingModal();
@@ -5641,7 +5614,7 @@ async function submitProductRating() {
             timestamp: window.firebaseServerTimestamp()
         };
 
-        await window.firebaseAddDoc(window.firebaseCollection(window.firebaseDB, 'reviews'), review);
+        await supabase.from('reviews').insert([{name: review.name, product: review.product, text: review.comment, rating: review.rating, date: new Date().toLocaleDateString('ar-SA'), status: 'new'}]);
 
         // Also add to product reviews locally
         if (product) {
@@ -5689,25 +5662,20 @@ async function renderReviews() {
         reviewsGrid.innerHTML = '<div style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">⏳ جاري تحميل التقييمات...</div>';
 
         // Get reviews from Firestore
-        const q = window.firebaseQuery(
-            window.firebaseCollection(window.firebaseDB, 'reviews'),
-            window.firebaseOrderBy('timestamp', 'desc')
-        );
-        const querySnapshot = await window.firebaseGetDocs(q);
+        const { data: reviewsData, error } = await supabase.from('reviews').select('*').order('date', {ascending: false});
 
         let reviews = [];
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            reviews.push({
-                id: doc.id,
-                name: data.name || 'زائر',
-                product: data.product || 'الموقع عامةً',
-                comment: data.comment || '',
-                rating: data.rating || 5,
-                date: data.timestamp ? new Date(data.timestamp.toDate()).toLocaleDateString('ar-SA') : new Date().toLocaleDateString('ar-SA'),
-                type: data.type || 'site'
-            });
-        });
+        if (reviewsData) {
+            reviews = reviewsData.map(r => ({
+                id: r.id || Math.random().toString(),
+                name: r.name || 'زائر',
+                product: r.product || 'الموقع عامةً',
+                comment: r.text || r.comment || '',
+                rating: r.rating || 5,
+                date: r.date || new Date().toLocaleDateString('ar-SA'),
+                type: 'site'
+            }));
+        }
 
         // If no reviews in Firestore, show default reviews
         if (reviews.length === 0) {
