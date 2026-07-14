@@ -4104,7 +4104,12 @@ async function submitProductRating(event) {
   <div class="reviews-grid" id="reviewsGrid">
    <!-- Reviews will be loaded here dynamically -->
   </div>
+  <div style="text-align:center;margin-top:30px">
+   <button class="btn-primary" onclick="openSiteRatingModal()" style="display:inline-flex;align-items:center;gap:10px">
+    ⭐ أضف تقييمك
+   </button>
   </div>
+ </div>
 </section>
 
 <section class="testimonials" id="testimonials" style="background:transparent;">
@@ -4275,6 +4280,39 @@ async function submitProductRating(event) {
    </div>
   </div>
  </div>
+</section>
+
+<section class="contact" id="contact" style="background:transparent;">
+<div class="container">
+<h3>نحن هنا لمساعدتك</h3>
+<div class="contact-grid">
+<div class="contact-info">
+<div class="info-card"><span class="icon">📞</span><h4>اتصل بنا</h4><p>متاحون للرد على استفساراتكم</p><a href="tel:+966568717449">+966 56 871 7449</a></div>
+<div class="info-card"><span class="icon">💬</span><h4>واتساب</h4><p>رد سريع على رسائلك</p><a href="https://wa.me/966568717449" target="_blank" rel="noopener">+966 56 871 7449</a></div>
+<div class="info-card"><span class="icon">✉️</span><h4>البريد الإلكتروني</h4><p>أرسل لنا بريدك في أي وقت</p><a href="mailto:info@dorafares.com">info@dorafares.com</a></div>
+<div class="info-card" style="cursor:pointer;transition:all .3s ease" onclick="window.open('https://maps.app.goo.gl/wKPBFH9751rpFgMM7?g_st=ac','_blank')" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 10px 30px rgba(30,136,229,.2)';this.style.borderColor='var(--primary)'" onmouseout="this.style.transform='';this.style.boxShadow='';this.style.borderColor=''"><span class="icon">📍</span><h4>الموقع</h4><p>المملكة العربية السعودية</p><a href="https://maps.app.goo.gl/wKPBFH9751rpFgMM7?g_st=ac" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:6px;margin-top:8px;transition:all .3s ease" onmouseover="this.style.gap='10px'" onmouseout="this.style.gap='6px'">🗺️ عرض على الخريطة →</a></div>
+</div>
+<div class="contact-form">
+<form id="contactForm" onsubmit="handleSubmit(event)">
+<div class="form-row">
+<input type="text" id="contactName" placeholder="الاسم الكامل" required="" pattern="[\u0600-\u06FF\s]{3,50}" title="الرجاء إدخال اسم صحيح (3-50 حرف)">
+<input type="tel" id="contactPhone" placeholder="رقم الجوال" required="" pattern="05[0-9]{8}" title="الرجاء إدخال رقم جوال سعودي صحيح">
+</div>
+<input type="email" id="contactEmail" placeholder="البريد الإلكتروني" required="" style="margin-bottom:15px" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+<select id="contactSubject" style="margin-bottom:15px" required="">
+<option value="">اختر الموضوع</option>
+<option value="order">طلب منتج</option>
+<option value="inquiry">استفسار عام</option>
+<option value="support">دعم فني</option>
+<option value="complaint">شكوى</option>
+</select>
+<textarea id="contactMessage" placeholder="اكتب رسالتك هنا..." required="" minlength="10" maxlength="500"></textarea>
+<div class="error-msg" id="formError"></div>
+<button type="submit" class="submit-btn">📨 إرسال الرسالة</button>
+</form>
+</div>
+</div>
+</div>
 </section>
 
 <section class="partners" id="certifications" style="background:transparent;padding:60px 0">
@@ -5538,77 +5576,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 })();
 </script>
-<div id="reviewModal" class="dora-modal">
-            <div class="dora-modal-content">
-                <div class="dora-modal-header">
-                    <h3>⭐ أضف تقييمك</h3>
-                    <button class="dora-modal-close" onclick="closeReviewModal()">✕</button>
-                </div>
-                <form id="reviewForm" onsubmit="return submitReview(event)">
-                    <div class="dora-form-group">
-                        <label>👤 اسمك</label>
-                        <input type="text" id="reviewName" placeholder="أدخل اسمك" required="">
-                    </div>
-                    <div class="dora-form-group">
-                        <label>⭐ التقييم</label>
-                        <div class="dora-star-rating" id="starRating">
-                            <span class="dora-star active" data-value="1">★</span>
-                            <span class="dora-star active" data-value="2">★</span>
-                            <span class="dora-star active" data-value="3">★</span>
-                            <span class="dora-star active" data-value="4">★</span>
-                            <span class="dora-star active" data-value="5">★</span>
-                        </div>
-                        <input type="hidden" id="reviewRating" value="5">
-                    </div>
-                    <div class="dora-form-group">
-                        <label>📦 المنتج/الخدمة</label>
-                        <input type="text" id="reviewProduct" placeholder="اسم المنتج أو الخدمة">
-                    </div>
-                    <div class="dora-form-group">
-                        <label>💬 رأيك</label>
-                        <textarea id="reviewText" rows="4" placeholder="اكتب تقييمك هنا..." required=""></textarea>
-                    </div>
-                    <button type="submit" class="dora-btn-submit">📨 إرسال التقييم</button>
-                </form>
-            </div>
-        </div><div id="messageModal" class="dora-modal">
-            <div class="dora-modal-content">
-                <div class="dora-modal-header">
-                    <h3>📨 تواصل معنا</h3>
-                    <button class="dora-modal-close" onclick="closeMessageModal()">✕</button>
-                </div>
-                <form id="messageForm" onsubmit="return submitMessage(event)">
-                    <div class="dora-form-group">
-                        <label>👤 اسمك</label>
-                        <input type="text" id="msgName" placeholder="أدخل اسمك" required="">
-                    </div>
-                    <div class="dora-form-group">
-                        <label>📱 رقم الجوال</label>
-                        <input type="tel" id="msgPhone" placeholder="05xxxxxxxx" required="" pattern="05[0-9]{8}">
-                    </div>
-                    <div class="dora-form-group">
-                        <label>✉️ البريد الإلكتروني</label>
-                        <input type="email" id="msgEmail" placeholder="your@email.com" required="">
-                    </div>
-                    <div class="dora-form-group">
-                        <label>📌 الموضوع</label>
-                        <select id="msgSubject" required="">
-                            <option value="">اختر الموضوع</option>
-                            <option value="استفسار">❓ استفسار</option>
-                            <option value="شكوى">😞 شكوى</option>
-                            <option value="اقتراح">💡 اقتراح</option>
-                            <option value="طلب منتج">📦 طلب منتج</option>
-                            <option value="أخرى">📝 أخرى</option>
-                        </select>
-                    </div>
-                    <div class="dora-form-group">
-                        <label>💬 الرسالة</label>
-                        <textarea id="msgText" rows="4" placeholder="اكتب رسالتك هنا..." required=""></textarea>
-                    </div>
-                    <button type="submit" class="dora-btn-submit">📨 إرسال الرسالة</button>
-                </form>
-            </div>
-        </div>
+
 
 <script>
 
