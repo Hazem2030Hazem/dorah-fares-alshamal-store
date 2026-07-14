@@ -1,3 +1,8 @@
+// Supabase Configuration
+const SUPABASE_URL = 'https://kcbmvxuzjlaooknwhqqb.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_MLki30Et4ArJbDSMuc4Wyw_SbzwXoS5';
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 
 // ===== REVIEW & MESSAGE SYSTEM =====
 // This script adds review and contact forms to all pages
@@ -209,7 +214,7 @@ function showToast(message, type) {
     }, 3000);
 }
 
-function submitReview(e) {
+async function submitReview(e) {
     e.preventDefault();
     const name = document.getElementById('reviewName').value.trim();
     const rating = parseInt(document.getElementById('reviewRating').value);
@@ -221,23 +226,27 @@ function submitReview(e) {
         return false;
     }
 
-    const reviews = JSON.parse(localStorage.getItem('doraReviews')) || [];
-    reviews.push({
+    // Save to Supabase
+    const { error } = await supabase.from('reviews').insert([{
         name,
         rating,
         product: product || 'منتج عام',
         text,
         date: new Date().toLocaleDateString('ar-SA'),
         status: 'new'
-    });
-    localStorage.setItem('doraReviews', JSON.stringify(reviews));
+    }]);
+
+    if (error) {
+        showToast('❌ حدث خطأ: ' + error.message, 'error');
+        return false;
+    }
 
     closeReviewModal();
     showToast('✅ تم إرسال التقييم بنجاح! شكراً لك', 'success');
     return false;
 }
 
-function submitMessage(e) {
+async function submitMessage(e) {
     e.preventDefault();
     const name = document.getElementById('msgName').value.trim();
     const phone = document.getElementById('msgPhone').value.trim();
@@ -250,8 +259,8 @@ function submitMessage(e) {
         return false;
     }
 
-    const messages = JSON.parse(localStorage.getItem('doraMessages')) || [];
-    messages.push({
+    // Save to Supabase
+    const { error } = await supabase.from('messages').insert([{
         name,
         phone,
         email,
@@ -259,8 +268,12 @@ function submitMessage(e) {
         message: text,
         date: new Date().toLocaleDateString('ar-SA'),
         status: 'new'
-    });
-    localStorage.setItem('doraMessages', JSON.stringify(messages));
+    }]);
+
+    if (error) {
+        showToast('❌ حدث خطأ: ' + error.message, 'error');
+        return false;
+    }
 
     closeMessageModal();
     showToast('✅ تم إرسال رسالتك بنجاح! سنتواصل معك قريباً', 'success');
@@ -406,18 +419,28 @@ function closeAdminLoginModal() {
     if (modal) modal.remove();
 }
 
-function handleAdminLogin(e) {
+async function handleAdminLogin(e) {
     e.preventDefault();
     const user = document.getElementById('adminLoginUser').value;
     const pass = document.getElementById('adminLoginPass').value;
 
-    if (user === 'admin' && pass === 'dora2024') {
-        localStorage.setItem('adminLoggedIn', 'true');
-        closeAdminLoginModal();
-        window.open('admin.html?secret=dora2024', '_blank');
-        showToast('✅ تم تسجيل الدخول! جاري فتح لوحة الإدارة...', 'success');
-    } else {
+    // Verify admin credentials from Supabase
+    const { data, error } = await supabase
+        .from('admins')
+        .select('*')
+        .eq('username', user)
+        .eq('password', pass)
+        .single();
+
+    if (error || !data) {
         document.getElementById('adminLoginError').style.display = 'block';
+        return false;
     }
+
+    localStorage.setItem('adminLoggedIn', 'true');
+    localStorage.setItem('adminLoginTime', Date.now());
+    closeAdminLoginModal();
+    window.open('admin.html?secret=' + pass, '_blank');
+    showToast('✅ تم تسجيل الدخول! جاري فتح لوحة الإدارة...', 'success');
     return false;
 }
