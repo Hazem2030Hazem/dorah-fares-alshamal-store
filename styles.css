@@ -1260,7 +1260,7 @@ html@keyframes gradientBG{0%{background-position:0% 50%}25%{background-position:
    width: 100%;
    height: 100vh;
    min-height: 100%;
-   background: url(https://i.imgur.com/PCW2FZb.jpeg) center/cover no-repeat fixed;
+   background: url(hero-bg-white-logo-pattern.jpg) center/cover no-repeat fixed;
    z-index: -1;
    overflow: hidden;
   }
@@ -2126,3 +2126,104 @@ html@keyframes gradientBG{0%{background-position:0% 50%}25%{background-position:
 #reviewModal {
   display: none !important;
 }
+
+/* ============================================================
+   LIGHT THEME — خلفية بيضاء + لوجو باهت (هوية الشركة الزرقاء)
+   ============================================================ */
+body{background:#ffffff !important;animation:none !important;color:#1F2937 !important}
+
+/* النصوص العامة */
+h1,h2,h3,h4,h5,h6{color:#111827 !important;text-shadow:none !important}
+p,span,li,label,td,th{ text-shadow:none !important }
+.section-header h3{color:#111827 !important}
+.section-header p{color:#4B5563 !important}
+
+/* الهيدر */
+.header{background:rgba(255,255,255,.92) !important;border-bottom:1px solid #E5E7EB !important;box-shadow:0 2px 15px rgba(0,0,0,.06) !important}
+.logo-text h1{color:#1F2937 !important;text-shadow:none !important}
+.logo-text span{color:#3B639E !important;text-shadow:none !important}
+.nav-links a,.nav-trigger{color:#374151 !important}
+.nav-links a:hover,.nav-trigger:hover{color:#2C4F86 !important;background:rgba(59,99,158,.08) !important}
+.dropdown-menu{background:#ffffff !important;border:1px solid #E5E7EB !important;box-shadow:0 8px 30px rgba(0,0,0,.1) !important}
+.dropdown-menu a{color:#374151 !important}
+.dropdown-menu a:hover{background:#F3F6FB !important;color:#2C4F86 !important}
+
+/* قسم الهيرو */
+.hero h2{color:#111827 !important;text-shadow:none !important}
+.hero p{color:#4B5563 !important;text-shadow:none !important}
+.hero-badge{background:#ffffff !important;box-shadow:0 2px 12px rgba(0,0,0,.08) !important}
+.hero-stat{background:rgba(255,255,255,.75) !important;border:1px solid #E5E7EB !important;box-shadow:0 4px 15px rgba(0,0,0,.05) !important;backdrop-filter:blur(8px) !important}
+.hero-stat strong{color:#2C4F86 !important;text-shadow:none !important}
+.hero-stat span{color:#6B7280 !important}
+.hero-stat::after{background:#E5E7EB !important}
+.btn-secondary{background:rgba(255,255,255,.9) !important;color:#1F2937 !important;border:1px solid #D1D5DB !important}
+.btn-secondary:hover{background:#F3F6FB !important;border-color:#3B639E !important;color:#2C4F86 !important}
+
+/* الكروت العامة والتصنيفات */
+.cat-card,.prod-card,.about-feature,.stat-box,.filter-tab{
+  background:#ffffff !important;border:1px solid #E5E7EB !important;
+  box-shadow:0 4px 20px rgba(0,0,0,.06) !important;backdrop-filter:none !important}
+.cat-card:hover,.prod-card:hover{box-shadow:0 12px 30px rgba(44,79,134,.12) !important;border-color:#3B639E !important}
+.cat-name{color:#111827 !important}
+.cat-count{color:#6B7280 !important}
+.stat-box strong,.stat-box .num{color:#2C4F86 !important;text-shadow:none !important}
+.stat-box span,.stat-box p{color:#6B7280 !important;text-shadow:none !important}
+.stat-box{border-top-color:#3B639E !important}
+
+/* المنتجات */
+.prod-name{color:#111827 !important}
+.prod-desc{color:#6B7280 !important}
+.prod-price{color:#2C4F86 !important;text-shadow:none !important}
+.stock-value{color:#374151 !important}
+.prod-tag{background:rgba(59,99,158,.1) !important;color:#2C4F86 !important}
+.filter-tab{color:#374151 !important}
+.view-btn{color:#374151 !important;border-color:#D1D5DB !important}
+
+/* الكروت العائمة في الهيرو */
+.float-card{background:rgba(255,255,255,.85) !important;border:1px solid #E5E7EB !important;box-shadow:0 8px 25px rgba(0,0,0,.08) !important}
+.float-card h4{color:#111827 !important;text-shadow:none !important}
+.float-card p{color:#6B7280 !important;text-shadow:none !important}
+
+/* عن الشركة */
+.about-text{background:#ffffff !important;border:1px solid #E5E7EB !important;box-shadow:0 8px 30px rgba(0,0,0,.06) !important}
+.about-text h3{color:#111827 !important;text-shadow:none !important}
+.about-text p{color:#4B5563 !important;text-shadow:none !important}
+
+/* الفورم والتواصل */
+.contact-form input,.contact-form select,.contact-form textarea,
+.search-box input,.search-bar input{
+  background:#ffffff !important;border:1px solid #D1D5DB !important;color:#111827 !important}
+.contact-form input::placeholder,.search-box input::placeholder{color:#9CA3AF !important}
+
+/* الفوتر */
+.footer{background:#F9FAFB !important;border-top:1px solid #E5E7EB !important}
+.footer h3,.footer h4{color:#111827 !important}
+.footer-col a,.footer p{color:#4B5563 !important}
+.footer-col a:hover{color:#2C4F86 !important}
+.footer-bottom{color:#6B7280 !important;border-top:1px solid #E5E7EB !important}
+
+/* سلة المشتريات */
+.cart-sidebar{background:#ffffff !important;color:#111827 !important;border-left:1px solid #E5E7EB !important}
+.cart-item-name{color:#111827 !important}
+.qty-btn{color:#111827 !important;border-color:#D1D5DB !important}
+
+/* أي نص أبيض متبقّي */
+[style*="color:#fff"],[style*="color: #fff"],[style*="color:white"],[style*="color: white"]{color:#111827 !important}
+
+
+/* ============================================================
+   HERO DARK — قسم الترحيب الداكن بلوجوهات الشركة المتناثرة
+   (الخلفية البيضا تفضل لباقي الموقع)
+   ============================================================ */
+.hero{background:url(hero-bg-dark-logos.jpg) center/cover no-repeat !important}
+.hero h2{color:#ffffff !important;text-shadow:0 2px 15px rgba(0,0,0,.4) !important}
+.hero p{color:rgba(255,255,255,.8) !important}
+.hero-stat{background:rgba(10,15,35,.45) !important;border:1px solid rgba(255,255,255,.15) !important}
+.hero-stat strong{color:#ffffff !important}
+.hero-stat span{color:rgba(255,255,255,.65) !important}
+.hero-stat::after{background:rgba(255,255,255,.15) !important}
+.btn-secondary{background:rgba(255,255,255,.1) !important;color:#ffffff !important;border:1px solid rgba(255,255,255,.3) !important}
+.btn-secondary:hover{background:rgba(255,255,255,.18) !important;border-color:rgba(255,255,255,.55) !important;color:#ffffff !important}
+.float-card{background:rgba(10,15,35,.55) !important;border:1px solid rgba(255,255,255,.15) !important}
+.float-card h4{color:#ffffff !important}
+.float-card p{color:rgba(255,255,255,.7) !important}
