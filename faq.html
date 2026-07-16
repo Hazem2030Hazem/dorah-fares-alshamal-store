@@ -142,35 +142,151 @@ function init() {
 </head><body>
     <!-- Header -->
     <header class="header" id="header">
-        <div class="header-container">
-            <a href="index.html" class="logo">
-                <img src="assets/logo.png" alt="درة فارس الشمال" class="logo-img">
-                <div class="logo-text">
-                    <span class="logo-title">درة فارس الشمال</span>
-                    <span class="logo-subtitle">DORA FARES AL SHAMAL</span>
-                </div>
-            </a>
-            <nav class="main-nav">
-                <a href="index.html" class="nav-link">الرئيسية</a>
-                <a href="about.html" class="nav-link">عن الشركة</a>
-                <a href="services.html" class="nav-link">الخدمات</a>
-                <a href="products.html" class="nav-link">المنتجات</a>
-                <a href="contact.html" class="nav-link">تواصل معنا</a>
-            </nav>
-            <div class="header-actions">
-                <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
-                    <i class="fas fa-sun"></i>
-                </button>
-                <button class="cart-btn" id="cartBtn" aria-label="السلة">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count" id="cartCount">0</span>
-                </button>
-                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="القائمة">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
+<div class="header-inner" style="width:100%;max-width:100%;">
+<div class="logo">
+<img src="https://www.alshamal-df.com/logo.png?v=2.1_1783834267413" alt="شركة درة فارس الشمال" style="width:85px;height:85px;border-radius:14px;object-fit:contain;">
+<div class="logo-particles">
+ <div class="logo-particle"></div>
+ <div class="logo-particle"></div>
+ <div class="logo-particle"></div>
+ <div class="logo-particle"></div>
+</div>
+<div class="logo-text">
+<h1>شركة درة فارس الشمال</h1>
+<span>Dora Fares Al Shamal</span>
+</div>
+</div>
+<nav class="nav-links">
+    <a href="#home" aria-label="الرئيسية">الرئيسية</a>
+
+    <!-- عن الشركة -->
+    <div class="nav-item">
+        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="عن الشركة">
+            عن الشركة <span class="arrow">▼</span>
+        </button>
+        <div class="dropdown-menu">
+            <a href="about.html" aria-label="نبذة عن الشركة">نبذة عن الشركة</a>
+            <a href="about.html#vision" aria-label="رؤيتنا">رؤيتنا</a>
+            <a href="about.html#mission" aria-label="رسالتنا">رسالتنا</a>
+            <a href="about.html#team" aria-label="فريق العمل">فريق العمل</a>
+            <a href="about.html#certifications" aria-label="الشهادات">الشهادات</a>
         </div>
-    </header>
+    </div>
+
+    <!-- التصنيفات -->
+    <div class="nav-item">
+        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="التصنيفات">
+            التصنيفات <span class="arrow">▼</span>
+        </button>
+        <div class="dropdown-menu">
+            <a href="service_printing.html" aria-label="خدمات الطباعة">خدمات الطباعة</a>
+            <a href="service_cameras.html" aria-label="كاميرات المراقبة">كاميرات المراقبة</a>
+            <a href="service_pos.html" aria-label="نقاط البيع">نقاط البيع</a>
+            <a href="service_network.html" aria-label="شبكات">شبكات</a>
+            <a href="service_barcode.html" aria-label="باركود">باركود</a>
+            <a href="service_maintenance.html" aria-label="الصيانة">الصيانة</a>
+        </div>
+    </div>
+
+    <!-- المنتجات -->
+    <div class="nav-item">
+        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="المنتجات">
+            المنتجات <span class="arrow">▼</span>
+        </button>
+        <div class="dropdown-menu">
+            <a href="products.html" aria-label="جميع المنتجات">جميع المنتجات</a>
+            <a href="products.html?category=printers" aria-label="طابعات">طابعات</a>
+            <a href="products.html?category=computers" aria-label="أجهزة الكمبيوتر">أجهزة الكمبيوتر</a>
+            <a href="products.html?category=ram" aria-label="رامات">رامات</a>
+            <a href="products.html?category=hard-drives" aria-label="هاردات">هاردات</a>
+            <a href="products.html?category=accessories" aria-label="إكسسوارات">إكسسوارات</a>
+        </div>
+    </div>
+
+    <!-- المعلومات -->
+    <div class="nav-item">
+        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="المعلومات">
+            المعلومات <span class="arrow">▼</span>
+        </button>
+        <div class="dropdown-menu">
+            <a href="privacy.html" aria-label="سياسة الخصوصية">سياسة الخصوصية</a>
+            <a href="terms.html" aria-label="شروط الاستخدام">شروط الاستخدام</a>
+            <a href="faq.html" aria-label="الأسئلة الشائعة">الأسئلة الشائعة</a>
+        </div>
+    </div>
+
+    <!-- الدعم -->
+    <div class="nav-item">
+        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="الدعم">
+            الدعم <span class="arrow">▼</span>
+        </button>
+        <div class="dropdown-menu">
+            <a href="contact.html" aria-label="تواصل معنا">تواصل معنا</a>
+        </div>
+    </div>
+</nav>
+<div class="header-controls">
+<button onclick="location.href='https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk'" class="install-btn" title="تثبيت تطبيق درة فارس الشمال" aria-label="تثبيت تطبيق درة فارس الشمال">
+  <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+    <line x1="12" y1="18" x2="12.01" y2="18"></line>
+  </svg>
+  <span class="icon-glow"></span>
+</button>
+<div class="audio-toggle-wrapper">
+  <button class="audio-toggle" onclick="toggleAudioVolumePopup(event)" title="تشغيل/إيقاف الصوت" aria-label="تشغيل/إيقاف الصوت" id="audioToggleBtn">
+    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="speakerIconSvg">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+    </svg>
+    <span class="icon-glow"></span>
+  </button>
+  <div class="audio-volume-popup" id="audioVolumePopup">
+    <h4>🔊 مستوى الصوت</h4>
+    <div class="volume-slider-container" id="volumeSlider" onclick="setVolumeFromClick(event)">
+      <div class="volume-slider-fill" id="volumeSliderFill" style="width: 30%"></div>
+      <div class="volume-slider-thumb" id="volumeSliderThumb"></div>
+    </div>
+    <div class="volume-value" id="volumeValue">30%</div>
+    <button class="volume-mute-btn" onclick="toggleMute()">🔇 كتم / تشغيل</button>
+  </div>
+</div>
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="ابحث عن منتج..." oninput="handleSearch(this.value)" aria-label="البحث عن منتج">
+  <span class="search-icon">
+    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+  </span>
+  <div class="search-results" id="searchResults"></div>
+</div>
+<button class="theme-toggle" onclick="toggleTheme()" title="تبديل الوضع" aria-label="تبديل الوضع الداكن/الفاتح" id="themeToggleBtn">
+  <svg id="themeIcon" class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="5"></circle>
+    <line x1="12" y1="1" x2="12" y2="3"></line>
+    <line x1="12" y1="21" x2="12" y2="23"></line>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+    <line x1="1" y1="12" x2="3" y2="12"></line>
+    <line x1="21" y1="12" x2="23" y2="12"></line>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+  </svg>
+  <span class="icon-glow"></span>
+</button>
+<button class="cart-btn" onclick="toggleCart()" aria-label="سلة المشتريات">
+  <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="9" cy="21" r="1"></circle>
+    <circle cx="20" cy="21" r="1"></circle>
+    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+  </svg>
+  <span class="icon-glow"></span>
+  <span class="cart-count" id="cartCount">0</span>
+</button>
+</div>
+</div>
+</header>
 
     <!-- Mobile Sidebar -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
