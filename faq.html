@@ -1,17 +1,145 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الأسئلة الشائعة | شركة درة فارس الشمال</title>
-    <meta name="description" content="الأسئلة الشائعة لموقع شركة درة فارس الشمال للتجارة">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/png" href="assets/logo.png">
-    <link rel="manifest" href="manifest.json">
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="google-site-verification" content="XXXXXXXXXXXXXXXXXXXXXXXXXXXX">
+  <meta charset="UTF-8">
+  <meta name="cache-version" content="v3.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="الأسئلة الشائعة لموقع شركة درة فارس الشمال للتجارة">
+  <meta name="keywords" content="شركة درة فارس الشمال, متجر تقنية, طابعات, كمبيوتر, كاميرات مراقبة, نقاط بيع, شبكات, السعودية, تبوك">
+  <meta name="geo.region" content="SA">
+  <meta name="geo.placename" content="حائل, عرعر, الشمال">
+  <meta name="author" content="شركة درة فارس الشمال">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#1E88E5">
+  <meta name="mobile-web-app-capable" content="no">
+  <meta name="apple-mobile-web-app-capable" content="no">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://dorafares.com">
+  <meta property="og:title" content="شركة درة فارس الشمال | حلول تقنية متكاملة">
+  <meta property="og:description" content="حلول تقنية متكاملة للشركات والأفراد. +15 سنة خبرة، +500 عميل، +1000 مشروع منفذ. طابعات، كاميرات مراقبة، نقاط بيع، شبكات.">
+  <meta property="og:site_name" content="شركة درة فارس الشمال">
+  <meta property="og:locale" content="ar_SA">
+  <meta property="og:image" content="https://dorafares.com/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="شركة درة فارس الشمال | متجر التقنية">
+  <meta name="twitter:description" content="وجهتك الأولى لكل ما يتعلق بالتقنية في المملكة العربية السعودية.">
+  <meta name="twitter:image" content="https://dorafares.com/og-image.jpg">
+  <meta http-equiv="Surrogate-Control" content="no-store">
+  <meta http-equiv="Vary" content="*">
+  <link rel="canonical" href="https://dorafares.com">
+  <link rel="manifest" href="manifest.json?v=4.0">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20fill%3D%27%25231E88E5%27%20rx%3D%2715%27%20width%3D%27100%27%20height%3D%27100%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27white%27%3E%E2%9A%A1%3C%2Ftext%3E%3C%2Fsvg%3E">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+<title>الأسئلة الشائعة | شركة درة فارس الشمال</title>
+<!-- ========== AUDIO AUTO-PLAY SCRIPT (مباشر في الصفحة) ========== -->
+  
+  
+  
+  
+  
+<base target="_blank">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  (function() {
+      'use strict';
+      const AUDIO_URL = 'https://raw.githubusercontent.com/Hazem2030Hazem/dorah-fares-alshamal-store/refs/heads/main/music.mp3';
+      let audio = null;
+      let isPlaying = false;
+      let isMuted = false;
+
+      // Expose audio element globally for volume control
+      window.doraAudio = null;
+      window.doraAudioPlaying = false;
+      window.doraAudioMuted = false;
+
+      function createAudio() {
+          if (audio) return audio;
+          audio = new Audio(AUDIO_URL);
+          audio.loop = true;
+          audio.volume = 0.30;
+          audio.preload = 'auto';
+          // Expose globally
+          window.doraAudio = audio;
+          return audio;
+      }
+
+      function tryPlay() {
+          if (isPlaying || !audio || isMuted) return;
+          audio.play().then(() => {
+              isPlaying = true;
+              console.log('✅ Audio playing');
+              updateSpeakerIcon();
+          }).catch((err) => {
+              console.log('⚠️ Autoplay blocked, waiting for user interaction...');
+              document.addEventListener('click', function playOnClick() {
+                  if (!isMuted && audio) {
+                      audio.play().then(() => {
+                          isPlaying = true;
+                          console.log('✅ Audio playing after click');
+                          updateSpeakerIcon();
+                      }).catch((e) => console.log('❌ Audio failed:', e));
+                  }
+                  document.removeEventListener('click', playOnClick);
+              }, { once: true });
+          });
+      }
+
+      window.toggleAudio = function() {
+          if (!audio) audio = createAudio();
+          if (isPlaying) {
+              audio.pause();
+              isPlaying = false;
+              isMuted = true;
+          } else {
+              isMuted = false;
+              audio.play().then(() => {
+                  isPlaying = true;
+                  window.doraAudioPlaying = true;
+                  updateSpeakerIcon();
+              }).catch((e) => console.log('❌ Toggle failed:', e));
+          }
+          window.doraAudioPlaying = isPlaying;
+          window.doraAudioMuted = isMuted;
+          updateSpeakerIcon();
+      };
+
+      function updateSpeakerIcon() {
+  const svg = document.getElementById('speakerIconSvg');
+  if (svg) {
+    if (isPlaying) {
+      svg.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>';
+      svg.style.opacity = '1';
+      svg.style.filter = 'drop-shadow(0 0 8px rgba(16,185,129,0.8))';
+    } else {
+      svg.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line>';
+      svg.style.opacity = '0.5';
+      svg.style.filter = 'none';
+    }
+  }
+}
+function init() {
+          createAudio();
+          tryPlay();
+          setTimeout(tryPlay, 1000);
+          window.doraAudioPlaying = isPlaying;
+          window.doraAudioMuted = isMuted;
+      }
+
+      if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', init);
+      } else {
+          init();
+      }
+  })();
+  
+</script>
+</head><body>
     <!-- Header -->
     <header class="header" id="header">
         <div class="header-container">
@@ -454,43 +582,8 @@
         <span>اطلب عرض سعر</span>
     </button>
 
-    <script src="main.js"></script>
-    <script>
-    // FAQ Accordion
-    document.querySelectorAll('.faq-question').forEach(question => {
-        question.addEventListener('click', () => {
-            const item = question.parentElement;
-            const isActive = item.classList.contains('active');
-
-            // Close all items
-            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
-
-            // Open clicked item if it wasn't active
-            if (!isActive) {
-                item.classList.add('active');
-            }
-        });
-    });
-
-    // FAQ Category Filter
-    document.querySelectorAll('.faq-category').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const category = btn.dataset.category;
-
-            // Update active button
-            document.querySelectorAll('.faq-category').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            // Filter items
-            document.querySelectorAll('.faq-item').forEach(item => {
-                if (category === 'all' || item.dataset.category === category) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-        });
-    });
-    </script>
+    
+    
+  <script src="main.js"></script>
 </body>
 </html>
