@@ -674,14 +674,15 @@ function toggleTheme() {
 
   // Direct style manipulation for immediate effect
   if (next === 'dark') {
-    document.body.style.setProperty('background', '#000000', 'important');
+    document.body.style.setProperty('background', '#ffffff', 'important');
     document.body.style.setProperty('background-image', 'none', 'important');
     document.body.style.setProperty('background-size', '100% 100%', 'important');
     document.body.style.setProperty('animation', 'none', 'important');
   } else {
-    document.body.style.setProperty('background', 'linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e, #16213e, #0f3460, #e94560, #0f0c29)', 'important');
-    document.body.style.setProperty('background-size', '400% 400%', 'important');
-    document.body.style.setProperty('animation', 'gradientBG 15s ease infinite', 'important');
+    document.body.style.setProperty('background', '#ffffff', 'important');
+    document.body.style.setProperty('background-image', 'none', 'important');
+    document.body.style.setProperty('background-size', '100% 100%', 'important');
+    document.body.style.setProperty('animation', 'none', 'important');
   }
 
   const themeIcon = document.getElementById('themeIcon');
@@ -699,14 +700,15 @@ function initTheme() {
 
   // Direct style manipulation for immediate effect
   if (saved === 'dark') {
-    document.body.style.setProperty('background', '#000000', 'important');
+    document.body.style.setProperty('background', '#ffffff', 'important');
     document.body.style.setProperty('background-image', 'none', 'important');
     document.body.style.setProperty('background-size', '100% 100%', 'important');
     document.body.style.setProperty('animation', 'none', 'important');
   } else {
-    document.body.style.setProperty('background', 'linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e, #16213e, #0f3460, #e94560, #0f0c29)', 'important');
-    document.body.style.setProperty('background-size', '400% 400%', 'important');
-    document.body.style.setProperty('animation', 'gradientBG 15s ease infinite', 'important');
+    document.body.style.setProperty('background', '#ffffff', 'important');
+    document.body.style.setProperty('background-image', 'none', 'important');
+    document.body.style.setProperty('background-size', '100% 100%', 'important');
+    document.body.style.setProperty('animation', 'none', 'important');
   }
 
   const themeIcon = document.getElementById('themeIcon');
