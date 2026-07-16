@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شركة درة فارس الشمال - متجر التقنية</title>
+    <meta name="description" content="شركة درة فارس الشمال - حلول تقنية متكاملة للشركات والأفراد. طابعات، كمبيوتر، رامات، هاردات، وإكسسوارات.">
+    <meta name="keywords" content="طابعات, كمبيوتر, رامات, هاردات, إكسسوارات, تقنية, سكاكا, الجوف, السعودية">
+    <meta name="author" content="شركة درة فارس الشمال">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="شركة درة فارس الشمال - متجر التقنية">
+    <meta property="og:description" content="حلول تقنية متكاملة للشركات والأفراد">
+    <meta property="og:image" content="assets/logo.png">
+    <meta property="og:url" content="https://www.alshamal-df.com">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://www.alshamal-df.com">
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="apple-touch-icon" href="assets/logo.png">
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- External CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.png" alt="درة فارس الشمال" class="logo-img">
+                <div class="logo-text">
+                    <span class="logo-title">درة فارس الشمال</span>
+                    <span class="logo-subtitle">DORA FARES AL SHAMAL</span>
+                </div>
+            </a>
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link active">الرئيسية</a>
+                <a href="about.html" class="nav-link">عن الشركة</a>
+                <a href="services.html" class="nav-link">الخدمات</a>
+                <a href="products.html" class="nav-link">المنتجات</a>
+                <a href="contact.html" class="nav-link">تواصل معنا</a>
+            </nav>
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+                    <i class="fas fa-sun"></i>
+                </button>
+                <button class="cart-btn" id="cartBtn" aria-label="السلة">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="القائمة">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Sidebar -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="assets/logo.png" alt="درة فارس الشمال" class="sidebar-logo">
+            <button class="sidebar-close" id="sidebarClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="sidebar-link active"><i class="fas fa-home"></i> الرئيسية</a>
+            <a href="about.html" class="sidebar-link"><i class="fas fa-building"></i> عن الشركة</a>
+            <a href="services.html" class="sidebar-link"><i class="fas fa-cogs"></i> الخدمات</a>
+            <a href="products.html" class="sidebar-link"><i class="fas fa-box"></i> المنتجات</a>
+            <a href="contact.html" class="sidebar-link"><i class="fas fa-phone"></i> تواصل معنا</a>
+        </nav>
+    </aside>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-bg">
+            <div class="hero-particles"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-star"></i>
+                <span>شريكك الموثوق في عالم التقنية</span>
+            </div>
+            <h1 class="hero-title">
+                حلول <span class="highlight">تقنية متكاملة</span><br>
+                للشركات والأفراد
+            </h1>
+            <p class="hero-subtitle">
+                نقدم لك أحدث الأجهزة والحلول التقنية بأفضل الأسعار مع خدمة تركيب وصيانة متميزة
+            </p>
+            <div class="hero-buttons">
+                <a href="products.html" class="btn btn-primary btn-lg">
+                    <i class="fas fa-shopping-bag"></i>
+                    تصفح المنتجات
+                </a>
+                <a href="contact.html" class="btn btn-secondary btn-lg">
+                    <i class="fas fa-phone"></i>
+                    تواصل معنا
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="section" id="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card animate-on-scroll">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-number" data-target="15">+15</div>
+                    <div class="stat-label">سنة خبرة</div>
+                </div>
+                <div class="stat-card animate-on-scroll">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number" data-target="500">+500</div>
+                    <div class="stat-label">عميل سعيد</div>
+                </div>
+                <div class="stat-card animate-on-scroll">
+                    <div class="stat-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <div class="stat-number" data-target="1000">+1000</div>
+                    <div class="stat-label">مشروع منفذ</div>
+                </div>
+                <div class="stat-card animate-on-scroll">
+                    <div class="stat-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-number" data-target="4.9">4.9/5</div>
+                    <div class="stat-label">تقييم العملاء</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="section" id="services">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">
+                    <i class="fas fa-cogs"></i>
+                    خدماتنا
+                </div>
+                <h2 class="section-title">حلول تقنية شاملة</h2>
+                <p class="section-subtitle">نقدم مجموعة واسعة من الخدمات التقنية لتلبية جميع احتياجاتك</p>
+            </div>
+            <div class="grid grid-3">
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">
+                        <i class="fas fa-print"></i>
+                    </div>
+                    <h3 class="card-title">حلول الطباعة</h3>
+                    <p class="card-text">طابعات حرارية، ليزر، حبر، وطابعات الباركود مع خدمات الصيانة والأحبار</p>
+                </div>
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">
+                        <i class="fas fa-desktop"></i>
+                    </div>
+                    <h3 class="card-title">أجهزة الكمبيوتر</h3>
+                    <p class="card-text">أجهزة مكتبية، محمولة، وملحقات مع خدمة التركيب والصيانة</p>
+                </div>
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3 class="card-title">كاميرات المراقبة</h3>
+                    <p class="card-text">أنظمة مراقبة متكاملة مع التركيب والبرمجة والدعم الفني</p>
+                </div>
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">
+                        <i class="fas fa-cash-register"></i>
+                    </div>
+                    <h3 class="card-title">نقاط البيع</h3>
+                    <p class="card-text">أجهزة وبرامج نقاط البيع مع التدريب والدعم الفني</p>
+                </div>
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <h3 class="card-title">شبكات</h3>
+                    <p class="card-text">تصميم وتركيب الشبكات السلكية واللاسلكية مع الصيانة</p>
+                </div>
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">
+                        <i class="fas fa-barcode"></i>
+                    </div>
+                    <h3 class="card-title">باركود</h3>
+                    <p class="card-text">أجهزة قراءة الباركود، الطابعات، والملصقات مع البرمجة</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="section" id="products">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">
+                    <i class="fas fa-box"></i>
+                    منتجاتنا
+                </div>
+                <h2 class="section-title">أحدث المنتجات</h2>
+                <p class="section-subtitle">تصفح مجموعتنا الواسعة من المنتجات التقنية بأفضل الأسعار</p>
+            </div>
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be loaded dynamically -->
+            </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="products.html" class="btn btn-primary">
+                    <i class="fas fa-th-large"></i>
+                    عرض جميع المنتجات
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">
+                    <i class="fas fa-comments"></i>
+                    آراء العملاء
+                </div>
+                <h2 class="section-title">ما يقوله عملاؤنا</h2>
+                <p class="section-subtitle">نفتخر بثقة عملائنا ونسعى دائماً لتقديم الأفضل</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card animate-on-scroll">
+                    <div class="testimonial-quote">"</div>
+                    <p class="testimonial-text">خدمة ممتازة وسرعة في التوصيل. الطابعة اللي طلبتها وصلت في نفس اليوم وشغالة بكفاءة عالية.</p>
+                    <div class="testimonial-author">
+                        <img src="assets/logo.png" alt="عميل" class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h4>أحمد محمد</h4>
+                            <p>مدير متجر</p>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card animate-on-scroll">
+                    <div class="testimonial-quote">"</div>
+                    <p class="testimonial-text">فريق محترف جداً. ساعدوني في اختيار النظام المناسب لمحلي التجاري والتركيب كان سريع ومنظم.</p>
+                    <div class="testimonial-author">
+                        <img src="assets/logo.png" alt="عميل" class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h4>خالد العتيبي</h4>
+                            <p>صاحب محل</p>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card animate-on-scroll">
+                    <div class="testimonial-quote">"</div>
+                    <p class="testimonial-text">أسعار منافسة وجودة عالية. الصيانة الدورية اللي يقدمونها ممتازة وتحافظ على أجهزتي.</p>
+                    <div class="testimonial-author">
+                        <img src="assets/logo.png" alt="عميل" class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h4>سلطان الدوسري</h4>
+                            <p>مدير شركة</p>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partners Section -->
+    <section class="section" id="partners">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">
+                    <i class="fas fa-handshake"></i>
+                    شركاؤنا
+                </div>
+                <h2 class="section-title">نفتخر بالتعاون مع كبرى الشركات</h2>
+            </div>
+            <div class="partners-grid">
+                <img src="assets/logo.png" alt="HP" class="partner-logo">
+                <img src="assets/logo.png" alt="Zebra" class="partner-logo">
+                <img src="assets/logo.png" alt="Honeywell" class="partner-logo">
+                <img src="assets/logo.png" alt="Dell" class="partner-logo">
+                <img src="assets/logo.png" alt="Lenovo" class="partner-logo">
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <img src="assets/logo.png" alt="درة فارس الشمال">
+                        <span>درة فارس الشمال</span>
+                    </div>
+                    <p class="footer-desc">حلول تقنية متكاملة للشركات والأفراد. خبرة 15+ سنة في خدمة أكثر من 500 عميل.</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="تويتر"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="انستغرام"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="لينكدإن"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="واتساب"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>روابط سريعة</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">الرئيسية</a></li>
+                        <li><a href="about.html">عن الشركة</a></li>
+                        <li><a href="services.html">الخدمات</a></li>
+                        <li><a href="products.html">المنتجات</a></li>
+                        <li><a href="contact.html">تواصل معنا</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>التصنيفات</h4>
+                    <ul class="footer-links">
+                        <li><a href="products.html?category=printers">طابعات</a></li>
+                        <li><a href="products.html?category=computers">كمبيوتر</a></li>
+                        <li><a href="products.html?category=ram">رامات</a></li>
+                        <li><a href="products.html?category=hard-drives">هاردات</a></li>
+                        <li><a href="products.html?category=accessories">إكسسوارات</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>تواصل معنا</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-phone"></i> +966 56 871 7449</li>
+                        <li><i class="fas fa-envelope"></i> info@alshamal-df.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> الرياض، المملكة العربية السعودية</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-legal">
+                    <a href="privacy.html">سياسة الخصوصية</a>
+                    <a href="terms.html">شروط الاستخدام</a>
+                    <a href="faq.html">الأسئلة الشائعة</a>
+                </div>
+                <p class="copyright">© 2026 شركة درة فارس الشمال للتجارة. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Buttons -->
+    <a href="https://wa.me/966568717449" class="whatsapp-float" target="_blank" aria-label="واتساب">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+    <button class="quote-float" id="quoteBtn" aria-label="عرض سعر">
+        <i class="fas fa-file-invoice"></i>
+        <span>اطلب عرض سعر</span>
+    </button>
+
+    <!-- External JavaScript -->
+    <script src="main.js"></script>
+</body>
+</html>

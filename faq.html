@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الأسئلة الشائعة | شركة درة فارس الشمال</title>
+    <meta name="description" content="الأسئلة الشائعة لموقع شركة درة فارس الشمال للتجارة">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.png" alt="درة فارس الشمال" class="logo-img">
+                <div class="logo-text">
+                    <span class="logo-title">درة فارس الشمال</span>
+                    <span class="logo-subtitle">DORA FARES AL SHAMAL</span>
+                </div>
+            </a>
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link">الرئيسية</a>
+                <a href="about.html" class="nav-link">عن الشركة</a>
+                <a href="services.html" class="nav-link">الخدمات</a>
+                <a href="products.html" class="nav-link">المنتجات</a>
+                <a href="contact.html" class="nav-link">تواصل معنا</a>
+            </nav>
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+                    <i class="fas fa-sun"></i>
+                </button>
+                <button class="cart-btn" id="cartBtn" aria-label="السلة">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="القائمة">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Sidebar -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="assets/logo.png" alt="درة فارس الشمال" class="sidebar-logo">
+            <button class="sidebar-close" id="sidebarClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="sidebar-link"><i class="fas fa-home"></i> الرئيسية</a>
+            <a href="about.html" class="sidebar-link"><i class="fas fa-building"></i> عن الشركة</a>
+            <a href="services.html" class="sidebar-link"><i class="fas fa-cogs"></i> الخدمات</a>
+            <a href="products.html" class="sidebar-link"><i class="fas fa-box"></i> المنتجات</a>
+            <a href="contact.html" class="sidebar-link"><i class="fas fa-phone"></i> تواصل معنا</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="page-content">
+        <section class="page-hero">
+            <div class="hero-bg">
+                <div class="hero-particles"></div>
+            </div>
+            <div class="hero-content">
+                <h1 class="page-title">الأسئلة الشائعة</h1>
+                <p class="page-subtitle">إجابات على أكثر الأسئلة التي يطرحها عملاؤنا</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="container">
+                <!-- FAQ Categories -->
+                <div class="faq-categories">
+                    <button class="faq-category active" data-category="all">
+                        <i class="fas fa-th-large"></i> الكل
+                    </button>
+                    <button class="faq-category" data-category="orders">
+                        <i class="fas fa-shopping-cart"></i> الطلبات
+                    </button>
+                    <button class="faq-category" data-category="payment">
+                        <i class="fas fa-credit-card"></i> الدفع
+                    </button>
+                    <button class="faq-category" data-category="shipping">
+                        <i class="fas fa-truck"></i> الشحن
+                    </button>
+                    <button class="faq-category" data-category="returns">
+                        <i class="fas fa-undo-alt"></i> الاسترجاع
+                    </button>
+                    <button class="faq-category" data-category="warranty">
+                        <i class="fas fa-shield-alt"></i> الضمان
+                    </button>
+                    <button class="faq-category" data-category="services">
+                        <i class="fas fa-tools"></i> الخدمات
+                    </button>
+                </div>
+
+                <!-- FAQ Items -->
+                <div class="faq-list">
+                    <!-- Orders -->
+                    <div class="faq-item" data-category="orders">
+                        <button class="faq-question">
+                            <span>كيف يمكنني طلب منتج من الموقع؟</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>يمكنك طلب المنتج بسهولة من خلال الخطوات التالية:</p>
+                            <ol>
+                                <li>تصفح المنتجات واختر ما يناسبك</li>
+                                <li>اضغط على زر "أضف إلى السلة"</li>
+                                <li>انتقل إلى السلة واضغط "إتمام الطلب"</li>
+                                <li>أدخل بياناتك وعنوان التوصيل</li>
+                                <li>اختر طريقة الدفع وأكمل الطلب</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="faq-item" data-category="orders">
+                        <button class="faq-question">
+                            <span>هل يمكنني تعديل طلبي بعد إرساله؟</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>نعم، يمكنك تعديل طلبك خلال 24 ساعة من إرساله. للتعديل، يرجى التواصل معنا فوراً عبر الواتساب أو الهاتف على الرقم <strong>+966 56 871 7449</strong>. بعد مرور 24 ساعة، قد لا يكون التعديل ممكناً إذا كان الطلب قيد التجهيز.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item" data-category="orders">
+                        <button class="faq-question">
+                            <span>كيف يمكنني تتبع طلبي؟</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>بعد تأكيد الطلب، ستصلك رسالة نصية وإيميل برقم التتبع. يمكنك تتبع طلبك من خلال:</p>
+                            <ul>
+                                <li>الدخول إلى حسابك في الموقع والاطلاع على "طلباتي"</li>
+                                <li>التواصل معنا عبر الواتساب وإرسال رقم الطلب</li>
+                                <li>الاتصال بخدمة العملاء على الرقم <strong>+966 56 871 7449</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Payment -->
+                    <div class="faq-item" data-category="payment">
+                        <button class="faq-question">
+                            <span>ما هي طرق الدفع المتاحة؟</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>نوفر عدة طرق دفع لتسهيل عملية الشراء:</p>
+                            <ul>
+                                <li><strong>التحويل البنكي:</strong> لجميع البنوك السعودية</li>
+                                <li><strong>مدى:</strong> الدفع عبر بطاقات مدى مباشرة</li>
+                                <li><strong>فيزا وماستركارد:</strong> بطاقات الائتمان الدولية</li>
+                                <li><strong>Apple Pay:</strong> الدفع السريع عبر آيفون</li>
+                                <li><strong>الدفع عند الاستلام:</strong> متاح للطلبات داخل الرياض (رسوم إضافية 30 ريال)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item" data-category="payment">
+                        <button class="faq-question">
+                            <span>هل الدفع آمن على الموقع؟</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>نعم، نستخدم أعلى معايير الأمان لحماية بياناتك المالية:</p>
+                            <ul>
+                                <li>تشفير SSL/TLS لجميع المعاملات</li>
+                                <li>نحن لا نخزن بيانات بطاقات الائتمان على خوادمنا</li>
+                                <li>الدفع يتم عبر بوابات دفع معتمدة وآمنة</li>
+                                <li>الموقع يحمل شهادة أمان معتمدة</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item" data-category="payment">
+                        <button class="faq-question">
+                            <span>هل يمكنني الحصول على فاتورة ضريبية؟</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>نعم، نقدم فاتورة ضريبية رسمية لكل طلب. يمكنك:</p>
+                            <ul>
+                                <li>تحميل الفاتورة من حسابك في الموقع</li>
+                                <li>استلامها عبر الإيميل بعد تأكيد الطلب</li>
+                                <li>طلب فاتورة إضافية عبر التواصل مع خدمة العملاء</li>
+                            </ul>
+                            <p>الفاتورة تتضمن: رقم السجل التجاري، الرقم الضريبي، وتاريخ الإصدار.</p>
+                        </div>
+                    </div>
+
+                    <!-- Shipping -->
+                    <div class="faq-item" data-category="shipping">
+                        <button class="faq-question">
+                            <span>كم تستغرق مدة التوصيل؟</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>مدة التوصيل تعتمد على موقعك:</p>
+                            <ul>
+                                <li><strong>الرياض:</strong> 1-3 أيام عمل</li>
+                                <li><strong>جدة، مكة، الدمام:</strong> 3-5 أيام عمل</li>
+                                <li><strong>باقي المدن:</strong> 5-7 أيام عمل</li>
+                                <li><strong>المناطق النائية:</strong> 7-10 أيام عمل</li>
+                            </ul>
+                            <p>التوصيل في أيام العمل (الأحد - الخميس) من الساعة 9 صباحاً حتى 5 مساءً.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item" data-category="shipping">
+                        <button class="faq-question">
+                            <span>هل هناك توصيل مجاني؟</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>نعم! نقدم توصيل مجاني للطلبات التي تزيد عن <strong>1000 ريال سعودي</strong>. للطلبات الأقل من هذا المبلغ، تتراوح رسوم التوصيل بين 30-80 ريال حسب المنطقة والوزن.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item" data-category="shipping">
+                        <button class="faq-question">
+                            <span>هل يمكنني استلام الطلب من المعرض؟</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>نعم، يمكنك استلام طلبك من مقرنا في الرياض. عند إتمام الطلب، اختر خيار "الاستلام من المعرض" وستصلك رسالة عند جاهزية الطلب للاستلام. مواعيد الاستلام: الأحد - الخميس من 9 ص إلى 6 م.</p>
+                        </div>
+                    </div>
+
+                    <!-- Returns -->
+                    <div class="faq-item" data-category="returns">
+                        <button class="faq-question">
+                            <span>ما هي سياسة الاسترجاع؟</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>يمكنك استرجاع المنتج خلال <strong>14 يوماً</strong> من تاريخ الاستلام بشرط:</p>
+                            <ul>
+                                <li>أن يكون المنتج في حالته الأصلية وغير مستخدم</li>
+                                <li>وجود جميع الملحقات والعبوة الأصلية</li>
+                                <li>تقديم الفاتورة الأصلية</li>
+                                <li>عدم فتح البرمجيات أو الأحبار الاستهلاكية</li>
+                            </ul>
+                            <p>سيتم استرداد المبلغ بنفس طريقة الدفع خلال 5-7 أيام عمل بعد استلام المنتج وفحصه.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item" data-category="returns">
+                        <button class="faq-question">
+                            <span>هل يمكنني استبدال منتج بآخر؟</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>نعم، يمكن استبدال المنتج خلال 14 يوماً بشرط توفر المنتج البديل ودفع الفرق في السعر إن وجد. الاستبدال يشمل:</p>
+                            <ul>
+                                <li>استبدال بنفس المنتج (مثلاً: لون أو حجم مختلف)</li>
+                                <li>استبدال بمنتج آخر (مع دفع الفرق أو استرداد الفرق)</li>
+                            </ul>
+                            <p>للاستبدال، يرجى التواصل مع خدمة العملاء.</p>
+                        </div>
+                    </div>
+
+                    <!-- Warranty -->
+                    <div class="faq-item" data-category="warranty">
+                        <button class="faq-question">
+                            <span>ما هي مدة الضمان على المنتجات؟</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>مدة الضمان تختلف حسب نوع المنتج:</p>
+                            <ul>
+                                <li><strong>الأجهزة الإلكترونية:</strong> ضمان الشركة المصنعة (عادةً 1-3 سنوات)</li>
+                                <li><strong>خدمات التركيب:</strong> ضمان سنة كاملة</li>
+                                <li><strong>الصيانة:</strong> ضمان 3-6 أشهر على قطع الغيار المستبدلة</li>
+                                <li><strong>الأحبار والملحقات الاستهلاكية:</strong> لا يشملها الضمان بعد الفتح</li>
+                            </ul>
+                            <p>للمطالبة بالضمان، يجب تقديم الفاتورة الأصلية وعدم وجود أضرار ناتجة عن الاستخدام الخاطئ.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item" data-category="warranty">
+                        <button class="faq-question">
+                            <span>ماذا يغطي الضمان وما لا يغطيه؟</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p><strong>يغطي الضمان:</strong></p>
+                            <ul>
+                                <li>عيوب التصنيع</li>
+                                <li>أعطال الأجهزة تحت الاستخدام العادي</li>
+                                <li>قطع الغيار المعيبة</li>
+                            </ul>
+                            <p><strong>لا يغطي الضمان:</strong></p>
+                            <ul>
+                                <li>الأضرار الناتجة عن سوء الاستخدام</li>
+                                <li>الأضرار الناتجة عن الكوارث الطبيعية</li>
+                                <li>الإصلاحات من طرف غير معتمد</li>
+                                <li>الاستهلاك الطبيعي (مثل الأحبار والبطاريات)</li>
+                                <li>الخدوش والتلف الجمالي</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Services -->
+                    <div class="faq-item" data-category="services">
+                        <button class="faq-question">
+                            <span>هل تقدمون خدمات التركيب والصيانة؟</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>نعم، نقدم خدمات متكاملة تشمل:</p>
+                            <ul>
+                                <li><strong>التركيب:</strong> تركيب الأجهزة والشبكات والكاميرات في مقرك</li>
+                                <li><strong>الصيانة:</strong> صيانة دورية وطارئة لجميع الأجهزة</li>
+                                <li><strong>الاستشارة:</strong> دراسة احتياجاتك وتقديم الحلول المناسبة</li>
+                                <li><strong>التدريب:</strong> تدريب موظفيك على استخدام الأجهزة والبرمجيات</li>
+                            </ul>
+                            <p>فريقنا يضم +12 فني متخصص جاهز للخدمة في جميع مناطق المملكة.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item" data-category="services">
+                        <button class="faq-question">
+                            <span>هل تقدمون عقود صيانة سنوية؟</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>نعم، نقدم عقود صيانة سنوية مخصصة للشركات والمؤسسات. تشمل العقود:</p>
+                            <ul>
+                                <li>زيارات صيانة دورية (شهرية أو ربع سنوية)</li>
+                                <li>استجابة سريعة للأعطال الطارئة (خلال 4 ساعات)</li>
+                                <li>خصومات على قطع الغيار (حتى 30%)</li>
+                                <li>تقارير دورية عن حالة الأجهزة</li>
+                                <li>دعم فني على مدار الساعة</li>
+                            </ul>
+                            <p>للاستفسار عن العقود، يرجى التواصل معنا عبر الواتساب أو طلب عرض سعر.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item" data-category="services">
+                        <button class="faq-question">
+                            <span>كيف يمكنني طلب عرض سعر لمشروع كبير؟</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>يمكنك طلب عرض سعر مخصص من خلال:</p>
+                            <ol>
+                                <li>الضغط على زر "اطلب عرض سعر" الموجود في أسفل الموقع</li>
+                                <li>ملء النموذج ببيانات المشروع والاحتياجات</li>
+                                <li>التواصل معنا عبر الواتساب على <strong>+966 56 871 7449</strong></li>
+                                <li>إرسال إيميل على <strong>info@alshamal-df.com</strong></li>
+                            </ol>
+                            <p>سيقوم فريق المبيعات بالتواصل معك خلال 24 ساعة لتقديم عرض سعر مفصل.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Still Have Questions -->
+                <div class="content-card contact-card">
+                    <div class="content-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h2>لم تجد إجابة لسؤالك؟</h2>
+                    <p>فريق خدمة العملاء لدينا جاهز لمساعدتك. يمكنك التواصل معنا عبر:</p>
+                    <div class="contact-options">
+                        <a href="https://wa.me/966568717449" class="contact-option whatsapp" target="_blank">
+                            <i class="fab fa-whatsapp"></i>
+                            <span>واتساب</span>
+                        </a>
+                        <a href="tel:+966568717449" class="contact-option phone">
+                            <i class="fas fa-phone"></i>
+                            <span>اتصال</span>
+                        </a>
+                        <a href="contact.html" class="contact-option email">
+                            <i class="fas fa-envelope"></i>
+                            <span>إيميل</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <img src="assets/logo.png" alt="درة فارس الشمال">
+                        <span>درة فارس الشمال</span>
+                    </div>
+                    <p class="footer-desc">حلول تقنية متكاملة للشركات والأفراد. خبرة 15+ سنة في خدمة أكثر من 500 عميل.</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="تويتر"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="انستغرام"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="لينكدإن"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="واتساب"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>روابط سريعة</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">الرئيسية</a></li>
+                        <li><a href="about.html">عن الشركة</a></li>
+                        <li><a href="services.html">الخدمات</a></li>
+                        <li><a href="products.html">المنتجات</a></li>
+                        <li><a href="contact.html">تواصل معنا</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>التصنيفات</h4>
+                    <ul class="footer-links">
+                        <li><a href="products.html?category=printers">طابعات</a></li>
+                        <li><a href="products.html?category=computers">كمبيوتر</a></li>
+                        <li><a href="products.html?category=ram">رامات</a></li>
+                        <li><a href="products.html?category=hard-drives">هاردات</a></li>
+                        <li><a href="products.html?category=accessories">إكسسوارات</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>تواصل معنا</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-phone"></i> +966 56 871 7449</li>
+                        <li><i class="fas fa-envelope"></i> info@alshamal-df.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> الرياض، المملكة العربية السعودية</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-legal">
+                    <a href="privacy.html">سياسة الخصوصية</a>
+                    <a href="terms.html">شروط الاستخدام</a>
+                    <a href="faq.html">الأسئلة الشائعة</a>
+                </div>
+                <p class="copyright">© 2026 شركة درة فارس الشمال للتجارة. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Buttons -->
+    <a href="https://wa.me/966568717449" class="whatsapp-float" target="_blank" aria-label="واتساب">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+    <button class="quote-float" id="quoteBtn" aria-label="عرض سعر">
+        <i class="fas fa-file-invoice"></i>
+        <span>اطلب عرض سعر</span>
+    </button>
+
+    <script src="main.js"></script>
+    <script>
+    // FAQ Accordion
+    document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+            const item = question.parentElement;
+            const isActive = item.classList.contains('active');
+
+            // Close all items
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+
+            // Open clicked item if it wasn't active
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        });
+    });
+
+    // FAQ Category Filter
+    document.querySelectorAll('.faq-category').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const category = btn.dataset.category;
+
+            // Update active button
+            document.querySelectorAll('.faq-category').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Filter items
+            document.querySelectorAll('.faq-item').forEach(item => {
+                if (category === 'all' || item.dataset.category === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    });
+    </script>
+</body>
+</html>
