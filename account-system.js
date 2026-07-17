@@ -116,25 +116,81 @@ async function requireLogin(tab, next){
   return null;
 }
 
-function injectAccountButton(){
-  if (document.querySelector('.account-header-btn')) return;
-  const controls = document.querySelector('.header-controls');
-  if (!controls) return;
-  const btn = document.createElement('a');
-  btn.href = 'account.html';
-  btn.className = 'account-header-btn';
-  btn.setAttribute('aria-label', 'حسابي');
-  btn.innerHTML = '<span>👤</span><strong>حسابي</strong>';
-  const cart = controls.querySelector('.cart-btn');
-  controls.insertBefore(btn, cart || null);
+function injectHeroAccountButtons(){
+  // إزالة أي زر حساب قديم من الهيدر وإرجاع السلة لمكانها الأصلي
+  document.querySelectorAll('.account-header-btn').forEach(btn => btn.remove());
+
+  const heroes = document.querySelectorAll('.hero, .page-hero, .service-hero, .services-hero');
+  heroes.forEach(hero => {
+    if (hero.querySelector('.hero-account-wrap')) return;
+
+    const wrap = document.createElement('span');
+    wrap.className = 'hero-account-wrap';
+    wrap.innerHTML = `
+      <button type="button" class="btn-primary hero-account-trigger" aria-haspopup="true" aria-expanded="false">
+        👤 <span class="hero-account-label">الحساب</span> <span class="hero-account-chevron">⌄</span>
+      </button>
+      <span class="hero-account-menu" role="menu">
+        <a href="account.html?mode=register" role="menuitem"><span>✨</span><strong>إنشاء حساب</strong></a>
+        <a href="account.html?mode=login" role="menuitem"><span>🔐</span><strong>تسجيل دخول</strong></a>
+      </span>
+    `;
+
+    const heroButtons = hero.querySelector('.hero-btns');
+    if (heroButtons) {
+      heroButtons.appendChild(wrap);
+    } else {
+      const content = hero.querySelector('.hero-content') || hero;
+      const row = document.createElement('div');
+      row.className = 'hero-account-row';
+      row.appendChild(wrap);
+      content.appendChild(row);
+    }
+
+    const trigger = wrap.querySelector('.hero-account-trigger');
+    trigger.addEventListener('click', async event => {
+      event.preventDefault();
+      event.stopPropagation();
+      const user = await getCurrentUser();
+      if (user) {
+        location.href = 'account.html';
+        return;
+      }
+      const isOpen = wrap.classList.toggle('open');
+      trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+  });
+
+  if (!window.__heroAccountMenuBound) {
+    window.__heroAccountMenuBound = true;
+    document.addEventListener('click', event => {
+      document.querySelectorAll('.hero-account-wrap.open').forEach(wrap => {
+        if (!wrap.contains(event.target)) {
+          wrap.classList.remove('open');
+          wrap.querySelector('.hero-account-trigger')?.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        document.querySelectorAll('.hero-account-wrap.open').forEach(wrap => {
+          wrap.classList.remove('open');
+          wrap.querySelector('.hero-account-trigger')?.setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+  }
+
   updateAccountButtonLabel();
 }
 
 async function updateAccountButtonLabel(){
-  const btn = document.querySelector('.account-header-btn');
-  if (!btn) return;
+  const buttons = document.querySelectorAll('.hero-account-label');
+  if (!buttons.length) return;
   const user = await getCurrentUser();
-  btn.innerHTML = user ? '<span>👤</span><strong>حسابي</strong>' : '<span>🔐</span><strong>دخول</strong>';
+  buttons.forEach(label => {
+    label.textContent = user ? 'حسابي' : 'الحساب';
+  });
 }
 
 /* ============================================================
@@ -219,6 +275,8 @@ function renderAuth(message){
       document.getElementById('accountRegisterForm').style.display = isLogin ? 'none' : 'grid';
     });
   });
+  const requestedMode = getParam('mode') === 'register' ? 'register' : 'login';
+  app.querySelector(`[data-auth-tab="${requestedMode}"]`)?.click();
   document.getElementById('accountLoginForm').addEventListener('submit', signIn);
   document.getElementById('accountRegisterForm').addEventListener('submit', signUp);
 }
@@ -979,7 +1037,7 @@ async function syncVerifiedProductReviews(){
    تشغيل النظام
    ============================================================ */
 function boot(){
-  injectAccountButton();
+  injectHeroAccountButtons();
   injectServiceRequestForm();
   syncVerifiedProductReviews();
   if (accountApp()) initAccountPage();
