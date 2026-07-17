@@ -278,7 +278,7 @@ async function loadAccountData(){
   const userId = state.user.id;
   const [addresses, orders, services, receipts, reviews] = await Promise.all([
     supabaseClient.from('addresses').select('*').eq('user_id', userId).order('is_default', {ascending:false}).order('created_at', {ascending:false}),
-    supabaseClient.from('orders').select('*').eq('user_id', userId).order('created_at', {ascending:false}),
+    supabaseClient.from('store_orders').select('*').eq('user_id', userId).order('created_at', {ascending:false}),
     supabaseClient.from('service_requests').select('*').eq('user_id', userId).order('created_at', {ascending:false}),
     supabaseClient.from('payment_receipts').select('*').eq('user_id', userId).order('created_at', {ascending:false}),
     supabaseClient.from('reviews').select('*').eq('user_id', userId).order('id', {ascending:false})
@@ -669,7 +669,7 @@ window.checkout = async function(){
   };
 
   let savedOrder = null;
-  const { data, error } = await supabaseClient.from('orders').insert([payload]).select('*').single();
+  const { data, error } = await supabaseClient.from('store_orders').insert([payload]).select('*').single();
   if (error) {
     console.error('order save:', error);
     notify('⚠️ سيتم فتح واتساب، لكن تعذر حفظ الطلب في الحساب. تأكد من تشغيل ملف SQL.', 'warning');
@@ -798,7 +798,7 @@ async function findEligibleOrder(productId){
   const user = await getCurrentUser();
   if (!user) return { user: null, order: null };
   const { data, error } = await supabaseClient
-    .from('orders')
+    .from('store_orders')
     .select('id,items,status')
     .eq('user_id', user.id)
     .in('status', ['delivered','completed']);

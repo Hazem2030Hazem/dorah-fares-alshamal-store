@@ -191,7 +191,7 @@ window.loadOrders = async function(){
   const container = document.getElementById('ordersList');
   if (!container) return;
   container.innerHTML = '<div class="admin-empty">⏳ جاري تحميل الطلبات...</div>';
-  const { data, error } = await supabaseClient.from('orders').select('*').order('created_at', { ascending:false });
+  const { data, error } = await supabaseClient.from('store_orders').select('*').order('created_at', { ascending:false });
   if (error) {
     container.innerHTML = `<div class="admin-empty error">تعذر تحميل الطلبات: ${esc(error.message)}</div>`;
     return;
@@ -239,7 +239,7 @@ function renderOrders(){
 }
 
 window.updateOrderStatus = async function(id, status){
-  const { error } = await supabaseClient.from('orders').update({ status }).eq('id', id);
+  const { error } = await supabaseClient.from('store_orders').update({ status }).eq('id', id);
   if (error) return adminToast('❌ تعذر تحديث حالة الطلب: ' + error.message, 'error');
   const order = adminState.orders.find(o => o.id === id);
   if (order) order.status = status;
@@ -247,7 +247,7 @@ window.updateOrderStatus = async function(id, status){
   adminToast('✅ تم تحديث حالة الطلب');
 };
 window.updatePaymentStatus = async function(id, payment_status){
-  const { error } = await supabaseClient.from('orders').update({ payment_status }).eq('id', id);
+  const { error } = await supabaseClient.from('store_orders').update({ payment_status }).eq('id', id);
   if (error) return adminToast('❌ تعذر تحديث حالة الدفع: ' + error.message, 'error');
   const order = adminState.orders.find(o => o.id === id);
   if (order) order.payment_status = payment_status;
@@ -391,7 +391,7 @@ window.updateReceiptStatus = async function(id, status, orderId){
     reviewed_at: new Date().toISOString()
   }).eq('id', id);
   if (error) return adminToast('❌ تعذر تحديث الإيصال: ' + error.message, 'error');
-  await supabaseClient.from('orders').update({ payment_status: status === 'approved' ? 'paid' : status === 'rejected' ? 'rejected' : 'review' }).eq('id', orderId);
+  await supabaseClient.from('store_orders').update({ payment_status: status === 'approved' ? 'paid' : status === 'rejected' ? 'rejected' : 'review' }).eq('id', orderId);
   await Promise.all([loadReceipts(), loadOrders()]);
   adminToast('✅ تم تحديث حالة الإيصال');
 };
