@@ -54,6 +54,26 @@ function notify(message, type){
 }
 function getParam(name){ return new URLSearchParams(location.search).get(name); }
 
+function authFailureMessage(error, fallback){
+  const code = String(error?.code || '').toLowerCase();
+  const message = String(error?.message || '').toLowerCase();
+  const text = `${code} ${message}`;
+
+  if (text.includes('email_not_confirmed') || text.includes('email not confirmed')) {
+    return '⚠️ الحساب مسجل لكن البريد غير مؤكد في Supabase. أغلق Confirm email من Authentication ثم سجّل الدخول، أو احذف الحساب التجريبي القديم وأعد إنشاءه.';
+  }
+  if (text.includes('invalid_credentials') || text.includes('invalid login credentials')) {
+    return '❌ البريد الإلكتروني أو كلمة المرور غير صحيحة. تأكد من البيانات أو استخدم «هل نسيت كلمة المرور؟»';
+  }
+  if (text.includes('user_not_found') || text.includes('user not found')) {
+    return '❌ لا يوجد حساب مسجل بهذا البريد الإلكتروني.';
+  }
+  if (text.includes('email logins are disabled') || text.includes('email provider is disabled')) {
+    return '❌ تسجيل الدخول بالبريد الإلكتروني غير مفعّل في إعدادات Supabase.';
+  }
+  return `❌ ${fallback}: ${error?.message || 'حاول مرة أخرى'}`;
+}
+
 async function getCurrentUser(){
   const { data, error } = await supabaseClient.auth.getUser();
   if (error) return null;
@@ -378,7 +398,7 @@ async function signIn(event){
   const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
   btn.disabled = false; btn.textContent = '🔐 دخول';
   if (error) {
-    notify('❌ البريد الإلكتروني أو كلمة المرور غير صحيحة', 'error');
+    notify(authFailureMessage(error, 'تعذر تسجيل الدخول'), 'error');
     return;
   }
   notify('✅ تم تسجيل الدخول بنجاح');
@@ -408,7 +428,7 @@ async function signUp(event){
   }
 
   if (!data.session) {
-    renderAuth('✅ تم إنشاء الحساب. إذا كان تأكيد البريد مفعلاً، افحص بريدك ثم سجل الدخول.');
+    renderAuth('⚠️ تم إنشاء الحساب لكنه لم يدخل تلقائيًا لأن تأكيد البريد ما زال مفعّلًا أو لأن البريد مسجل مسبقًا. أغلق Confirm email من Supabase، وإذا كان هذا حسابًا تجريبيًا قديمًا فاحذفه من Authentication → Users ثم أعد إنشاءه.');
     return;
   }
 
