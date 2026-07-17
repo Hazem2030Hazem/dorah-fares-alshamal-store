@@ -229,6 +229,7 @@ function getSortedProducts(filter) {
 function renderProducts(filter) {
  currentFilter = filter;
  const grid = document.getElementById('productsGrid');
+ if (!grid) return;
  const filtered = getSortedProducts(filter);
 
  grid.innerHTML = filtered.map(p => {
@@ -473,6 +474,7 @@ function toggleCompare(productId, event) {
 function updateCompareBar() {
  const bar = document.getElementById('compareBar');
  const itemsDiv = document.getElementById('compareItems');
+ if (!bar || !itemsDiv) return;
 
  if (compareList.length === 0) {
   bar.classList.remove('active');
@@ -616,9 +618,12 @@ function updateQty(productId, change) {
 
 function updateCartUI() {
  const count = cart.reduce((sum, item) => sum + item.qty, 0);
- document.getElementById('cartCount').textContent = count;
+ const cartCount = document.getElementById('cartCount');
+ if (cartCount) cartCount.textContent = count;
 
  const itemsDiv = document.getElementById('cartItems');
+ if (!itemsDiv) return;
+ const couponSection = document.getElementById('couponSection');
  if (cart.length === 0) {
   itemsDiv.innerHTML = `
    <div class="cart-empty">
@@ -626,7 +631,7 @@ function updateCartUI() {
     <p>السلة فارغة</p>
     <small>أضف منتجات لبدء التسوق</small>
    </div>`;
-  document.getElementById('couponSection').style.display = 'none';
+  if (couponSection) couponSection.style.display = 'none';
  } else {
   itemsDiv.innerHTML = cart.map(item => {
    const product = productsData.find(p => p.id === item.id);
@@ -649,7 +654,7 @@ function updateCartUI() {
      </div>
     </div>`;
   }).join('');
-  document.getElementById('couponSection').style.display = 'block';
+  if (couponSection) couponSection.style.display = 'block';
  }
 
  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
@@ -658,8 +663,10 @@ function updateCartUI() {
  const tax = calculateTax(afterDiscount);
  const total = afterDiscount + tax;
 
- document.getElementById('cartTotal').textContent = formatPrice(total);
- document.getElementById('cartTax').textContent = `شامل الضريبة (15%): ${formatPrice(tax)}${discount > 0 ? ' | خصم: ' + formatPrice(discount) : ''}`;
+ const cartTotal = document.getElementById('cartTotal');
+ const cartTax = document.getElementById('cartTax');
+ if (cartTotal) cartTotal.textContent = formatPrice(total);
+ if (cartTax) cartTax.textContent = `شامل الضريبة (15%): ${formatPrice(tax)}${discount > 0 ? ' | خصم: ' + formatPrice(discount) : ''}`;
 }
 
 function toggleCart() {
@@ -1592,4 +1599,53 @@ function checkPWAInstallState() {
     return true;
   }
   if (!arm()) document.addEventListener('DOMContentLoaded', arm);
+})();
+
+
+// ============================================================
+// COMPANY PAGES LINKS + GLOBAL APP DOWNLOAD BOX
+// يربط قائمة عن الشركة بالصفحات المستقلة ويضيف صندوق التحميل لكل الصفحات
+// ============================================================
+(function(){
+  function onReady(fn){
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+    else fn();
+  }
+
+  onReady(function(){
+    // 1) روابط قائمة «عن الشركة» في الهيدر — تعمل في كل الصفحات القديمة والجديدة
+    var companyPages = {
+      'نبذة عن الشركة': 'about.html',
+      'رؤيتنا': 'vision.html',
+      'رسالتنا': 'mission.html',
+      'فريق العمل': 'team.html',
+      'الشهادات': 'certifications.html'
+    };
+
+    document.querySelectorAll('.dropdown-menu a').forEach(function(link){
+      var label = (link.textContent || '').replace(/\s+/g, ' ').trim();
+      if (companyPages[label]) link.setAttribute('href', companyPages[label]);
+    });
+
+    // 2) صندوق التحميل الغامق — الرئيسية تحتوي عليه بالفعل، لذلك لا نكرره هناك
+    if (document.querySelector('.app-download-btns')) return;
+
+    var section = document.createElement('section');
+    section.className = 'global-app-download';
+    section.setAttribute('aria-label', 'تحميل تطبيق درة فارس الشمال');
+    section.innerHTML =
+      '<div class="global-app-download-box">' +
+        '<p class="global-app-download-title">📲 حمّل تطبيق درة فارس الشمال على جوالك أو الكمبيوتر، أو اطلب عرض سعر الآن!</p>' +
+        '<div class="app-download-btns">' +
+          '<a href="https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk" download class="btn-primary">📱 تحميل تطبيق Android</a>' +
+          '<button type="button" onclick="installPWA()" class="btn-primary">💻 حمّل تطبيق درة فارس الشمال</button>' +
+          '<a href="https://wa.me/966568717449?text=مرحباً%20أرغب%20في%20طلب%20عرض%20سعر%20من%20شركة%20درة%20فارس%20الشمال" target="_blank" rel="noopener" class="btn-primary">📋 اطلب عرض سعر</a>' +
+        '</div>' +
+        '<p class="global-app-download-note">اضغط للتثبيت على الشاشة الرئيسية</p>' +
+      '</div>';
+
+    var footer = document.querySelector('footer.footer, footer');
+    if (footer && footer.parentNode) footer.parentNode.insertBefore(section, footer);
+    else document.body.appendChild(section);
+  });
 })();

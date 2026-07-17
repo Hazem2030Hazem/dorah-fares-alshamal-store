@@ -2620,3 +2620,23 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
   .product-modal .modal-reviews{display:none !important}
   .product-modal .modal-close{top:10px !important;left:10px !important;z-index:10 !important}
 }
+
+
+/* ============================================================
+   GLOBAL APP DOWNLOAD — صندوق التحميل الغامق في أسفل كل الصفحات
+   ============================================================ */
+.global-app-download{padding:0 20px 34px;background:transparent !important}
+.global-app-download-box{max-width:1100px;margin:0 auto;text-align:center;padding:26px 20px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark)) !important;
+  border-radius:14px;box-shadow:0 12px 35px rgba(30,58,99,.28)}
+.global-app-download-title{color:#ffffff !important;font-size:17px;font-weight:800;line-height:1.8;margin:0 0 16px !important}
+.global-app-download-note{color:rgba(255,255,255,.72) !important;font-size:12px;margin:14px 0 0 !important}
+.global-app-download .btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-family:inherit}
+.global-app-download button.btn-primary{border:0;cursor:pointer}
+@media (max-width:640px){
+  .global-app-download{padding:0 14px 26px}
+  .global-app-download-box{padding:22px 14px}
+  .global-app-download-title{font-size:15px}
+  .global-app-download .app-download-btns{gap:10px}
+  .global-app-download .btn-primary{width:100%;font-size:14px;padding-top:12px;padding-bottom:12px}
+}
