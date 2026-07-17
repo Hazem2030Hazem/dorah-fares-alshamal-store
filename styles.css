@@ -2392,3 +2392,29 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
 /* FAQ أكورديون — الإجابات مقفولة افتراضياً */
 .faq-answer{display:none}
 .faq-item.active .faq-answer{display:block}
+
+
+/* ============================================================
+   LIVING BANNER — لوجوهات حية بتطفو جوه البانر
+   ============================================================ */
+.hero,.page-hero,.service-hero,.services-hero{position:relative !important}
+.floating-logos{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.float-logo{position:absolute;height:auto;will-change:transform;
+  animation-timing-function:ease-in-out;animation-iteration-count:infinite;animation-direction:alternate}
+.fl1{animation-name:flFloat1}.fl2{animation-name:flFloat2}.fl3{animation-name:flFloat3}.fl4{animation-name:flFloat4}
+@keyframes flFloat1{from{transform:translate(0,0) rotate(-6deg)}to{transform:translate(34px,-48px) rotate(9deg)}}
+@keyframes flFloat2{from{transform:translate(0,0) rotate(5deg) scale(1)}to{transform:translate(-42px,-32px) rotate(-8deg) scale(1.09)}}
+@keyframes flFloat3{from{transform:translate(0,-12px) rotate(-4deg)}to{transform:translate(28px,34px) rotate(7deg)}}
+@keyframes flFloat4{from{transform:translate(0,0) scale(.94)}to{transform:translate(-24px,-55px) scale(1.06) rotate(11deg)}}
+
+/* حركة بطيئة للخلفية نفسها (إحساس العمق) */
+@keyframes heroDrift{from{background-position:49% 46%}to{background-position:52% 54%}}
+.hero,.page-hero,.service-hero,.services-hero{animation:heroDrift 26s ease-in-out infinite alternate !important}
+
+/* المحتوى فوق اللوجوهات */
+.hero .container,.page-hero .hero-content,.service-hero .container,.services-hero .container{position:relative;z-index:1}
+
+/* احترام تقليل الحركة */
+@media (prefers-reduced-motion: reduce){
+  .float-logo,.hero,.page-hero,.service-hero,.services-hero{animation:none !important}
+}

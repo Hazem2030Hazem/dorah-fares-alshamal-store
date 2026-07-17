@@ -1,3 +1,35 @@
+// ============================================================
+// LIVING BANNER — لوجوهات الشركة بتطفو وتتحرك جوه البانر
+// ============================================================
+(function(){
+  function spawnFloatingLogos(hero){
+    if (!hero || hero.querySelector('.floating-logos')) return;
+    var layer = document.createElement('div');
+    layer.className = 'floating-logos';
+    var count = window.innerWidth < 768 ? 6 : 10;
+    for (var i = 0; i < count; i++){
+      var img = document.createElement('img');
+      img.src = 'logo-icon.png';
+      img.alt = '';
+      img.className = 'float-logo fl' + (1 + (i % 4));
+      var size = 30 + Math.random() * 85;
+      img.style.width = size.toFixed(0) + 'px';
+      img.style.left = (Math.random() * 92).toFixed(1) + '%';
+      img.style.top = (Math.random() * 82).toFixed(1) + '%';
+      img.style.opacity = (0.06 + Math.random() * 0.13).toFixed(2);
+      img.style.animationDuration = (11 + Math.random() * 15).toFixed(1) + 's';
+      img.style.animationDelay = (-Math.random() * 20).toFixed(1) + 's';
+      if (Math.random() < 0.55) img.style.filter = 'blur(' + (1 + Math.random() * 2.2).toFixed(1) + 'px)';
+      layer.appendChild(img);
+    }
+    hero.insertBefore(layer, hero.firstChild);
+  }
+  function initFloating(){
+    document.querySelectorAll('.hero, .page-hero, .service-hero, .services-hero').forEach(spawnFloatingLogos);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initFloating);
+  else initFloating();
+})();
 // لينك "الرئيسية": لو في صفحة داخلية يرجع لـ index.html بدل #home الفاضي
 document.addEventListener('click', function(e){
   var a = e.target.closest('a[href="#home"]');
