@@ -2408,8 +2408,8 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
 @keyframes flFloat4{from{transform:translate(0,0) scale(.94)}to{transform:translate(-24px,-55px) scale(1.06) rotate(11deg)}}
 
 /* حركة بطيئة للخلفية نفسها (إحساس العمق) */
-@keyframes heroDrift{from{background-position:49% 46%}to{background-position:52% 54%}}
-.hero,.page-hero,.service-hero,.services-hero{animation:heroDrift 26s ease-in-out infinite alternate !important}
+@keyframes heroDrift{from{background-position:46% 44%}to{background-position:54% 56%}}
+.hero,.page-hero,.service-hero,.services-hero{animation:heroDrift 16s ease-in-out infinite alternate !important}
 
 /* المحتوى فوق اللوجوهات */
 .hero .container,.page-hero .hero-content,.service-hero .container,.services-hero .container{position:relative;z-index:1}
