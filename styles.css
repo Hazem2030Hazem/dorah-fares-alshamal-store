@@ -2738,3 +2738,113 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
 .service-request-form{grid-template-columns:1fr 1fr}.service-request-form textarea,.service-request-form button{grid-column:1/-1}
 @media (max-width:900px){.account-auth-grid,.account-two-col,.service-request-box{grid-template-columns:1fr}.account-stats-grid{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:640px){.account-header-btn strong{display:none}.account-header-btn{padding:10px}.account-auth-intro,.account-card{padding:20px}.account-stats-grid{grid-template-columns:1fr 1fr}.account-user-card{flex-wrap:wrap}.account-logout{margin-inline-start:0}.service-request-form{grid-template-columns:1fr}.account-tabs{overflow-x:auto;flex-wrap:nowrap;padding-bottom:8px}.account-tabs button{white-space:nowrap}}
+
+
+/* ============================================================
+   HERO ACCOUNT BUTTON — زر الحساب داخل البنر في كل الصفحات
+   ============================================================ */
+.hero-account-wrap{position:relative;display:inline-flex;z-index:80}
+.hero-account-trigger{border:0;cursor:pointer;font-family:inherit;text-decoration:none;white-space:nowrap}
+.hero-account-trigger .hero-account-chevron{display:inline-block;margin-inline-start:4px;font-size:12px;opacity:.75;transition:transform .2s}
+.hero-account-wrap.open .hero-account-chevron{transform:rotate(180deg)}
+.hero-account-menu{position:absolute;top:calc(100% + 12px);right:50%;transform:translateX(50%);min-width:220px;
+  display:none;grid-template-columns:1fr;gap:8px;padding:10px;background:rgba(255,255,255,.98);
+  border:1px solid rgba(103,232,249,.75);border-radius:18px;box-shadow:0 18px 50px rgba(15,23,42,.22),0 0 22px rgba(34,211,238,.18);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.hero-account-wrap.open .hero-account-menu{display:grid}
+.hero-account-menu::before{content:'';position:absolute;top:-7px;right:50%;width:14px;height:14px;transform:translateX(50%) rotate(45deg);
+  background:#ffffff;border-top:1px solid rgba(103,232,249,.75);border-right:1px solid rgba(103,232,249,.75)}
+.hero-account-menu a{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:13px;color:#1E3A63 !important;text-decoration:none;font-size:14px;font-weight:900;background:#F8FAFD;border:1px solid #E5E7EB;transition:.2s}
+.hero-account-menu a:hover{background:linear-gradient(135deg,#2C4F86,#1E3A63);border-color:transparent;color:#FFFFFF !important;transform:translateY(-1px);box-shadow:0 8px 22px rgba(44,79,134,.22)}
+.hero-account-menu a span{font-size:18px}
+.hero-account-row{display:flex;justify-content:center;align-items:center;margin-top:28px;position:relative;z-index:20}
+.page-hero .hero-account-trigger,.service-hero .hero-account-trigger,.services-hero .hero-account-trigger{box-shadow:0 0 25px rgba(34,211,238,.32)}
+@media (max-width:640px){
+  .hero-account-wrap{width:100%;justify-content:center}
+  .hero-account-trigger{width:100%;justify-content:center}
+  .hero-account-menu{width:min(280px,calc(100vw - 40px));min-width:0}
+  .hero-account-row{width:100%;padding:0 20px}
+}
+
+
+/* ============================================================
+   HERO ACCOUNT UNIFIED DROPDOWN — الحساب والاختيارات كوحدة واحدة
+   ============================================================ */
+.hero-account-wrap{position:relative;display:inline-grid;min-width:215px;vertical-align:middle;z-index:10000}
+.hero-account-trigger{width:100%;justify-content:center;transition:border-radius .2s,background .2s,box-shadow .2s}
+.hero-account-wrap.open{filter:drop-shadow(0 16px 34px rgba(15,23,42,.22))}
+.hero-account-wrap.open .hero-account-trigger{
+  background:#F0FBFF !important;
+  color:#1E3A63 !important;
+  border:1.5px solid #67E8F9 !important;
+  border-bottom:0 !important;
+  border-radius:24px 24px 0 0 !important;
+  box-shadow:none !important;
+  text-shadow:none !important;
+}
+.hero-account-menu{
+  top:100%;
+  right:0;
+  transform:none;
+  width:100%;
+  min-width:0;
+  padding:8px;
+  background:#F0FBFF !important;
+  opacity:1 !important;
+  border:1.5px solid #67E8F9 !important;
+  border-top:0 !important;
+  border-radius:0 0 24px 24px !important;
+  box-shadow:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+.hero-account-menu::before{display:none !important}
+.hero-account-menu a{
+  background:#FFFFFF !important;
+  border:1px solid #D7F3FB !important;
+  color:#1E3A63 !important;
+  box-shadow:0 3px 10px rgba(14,116,144,.08);
+}
+.hero-account-menu a:hover{
+  background:linear-gradient(135deg,#22D3EE,#0EA5E9) !important;
+  color:#FFFFFF !important;
+  border-color:transparent !important;
+  box-shadow:0 8px 20px rgba(34,211,238,.28) !important;
+}
+
+/* ============================================================
+   HERO SERVICES BUTTON — توحيد زر خدماتنا مع زر تحدث مع خبير
+   ============================================================ */
+.hero .hero-btns a.btn-secondary{
+  background:linear-gradient(135deg, rgba(0,212,255,.2), rgba(0,153,204,.3)) !important;
+  border:2px solid rgba(0,212,255,.5) !important;
+  color:#00D4FF !important;
+  padding:12px 24px !important;
+  border-radius:50px !important;
+  box-shadow:0 0 10px rgba(0,212,255,.3), inset 0 0 10px rgba(0,212,255,.1) !important;
+  position:relative !important;
+  overflow:hidden !important;
+}
+.hero .hero-btns a.btn-secondary::before{
+  content:'';
+  position:absolute;
+  top:-50%;left:-50%;width:200%;height:200%;
+  background:linear-gradient(45deg, transparent, rgba(0,212,255,.1), transparent);
+  transform:rotate(45deg);
+  transition:all .5s;
+  opacity:0;
+}
+.hero .hero-btns a.btn-secondary:hover::before{opacity:1;transform:rotate(45deg) translate(20%,20%)}
+.hero .hero-btns a.btn-secondary:hover{
+  background:linear-gradient(135deg, rgba(0,212,255,.4), rgba(0,153,204,.5)) !important;
+  transform:scale(1.05) !important;
+  box-shadow:0 0 20px rgba(0,212,255,.6), 0 0 40px rgba(0,212,255,.3), inset 0 0 15px rgba(0,212,255,.2) !important;
+  border-color:#00D4FF !important;
+}
+@media (max-width:640px){
+  .hero-account-wrap{min-width:0;width:100%}
+}
+
+
+/* إبقاء قائمة الحساب فوق إحصائيات البنر */
+.hero .hero-btns{position:relative;z-index:10000}
