@@ -148,7 +148,12 @@ function injectHeroAccountButtons(){
     wrap.className = 'hero-account-wrap';
     wrap.innerHTML = `
       <button type="button" class="btn-primary hero-account-trigger" aria-haspopup="true" aria-expanded="false">
-        👤 <span class="hero-account-label">الحساب</span> <span class="hero-account-chevron">⌄</span>
+        <span class="hero-account-icon">👤</span>
+        <span class="hero-account-text">
+          <span class="hero-account-label">الحساب</span>
+          <span class="hero-account-status" hidden><span class="hero-account-status-dot"></span> مسجل دخول</span>
+        </span>
+        <span class="hero-account-chevron">⌄</span>
       </button>
       <span class="hero-account-menu" role="menu">
         <a href="account.html?mode=register" role="menuitem"><span>✨</span><strong>إنشاء حساب</strong></a>
@@ -205,11 +210,31 @@ function injectHeroAccountButtons(){
 }
 
 async function updateAccountButtonLabel(){
-  const buttons = document.querySelectorAll('.hero-account-label');
-  if (!buttons.length) return;
+  const wraps = document.querySelectorAll('.hero-account-wrap');
+  if (!wraps.length) return;
   const user = await getCurrentUser();
-  buttons.forEach(label => {
-    label.textContent = user ? 'حسابي' : 'الحساب';
+  const rawName = user?.user_metadata?.full_name || user?.user_metadata?.name || '';
+  const firstName = rawName.trim().split(/\s+/)[0] || 'عميلنا';
+
+  wraps.forEach(wrap => {
+    const label = wrap.querySelector('.hero-account-label');
+    const status = wrap.querySelector('.hero-account-status');
+    const chevron = wrap.querySelector('.hero-account-chevron');
+    const trigger = wrap.querySelector('.hero-account-trigger');
+
+    if (user) {
+      wrap.classList.add('is-logged-in');
+      if (label) label.textContent = `مرحبًا، ${firstName}`;
+      if (status) status.hidden = false;
+      if (chevron) chevron.style.display = 'none';
+      if (trigger) trigger.setAttribute('title', 'حسابك مسجل دخول — اضغط لفتح حسابي');
+    } else {
+      wrap.classList.remove('is-logged-in');
+      if (label) label.textContent = 'الحساب';
+      if (status) status.hidden = true;
+      if (chevron) chevron.style.display = '';
+      if (trigger) trigger.setAttribute('title', 'إنشاء حساب أو تسجيل دخول');
+    }
   });
 }
 
@@ -1003,7 +1028,6 @@ window.submitSiteRating = async function(event){
     product: product || 'الموقع عامةً',
     text: comment,
     rating,
-    date: new Date().toLocaleDateString('ar-SA'),
     status: 'published',
     verified_purchase: false
   }]);
@@ -1060,7 +1084,6 @@ window.submitProductRating = async function(event){
     product: productName,
     text: comment,
     rating,
-    date: new Date().toLocaleDateString('ar-SA'),
     status: 'published',
     verified_purchase: verifiedPurchase
   }]);
