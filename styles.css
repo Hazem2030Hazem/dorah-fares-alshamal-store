@@ -2461,3 +2461,30 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
 /* إخفاء الزرارين العائمين (موجودين دلوقتي في صندوق التحميل) */
 .sticky-cta{display:none !important}
 .install-prompt{display:none !important}
+
+
+/* ============================================================
+   PRODUCT MODAL LIGHT — نافذة المنتج بخلفية بيضاء واضحة
+   ============================================================ */
+.product-modal-overlay{background:rgba(10,15,35,.55) !important;backdrop-filter:blur(6px) !important}
+.product-modal{background:#ffffff !important;box-shadow:0 25px 80px rgba(0,0,0,.35) !important}
+.product-modal h2,.product-modal h4{color:#111827 !important;text-shadow:none !important}
+.modal-name{color:#111827 !important}
+.modal-desc{color:#4B5563 !important}
+.modal-price{color:#2C4F86 !important;text-shadow:none !important}
+.modal-rating .rating-text{color:#6B7280 !important}
+.modal-category{background:#EAF1FB !important;color:#2C4F86 !important}
+.modal-info .stars{color:#F59E0B !important}
+.modal-btn-secondary{background:#ffffff !important;color:#374151 !important;border:1.5px solid #D1D5DB !important}
+.modal-btn-secondary:hover{border-color:#3B639E !important;color:#2C4F86 !important}
+.modal-close{background:#ffffff !important;border:1px solid #E5E7EB !important;color:#374151 !important}
+.modal-reviews h4{color:#111827 !important}
+.modal-reviews p{color:#4B5563 !important}
+.modal-reviews .review-card{background:#F9FAFB !important;border:1px solid #E5E7EB !important;backdrop-filter:none !important;padding:20px !important}
+.modal-reviews .review-card-text{color:#4B5563 !important}
+.modal-reviews .review-card-product{color:#6B7280 !important}
+@media (max-width:768px){
+  .product-modal-content{grid-template-columns:1fr !important}
+  .modal-image{min-height:260px !important}
+  .modal-info{padding:24px !important}
+}
