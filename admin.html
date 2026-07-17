@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#EF4444">
     <link rel="manifest" href="manifest.json?v=3.0">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20fill%3D%27%2523EF4444%27%20rx%3D%2715%27%20width%3D%27100%27%20height%3D%27100%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27white%27%3E%F0%9F%94%90%3C%2Ftext%3E%3C%2Fsvg%3E">
-    <title>لوحة الإدارة | درة فارس الشمال</title>
+    <title>لوحة الإدارة | شركة درة فارس الشمال</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -182,8 +182,9 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 // Supabase Configuration
 const SUPABASE_URL = 'https://kcbmvxuzjlaooknwhqqb.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjYm12eHV6amxhb29rbndocXFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NzkyMjAsImV4cCI6MjA5OTU1NTIyMH0.ayDpkfCKL90GcUKjbHQs7OvS5sxF1VSraWg58NHJ7ek';
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 </script>
+    <link rel="stylesheet" href="admin-v2.css">
 </head>
 <body>
 <div class="particles" id="particles"></div>
@@ -211,18 +212,19 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 <!-- Login Section -->
 <section class="login-section" id="loginSection">
     <div class="login-box">
-        <h2>🔐 <span>تسجيل</span> الدخول</h2>
+        <h2>🔐 <span>لوحة</span> الإدارة</h2>
+        <p class="login-subtitle">إدارة الطلبات والخدمات والعملاء والمدفوعات والتقييمات من مكان واحد</p>
         <form id="loginForm" onsubmit="return handleLogin(event)">
             <div class="form-group">
-                <label>👤 اسم المستخدم</label>
-                <input type="text" id="username" placeholder="أدخل اسم المستخدم" required>
+                <label>📧 بريد الأدمن</label>
+                <input type="email" id="username" placeholder="admin@example.com" required>
             </div>
             <div class="form-group">
                 <label>🔒 كلمة المرور</label>
                 <input type="password" id="password" placeholder="أدخل كلمة المرور" required>
             </div>
             <button type="submit" class="btn-login">دخول إلى لوحة التحكم</button>
-            <div class="error-msg" id="errorMsg">❌ اسم المستخدم أو كلمة المرور غير صحيحة</div>
+            <div class="error-msg" id="errorMsg">❌ بيانات الدخول غير صحيحة أو الحساب لا يملك صلاحية الإدارة</div>
         </form>
     </div>
 </section>
@@ -260,6 +262,9 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             <button class="tab-btn active" onclick="showTab('products')">📦 المنتجات</button>
             <button class="tab-btn" onclick="showTab('orders')">🛒 الطلبات</button>
             <button class="tab-btn" onclick="showTab('reviews')">⭐ التقييمات</button>
+            <button class="tab-btn" onclick="showTab('services')">🔧 طلبات الخدمات</button>
+            <button class="tab-btn" onclick="showTab('customers')">👥 العملاء</button>
+            <button class="tab-btn" onclick="showTab('receipts')">🧾 المدفوعات</button>
             <button class="tab-btn" onclick="showTab('messages')">📨 الرسائل</button>
             <button class="tab-btn" onclick="showTab('settings')">⚙️ الإعدادات</button>
         </div>
@@ -314,6 +319,36 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
                     <button class="btn-add" onclick="exportMessages()">📥 تصدير الرسائل</button>
                 </div>
                 <div id="messagesList"></div>
+            </div>
+        </div>
+
+        <!-- Service Requests Tab -->
+        <div class="tab-content" id="servicesTab">
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>🔧 طلبات الخدمات</h3>
+                </div>
+                <div id="servicesList"></div>
+            </div>
+        </div>
+
+        <!-- Customers Tab -->
+        <div class="tab-content" id="customersTab">
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>👥 العملاء المسجلون</h3>
+                </div>
+                <div id="customersList"></div>
+            </div>
+        </div>
+
+        <!-- Payment Receipts Tab -->
+        <div class="tab-content" id="receiptsTab">
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>🧾 إيصالات الدفع</h3>
+                </div>
+                <div id="receiptsList"></div>
             </div>
         </div>
 
@@ -515,7 +550,8 @@ function checkLoginStatus() {
     }
 }
 
-checkLoginStatus();
+// يتم التحقق من جلسة الأدمن بأمان من admin-v2.js
+// checkLoginStatus();
 
 if (window.history.replaceState) {
     window.history.replaceState({}, document.title, window.location.pathname);
@@ -933,5 +969,6 @@ styleSheet.textContent = `
 `;
 document.head.appendChild(styleSheet);
 </script>
+<script src="admin-v2.js"></script>
 </body>
 </html>

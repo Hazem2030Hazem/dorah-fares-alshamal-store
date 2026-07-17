@@ -2666,3 +2666,75 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
 .search-result-name{color:#111827 !important}
 .search-result-price{color:#2C4F86 !important}
 .search-no-results{background:#ffffff !important;color:#6B7280 !important}
+
+
+/* ============================================================
+   ACCOUNT SYSTEM — حسابي والطلبات وطلبات الخدمات
+   ============================================================ */
+.account-header-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 15px;border-radius:999px;
+  background:rgba(255,255,255,.72);border:1px solid rgba(103,232,249,.7);color:#1E3A63 !important;
+  font-size:13px;font-weight:800;text-decoration:none;box-shadow:0 0 18px rgba(34,211,238,.18);transition:.25s}
+.account-header-btn:hover{background:#ffffff;transform:translateY(-2px);box-shadow:0 8px 25px rgba(34,211,238,.28)}
+.account-app{min-height:420px}
+.account-loading{display:flex;min-height:360px;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:#2C4F86;font-weight:800}
+.account-loading span{font-size:46px;animation:pulse 1.2s infinite}
+.account-auth-grid{display:grid;grid-template-columns:1fr 460px;gap:28px;align-items:start}
+.account-auth-intro,.account-card{background:rgba(255,255,255,.94) !important;border:1px solid #E5E7EB !important;border-radius:24px;
+  padding:28px;box-shadow:0 12px 35px rgba(30,58,99,.12);color:#111827}
+.account-auth-icon{display:inline-flex;width:72px;height:72px;align-items:center;justify-content:center;border-radius:22px;
+  background:linear-gradient(135deg,#E0F2FE,#F0F9FF);font-size:38px;margin-bottom:18px}
+.account-auth-intro h2,.account-card h3{margin:0 0 12px;color:#1E3A63;font-size:28px;font-weight:900}
+.account-card h3{font-size:22px}
+.account-auth-intro p,.account-card p{color:#4B5563;line-height:1.9;margin:0 0 16px}
+.account-benefits{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.account-benefits span,.account-badge{display:inline-flex;align-items:center;padding:7px 12px;border-radius:999px;background:#EAF1FB;color:#2C4F86;font-size:12px;font-weight:800}
+.account-badge.success{background:#DCFCE7;color:#15803D}
+.account-success-message{margin-top:18px;padding:13px 15px;border-radius:14px;background:#ECFDF5;color:#047857;font-weight:800;line-height:1.8}
+.account-tabs{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 22px}
+.account-tabs.two{display:grid;grid-template-columns:1fr 1fr}
+.account-tabs button{border:1px solid #DBE3EF;background:#F8FAFD;color:#334155;border-radius:13px;padding:11px 16px;font-family:inherit;font-weight:800;cursor:pointer;transition:.2s}
+.account-tabs button.active,.account-tabs button:hover{background:linear-gradient(135deg,#2C4F86,#1E3A63);border-color:transparent;color:#fff;box-shadow:0 8px 20px rgba(44,79,134,.2)}
+.account-form{display:grid;gap:12px}
+.account-form label{color:#334155;font-size:13px;font-weight:800}
+.account-form input,.account-form textarea,.account-form select{width:100%;border:1px solid #DDE5F0;background:#fff;color:#111827;border-radius:13px;padding:13px 15px;font-family:inherit;font-size:15px;transition:.2s}
+.account-form input:focus,.account-form textarea:focus,.account-form select:focus{outline:none;border-color:#22D3EE;box-shadow:0 0 0 4px rgba(34,211,238,.14)}
+.account-form textarea{min-height:110px;resize:vertical}
+.account-form input:disabled{background:#F1F5F9;color:#64748B}
+.account-submit{width:100%;min-height:48px;justify-content:center;border:0;cursor:pointer;font-family:inherit;font-weight:900}
+.account-dashboard{display:grid;gap:22px}
+.account-user-card{display:flex;align-items:center;gap:18px}
+.account-avatar{width:66px;height:66px;flex:0 0 66px;border-radius:22px;background:linear-gradient(135deg,#2C4F86,#22D3EE);color:#fff;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900}
+.account-user-card h2{margin:0 0 4px;color:#111827;font-size:26px}
+.account-user-card p{margin:0;color:#6B7280}
+.account-logout{margin-inline-start:auto;border:1px solid #FECACA;background:#FEF2F2;color:#DC2626;border-radius:12px;padding:10px 15px;font-family:inherit;font-weight:800;cursor:pointer}
+.account-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.account-stat{background:#fff;border:1px solid #E5E7EB;border-radius:20px;padding:22px;text-align:center;box-shadow:0 8px 25px rgba(30,58,99,.08)}
+.account-stat span{display:block;font-size:30px;margin-bottom:8px}.account-stat strong{display:block;color:#2C4F86;font-size:30px}.account-stat small{color:#64748B;font-weight:800}
+.account-quick-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.account-quick-actions .btn-primary{text-decoration:none;border:0;cursor:pointer}
+.account-two-col{display:grid;grid-template-columns:420px 1fr;gap:22px;align-items:start}
+.account-list{display:grid;gap:14px}
+.account-list-item{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:16px;border:1px solid #E5E7EB;border-radius:16px;background:#F8FAFD}
+.account-list-item strong{color:#111827;font-size:16px}.account-list-item p{margin:7px 0;color:#4B5563;line-height:1.7}.account-list-item small{color:#64748B}
+.account-item-actions{display:flex;gap:8px;flex-wrap:wrap}
+.account-item-actions button,.account-upload-btn{border:1px solid #BFDBFE;background:#EFF6FF;color:#1D4ED8;border-radius:11px;padding:8px 11px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer}
+.account-item-actions button.danger{border-color:#FECACA;background:#FEF2F2;color:#DC2626}
+.account-status{display:inline-flex;align-items:center;white-space:nowrap;padding:7px 12px;border-radius:999px;background:#EAF1FB;color:#2C4F86;font-size:12px;font-weight:900}
+.account-empty{padding:36px 20px;text-align:center;border:1px dashed #CBD5E1;border-radius:16px;background:#F8FAFD;color:#64748B;font-weight:800}
+.account-order-card{padding:18px;border:1px solid #E5E7EB;border-radius:18px;background:#F8FAFD;display:grid;gap:14px}
+.account-order-head,.account-order-footer,.account-receipt-box{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.account-order-head strong{display:block;color:#111827;font-size:17px}.account-order-head small{color:#64748B;margin-top:4px;display:block}
+.account-order-items{display:flex;gap:8px;flex-wrap:wrap}.account-order-items span{padding:7px 10px;border-radius:999px;background:#fff;border:1px solid #E5E7EB;color:#334155;font-size:12px;font-weight:700}
+.account-order-footer strong{color:#2C4F86;font-size:22px}.account-order-footer span{color:#64748B;font-weight:800}
+.account-receipt-box{padding-top:12px;border-top:1px solid #E5E7EB;color:#64748B;font-size:13px}
+.account-upload-btn{position:relative;overflow:hidden;display:inline-flex}.account-upload-btn input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.account-check{display:flex !important;align-items:center;gap:8px}.account-check input{width:auto !important}
+.account-stars{color:#F59E0B;margin-top:6px;letter-spacing:1px}
+.service-request-section{padding:20px 20px 40px;background:transparent}
+.service-request-box{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:320px 1fr;gap:24px;align-items:center;
+  background:rgba(255,255,255,.96);border:1px solid #E5E7EB;border-radius:26px;padding:28px;box-shadow:0 15px 40px rgba(30,58,99,.13)}
+.service-request-intro span{display:inline-flex;width:64px;height:64px;align-items:center;justify-content:center;border-radius:20px;background:#E0F2FE;font-size:34px;margin-bottom:14px}
+.service-request-intro h2{margin:0 0 10px;color:#1E3A63;font-size:25px}.service-request-intro p{margin:0;color:#64748B;line-height:1.8}
+.service-request-form{grid-template-columns:1fr 1fr}.service-request-form textarea,.service-request-form button{grid-column:1/-1}
+@media (max-width:900px){.account-auth-grid,.account-two-col,.service-request-box{grid-template-columns:1fr}.account-stats-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:640px){.account-header-btn strong{display:none}.account-header-btn{padding:10px}.account-auth-intro,.account-card{padding:20px}.account-stats-grid{grid-template-columns:1fr 1fr}.account-user-card{flex-wrap:wrap}.account-logout{margin-inline-start:0}.service-request-form{grid-template-columns:1fr}.account-tabs{overflow-x:auto;flex-wrap:nowrap;padding-bottom:8px}.account-tabs button{white-space:nowrap}}

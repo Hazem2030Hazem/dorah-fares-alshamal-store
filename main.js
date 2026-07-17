@@ -1649,3 +1649,17 @@ function checkPWAInstallState() {
     else document.body.appendChild(section);
   });
 })();
+
+
+// ============================================================
+// ACCOUNT SYSTEM LOADER — يحمّل نظام الحسابات في كل الصفحات
+// ============================================================
+(function(){
+  if (document.querySelector('script[data-account-system]')) return;
+  var script = document.createElement('script');
+  script.src = 'account-system.js';
+  script.async = false;
+  script.setAttribute('data-account-system', 'true');
+  script.onerror = function(){ console.warn('تعذر تحميل account-system.js'); };
+  document.body.appendChild(script);
+})();
