@@ -2848,3 +2848,20 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
 
 /* إبقاء قائمة الحساب فوق إحصائيات البنر */
 .hero .hero-btns{position:relative;z-index:10000}
+
+
+/* ============================================================
+   PASSWORD VISIBILITY + RESET — إظهار واستعادة كلمة المرور
+   ============================================================ */
+.account-password-field{position:relative;width:100%}
+.account-password-field input{padding-inline-end:52px !important}
+.password-toggle{position:absolute;inset-inline-end:8px;top:50%;transform:translateY(-50%);
+  width:38px;height:38px;border:0;border-radius:12px;background:#EFF6FF;color:#1D4ED8;
+  display:inline-flex;align-items:center;justify-content:center;font-size:17px;cursor:pointer;transition:.2s}
+.password-toggle:hover{background:#DBEAFE;transform:translateY(-50%) scale(1.05)}
+.account-link{border:0;background:transparent;color:#2C4F86;font-family:inherit;font-size:13px;font-weight:900;
+  padding:4px;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+.account-link:hover{color:#0891B2}
+.account-reset-panel{display:grid;gap:13px}
+.account-reset-panel h3{margin:0;color:#1E3A63;font-size:22px;font-weight:900}
+.account-reset-panel p{margin:0;color:#64748B;line-height:1.8;font-size:14px}

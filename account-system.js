@@ -219,9 +219,17 @@ async function initAccountPage(force){
   updateAccountButtonLabel();
 }
 
-function renderAuth(message){
+function renderAuth(message, forceRecovery){
   const app = accountApp();
   if (!app) return;
+  const recoveryMode = !!forceRecovery || location.hash.includes('type=recovery') || getParam('mode') === 'reset';
+  const passwordField = (id, placeholder) => `
+    <div class="account-password-field">
+      <input type="password" id="${id}" required placeholder="${placeholder}" minlength="6">
+      <button type="button" class="password-toggle" onclick="doraTogglePassword('${id}', this)" aria-label="إظهار كلمة المرور" aria-pressed="false">👁</button>
+    </div>
+  `;
+
   app.innerHTML = `
     <div class="account-auth-grid">
       <div class="account-auth-intro">
@@ -238,17 +246,18 @@ function renderAuth(message){
       </div>
 
       <div class="account-card account-auth-card">
-        <div class="account-tabs two">
+        <div class="account-tabs two" id="accountAuthTabs" ${recoveryMode ? 'style="display:none"' : ''}>
           <button class="active" data-auth-tab="login" type="button">تسجيل الدخول</button>
           <button data-auth-tab="register" type="button">إنشاء حساب</button>
         </div>
 
-        <form id="accountLoginForm" class="account-form">
+        <form id="accountLoginForm" class="account-form" ${recoveryMode ? 'style="display:none"' : ''}>
           <label>البريد الإلكتروني</label>
           <input type="email" id="loginEmail" required placeholder="example@email.com">
           <label>كلمة المرور</label>
-          <input type="password" id="loginPassword" required placeholder="••••••••" minlength="6">
+          ${passwordField('loginPassword', '••••••••')}
           <button type="submit" class="btn-primary account-submit">🔐 دخول</button>
+          <button type="button" class="account-link" onclick="doraShowPasswordReset()">هل نسيت كلمة المرور؟</button>
         </form>
 
         <form id="accountRegisterForm" class="account-form" style="display:none">
@@ -259,12 +268,38 @@ function renderAuth(message){
           <label>البريد الإلكتروني</label>
           <input type="email" id="registerEmail" required placeholder="example@email.com">
           <label>كلمة المرور</label>
-          <input type="password" id="registerPassword" required placeholder="6 أحرف على الأقل" minlength="6">
+          ${passwordField('registerPassword', '6 أحرف على الأقل')}
           <button type="submit" class="btn-primary account-submit">✨ إنشاء الحساب</button>
+        </form>
+
+        <div id="passwordResetPanel" class="account-reset-panel" style="display:none">
+          <h3>🔑 استعادة كلمة المرور</h3>
+          <p>أدخل بريدك الإلكتروني وسنرسل لك رابطاً آمناً لتعيين كلمة مرور جديدة.</p>
+          <form id="passwordResetForm" class="account-form">
+            <label>البريد الإلكتروني</label>
+            <input type="email" id="resetEmail" required placeholder="example@email.com">
+            <button type="submit" class="btn-primary account-submit">📧 إرسال رابط الاستعادة</button>
+          </form>
+          <button type="button" class="account-link" onclick="doraBackToLogin()">← العودة لتسجيل الدخول</button>
+        </div>
+
+        <form id="passwordUpdateForm" class="account-form account-reset-panel" ${recoveryMode ? '' : 'style="display:none"'}>
+          <h3>🔐 تعيين كلمة مرور جديدة</h3>
+          <p>اكتب كلمة المرور الجديدة ثم أكدها.</p>
+          <label>كلمة المرور الجديدة</label>
+          ${passwordField('newPassword', '6 أحرف على الأقل')}
+          <label>تأكيد كلمة المرور</label>
+          ${passwordField('confirmPassword', 'أعد كتابة كلمة المرور')}
+          <button type="submit" class="btn-primary account-submit">💾 حفظ كلمة المرور</button>
         </form>
       </div>
     </div>
   `;
+
+  if (recoveryMode) {
+    document.getElementById('passwordUpdateForm').addEventListener('submit', updatePassword);
+    return;
+  }
 
   app.querySelectorAll('[data-auth-tab]').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -279,6 +314,59 @@ function renderAuth(message){
   app.querySelector(`[data-auth-tab="${requestedMode}"]`)?.click();
   document.getElementById('accountLoginForm').addEventListener('submit', signIn);
   document.getElementById('accountRegisterForm').addEventListener('submit', signUp);
+  document.getElementById('passwordResetForm').addEventListener('submit', sendPasswordReset);
+}
+
+window.doraTogglePassword = function(id, button){
+  const input = document.getElementById(id);
+  if (!input) return;
+  const show = input.type === 'password';
+  input.type = show ? 'text' : 'password';
+  button.textContent = show ? '🙈' : '👁';
+  button.setAttribute('aria-pressed', show ? 'true' : 'false');
+  button.setAttribute('aria-label', show ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور');
+};
+
+window.doraShowPasswordReset = function(){
+  document.getElementById('accountAuthTabs').style.display = 'none';
+  document.getElementById('accountLoginForm').style.display = 'none';
+  document.getElementById('accountRegisterForm').style.display = 'none';
+  document.getElementById('passwordResetPanel').style.display = 'block';
+  document.getElementById('resetEmail').focus();
+};
+
+window.doraBackToLogin = function(){
+  renderAuth();
+};
+
+async function sendPasswordReset(event){
+  event.preventDefault();
+  const email = document.getElementById('resetEmail').value.trim();
+  const btn = event.target.querySelector('button[type="submit"]');
+  btn.disabled = true; btn.textContent = '⏳ جاري الإرسال...';
+  const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+    redirectTo: location.origin + '/account.html?mode=reset'
+  });
+  btn.disabled = false; btn.textContent = '📧 إرسال رابط الاستعادة';
+  if (error) return notify('❌ تعذر إرسال رابط الاستعادة: ' + error.message, 'error');
+  renderAuth('✅ تم إرسال رابط استعادة كلمة المرور إلى بريدك الإلكتروني. افتح الرابط ثم عيّن كلمة مرور جديدة.');
+}
+
+async function updatePassword(event){
+  event.preventDefault();
+  const password = document.getElementById('newPassword').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+  if (password.length < 6) return notify('❌ كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
+  if (password !== confirmPassword) return notify('❌ كلمتا المرور غير متطابقتين', 'error');
+  const btn = event.target.querySelector('button[type="submit"]');
+  btn.disabled = true; btn.textContent = '⏳ جاري الحفظ...';
+  const { error } = await supabaseClient.auth.updateUser({ password });
+  btn.disabled = false; btn.textContent = '💾 حفظ كلمة المرور';
+  if (error) return notify('❌ تعذر تحديث كلمة المرور: ' + error.message, 'error');
+  notify('✅ تم تحديث كلمة المرور بنجاح');
+  history.replaceState(null, '', 'account.html');
+  state.accountReady = false;
+  await initAccountPage(true);
 }
 
 async function signIn(event){
@@ -1044,6 +1132,11 @@ function boot(){
   supabaseClient.auth.onAuthStateChange((_event, session) => {
     state.user = session?.user || null;
     updateAccountButtonLabel();
+    if (_event === 'PASSWORD_RECOVERY' && accountApp()) {
+      state.accountReady = true;
+      renderAuth('', true);
+      return;
+    }
     if (accountApp()) {
       state.accountReady = false;
       initAccountPage(true);
