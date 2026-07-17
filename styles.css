@@ -2409,7 +2409,7 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
 
 /* حركة بطيئة للخلفية نفسها (إحساس العمق) */
 @keyframes heroDrift{from{background-position:46% 44%}to{background-position:54% 56%}}
-.hero,.page-hero,.service-hero,.services-hero{animation:heroDrift 16s ease-in-out infinite alternate !important}
+.hero,.page-hero,.service-hero,.services-hero{animation:heroDrift 8s ease-in-out infinite alternate !important}
 
 /* المحتوى فوق اللوجوهات */
 .hero .container,.page-hero .hero-content,.service-hero .container,.services-hero .container{position:relative;z-index:1}
