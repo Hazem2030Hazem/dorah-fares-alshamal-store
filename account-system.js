@@ -1004,16 +1004,17 @@ window.submitSiteRating = async function(event){
     text: comment,
     rating,
     date: new Date().toLocaleDateString('ar-SA'),
-    status: 'pending',
+    status: 'published',
     verified_purchase: false
   }]);
-  if (error) return notify('❌ تعذر حفظ التقييم: ' + error.message, 'error');
+  if (error) return notify('❌ تعذر نشر التقييم: ' + error.message, 'error');
 
   closeSiteRatingModal();
   event.target.reset();
   setRating(5);
-  notify('✅ شكراً لتقييمك! سيظهر بعد مراجعة الإدارة');
+  notify('✅ شكراً لتقييمك! تم نشره فورًا');
   renderReviews();
+  if (accountApp() && state.user) loadAccountData(state.user);
 };
 
 window.openProductRatingModal = async function(productId, productName){
@@ -1060,18 +1061,19 @@ window.submitProductRating = async function(event){
     text: comment,
     rating,
     date: new Date().toLocaleDateString('ar-SA'),
-    status: 'pending',
+    status: 'published',
     verified_purchase: verifiedPurchase
   }]);
-  if (error) return notify('❌ تعذر حفظ التقييم: ' + error.message, 'error');
+  if (error) return notify('❌ تعذر نشر التقييم: ' + error.message, 'error');
 
   closeProductRatingModal();
   document.getElementById('productRaterComment').value = '';
   setProductRating(5);
   notify(verifiedPurchase
-    ? '✅ تم إرسال تقييمك الموثق وسيظهر بعد مراجعة الإدارة'
-    : '✅ تم إرسال تقييمك كمستخدم مسجل وسيظهر بعد مراجعة الإدارة');
+    ? '✅ تم نشر تقييمك الموثق فورًا'
+    : '✅ تم نشر تقييمك كمستخدم مسجل فورًا');
   renderReviews();
+  if (accountApp() && state.user) loadAccountData(state.user);
 };
 
 window.renderReviews = async function(){
