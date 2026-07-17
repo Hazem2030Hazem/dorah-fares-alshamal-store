@@ -1,0 +1,600 @@
+<html lang="ar" dir="rtl" data-theme="light"><head>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="google-site-verification" content="XXXXXXXXXXXXXXXXXXXXXXXXXXXX">
+  <meta charset="UTF-8">
+  <meta name="cache-version" content="v3.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="شركة درة فارس الشمال - متجر التقنية في السعودية. نقدم حلول تقنية متكاملة: طابعات، كمبيوتر، كاميرات مراقبة، نقاط بيع، شبكات">
+  <meta name="keywords" content="شركة درة فارس الشمال, متجر تقنية, طابعات, كمبيوتر, كاميرات مراقبة, نقاط بيع, شبكات, السعودية, تبوك">
+  <meta name="geo.region" content="SA">
+  <meta name="geo.placename" content="حائل, عرعر, الشمال">
+  <meta name="author" content="شركة درة فارس الشمال">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#1E88E5">
+  <meta name="mobile-web-app-capable" content="no">
+  <meta name="apple-mobile-web-app-capable" content="no">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://dorafares.com">
+  <meta property="og:title" content="شركة درة فارس الشمال | حلول تقنية متكاملة">
+  <meta property="og:description" content="حلول تقنية متكاملة للشركات والأفراد. +15 سنة خبرة، +500 عميل، +1000 مشروع منفذ. طابعات، كاميرات مراقبة، نقاط بيع، شبكات.">
+  <meta property="og:site_name" content="شركة درة فارس الشمال">
+  <meta property="og:locale" content="ar_SA">
+  <meta property="og:image" content="https://dorafares.com/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="شركة درة فارس الشمال | متجر التقنية">
+  <meta name="twitter:description" content="وجهتك الأولى لكل ما يتعلق بالتقنية في المملكة العربية السعودية.">
+  <meta name="twitter:image" content="https://dorafares.com/og-image.jpg">
+  <meta http-equiv="Surrogate-Control" content="no-store">
+  <meta http-equiv="Vary" content="*">
+  <link rel="canonical" href="https://dorafares.com">
+  <link rel="manifest" href="manifest.json?v=4.0">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20fill%3D%27%25231E88E5%27%20rx%3D%2715%27%20width%3D%27100%27%20height%3D%27100%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27white%27%3E%E2%9A%A1%3C%2Ftext%3E%3C%2Fsvg%3E">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+  <title>جميع المنتجات | شركة درة فارس الشمال</title>
+  
+  <!-- ========== AUDIO AUTO-PLAY SCRIPT (مباشر في الصفحة) ========== -->
+  
+  
+  
+  
+  
+<base target="_blank">
+
+
+
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  (function() {
+      'use strict';
+      const AUDIO_URL = 'https://raw.githubusercontent.com/Hazem2030Hazem/dorah-fares-alshamal-store/refs/heads/main/music.mp3';
+      let audio = null;
+      let isPlaying = false;
+      let isMuted = false;
+
+      // Expose audio element globally for volume control
+      window.doraAudio = null;
+      window.doraAudioPlaying = false;
+      window.doraAudioMuted = false;
+
+      function createAudio() {
+          if (audio) return audio;
+          audio = new Audio(AUDIO_URL);
+          audio.loop = true;
+          audio.volume = 0.30;
+          audio.preload = 'auto';
+          // Expose globally
+          window.doraAudio = audio;
+          return audio;
+      }
+
+      function tryPlay() {
+          if (isPlaying || !audio || isMuted) return;
+          audio.play().then(() => {
+              isPlaying = true;
+              console.log('✅ Audio playing');
+              updateSpeakerIcon();
+          }).catch((err) => {
+              console.log('⚠️ Autoplay blocked, waiting for user interaction...');
+              document.addEventListener('click', function playOnClick() {
+                  if (!isMuted && audio) {
+                      audio.play().then(() => {
+                          isPlaying = true;
+                          console.log('✅ Audio playing after click');
+                          updateSpeakerIcon();
+                      }).catch((e) => console.log('❌ Audio failed:', e));
+                  }
+                  document.removeEventListener('click', playOnClick);
+              }, { once: true });
+          });
+      }
+
+      window.toggleAudio = function() {
+          if (!audio) audio = createAudio();
+          if (isPlaying) {
+              audio.pause();
+              isPlaying = false;
+              isMuted = true;
+          } else {
+              isMuted = false;
+              audio.play().then(() => {
+                  isPlaying = true;
+                  window.doraAudioPlaying = true;
+                  updateSpeakerIcon();
+              }).catch((e) => console.log('❌ Toggle failed:', e));
+          }
+          window.doraAudioPlaying = isPlaying;
+          window.doraAudioMuted = isMuted;
+          updateSpeakerIcon();
+      };
+
+      function updateSpeakerIcon() {
+  const svg = document.getElementById('speakerIconSvg');
+  if (svg) {
+    if (isPlaying) {
+      svg.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>';
+      svg.style.opacity = '1';
+      svg.style.filter = 'drop-shadow(0 0 8px rgba(16,185,129,0.8))';
+    } else {
+      svg.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line>';
+      svg.style.opacity = '0.5';
+      svg.style.filter = 'none';
+    }
+  }
+}
+function init() {
+          createAudio();
+          tryPlay();
+          setTimeout(tryPlay, 1000);
+          window.doraAudioPlaying = isPlaying;
+          window.doraAudioMuted = isMuted;
+      }
+
+      if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', init);
+      } else {
+          init();
+      }
+  })();
+  
+</script>
+</head>
+<body>
+<div class="particles" id="particles"><div class="particle" style="left: 12.2413%; top: 40.0533%; width: 6.70319px; height: 6.70319px; animation-delay: 6.59061s; animation-duration: 10.0243s; background: rgba(16, 185, 129, 0.306);"></div><div class="particle" style="left: 5.34176%; top: 64.0994%; width: 4.85692px; height: 4.85692px; animation-delay: 2.94898s; animation-duration: 6.61419s; background: rgba(16, 185, 129, 0.333);"></div><div class="particle" style="left: 50.2871%; top: 11.7503%; width: 6.85082px; height: 6.85082px; animation-delay: 1.91964s; animation-duration: 9.65115s; background: rgba(245, 158, 11, 0.227);"></div><div class="particle" style="left: 59.1187%; top: 68.3191%; width: 3.56397px; height: 3.56397px; animation-delay: 6.04281s; animation-duration: 11.1046s; background: rgba(245, 158, 11, 0.247);"></div><div class="particle" style="left: 32.2652%; top: 49.4295%; width: 7.78573px; height: 7.78573px; animation-delay: 4.43755s; animation-duration: 14.4008s; background: rgba(233, 69, 96, 0.37);"></div><div class="particle" style="left: 34.5081%; top: 3.14188%; width: 2.19002px; height: 2.19002px; animation-delay: 5.55369s; animation-duration: 7.02247s; background: rgba(15, 52, 96, 0.655);"></div><div class="particle" style="left: 91.7009%; top: 37.8557%; width: 5.52749px; height: 5.52749px; animation-delay: 4.65295s; animation-duration: 10.7707s; background: rgba(233, 69, 96, 0.255);"></div><div class="particle" style="left: 99.1096%; top: 15.9939%; width: 2.15337px; height: 2.15337px; animation-delay: 3.92906s; animation-duration: 13.1889s; background: rgba(245, 158, 11, 0.64);"></div><div class="particle" style="left: 21.7022%; top: 12.7219%; width: 6.35288px; height: 6.35288px; animation-delay: 4.56839s; animation-duration: 13.4639s; background: rgba(233, 69, 96, 0.475);"></div><div class="particle" style="left: 87.1581%; top: 33.7385%; width: 2.48599px; height: 2.48599px; animation-delay: 2.80453s; animation-duration: 11.2285s; background: rgba(245, 158, 11, 0.337);"></div><div class="particle" style="left: 16.7264%; top: 50.4443%; width: 7.90621px; height: 7.90621px; animation-delay: 3.19617s; animation-duration: 14.0089s; background: rgba(15, 52, 96, 0.56);"></div><div class="particle" style="left: 67.5909%; top: 21.9548%; width: 6.23903px; height: 6.23903px; animation-delay: 3.33519s; animation-duration: 9.25462s; background: rgba(15, 52, 96, 0.396);"></div><div class="particle" style="left: 37.1295%; top: 0.79289%; width: 6.83847px; height: 6.83847px; animation-delay: 2.00473s; animation-duration: 13.6161s; background: rgba(245, 158, 11, 0.655);"></div><div class="particle" style="left: 61.5114%; top: 33.598%; width: 4.50906px; height: 4.50906px; animation-delay: 6.59138s; animation-duration: 8.68535s; background: rgba(245, 158, 11, 0.2);"></div><div class="particle" style="left: 8.70673%; top: 30.0273%; width: 4.79779px; height: 4.79779px; animation-delay: 4.01684s; animation-duration: 13.3709s; background: rgba(233, 69, 96, 0.267);"></div><div class="particle" style="left: 8.59424%; top: 86.5755%; width: 6.25767px; height: 6.25767px; animation-delay: 0.781486s; animation-duration: 11.0248s; background: rgba(245, 158, 11, 0.424);"></div><div class="particle" style="left: 50.8942%; top: 6.54617%; width: 6.40805px; height: 6.40805px; animation-delay: 7.76286s; animation-duration: 14.9047s; background: rgba(15, 52, 96, 0.525);"></div><div class="particle" style="left: 0.606878%; top: 97.6794%; width: 4.40008px; height: 4.40008px; animation-delay: 6.66675s; animation-duration: 9.58269s; background: rgba(15, 52, 96, 0.396);"></div><div class="particle" style="left: 77.4291%; top: 43.4939%; width: 7.69977px; height: 7.69977px; animation-delay: 0.144974s; animation-duration: 14.582s; background: rgba(245, 158, 11, 0.64);"></div><div class="particle" style="left: 59.7479%; top: 56.0894%; width: 4.38711px; height: 4.38711px; animation-delay: 5.30514s; animation-duration: 8.36633s; background: rgba(245, 158, 11, 0.204);"></div><div class="particle" style="left: 42.4848%; top: 24.1493%; width: 5.52203px; height: 5.52203px; animation-delay: 7.09018s; animation-duration: 13.9628s; background: rgba(16, 185, 129, 0.647);"></div><div class="particle" style="left: 41.0432%; top: 33.0141%; width: 7.56393px; height: 7.56393px; animation-delay: 3.26098s; animation-duration: 7.59164s; background: rgba(245, 158, 11, 0.28);"></div><div class="particle" style="left: 88.9341%; top: 76.3276%; width: 2.86574px; height: 2.86574px; animation-delay: 2.82946s; animation-duration: 9.53711s; background: rgba(15, 52, 96, 0.404);"></div><div class="particle" style="left: 0.376856%; top: 4.06475%; width: 2.19222px; height: 2.19222px; animation-delay: 6.4583s; animation-duration: 14.7836s; background: rgba(245, 158, 11, 0.455);"></div><div class="particle" style="left: 92.5223%; top: 42.0924%; width: 3.70049px; height: 3.70049px; animation-delay: 3.34049s; animation-duration: 5.37801s; background: rgba(16, 185, 129, 0.306);"></div><div class="particle" style="left: 79.7694%; top: 40.6506%; width: 2.40056px; height: 2.40056px; animation-delay: 0.386419s; animation-duration: 14.066s; background: rgba(245, 158, 11, 0.32);"></div><div class="particle" style="left: 18.733%; top: 88.059%; width: 2.73709px; height: 2.73709px; animation-delay: 2.2798s; animation-duration: 14.2325s; background: rgba(16, 185, 129, 0.61);"></div><div class="particle" style="left: 79.6281%; top: 85.5034%; width: 2.11105px; height: 2.11105px; animation-delay: 0.0517711s; animation-duration: 9.03275s; background: rgba(15, 52, 96, 0.55);"></div><div class="particle" style="left: 17.4612%; top: 97.0408%; width: 7.35201px; height: 7.35201px; animation-delay: 2.3066s; animation-duration: 10.5992s; background: rgba(16, 185, 129, 0.608);"></div><div class="particle" style="left: 98.6127%; top: 13.9556%; width: 4.36806px; height: 4.36806px; animation-delay: 2.91822s; animation-duration: 12.2725s; background: rgba(245, 158, 11, 0.333);"></div><div class="particle" style="left: 10.9337%; top: 58.6047%; width: 7.67977px; height: 7.67977px; animation-delay: 6.68722s; animation-duration: 11.1237s; background: rgba(245, 158, 11, 0.514);"></div><div class="particle" style="left: 99.3907%; top: 41.8235%; width: 2.07194px; height: 2.07194px; animation-delay: 0.272697s; animation-duration: 7.80354s; background: rgba(16, 185, 129, 0.498);"></div><div class="particle" style="left: 95.7064%; top: 61.0132%; width: 4.58595px; height: 4.58595px; animation-delay: 4.08853s; animation-duration: 10.8351s; background: rgba(15, 52, 96, 0.663);"></div><div class="particle" style="left: 69.5274%; top: 24.9785%; width: 5.04039px; height: 5.04039px; animation-delay: 4.9394s; animation-duration: 7.57419s; background: rgba(245, 158, 11, 0.27);"></div><div class="particle" style="left: 27.5987%; top: 97.748%; width: 4.79804px; height: 4.79804px; animation-delay: 4.88608s; animation-duration: 6.16283s; background: rgba(233, 69, 96, 0.44);"></div><div class="particle" style="left: 80.8218%; top: 53.4615%; width: 2.7065px; height: 2.7065px; animation-delay: 5.68912s; animation-duration: 13.6549s; background: rgba(245, 158, 11, 0.525);"></div><div class="particle" style="left: 73.7856%; top: 42.408%; width: 3.25711px; height: 3.25711px; animation-delay: 1.1268s; animation-duration: 8.6179s; background: rgba(16, 185, 129, 0.427);"></div><div class="particle" style="left: 62.1991%; top: 52.0556%; width: 7.25695px; height: 7.25695px; animation-delay: 3.62704s; animation-duration: 14.3646s; background: rgba(16, 185, 129, 0.38);"></div><div class="particle" style="left: 17.256%; top: 96.8639%; width: 3.41176px; height: 3.41176px; animation-delay: 4.32049s; animation-duration: 8.94701s; background: rgba(233, 69, 96, 0.498);"></div><div class="particle" style="left: 85.115%; top: 99.449%; width: 2.05931px; height: 2.05931px; animation-delay: 6.34464s; animation-duration: 13.0073s; background: rgba(16, 185, 129, 0.643);"></div><div class="particle" style="left: 71.5135%; top: 16.3306%; width: 7.84465px; height: 7.84465px; animation-delay: 6.73235s; animation-duration: 11.5874s; background: rgba(245, 158, 11, 0.337);"></div><div class="particle" style="left: 7.5469%; top: 34.7106%; width: 2.13668px; height: 2.13668px; animation-delay: 5.65407s; animation-duration: 14.9555s; background: rgba(15, 52, 96, 0.596);"></div><div class="particle" style="left: 41.4567%; top: 33.7242%; width: 6.43218px; height: 6.43218px; animation-delay: 2.31457s; animation-duration: 10.1291s; background: rgba(233, 69, 96, 0.345);"></div><div class="particle" style="left: 36.6337%; top: 41.4249%; width: 7.41018px; height: 7.41018px; animation-delay: 4.5631s; animation-duration: 10.7581s; background: rgba(15, 52, 96, 0.376);"></div><div class="particle" style="left: 58.5171%; top: 18.0616%; width: 2.91478px; height: 2.91478px; animation-delay: 2.39799s; animation-duration: 11.0399s; background: rgba(245, 158, 11, 0.694);"></div><div class="particle" style="left: 84.7857%; top: 8.2349%; width: 7.80766px; height: 7.80766px; animation-delay: 7.94669s; animation-duration: 8.82595s; background: rgba(233, 69, 96, 0.3);"></div><div class="particle" style="left: 20.745%; top: 1.97561%; width: 2.2098px; height: 2.2098px; animation-delay: 7.14071s; animation-duration: 11.3774s; background: rgba(245, 158, 11, 0.573);"></div><div class="particle" style="left: 45.7088%; top: 99.3126%; width: 4.1796px; height: 4.1796px; animation-delay: 2.92352s; animation-duration: 12.6576s; background: rgba(233, 69, 96, 0.57);"></div><div class="particle" style="left: 19.5766%; top: 65.9875%; width: 5.61184px; height: 5.61184px; animation-delay: 0.468222s; animation-duration: 5.68734s; background: rgba(15, 52, 96, 0.6);"></div><div class="particle" style="left: 76.349%; top: 78.1047%; width: 3.32989px; height: 3.32989px; animation-delay: 0.36264s; animation-duration: 14.616s; background: rgba(233, 69, 96, 0.282);"></div></div>
+
+
+
+
+
+<div class="ocean-bg"></div>
+
+<header class="header" id="header">
+<div class="header-inner" style="width:100%;max-width:100%;">
+<div class="logo">
+<img src="https://www.alshamal-df.com/logo.png?v=2.1_1783834267413" alt="شركة درة فارس الشمال" style="width:85px;height:85px;border-radius:14px;object-fit:contain;">
+<div class="logo-particles">
+ <div class="logo-particle"></div>
+ <div class="logo-particle"></div>
+ <div class="logo-particle"></div>
+ <div class="logo-particle"></div>
+</div>
+<div class="logo-text">
+<h1>شركة درة فارس الشمال</h1>
+<span>Dora Fares Al Shamal</span>
+</div>
+</div>
+<nav class="nav-links">
+    <a href="#home" aria-label="الرئيسية">الرئيسية</a>
+
+    <!-- عن الشركة -->
+    <div class="nav-item">
+        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="عن الشركة">
+            عن الشركة <span class="arrow">▼</span>
+        </button>
+        <div class="dropdown-menu">
+            <a href="about.html" aria-label="نبذة عن الشركة">نبذة عن الشركة</a>
+            <a href="about.html#vision" aria-label="رؤيتنا">رؤيتنا</a>
+            <a href="about.html#mission" aria-label="رسالتنا">رسالتنا</a>
+            <a href="about.html#team" aria-label="فريق العمل">فريق العمل</a>
+            <a href="about.html#certifications" aria-label="الشهادات">الشهادات</a>
+        </div>
+    </div>
+
+    <!-- التصنيفات -->
+    <div class="nav-item">
+        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="التصنيفات">
+            التصنيفات <span class="arrow">▼</span>
+        </button>
+        <div class="dropdown-menu">
+            <a href="service_printing.html" aria-label="خدمات الطباعة">خدمات الطباعة</a>
+            <a href="service_cameras.html" aria-label="كاميرات المراقبة">كاميرات المراقبة</a>
+            <a href="service_pos.html" aria-label="نقاط البيع">نقاط البيع</a>
+            <a href="service_network.html" aria-label="شبكات">شبكات</a>
+            <a href="service_barcode.html" aria-label="باركود">باركود</a>
+            <a href="service_maintenance.html" aria-label="الصيانة">الصيانة</a>
+        </div>
+    </div>
+
+    <!-- المنتجات -->
+    <div class="nav-item">
+        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="المنتجات">
+            المنتجات <span class="arrow">▼</span>
+        </button>
+        <div class="dropdown-menu">
+            <a href="products.html" aria-label="جميع المنتجات">جميع المنتجات</a>
+            <a href="products.html?category=printers" aria-label="طابعات">طابعات</a>
+            <a href="products.html?category=computers" aria-label="أجهزة الكمبيوتر">أجهزة الكمبيوتر</a>
+            <a href="products.html?category=ram" aria-label="رامات">رامات</a>
+            <a href="products.html?category=hard-drives" aria-label="هاردات">هاردات</a>
+            <a href="products.html?category=accessories" aria-label="إكسسوارات">إكسسوارات</a>
+        </div>
+    </div>
+
+    <!-- المعلومات -->
+    <div class="nav-item">
+        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="المعلومات">
+            المعلومات <span class="arrow">▼</span>
+        </button>
+        <div class="dropdown-menu">
+            <a href="privacy.html" aria-label="سياسة الخصوصية">سياسة الخصوصية</a>
+            <a href="terms.html" aria-label="شروط الاستخدام">شروط الاستخدام</a>
+            <a href="faq.html" aria-label="الأسئلة الشائعة">الأسئلة الشائعة</a>
+        </div>
+    </div>
+
+    <!-- الدعم -->
+    <div class="nav-item">
+        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="الدعم">
+            الدعم <span class="arrow">▼</span>
+        </button>
+        <div class="dropdown-menu">
+            <a href="contact.html" aria-label="تواصل معنا">تواصل معنا</a>
+        </div>
+    </div>
+</nav>
+<div class="header-controls">
+<button onclick="location.href='https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk'" class="install-btn" title="تثبيت تطبيق درة فارس الشمال" aria-label="تثبيت تطبيق درة فارس الشمال">
+  <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+    <line x1="12" y1="18" x2="12.01" y2="18"></line>
+  </svg>
+  <span class="icon-glow"></span>
+</button>
+<div class="audio-toggle-wrapper">
+  <button class="audio-toggle" onclick="toggleAudioVolumePopup(event)" title="تشغيل/إيقاف الصوت" aria-label="تشغيل/إيقاف الصوت" id="audioToggleBtn">
+    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="speakerIconSvg">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+    </svg>
+    <span class="icon-glow"></span>
+  </button>
+  <div class="audio-volume-popup" id="audioVolumePopup">
+    <h4>🔊 مستوى الصوت</h4>
+    <div class="volume-slider-container" id="volumeSlider" onclick="setVolumeFromClick(event)">
+      <div class="volume-slider-fill" id="volumeSliderFill" style="width: 30%"></div>
+      <div class="volume-slider-thumb" id="volumeSliderThumb"></div>
+    </div>
+    <div class="volume-value" id="volumeValue">30%</div>
+    <button class="volume-mute-btn" onclick="toggleMute()">🔇 كتم / تشغيل</button>
+  </div>
+</div>
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="ابحث عن منتج..." oninput="handleSearch(this.value)" aria-label="البحث عن منتج">
+  <span class="search-icon">
+    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+  </span>
+  <div class="search-results" id="searchResults"></div>
+</div>
+<button class="theme-toggle" onclick="toggleTheme()" title="تبديل الوضع" aria-label="تبديل الوضع الداكن/الفاتح" id="themeToggleBtn">
+  <svg id="themeIcon" class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="5"></circle>
+    <line x1="12" y1="1" x2="12" y2="3"></line>
+    <line x1="12" y1="21" x2="12" y2="23"></line>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+    <line x1="1" y1="12" x2="3" y2="12"></line>
+    <line x1="21" y1="12" x2="23" y2="12"></line>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+  </svg>
+  <span class="icon-glow"></span>
+</button>
+<button class="cart-btn" onclick="toggleCart()" aria-label="سلة المشتريات">
+  <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="9" cy="21" r="1"></circle>
+    <circle cx="20" cy="21" r="1"></circle>
+    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+  </svg>
+  <span class="icon-glow"></span>
+  <span class="cart-count" id="cartCount">0</span>
+</button>
+</div>
+</div>
+</header>
+
+<div class="sidebar-icons">
+ <div class="sidebar-icon active" title="الرئيسية" onclick="scrollToSection('home')">
+  <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+   <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+   <polyline points="9 22 9 12 15 12 15 22"></polyline>
+  </svg>
+  <span class="icon-glow"></span>
+ </div>
+ <div class="sidebar-icon" title="المنتجات" onclick="scrollToSection('products')">
+  <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+   <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+   <line x1="3" y1="6" x2="21" y2="6"></line>
+   <path d="M16 10a4 4 0 0 1-8 0"></path>
+  </svg>
+  <span class="icon-glow"></span>
+ </div>
+ <div class="sidebar-icon" title="عن الشركة" onclick="scrollToSection('about')">
+  <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+   <circle cx="12" cy="12" r="10"></circle>
+   <line x1="12" y1="16" x2="12" y2="12"></line>
+   <line x1="12" y1="8" x2="12.01" y2="8"></line>
+  </svg>
+  <span class="icon-glow"></span>
+ </div>
+ <div class="sidebar-icon" title="تواصل معنا" onclick="scrollToSection('contact')">
+  <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+   <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+  </svg>
+  <span class="icon-glow"></span>
+ </div>
+ <div class="sidebar-icon" title="السلة" onclick="toggleCart()">
+  <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+   <circle cx="9" cy="21" r="1"></circle>
+   <circle cx="20" cy="21" r="1"></circle>
+   <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+  </svg>
+  <span class="icon-glow"></span>
+ </div>
+ <div class="sidebar-icon" title="التقييم" onclick="openSiteRatingModal()">
+  <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+   <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+  </svg>
+  <span class="icon-glow"></span>
+ </div>
+</div>
+
+<div class="breadcrumb" id="breadcrumb" style="display:none">
+<div class="container">
+<div class="breadcrumb-inner" id="breadcrumbInner">
+<a href="#home">الرئيسية</a>
+<span class="sep">/</span>
+<span class="current" id="breadcrumbCurrent">المنتجات</span>
+</div>
+</div>
+</div>
+
+<section class="page-hero">
+  <div class="hero-content">
+    <h1 class="page-title">🛍️ جميع المنتجات</h1>
+    <p class="page-subtitle">تصفح كامل تشكيلتنا من المنتجات التقنية بأفضل الأسعار</p>
+    <p id="catCount" style="color:rgba(255,255,255,.75);font-size:16px;margin-top:12px;font-weight:700"></p>
+  </div>
+</section>
+
+<section class="products" id="products" style="background:transparent;">
+<div class="container">
+<div class="products-toolbar">
+<div class="products-toolbar-left">
+<div class="filter-tabs">
+<a class="filter-tab active" href="products.html">الكل</a>
+<a class="filter-tab" href="products-printers.html">طابعات</a>
+<a class="filter-tab" href="products-computers.html">كمبيوتر</a>
+<a class="filter-tab" href="products-ram.html">رامات</a>
+<a class="filter-tab" href="products-hard-drives.html">هاردات</a>
+<a class="filter-tab" href="products-accessories.html">إكسسوارات</a>
+</div>
+</div>
+</div>
+<div class="prod-grid" id="productsGrid"></div>
+</div>
+</section>
+
+<footer class="footer" style="background:transparent;">
+<div class="container">
+<div class="footer-grid">
+<div class="footer-brand"><h4>شركة درة فارس الشمال</h4><p>وجهتك الأولى لكل ما يتعلق بالتقنية. نقدم منتجات عالية الجودة بأسعار تنافسية.</p><div class="footer-social"><a href="https://twitter.com/dorafares" target="_blank" rel="noopener" aria-label="تويتر">𝕏</a><a href="https://instagram.com/dorafares" target="_blank" rel="noopener" aria-label="انستقرام">📷</a><a href="https://facebook.com/dorafares" target="_blank" rel="noopener" aria-label="فيسبوك">f</a><a href="https://linkedin.com/company/dorafares" target="_blank" rel="noopener" aria-label="لينكدإن">in</a></div></div>
+<div class="footer-col"><h5>روابط سريعة</h5><ul><li><a href="#home">الرئيسية</a></li><li><a href="#products">المنتجات</a></li><li><a href="about.html">عن الشركة</a></li><li><a href="#contact">تواصل معنا</a></li></ul></div>
+<div class="footer-col"><h5>التصنيفات</h5><ul><li><a href="#products" onclick="filterProducts('printers')">طابعات</a></li><li><a href="#products" onclick="filterProducts('computers')">كمبيوتر</a></li><li><a href="#products" onclick="filterProducts('ram')">رامات</a></li><li><a href="#products" onclick="filterProducts('storage')">هاردات</a></li></ul></div>
+<div class="footer-col"><h5>طرق الدفع</h5><div class="payment-methods"><span>💳 Visa</span><span>💳 Mastercard</span><span>💳 Apple Pay</span><span>💳 مدى</span><span>💳 STC Pay</span></div></div>
+</div>
+<div class="footer-bottom"><p>© 2024 شركة درة فارس الشمال. جميع الحقوق محفوظة.</p><div><a href="#" onclick="showPrivacyPolicy();return false">سياسة الخصوصية</a><a href="#" onclick="showTerms();return false">شروط الاستخدام</a></div></div>
+<div style="text-align:center;padding:20px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));margin-top:20px;border-radius:12px;">
+ <p style="color:white;font-size:16px;margin-bottom:10px;">📲 حمّل تطبيق درة فارس الشمال على جوالك!</p>
+ <a href="https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk" download="" class="btn-primary" style="display:inline-block;margin-top:10px;">📱 تحميل تطبيق Android</a>
+ <p style="color:rgba(255,255,255,0.7);font-size:12px;margin-top:10px;">اضغط للتثبيت على الشاشة الرئيسية</p>
+</div>
+</div>
+</footer>
+
+
+
+
+
+
+
+<div class="product-modal-overlay" id="productModalOverlay" onclick="closeProductModal(event)">
+<div class="product-modal" id="productModal">
+<button class="modal-close" onclick="closeProductModal()" aria-label="إغلاق">✕</button>
+<div class="product-modal-content" id="productModalContent"></div>
+</div>
+</div>
+
+<div class="compare-bar" id="compareBar">
+<div class="compare-bar-inner">
+<div class="compare-items" id="compareItems"></div>
+<div class="compare-actions">
+<button class="compare-btn-action" onclick="showCompareModal()">📊 مقارنة</button>
+<button class="compare-btn-clear" onclick="clearCompare()">❌ إفراغ</button>
+</div>
+</div>
+</div>
+
+<div class="compare-modal-overlay" id="compareModalOverlay" onclick="closeCompareModal(event)">
+<div class="compare-modal" id="compareModal">
+<button class="modal-close" onclick="closeCompareModal()" aria-label="إغلاق">✕</button>
+<div id="compareModalContent"></div>
+</div>
+</div>
+
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+<div class="cart-header"><h3>🛒 سلة المشتريات</h3><button class="close-cart" onclick="toggleCart()" aria-label="إغلاق السلة">✕</button></div>
+<div class="cart-items" id="cartItems">
+   <div class="cart-empty">
+    <span class="icon">🛒</span>
+    <p>السلة فارغة</p>
+    <small>أضف منتجات لبدء التسوق</small>
+   </div></div>
+<div class="coupon-section" id="couponSection" style="display: none;">
+<div class="coupon-input-wrapper">
+<input type="text" class="coupon-input" id="couponInput" placeholder="أدخل كود الخصم">
+<button class="coupon-btn" onclick="applyCoupon()">تطبيق</button>
+</div>
+</div>
+<div class="cart-footer">
+<div class="cart-total"><span>المجموع:</span><strong id="cartTotal">٠ ر.س</strong></div>
+<div class="cart-tax" id="cartTax">شامل الضريبة (15%): ٠ ر.س</div>
+<button class="checkout-btn" onclick="checkout()">💬 اطلب الآن عبر واتساب</button>
+</div>
+</div>
+
+<div class="toast" id="toast"><div class="toast-icon" id="toastIcon">✅</div><div class="toast-text" id="toastMsg">تمت الإضافة للسلة</div></div>
+
+
+
+<a href="https://wa.me/966568717449?text=مرحباً%20شركة%20درة%20فارس%20الشمال%2C%20أرغب%20في%20الاستفسار%20عن%20منتجاتكم" class="whatsapp-float" target="_blank" rel="noopener" aria-label="تواصل عبر واتساب">
+ 💬
+ <span class="tooltip">تواصل معنا على واتساب</span>
+</a>
+
+<a href="https://wa.me/966568717449?text=مرحباً%20أرغب%20في%20طلب%20عرض%20سعر%20من%20شركة%20درة%20فارس%20الشمال" class="sticky-cta" target="_blank" rel="noopener">
+ 📋 اطلب عرض سعر الآن
+</a>
+
+<div class="install-prompt show" id="installPrompt" onclick="installPWA()" style="cursor:pointer;">
+ <span>💻 حمّل تطبيق درة فارس الشمال!</span>
+ <button class="close-prompt" onclick="event.stopPropagation();dismissInstallPrompt()" aria-label="إغلاق">✕</button>
+</div>
+
+
+<div id="reviewModal" class="dora-modal">
+            <div class="dora-modal-content">
+                <div class="dora-modal-header">
+                    <h3>⭐ أضف تقييمك</h3>
+                    <button class="dora-modal-close" onclick="closeReviewModal()">✕</button>
+                </div>
+                <form id="reviewForm" onsubmit="return submitReview(event)">
+                    <div class="dora-form-group">
+                        <label>👤 اسمك</label>
+                        <input type="text" id="reviewName" placeholder="أدخل اسمك" required="">
+                    </div>
+                    <div class="dora-form-group">
+                        <label>⭐ التقييم</label>
+                        <div class="dora-star-rating" id="starRating">
+                            <span class="dora-star active" data-value="1">★</span>
+                            <span class="dora-star active" data-value="2">★</span>
+                            <span class="dora-star active" data-value="3">★</span>
+                            <span class="dora-star active" data-value="4">★</span>
+                            <span class="dora-star active" data-value="5">★</span>
+                        </div>
+                        <input type="hidden" id="reviewRating" value="5">
+                    </div>
+                    <div class="dora-form-group">
+                        <label>📦 المنتج/الخدمة</label>
+                        <input type="text" id="reviewProduct" placeholder="اسم المنتج أو الخدمة">
+                    </div>
+                    <div class="dora-form-group">
+                        <label>💬 رأيك</label>
+                        <textarea id="reviewText" rows="4" placeholder="اكتب تقييمك هنا..." required=""></textarea>
+                    </div>
+                    <button type="submit" class="dora-btn-submit">📨 إرسال التقييم</button>
+                </form>
+            </div>
+        </div><div id="messageModal" class="dora-modal">
+            <div class="dora-modal-content">
+                <div class="dora-modal-header">
+                    <h3>📨 تواصل معنا</h3>
+                    <button class="dora-modal-close" onclick="closeMessageModal()">✕</button>
+                </div>
+                <form id="messageForm" onsubmit="return submitMessage(event)">
+                    <div class="dora-form-group">
+                        <label>👤 اسمك</label>
+                        <input type="text" id="msgName" placeholder="أدخل اسمك" required="">
+                    </div>
+                    <div class="dora-form-group">
+                        <label>📱 رقم الجوال</label>
+                        <input type="tel" id="msgPhone" placeholder="05xxxxxxxx" required="" pattern="05[0-9]{8}">
+                    </div>
+                    <div class="dora-form-group">
+                        <label>✉️ البريد الإلكتروني</label>
+                        <input type="email" id="msgEmail" placeholder="your@email.com" required="">
+                    </div>
+                    <div class="dora-form-group">
+                        <label>📌 الموضوع</label>
+                        <select id="msgSubject" required="">
+                            <option value="">اختر الموضوع</option>
+                            <option value="استفسار">❓ استفسار</option>
+                            <option value="شكوى">😞 شكوى</option>
+                            <option value="اقتراح">💡 اقتراح</option>
+                            <option value="طلب منتج">📦 طلب منتج</option>
+                            <option value="أخرى">📝 أخرى</option>
+                        </select>
+                    </div>
+                    <div class="dora-form-group">
+                        <label>💬 الرسالة</label>
+                        <textarea id="msgText" rows="4" placeholder="اكتب رسالتك هنا..." required=""></textarea>
+                    </div>
+                    <button type="submit" class="dora-btn-submit">📨 إرسال الرسالة</button>
+                </form>
+            </div>
+        </div>
+
+
+
+<!-- ===== SITE RATING MODAL ===== -->
+<div class="rating-modal-overlay" id="siteRatingModal" onclick="closeSiteRatingModal(event)">
+    <div class="rating-modal-content" style="position:relative">
+        <button class="rating-close" onclick="closeSiteRatingModal()" aria-label="إغلاق">✕</button>
+        <h3>⭐ قيّم تجربتك</h3>
+        <p>شاركنا رأيك في موقع شركة درة فارس الشمال</p>
+        <div class="rating-stars" id="siteRatingStars">
+            <span class="star" data-value="1" onclick="setRating(1)">★</span>
+            <span class="star" data-value="2" onclick="setRating(2)">★</span>
+            <span class="star" data-value="3" onclick="setRating(3)">★</span>
+            <span class="star" data-value="4" onclick="setRating(4)">★</span>
+            <span class="star" data-value="5" onclick="setRating(5)">★</span>
+        </div>
+        <form class="rating-form" id="siteRatingForm" onsubmit="submitSiteRating(event)">
+            <input type="text" id="siteRaterName" placeholder="اسمك" required>
+            <input type="text" id="siteRaterProduct" placeholder="المنتج أو الخدمة (اختياري)">
+            <textarea id="siteRaterComment" placeholder="اكتب تقييمك هنا..." required></textarea>
+            <input type="hidden" id="siteRatingValue" value="5">
+            <button type="submit" class="rating-submit-btn">📨 إرسال التقييم</button>
+        </form>
+    </div>
+</div>
+
+<!-- ===== PRODUCT RATING MODAL ===== -->
+<div class="rating-modal-overlay" id="productRatingModal" onclick="closeProductRatingModal(event)">
+    <div class="rating-modal-content" style="position:relative">
+        <button class="rating-close" onclick="closeProductRatingModal()" aria-label="إغلاق">✕</button>
+        <h3>⭐ قيّم المنتج</h3>
+        <p id="productRatingTitle">شاركنا رأيك في المنتج</p>
+        <div class="rating-stars" id="productRatingStars">
+            <span class="star" data-value="1" onclick="setProductRating(1)">★</span>
+            <span class="star" data-value="2" onclick="setProductRating(2)">★</span>
+            <span class="star" data-value="3" onclick="setProductRating(3)">★</span>
+            <span class="star" data-value="4" onclick="setProductRating(4)">★</span>
+            <span class="star" data-value="5" onclick="setProductRating(5)">★</span>
+        </div>
+        <form class="rating-form" id="productRatingForm" onsubmit="submitProductRating(event)">
+            <input type="text" id="productRaterName" placeholder="اسمك" required>
+            <textarea id="productRaterComment" placeholder="اكتب تقييمك للمنتج هنا..." required></textarea>
+            <input type="hidden" id="productRatingValue" value="5">
+            <input type="hidden" id="productRatingId" value="">
+            <button type="submit" class="rating-submit-btn">📨 إرسال التقييم</button>
+        </form>
+    </div>
+</div>
+
+  <script src="main.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  renderProducts('all');
+  var n = document.querySelectorAll('#productsGrid .prod-card').length;
+  var c = document.getElementById('catCount');
+  if (c) c.textContent = n + ' منتج متاح';
+});
+</script>
+</body></html>

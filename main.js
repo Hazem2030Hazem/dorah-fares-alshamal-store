@@ -1,3 +1,11 @@
+// توجيه لينكات المنتجات للصفحات الجديدة المستقلة
+document.addEventListener('DOMContentLoaded', function(){
+  var map = {'printers':'products-printers.html','computers':'products-computers.html','ram':'products-ram.html','hard-drives':'products-hard-drives.html','accessories':'products-accessories.html'};
+  document.querySelectorAll('a[href*="products.html"]').forEach(function(a){
+    var m = (a.getAttribute('href')||'').match(/category=([a-z-]+)/);
+    a.setAttribute('href', (m && map[m[1]]) ? map[m[1]] : 'products.html');
+  });
+});
 // ============================================================
 // LIVING BANNER — لوجوهات الشركة بتطفو وتتحرك جوه البانر
 // ============================================================

@@ -2418,3 +2418,6 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
 @media (prefers-reduced-motion: reduce){
   .float-logo,.hero,.page-hero,.service-hero,.services-hero{animation:none !important}
 }
+
+/* تابات صفحات المنتجات كروابط */
+.filter-tabs a.filter-tab{text-decoration:none;display:inline-block}
