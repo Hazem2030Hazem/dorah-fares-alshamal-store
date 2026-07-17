@@ -2533,3 +2533,17 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
 /* MDF v2 — بطاقة المواصفات وزرار عرض السعر */
 .mdf-card{margin-top:14px}
 .mdf-btns .mdf-btn{width:100%;justify-content:center}
+
+
+/* ============================================================
+   MODAL LAYOUT — الصورة والتفاصيل جنب بعض (أفقي) على الشاشات العريضة
+   ============================================================ */
+@media (min-width:641px){
+  .product-modal-content{grid-template-columns:1fr 1fr !important}
+  .modal-image{min-height:420px !important}
+}
+@media (max-width:640px){
+  .product-modal-content{grid-template-columns:1fr !important}
+  .modal-image{min-height:240px !important}
+  .modal-info{padding:22px !important}
+}
