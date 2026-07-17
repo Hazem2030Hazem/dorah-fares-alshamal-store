@@ -2511,3 +2511,25 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
   text-decoration:none;font-family:inherit}
 .mdf-btn:hover{box-shadow:0 0 20px rgba(0,212,255,.5), inset 0 0 14px rgba(0,212,255,.15);transform:translateY(-2px)}
 @media (max-width:640px){.mdf-specs{grid-template-columns:1fr 1fr}.mdf-price{font-size:26px}}
+
+
+/* ============================================================
+   PRODUCT MODAL DETAILS v2 — تفاصيل المودال الأصلية بشكل شيك
+   ============================================================ */
+.modal-info .modal-price{font-size:34px !important;font-weight:900 !important;color:#2C4F86 !important;margin:6px 0 14px !important;display:block !important}
+.modal-info .modal-price s,.modal-info .modal-price .old-price{font-size:19px !important;color:#9CA3AF !important;font-weight:600 !important;margin-right:10px}
+.modal-info .modal-desc{color:#4B5563 !important;font-size:15px !important;line-height:1.85 !important;background:#F8FAFD;border:1px solid #E5E7EB;border-radius:14px;padding:14px 18px !important;margin:10px 0 16px !important}
+.modal-info .modal-actions{display:flex !important;gap:12px !important;flex-wrap:wrap !important;margin:14px 0 6px !important}
+.modal-info .modal-btn-primary{flex:1;min-width:150px;background:linear-gradient(135deg, rgba(0,212,255,0.2), rgba(0,153,204,0.3)) !important;
+  border:2px solid rgba(0,212,255,0.5) !important;color:#0090b8 !important;padding:13px 18px !important;border-radius:50px !important;
+  display:inline-flex !important;align-items:center;justify-content:center;gap:8px;font-size:15px !important;font-weight:800 !important;
+  cursor:pointer;transition:all .3s ease;box-shadow:0 0 10px rgba(0,212,255,0.25), inset 0 0 10px rgba(0,212,255,0.08) !important;font-family:inherit}
+.modal-info .modal-btn-primary:hover{box-shadow:0 0 20px rgba(0,212,255,.5), inset 0 0 14px rgba(0,212,255,.15) !important;transform:translateY(-2px)}
+.modal-info .modal-btn-secondary{width:52px;height:52px;flex:0 0 52px;border-radius:50% !important;display:inline-flex !important;
+  align-items:center;justify-content:center;font-size:20px;padding:0 !important;background:#ffffff !important;
+  border:2px solid #F87171 !important;color:#EF4444 !important;cursor:pointer;transition:all .3s ease}
+.modal-info .modal-btn-secondary:hover{background:#FEF2F2 !important;transform:scale(1.08)}
+
+/* MDF v2 — بطاقة المواصفات وزرار عرض السعر */
+.mdf-card{margin-top:14px}
+.mdf-btns .mdf-btn{width:100%;justify-content:center}
