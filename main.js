@@ -1,3 +1,9 @@
+// إزالة وسم <base target="_blank"> عشان كل اللينكات تفتح في نفس التاب
+(function(){
+  function killBase(){ var b = document.querySelector('base[target]'); if (b) b.remove(); }
+  killBase();
+  document.addEventListener('DOMContentLoaded', killBase);
+})();
 // Supabase Configuration
 const SUPABASE_URL = 'https://kcbmvxuzjlaooknwhqqb.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjYm12eHV6amxhb29rbndocXFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NzkyMjAsImV4cCI6MjA5OTU1NTIyMH0.ayDpkfCKL90GcUKjbHQs7OvS5sxF1VSraWg58NHJ7ek';
@@ -674,14 +680,10 @@ function toggleTheme() {
 
   // Direct style manipulation for immediate effect
   if (next === 'dark') {
-    document.body.style.setProperty('background', '#ffffff', 'important');
-    document.body.style.setProperty('background-image', 'none', 'important');
-    document.body.style.setProperty('background-size', '100% 100%', 'important');
+    document.body.style.setProperty('background', "#ffffff url('hero-bg-white-logo-pattern.jpg') center/cover no-repeat fixed", 'important');
     document.body.style.setProperty('animation', 'none', 'important');
   } else {
-    document.body.style.setProperty('background', '#ffffff', 'important');
-    document.body.style.setProperty('background-image', 'none', 'important');
-    document.body.style.setProperty('background-size', '100% 100%', 'important');
+    document.body.style.setProperty('background', "#ffffff url('hero-bg-white-logo-pattern.jpg') center/cover no-repeat fixed", 'important');
     document.body.style.setProperty('animation', 'none', 'important');
   }
 
@@ -700,14 +702,10 @@ function initTheme() {
 
   // Direct style manipulation for immediate effect
   if (saved === 'dark') {
-    document.body.style.setProperty('background', '#ffffff', 'important');
-    document.body.style.setProperty('background-image', 'none', 'important');
-    document.body.style.setProperty('background-size', '100% 100%', 'important');
+    document.body.style.setProperty('background', "#ffffff url('hero-bg-white-logo-pattern.jpg') center/cover no-repeat fixed", 'important');
     document.body.style.setProperty('animation', 'none', 'important');
   } else {
-    document.body.style.setProperty('background', '#ffffff', 'important');
-    document.body.style.setProperty('background-image', 'none', 'important');
-    document.body.style.setProperty('background-size', '100% 100%', 'important');
+    document.body.style.setProperty('background', "#ffffff url('hero-bg-white-logo-pattern.jpg') center/cover no-repeat fixed", 'important');
     document.body.style.setProperty('animation', 'none', 'important');
   }
 

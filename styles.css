@@ -2388,3 +2388,7 @@ html[data-theme="dark"] .ocean-bg{display:block !important}
 main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 auto}
 .features-section,.team-section{padding:50px 20px;max-width:1200px;margin:0 auto}
 .features-section .section-header,.team-section .section-header{padding:10px 0 40px !important}
+
+/* FAQ أكورديون — الإجابات مقفولة افتراضياً */
+.faq-answer{display:none}
+.faq-item.active .faq-answer{display:block}
