@@ -1551,3 +1551,60 @@ function checkPWAInstallState() {
     }
   }
 }
+// ============================================================
+// PRODUCT MODAL PLUS — بطاقة تفاصيل شيك داخل نافذة المنتج
+// ============================================================
+(function(){
+  function enhance(){
+    if (typeof window.openProductModal !== 'function') return false;
+    var orig = window.openProductModal;
+    window.openProductModal = function(id){
+      orig(id);
+      try {
+        var p = (typeof productsData !== 'undefined') ? productsData.find(function(x){ return x.id === id; }) : null;
+        var info = document.querySelector('#productModal .modal-info') || document.querySelector('.modal-info');
+        if (!p || !info) return;
+
+        // إخفاء السعر والأزرار الأصلية (هنعرضها بشكل أشيك)
+        ['.modal-desc','.modal-price','.modal-actions'].forEach(function(sel){
+          var el = info.querySelector(sel); if (el) el.style.display = 'none';
+        });
+        var old = info.querySelector('.mdf-card'); if (old) old.remove();
+
+        var price = (typeof formatPrice === 'function') ? formatPrice(p.price) : p.price + ' ر.س';
+        var oldPrice = (p.oldPrice && p.oldPrice > p.price) ? ((typeof formatPrice === 'function') ? formatPrice(p.oldPrice) : p.oldPrice + ' ر.س') : '';
+        var disc = (p.oldPrice && p.oldPrice > p.price) ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
+        var catName = (typeof catLabels !== 'undefined' && catLabels[p.category]) ? catLabels[p.category] : p.category;
+        var stockTxt = (typeof p.stock === 'number') ? (p.stock > 0 ? 'متوفر (' + p.stock + ')' : 'غير متوفر') : (p.stock || 'متوفر');
+        var revCount = p.reviews ? p.reviews.length : 0;
+        var quoteUrl = 'https://wa.me/966568717449?text=' + encodeURIComponent('مرحباً، أرغب في طلب عرض سعر لمنتج: ' + p.name);
+
+        var card = document.createElement('div');
+        card.className = 'mdf-card';
+        card.innerHTML =
+          '<div class="mdf-price-row">' +
+            '<span class="mdf-price">' + price + '</span>' +
+            (oldPrice ? '<span class="mdf-old">' + oldPrice + '</span>' : '') +
+            (disc ? '<span class="mdf-disc">خصم ' + disc + '%</span>' : '') +
+          '</div>' +
+          (p.desc ? '<p class="mdf-desc">' + p.desc + '</p>' : '') +
+          '<div class="mdf-specs">' +
+            '<div><span>التصنيف</span><b>' + catName + '</b></div>' +
+            '<div><span>التقييم</span><b>' + (p.rating || 0) + ' ★</b></div>' +
+            '<div><span>المراجعات</span><b>' + revCount + '</b></div>' +
+            '<div><span>المخزون</span><b>' + stockTxt + '</b></div>' +
+          '</div>' +
+          '<div class="mdf-btns">' +
+            '<button class="mdf-btn" onclick="addToCart(' + p.id + '); closeProductModal();">🛒 أضف للسلة</button>' +
+            '<a class="mdf-btn" href="' + quoteUrl + '" target="_blank">📋 اطلب عرض سعر</a>' +
+          '</div>';
+        // نحط البطاقة بعد التقييم مباشرة
+        var rating = info.querySelector('.modal-rating');
+        if (rating && rating.nextSibling) info.insertBefore(card, rating.nextSibling);
+        else info.appendChild(card);
+      } catch(e) {}
+    };
+    return true;
+  }
+  if (!enhance()) document.addEventListener('DOMContentLoaded', enhance);
+})();
