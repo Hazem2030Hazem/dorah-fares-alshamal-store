@@ -838,7 +838,7 @@ window.checkout = async function(){
   const { data, error } = await supabaseClient.from('store_orders').insert([payload]).select('*').single();
   if (error) {
     console.error('order save:', error);
-    notify('⚠️ سيتم فتح واتساب، لكن تعذر حفظ الطلب في الحساب. تأكد من تشغيل ملف SQL.', 'warning');
+    notify('⚠️ سيتم فتح واتساب، لكن تعذر حفظ الطلب في الحساب: ' + (error.message || 'خطأ غير معروف'), 'warning');
   } else {
     savedOrder = data;
   }
@@ -1023,10 +1023,7 @@ window.openProductRatingModal = async function(productId, productName){
     redirectToAccount('reviews', 'review');
     return;
   }
-  if (!order) {
-    notify('⭐ التقييم متاح فقط بعد شراء المنتج واكتمال تسليم الطلب', 'warning');
-    return;
-  }
+
   const profile = await ensureProfile(user);
   currentProductIdForRating = productId;
   document.getElementById('productRatingTitle').textContent = 'قيّم: ' + productName;
@@ -1035,6 +1032,10 @@ window.openProductRatingModal = async function(productId, productName){
   document.getElementById('productRatingModal').classList.add('show');
   document.body.style.overflow = 'hidden';
   setProductRating(5);
+
+  if (!order) {
+    notify('⭐ يمكنك التقييم كمستخدم مسجل، وسيظهر بدون شارة «مشتري موثق» حتى يكتمل شراء المنتج وتسليمه', 'warning');
+  }
 };
 
 window.submitProductRating = async function(event){
@@ -1043,15 +1044,16 @@ window.submitProductRating = async function(event){
   const comment = document.getElementById('productRaterComment').value.trim();
   const rating = parseInt(document.getElementById('productRatingValue').value);
   const { user, order } = await findEligibleOrder(productId);
-  if (!user || !order) return notify('⭐ التقييم متاح فقط بعد شراء المنتج واكتمال تسليم الطلب', 'error');
+  if (!user) return notify('🔐 سجّل الدخول أولاً حتى تتمكن من التقييم', 'error');
   if (!comment) return notify('❌ الرجاء كتابة التقييم', 'error');
 
   const profile = await ensureProfile(user);
   const product = productsData.find(p => Number(p.id) === Number(productId));
   const productName = product ? product.name : 'منتج';
+  const verifiedPurchase = !!order;
   const { error } = await supabaseClient.from('reviews').insert([{
     user_id: user.id,
-    order_id: order.id,
+    order_id: order?.id || null,
     product_id: productId,
     name: profile?.full_name || user.user_metadata?.full_name || 'عميل',
     product: productName,
@@ -1059,14 +1061,16 @@ window.submitProductRating = async function(event){
     rating,
     date: new Date().toLocaleDateString('ar-SA'),
     status: 'pending',
-    verified_purchase: true
+    verified_purchase: verifiedPurchase
   }]);
   if (error) return notify('❌ تعذر حفظ التقييم: ' + error.message, 'error');
 
   closeProductRatingModal();
   document.getElementById('productRaterComment').value = '';
   setProductRating(5);
-  notify('✅ تم إرسال تقييمك وسيظهر بعد مراجعة الإدارة');
+  notify(verifiedPurchase
+    ? '✅ تم إرسال تقييمك الموثق وسيظهر بعد مراجعة الإدارة'
+    : '✅ تم إرسال تقييمك كمستخدم مسجل وسيظهر بعد مراجعة الإدارة');
   renderReviews();
 };
 
