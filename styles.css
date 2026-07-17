@@ -2445,3 +2445,19 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
 .install-pwa-btn:hover{box-shadow:0 0 28px rgba(34,211,238,.5),inset 0 0 16px rgba(34,211,238,.14);
   transform:translateY(-2px);border-color:#67e8f9;color:#ffffff !important}
 @media (max-width:640px){.install-pwa-btn{padding:11px 20px;font-size:13px}}
+
+
+/* توحيد زراير صندوق التحميل — نفس تصميم زرار أندرويد السماوي */
+.install-pwa-btn{background:linear-gradient(135deg, rgba(0,212,255,0.2), rgba(0,153,204,0.3)) !important;
+  border:2px solid rgba(0,212,255,0.5) !important;color:#00d4ff !important;padding:12px 24px !important;
+  border-radius:50px !important;cursor:pointer;display:inline-flex !important;align-items:center;justify-content:center;
+  gap:8px;font-size:16px;font-weight:700;transition:all .3s ease;
+  box-shadow:0 0 10px rgba(0,212,255,0.3), inset 0 0 10px rgba(0,212,255,0.1) !important;
+  text-decoration:none;font-family:inherit}
+.install-pwa-btn:hover{box-shadow:0 0 20px rgba(0,212,255,.55), inset 0 0 14px rgba(0,212,255,.18) !important;
+  transform:translateY(-2px);color:#00d4ff !important}
+
+
+/* إخفاء الزرارين العائمين (موجودين دلوقتي في صندوق التحميل) */
+.sticky-cta{display:none !important}
+.install-prompt{display:none !important}
