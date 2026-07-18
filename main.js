@@ -2054,7 +2054,17 @@ function renderWishlistPage() {
 
 // ===== SIDEBAR INJECTION — يضيف السايد بار تلقائياً في كل الصفحات =====
 function injectSidebar() {
-  // لو السايد بار موجود خلاص، متضيفش تاني
+  // أولاً: احذف أي سايد بار قديم موجود في الصفحة
+  const oldSidebars = document.querySelectorAll('.sidebar-icons');
+  oldSidebars.forEach(function(el) {
+    // Check if it's inside the new sidebar wrapper (don't remove those)
+    if (!el.closest('#sidebarWrapper')) {
+      el.remove();
+      console.log('✅ Removed old sidebar from page');
+    }
+  });
+
+  // لو السايد بار الجديد موجود خلاص، متضيفش تاني
   if (document.getElementById('sidebarWrapper')) return;
 
   const sidebarHTML = `
