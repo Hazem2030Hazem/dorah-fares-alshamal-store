@@ -19,7 +19,8 @@ const state = {
   receipts: [],
   reviews: [],
   currentTab: 'overview',
-  accountReady: false
+  accountReady: false,
+  adminSeparation: false
 };
 
 const orderStatusLabels = {
@@ -78,6 +79,24 @@ async function getCurrentUser(){
   const { data, error } = await supabaseClient.auth.getUser();
   if (error) return null;
   return data.user || null;
+}
+
+async function getUserRole(user){
+  if (!user) return 'customer';
+  const { data, error } = await supabaseClient
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .maybeSingle();
+  if (error) {
+    console.warn('profile role:', error);
+    return 'customer';
+  }
+  return data?.role || 'customer';
+}
+
+async function isAdminAccount(user){
+  return (await getUserRole(user)) === 'admin';
 }
 
 async function ensureProfile(user, seed){
@@ -178,7 +197,8 @@ function injectHeroAccountButtons(){
       event.stopPropagation();
       const user = await getCurrentUser();
       if (user) {
-        location.href = 'account.html';
+        const isAdmin = await isAdminAccount(user);
+        location.href = isAdmin ? 'admin.html' : 'account.html';
         return;
       }
       const isOpen = wrap.classList.toggle('open');
@@ -213,6 +233,7 @@ async function updateAccountButtonLabel(){
   const wraps = document.querySelectorAll('.hero-account-wrap');
   if (!wraps.length) return;
   const user = await getCurrentUser();
+  const isAdmin = user ? await isAdminAccount(user) : false;
   const rawName = user?.user_metadata?.full_name || user?.user_metadata?.name || '';
   const firstName = rawName.trim().split(/\s+/)[0] || 'عميلنا';
 
@@ -222,14 +243,27 @@ async function updateAccountButtonLabel(){
     const chevron = wrap.querySelector('.hero-account-chevron');
     const trigger = wrap.querySelector('.hero-account-trigger');
 
-    if (user) {
+    if (user && isAdmin) {
+      wrap.classList.add('is-logged-in', 'is-admin');
+      if (label) label.textContent = 'لوحة الإدارة';
+      if (status) {
+        status.hidden = false;
+        status.innerHTML = '<span class="hero-account-status-dot"></span> أدمن مسجل';
+      }
+      if (chevron) chevron.style.display = 'none';
+      if (trigger) trigger.setAttribute('title', 'حساب إدارة مسجل — اضغط لفتح لوحة الإدارة');
+    } else if (user) {
       wrap.classList.add('is-logged-in');
+      wrap.classList.remove('is-admin');
       if (label) label.textContent = `مرحبًا، ${firstName}`;
-      if (status) status.hidden = false;
+      if (status) {
+        status.hidden = false;
+        status.innerHTML = '<span class="hero-account-status-dot"></span> مسجل دخول';
+      }
       if (chevron) chevron.style.display = 'none';
       if (trigger) trigger.setAttribute('title', 'حسابك مسجل دخول — اضغط لفتح حسابي');
     } else {
-      wrap.classList.remove('is-logged-in');
+      wrap.classList.remove('is-logged-in', 'is-admin');
       if (label) label.textContent = 'الحساب';
       if (status) status.hidden = true;
       if (chevron) chevron.style.display = '';
@@ -243,9 +277,42 @@ async function updateAccountButtonLabel(){
    ============================================================ */
 function accountApp(){ return document.getElementById('accountApp'); }
 
+async function renderAdminSeparation(user){
+  const app = accountApp();
+  if (!app) return;
+
+  state.adminSeparation = true;
+  state.user = null;
+  state.profile = null;
+
+  // فصل جلسة لوحة الإدارة عن صفحة حساب العميل العامة
+  await supabaseClient.auth.signOut();
+
+  const email = user?.email || 'حساب الإدارة';
+  app.innerHTML = `
+    <div class="account-admin-separation">
+      <span class="account-admin-separation-icon">🛡️</span>
+      <h2>هذا حساب إدارة</h2>
+      <p>الحساب <strong>${esc(email)}</strong> مخصص لإدارة الموقع والطلبات والعملاء. حفاظًا على الفصل والأمان، لا يتم استخدامه كحساب عميل داخل صفحة الحساب العامة.</p>
+      <div class="account-admin-separation-actions">
+        <a href="admin.html" class="account-admin-panel-btn">فتح لوحة الإدارة</a>
+        <button type="button" class="account-customer-login-btn" onclick="doraBackToLogin()">تسجيل حساب عميل</button>
+      </div>
+    </div>
+  `;
+  updateAccountButtonLabel();
+}
+
 async function initAccountPage(force){
   const app = accountApp();
   if (!app || (state.accountReady && !force)) return;
+
+  if (location.hash.includes('type=recovery') || getParam('mode') === 'reset') {
+    state.accountReady = true;
+    renderAuth('', true);
+    return;
+  }
+
   state.accountReady = true;
   app.innerHTML = '<div class="account-loading"><span>⏳</span><p>جاري تجهيز حسابك...</p></div>';
 
@@ -253,6 +320,11 @@ async function initAccountPage(force){
   if (!state.user) {
     renderAuth();
     updateAccountButtonLabel();
+    return;
+  }
+
+  if (await isAdminAccount(state.user)) {
+    await renderAdminSeparation(state.user);
     return;
   }
 
@@ -381,6 +453,8 @@ window.doraShowPasswordReset = function(){
 };
 
 window.doraBackToLogin = function(){
+  state.adminSeparation = false;
+  state.accountReady = false;
   renderAuth();
 };
 
@@ -420,12 +494,18 @@ async function signIn(event){
   const password = document.getElementById('loginPassword').value;
   const btn = event.target.querySelector('button[type="submit"]');
   btn.disabled = true; btn.textContent = '⏳ جاري الدخول...';
-  const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+  const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
   btn.disabled = false; btn.textContent = '🔐 دخول';
   if (error) {
     notify(authFailureMessage(error, 'تعذر تسجيل الدخول'), 'error');
     return;
   }
+
+  if (data?.user && await isAdminAccount(data.user)) {
+    await renderAdminSeparation(data.user);
+    return;
+  }
+
   notify('✅ تم تسجيل الدخول بنجاح');
   state.accountReady = false;
   await initAccountPage(true);
@@ -1184,6 +1264,10 @@ function boot(){
     if (_event === 'PASSWORD_RECOVERY' && accountApp()) {
       state.accountReady = true;
       renderAuth('', true);
+      return;
+    }
+    if (state.adminSeparation && accountApp()) {
+      updateAccountButtonLabel();
       return;
     }
     if (accountApp()) {

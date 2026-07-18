@@ -2953,3 +2953,98 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
   .hero-account-wrap.is-logged-in .hero-account-trigger{width:100%;padding:10px 14px !important}
   .hero-account-status{font-size:10px}
 }
+
+
+/* ============================================================
+   ADMIN ACCOUNT SEPARATION — فصل حساب الإدارة عن حساب العميل
+   ============================================================ */
+.hero-account-wrap.is-admin .hero-account-trigger{
+  border-color:#F59E0B !important;
+  box-shadow:0 12px 28px rgba(255,255,255,.18),0 0 0 4px rgba(245,158,11,.18),0 0 22px rgba(245,158,11,.28) !important;
+}
+.hero-account-wrap.is-admin .hero-account-icon{
+  background:#FFF7ED;
+  color:#B45309;
+}
+.hero-account-wrap.is-admin .hero-account-status{
+  background:#FFFBEB;
+  border-color:#FCD34D;
+  color:#B45309;
+}
+.hero-account-wrap.is-admin .hero-account-status-dot{
+  background:#F59E0B;
+  box-shadow:0 0 0 3px rgba(245,158,11,.18),0 0 8px rgba(245,158,11,.75);
+}
+.account-admin-separation{
+  max-width:720px;
+  margin:0 auto;
+  padding:34px;
+  text-align:center;
+  background:#FFFFFF;
+  border:1px solid #FDE68A;
+  border-radius:28px;
+  box-shadow:0 18px 50px rgba(30,58,99,.14),0 0 0 6px rgba(245,158,11,.08);
+}
+.account-admin-separation-icon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:76px;
+  height:76px;
+  margin-bottom:16px;
+  border-radius:24px;
+  background:#FFFBEB;
+  border:1px solid #FCD34D;
+  font-size:40px;
+}
+.account-admin-separation h2{
+  margin:0 0 12px;
+  color:#1E3A63;
+  font-size:28px;
+}
+.account-admin-separation p{
+  margin:0 auto 24px;
+  max-width:590px;
+  color:#64748B;
+  line-height:1.9;
+  font-size:16px;
+}
+.account-admin-separation p strong{color:#B45309}
+.account-admin-separation-actions{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:12px;
+}
+.account-admin-panel-btn,
+.account-customer-login-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:48px;
+  padding:12px 22px;
+  border-radius:999px;
+  font-weight:1000;
+  font-size:15px;
+  text-decoration:none;
+  cursor:pointer;
+  transition:.2s;
+}
+.account-admin-panel-btn{
+  background:linear-gradient(135deg,#F59E0B,#D97706);
+  color:#FFFFFF !important;
+  border:0;
+  box-shadow:0 10px 24px rgba(245,158,11,.28);
+}
+.account-admin-panel-btn:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(245,158,11,.36)}
+.account-customer-login-btn{
+  background:#EFF6FF;
+  color:#1D4ED8;
+  border:1px solid #BFDBFE;
+}
+.account-customer-login-btn:hover{background:#DBEAFE;transform:translateY(-2px)}
+@media (max-width:640px){
+  .account-admin-separation{padding:24px 18px}
+  .account-admin-separation-actions{display:grid}
+  .account-admin-panel-btn,.account-customer-login-btn{width:100%}
+}
