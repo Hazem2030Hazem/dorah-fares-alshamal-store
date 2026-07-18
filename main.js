@@ -1775,7 +1775,7 @@ else loadDoraSiteSettings();
 
 // ============================================================
 // NEW FEATURES: SIDEBAR + QUICK VIEW + WISHLIST (Supabase)
-// Added: 2026-07-18
+// Added: 2026-07-18 — These functions are ADDED to the original, not replacing anything
 // ============================================================
 
 // ===== WISHLIST FUNCTIONS (Supabase + localStorage) =====
