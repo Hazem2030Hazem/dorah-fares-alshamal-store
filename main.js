@@ -1772,3 +1772,286 @@ else loadDoraSiteSettings();
   script.onerror = function(){ console.warn('تعذر تحميل account-system.js'); };
   document.body.appendChild(script);
 })();
+
+// ============================================================
+// NEW FEATURES: SIDEBAR + QUICK VIEW + WISHLIST (Supabase)
+// Added: 2026-07-18
+// ============================================================
+
+// ===== WISHLIST FUNCTIONS (Supabase + localStorage) =====
+let wishlistItems = JSON.parse(localStorage.getItem('doraWishlistItems')) || [];
+
+async function initWishlistTable() {
+  try {
+    const { data, error } = await supabaseClient
+      .from('wishlist')
+      .select('*')
+      .limit(1);
+
+    if (error && error.code === '42P01') {
+      console.log('Wishlist table not found, using localStorage fallback');
+    }
+  } catch (e) {
+    console.log('Wishlist init check:', e);
+  }
+}
+
+function getDeviceId() {
+  let deviceId = localStorage.getItem('doraDeviceId');
+  if (!deviceId) {
+    deviceId = 'device_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('doraDeviceId', deviceId);
+  }
+  return deviceId;
+}
+
+async function toggleWishlist(productId, event) {
+  if (event) event.stopPropagation();
+
+  const index = wishlistItems.indexOf(productId);
+  const product = productsData.find(p => p.id === productId);
+
+  if (index > -1) {
+    // Remove from wishlist
+    wishlistItems.splice(index, 1);
+    showToast('💔 تمت الإزالة من المفضلة', 'warning');
+
+    // Try to remove from Supabase
+    try {
+      await supabaseClient
+        .from('wishlist')
+        .delete()
+        .eq('product_id', productId)
+        .eq('user_id', 'anonymous_' + getDeviceId());
+    } catch (e) {
+      console.log('Supabase delete failed, using localStorage');
+    }
+  } else {
+    // Add to wishlist
+    wishlistItems.push(productId);
+    showToast('❤️ تمت الإضافة للمفضلة');
+
+    // Try to add to Supabase
+    try {
+      await supabaseClient
+        .from('wishlist')
+        .insert([{
+          product_id: productId,
+          user_id: 'anonymous_' + getDeviceId(),
+          created_at: new Date().toISOString()
+        }]);
+    } catch (e) {
+      console.log('Supabase insert failed, using localStorage');
+    }
+  }
+
+  localStorage.setItem('doraWishlistItems', JSON.stringify(wishlistItems));
+  updateWishlistUI();
+  renderProducts(currentFilter);
+}
+
+function updateWishlistUI() {
+  // Update sidebar badge
+  const sidebarBadge = document.getElementById('sidebarWishlistCount');
+  if (sidebarBadge) {
+    sidebarBadge.textContent = wishlistItems.length;
+    sidebarBadge.style.display = wishlistItems.length > 0 ? 'flex' : 'none';
+  }
+
+  // Update product card wishlist buttons
+  document.querySelectorAll('.wishlist-btn').forEach(btn => {
+    const productId = parseInt(btn.getAttribute('data-product-id'));
+    if (wishlistItems.includes(productId)) {
+      btn.classList.add('active');
+      btn.innerHTML = '❤️';
+    } else {
+      btn.classList.remove('active');
+      btn.innerHTML = '🤍';
+    }
+  });
+}
+
+async function loadWishlistFromSupabase() {
+  try {
+    const { data, error } = await supabaseClient
+      .from('wishlist')
+      .select('product_id')
+      .eq('user_id', 'anonymous_' + getDeviceId());
+
+    if (!error && data) {
+      wishlistItems = data.map(item => item.product_id);
+      localStorage.setItem('doraWishlistItems', JSON.stringify(wishlistItems));
+      updateWishlistUI();
+    }
+  } catch (e) {
+    console.log('Loading from Supabase failed, using localStorage');
+    updateWishlistUI();
+  }
+}
+
+// ===== QUICK VIEW FUNCTIONS =====
+function openQuickView(productId) {
+  const p = productsData.find(x => x.id === productId);
+  if (!p) return;
+
+  const stars = '★'.repeat(Math.floor(p.rating || 0)) + '☆'.repeat(5 - Math.floor(p.rating || 0));
+  const hasDiscount = p.oldPrice && p.oldPrice > p.price;
+  const isWishlisted = wishlistItems.includes(productId);
+  const stockClass = getStockClass(p.stock);
+  const stockLabel = getStockLabel(p.stock);
+  const stockPercent = getStockPercent(p.stock);
+
+  const content = document.getElementById('quickViewContent');
+  if (!content) return;
+
+  content.innerHTML = `
+    <div class="quick-view-image">
+      <img src="${p.image}" alt="${sanitizeInput(p.name)}" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=font-size:80px>📦</div>'">
+    </div>
+    <div class="quick-view-info">
+      <span class="quick-view-category">${catLabels[p.category]}</span>
+      <h3 class="quick-view-name">${sanitizeInput(p.name)}</h3>
+      <div class="quick-view-rating">
+        <span class="stars">${stars}</span>
+        <span class="rating-text">${p.rating || 0} (${p.reviews ? p.reviews.length : 0} تقييم)</span>
+      </div>
+      <p class="quick-view-desc">${sanitizeInput(p.desc)}</p>
+      <div class="quick-view-stock ${stockClass}">
+        <span class="quick-view-stock-label">📦 المخزون:</span>
+        <span class="quick-view-stock-value">${stockLabel}</span>
+        <div class="quick-view-stock-bar">
+          <div class="quick-view-stock-fill" style="width:${stockPercent}%"></div>
+        </div>
+      </div>
+      <div class="quick-view-price">
+        ${hasDiscount ? `<span class="old-price">${formatPrice(p.oldPrice)}</span>` : ''}
+        ${formatPrice(p.price)}
+      </div>
+      <div class="quick-view-actions">
+        <button class="quick-view-btn quick-view-btn-primary" onclick="addToCart(${p.id}); closeQuickView();">
+          🛒 أضف للسلة
+        </button>
+        <button class="quick-view-btn quick-view-btn-wishlist ${isWishlisted ? 'active' : ''}" onclick="toggleWishlist(${p.id}, event); this.classList.toggle('active'); this.innerHTML = this.classList.contains('active') ? '❤️' : '🤍';">
+          ${isWishlisted ? '❤️' : '🤍'}
+        </button>
+        <button class="quick-view-btn quick-view-btn-secondary" onclick="openProductModal(${p.id}); closeQuickView();">
+          📋 التفاصيل
+        </button>
+      </div>
+    </div>
+  `;
+
+  const overlay = document.getElementById('quickViewOverlay');
+  if (overlay) {
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeQuickView(e) {
+  if (e && e.target !== e.currentTarget) return;
+  const overlay = document.getElementById('quickViewOverlay');
+  if (overlay) {
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+}
+
+// ===== SIDEBAR INTERACTIONS =====
+function initSidebar() {
+  const sidebarWrapper = document.getElementById('sidebarWrapper');
+  if (!sidebarWrapper) return;
+
+  // Touch support for mobile
+  let touchStartX = 0;
+
+  sidebarWrapper.addEventListener('touchstart', function(e) {
+    touchStartX = e.touches[0].clientX;
+  });
+
+  sidebarWrapper.addEventListener('touchend', function(e) {
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchEndX - touchStartX;
+
+    if (diff > 50) {
+      sidebarWrapper.classList.add('active');
+    } else if (diff < -50) {
+      sidebarWrapper.classList.remove('active');
+    }
+  });
+}
+
+// ===== WISHLIST PAGE RENDER =====
+function renderWishlistPage() {
+  const container = document.getElementById('wishlistContent');
+  if (!container) return;
+
+  if (wishlistItems.length === 0) {
+    container.innerHTML = `
+      <div class="wishlist-empty">
+        <span class="icon">❤️</span>
+        <h3>قائمة المفضلة فارغة</h3>
+        <p>أضف منتجاتك المفضلة من صفحة المنتجات</p>
+        <a href="index.html#products" class="btn-primary" style="margin-top:20px;">🛍️ تصفح المنتجات</a>
+      </div>
+    `;
+    return;
+  }
+
+  const wishlistProducts = productsData.filter(p => wishlistItems.includes(p.id));
+
+  container.innerHTML = `
+    <div class="prod-grid">
+      ${wishlistProducts.map(p => {
+        const stars = '★'.repeat(Math.floor(p.rating || 0)) + '☆'.repeat(5 - Math.floor(p.rating || 0));
+        const hasDiscount = p.oldPrice && p.oldPrice > p.price;
+        return `
+          <div class="prod-card wishlisted" data-id="${p.id}">
+            <div class="prod-img" onclick="openQuickView(${p.id})">
+              ${p.badge ? `<div class="prod-badge">${p.badge}</div>` : ''}
+              <img src="${p.image}" alt="${p.name}" loading="lazy">
+            </div>
+            <button class="wishlist-btn active" onclick="toggleWishlist(${p.id}, event); renderWishlistPage();">❤️</button>
+            <div class="prod-body">
+              <span class="prod-tag">${catLabels[p.category]}</span>
+              <h4 class="prod-name" onclick="openProductModal(${p.id})">${p.name}</h4>
+              <div class="modal-rating" style="margin-bottom:8px">
+                <span class="stars">${stars}</span>
+                <span class="rating-text">${p.rating || 0}</span>
+              </div>
+              <p class="prod-desc">${p.desc}</p>
+              <div class="prod-footer">
+                <div class="prod-price">
+                  ${hasDiscount ? `<span class="old-price">${formatPrice(p.oldPrice)}</span>` : ''}
+                  ${formatPrice(p.price)}
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+                  <button class="add-btn" onclick="addToCart(${p.id})">🛒 أضف للسلة</button>
+                  <button class="quote-btn" onclick="requestQuote(${p.id}, event)">📋 عرض سعر</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+// ===== INIT NEW FEATURES =====
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize wishlist
+  initWishlistTable();
+  loadWishlistFromSupabase();
+
+  // Initialize sidebar
+  initSidebar();
+
+  // Update sidebar cart count
+  const sidebarCartCount = document.getElementById('sidebarCartCount');
+  if (sidebarCartCount) {
+    const count = cart.reduce((sum, item) => sum + item.qty, 0);
+    sidebarCartCount.textContent = count;
+    sidebarCartCount.style.display = count > 0 ? 'flex' : 'none';
+  }
+});
