@@ -730,8 +730,11 @@ function checkout() {
  msg += `*المجموع الكلي: ${total.toLocaleString()} ر.س*\n\n`;
  msg += 'يرجى تأكيد الطلب.';
 
- const choice = confirm('اضغط "موافق" للتواصل عبر الرقم الأول (+966 56 871 7449)\n\nاضغط "إلغاء" للتواصل عبر الرقم الثاني (+966 54 535 8773)');
- const phone = choice ? '966568717449' : '966545358773';
+ const settings = getDoraSiteSettings();
+ const phone1 = formatDoraPhone(settings.companyPhone1);
+ const phone2 = formatDoraPhone(settings.companyPhone2);
+ const choice = confirm(`اضغط "موافق" للتواصل عبر الرقم الأول (${phone1})\n\nاضغط "إلغاء" للتواصل عبر الرقم الثاني (${phone2})`);
+ const phone = normalizeDoraPhone(choice ? settings.companyPhone1 : settings.companyPhone2);
  window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
 }
 
@@ -798,7 +801,7 @@ function requestQuote(productId, event) {
 يرجى إرسال عرض السعر والتواصل معي.
 شكراً.`;
 
- window.open('https://wa.me/966568717449?text=' + encodeURIComponent(msg), '_blank');
+ window.open(doraWhatsAppLink(msg), '_blank');
  showToast('📋 تم فتح واتساب لطلب عرض السعر');
 }
 
@@ -1575,7 +1578,7 @@ function checkPWAInstallState() {
     var catName = (typeof catLabels !== 'undefined' && catLabels[p.category]) ? catLabels[p.category] : p.category;
     var stockTxt = (typeof p.stock === 'number') ? (p.stock > 0 ? 'متوفر (' + p.stock + ')' : 'غير متوفر') : (p.stock || 'متوفر');
     var revCount = (p.reviews && p.reviews.length) ? p.reviews.length : 0;
-    var quoteUrl = 'https://wa.me/966568717449?text=' + encodeURIComponent('مرحباً، أرغب في طلب عرض سعر لمنتج: ' + p.name);
+    var quoteUrl = doraWhatsAppLink('مرحباً، أرغب في طلب عرض سعر لمنتج: ' + p.name);
     var card = document.createElement('div');
     card.className = 'mdf-card';
     card.innerHTML =
@@ -1639,7 +1642,7 @@ function checkPWAInstallState() {
         '<div class="app-download-btns">' +
           '<a href="https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk" download class="btn-primary">📱 تحميل تطبيق Android</a>' +
           '<button type="button" onclick="installPWA()" class="btn-primary">💻 حمّل تطبيق درة فارس الشمال</button>' +
-          '<a href="https://wa.me/966568717449?text=مرحباً%20أرغب%20في%20طلب%20عرض%20سعر%20من%20شركة%20درة%20فارس%20الشمال" target="_blank" rel="noopener" class="btn-primary">📋 اطلب عرض سعر</a>' +
+          '<a href="' + doraWhatsAppLink('مرحباً أرغب في طلب عرض سعر من شركة درة فارس الشمال') + '" target="_blank" rel="noopener" class="btn-primary">📋 اطلب عرض سعر</a>' +
         '</div>' +
         '<p class="global-app-download-note">اضغط للتثبيت على الشاشة الرئيسية</p>' +
       '</div>';
@@ -1650,6 +1653,112 @@ function checkPWAInstallState() {
   });
 })();
 
+
+// ============================================================
+// SITE SETTINGS RUNTIME — قراءة إعدادات لوحة الإدارة وتطبيقها على الموقع
+// ============================================================
+const DORA_DEFAULT_SITE_SETTINGS = {
+  companyName: 'شركة درة فارس الشمال',
+  companyAddress: 'الرياض، المملكة العربية السعودية',
+  companyPhone1: '966568717449',
+  companyPhone2: '966545358773',
+  companyEmail: 'info@alshamal-df.com',
+  socialTwitter: 'https://twitter.com/dorafares',
+  socialInstagram: 'https://instagram.com/dorafares',
+  socialFacebook: 'https://facebook.com/dorafares',
+  socialLinkedin: 'https://linkedin.com/company/dorafares',
+  whatsappMessage: 'مرحباً شركة درة فارس الشمال، أرغب في الاستفسار عن منتجاتكم'
+};
+let doraSiteSettings = { ...DORA_DEFAULT_SITE_SETTINGS, ...(JSON.parse(localStorage.getItem('doraSettings') || '{}')) };
+
+function normalizeDoraPhone(phone){
+  let p = String(phone || '').replace(/\D/g, '');
+  if (p.startsWith('05')) p = '966' + p.slice(1);
+  return p || DORA_DEFAULT_SITE_SETTINGS.companyPhone1;
+}
+function formatDoraPhone(phone){
+  const p = normalizeDoraPhone(phone);
+  if (p.length === 12 && p.startsWith('966')) return `+966 ${p.slice(3,5)} ${p.slice(5,8)} ${p.slice(8)}`;
+  return '+' + p;
+}
+function getDoraSiteSettings(){
+  return { ...DORA_DEFAULT_SITE_SETTINGS, ...doraSiteSettings };
+}
+function doraWhatsAppLink(message, phone){
+  const settings = getDoraSiteSettings();
+  return 'https://wa.me/' + normalizeDoraPhone(phone || settings.companyPhone1) + '?text=' + encodeURIComponent(message || settings.whatsappMessage);
+}
+function replaceDoraText(search, replacement){
+  if (!search || !replacement || search === replacement) return;
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  while (walker.nextNode()) {
+    const node = walker.currentNode;
+    if (node.parentElement && ['SCRIPT','STYLE'].includes(node.parentElement.tagName)) continue;
+    if (node.nodeValue.includes(search)) nodes.push(node);
+  }
+  nodes.forEach(node => { node.nodeValue = node.nodeValue.split(search).join(replacement); });
+}
+function applyDoraSettings(settings){
+  doraSiteSettings = { ...DORA_DEFAULT_SITE_SETTINGS, ...(settings || {}) };
+  localStorage.setItem('doraSettings', JSON.stringify(doraSiteSettings));
+
+  const s = getDoraSiteSettings();
+  const phone1 = normalizeDoraPhone(s.companyPhone1);
+  const formattedPhone1 = formatDoraPhone(phone1);
+
+  document.querySelectorAll('a[href*="wa.me/"]').forEach(link => {
+    try {
+      const url = new URL(link.href);
+      url.pathname = '/' + phone1;
+      const text = url.searchParams.get('text');
+      if (text && !text.includes('عرض سعر') && !text.includes('استشارة') && !text.includes('منتج:')) {
+        url.searchParams.set('text', s.whatsappMessage);
+      }
+      link.href = url.toString();
+    } catch(_) {}
+  });
+
+  document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+    link.href = 'tel:+' + phone1;
+    if (/\+?\d[\d\s]{7,}/.test(link.textContent)) link.textContent = formattedPhone1;
+  });
+
+  document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+    link.href = 'mailto:' + s.companyEmail;
+    if (link.textContent.includes('@')) link.textContent = s.companyEmail;
+  });
+
+  if (s.socialTwitter) document.querySelectorAll('a[href*="twitter.com"], a[href*="x.com"]').forEach(a => a.href = s.socialTwitter);
+  if (s.socialInstagram) document.querySelectorAll('a[href*="instagram.com"]').forEach(a => a.href = s.socialInstagram);
+  if (s.socialFacebook) document.querySelectorAll('a[href*="facebook.com"]').forEach(a => a.href = s.socialFacebook);
+  if (s.socialLinkedin) document.querySelectorAll('a[href*="linkedin.com"]').forEach(a => a.href = s.socialLinkedin);
+
+  replaceDoraText(DORA_DEFAULT_SITE_SETTINGS.companyAddress, s.companyAddress);
+  replaceDoraText(DORA_DEFAULT_SITE_SETTINGS.companyEmail, s.companyEmail);
+  replaceDoraText(formatDoraPhone(DORA_DEFAULT_SITE_SETTINGS.companyPhone1), formattedPhone1);
+  replaceDoraText(DORA_DEFAULT_SITE_SETTINGS.companyPhone1, phone1);
+}
+async function loadDoraSiteSettings(){
+  applyDoraSettings(doraSiteSettings);
+  try {
+    const { data, error } = await supabaseClient
+      .from('site_settings')
+      .select('settings')
+      .eq('id', 1)
+      .maybeSingle();
+    if (!error && data?.settings) applyDoraSettings(data.settings);
+  } catch (error) {
+    console.warn('تعذر تحميل إعدادات الموقع العامة:', error);
+  }
+}
+window.getDoraSiteSettings = getDoraSiteSettings;
+window.doraWhatsAppLink = doraWhatsAppLink;
+window.addEventListener('storage', function(event){
+  if (event.key === 'doraSettings') applyDoraSettings(JSON.parse(event.newValue || '{}'));
+});
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadDoraSiteSettings);
+else loadDoraSiteSettings();
 
 // ============================================================
 // ACCOUNT SYSTEM LOADER — يحمّل نظام الحسابات في كل الصفحات

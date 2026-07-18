@@ -283,6 +283,7 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
                                 <th>#</th>
                                 <th>الصورة</th>
                                 <th>الاسم</th>
+                                <th>الوصف</th>
                                 <th>السعر</th>
                                 <th>التصنيف</th>
                                 <th>الإجراءات</th>
@@ -433,18 +434,25 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
                 <input type="text" id="productName" placeholder="اسم المنتج" required>
             </div>
             <div class="form-group">
+                <label>📝 وصف المنتج</label>
+                <textarea id="productDesc" rows="4" placeholder="اكتب وصفًا واضحًا يظهر للعميل داخل بطاقة المنتج وصفحة تفاصيله"></textarea>
+            </div>
+            <div class="form-group">
                 <label>💰 السعر (ريال)</label>
                 <input type="number" id="productPrice" placeholder="1000" required>
             </div>
             <div class="form-group">
                 <label>📂 التصنيف</label>
                 <select id="productCategory">
-                    <option value="طابعات">طابعات</option>
-                    <option value="كاميرات">كاميرات</option>
-                    <option value="POS">POS</option>
-                    <option value="شبكات">شبكات</option>
-                    <option value="باركود">باركود</option>
-                    <option value="صيانة">صيانة</option>
+                    <option value="printers">طابعات</option>
+                    <option value="computers">كمبيوتر</option>
+                    <option value="ram">رامات</option>
+                    <option value="storage">هاردات</option>
+                    <option value="cables">وصلات</option>
+                    <option value="projectors">بروجكتور</option>
+                    <option value="accessories">إكسسوارات</option>
+                    <option value="ink">أحبار الطابعات</option>
+                    <option value="food">المواد الغذائية</option>
                 </select>
             </div>
             <button type="submit" class="btn-save">💾 حفظ المنتج</button>
@@ -569,23 +577,56 @@ function showTab(tabName) {
 }
 
 // ===== PRODUCTS =====
-let products = JSON.parse(localStorage.getItem('adminProducts')) || [
-    {id: 1, name: 'طابعة HP LaserJet', price: 1200, category: 'طابعات', image: 'https://via.placeholder.com/50'},
-    {id: 2, name: 'كاميرا Hikvision 4MP', price: 450, category: 'كاميرات', image: 'https://via.placeholder.com/50'},
-    {id: 3, name: 'جهاز POS Sunmi', price: 2500, category: 'POS', image: 'https://via.placeholder.com/50'}
+const ADMIN_CATEGORY_LABELS = {
+    printers: 'طابعات', computers: 'كمبيوتر', ram: 'رامات', storage: 'هاردات',
+    cables: 'وصلات', projectors: 'بروجكتور', accessories: 'إكسسوارات',
+    ink: 'أحبار الطابعات', food: 'المواد الغذائية'
+};
+const ADMIN_CATEGORY_ALIASES = {
+    'طابعات': 'printers', 'كمبيوتر': 'computers', 'رامات': 'ram', 'رام': 'ram',
+    'هاردات': 'storage', 'وصلات': 'cables', 'بروجكتور': 'projectors',
+    'إكسسوارات': 'accessories', 'أحبار الطابعات': 'ink', 'المواد الغذائية': 'food',
+    'كاميرات': 'accessories', 'POS': 'accessories', 'شبكات': 'accessories',
+    'باركود': 'accessories', 'صيانة': 'accessories'
+};
+function normalizeAdminProduct(product) {
+    const category = ADMIN_CATEGORY_ALIASES[product.category] || product.category || 'accessories';
+    return {
+        stock: 0,
+        rating: 0,
+        reviews: [],
+        badge: '',
+        oldPrice: null,
+        ...product,
+        category,
+        desc: product.desc || product.description || ''
+    };
+}
+function syncAdminProducts() {
+    products = products.map(normalizeAdminProduct);
+    localStorage.setItem('adminProducts', JSON.stringify(products));
+    localStorage.setItem('doraProducts', JSON.stringify(products));
+}
+let products = JSON.parse(localStorage.getItem('doraProducts')) || JSON.parse(localStorage.getItem('adminProducts')) || [
+    {id: 1, name: 'طابعة HP LaserJet', price: 1200, category: 'printers', image: 'https://via.placeholder.com/50', desc: ''},
+    {id: 2, name: 'كاميرا Hikvision 4MP', price: 450, category: 'accessories', image: 'https://via.placeholder.com/50', desc: ''},
+    {id: 3, name: 'جهاز POS Sunmi', price: 2500, category: 'accessories', image: 'https://via.placeholder.com/50', desc: ''}
 ];
+products = products.map(normalizeAdminProduct);
 
 function loadProducts() {
     const tbody = document.getElementById('productsTable');
     tbody.innerHTML = '';
     products.forEach((product, index) => {
+        const shortDesc = (product.desc || '').length > 80 ? (product.desc || '').slice(0, 80) + '…' : (product.desc || '—');
         tbody.innerHTML += `
             <tr>
                 <td>${index + 1}</td>
                 <td><img src="${product.image}" class="product-img" alt="${product.name}"></td>
                 <td>${product.name}</td>
+                <td title="${product.desc || ''}">${shortDesc}</td>
                 <td>${product.price} ر.س</td>
-                <td>${product.category}</td>
+                <td>${ADMIN_CATEGORY_LABELS[product.category] || product.category}</td>
                 <td>
                     <button class="btn-edit" onclick="editProduct(${product.id})">✏️ تعديل</button>
                     <button class="btn-delete" onclick="deleteProduct(${product.id})">🗑️ حذف</button>
@@ -614,8 +655,9 @@ function editProduct(id) {
     document.getElementById('productId').value = product.id;
     document.getElementById('productImage').value = product.image;
     document.getElementById('productName').value = product.name;
+    document.getElementById('productDesc').value = product.desc || '';
     document.getElementById('productPrice').value = product.price;
-    document.getElementById('productCategory').value = product.category;
+    document.getElementById('productCategory').value = ADMIN_CATEGORY_ALIASES[product.category] || product.category || 'accessories';
     document.getElementById('productModal').classList.add('active');
 }
 
@@ -624,29 +666,31 @@ function saveProduct(e) {
     const id = document.getElementById('productId').value;
     const image = document.getElementById('productImage').value || 'https://via.placeholder.com/50';
     const name = document.getElementById('productName').value;
+    const desc = document.getElementById('productDesc').value.trim();
     const price = parseFloat(document.getElementById('productPrice').value);
     const category = document.getElementById('productCategory').value;
 
     if (id) {
         const index = products.findIndex(p => p.id == id);
         if (index !== -1) {
-            products[index] = {id: parseInt(id), name, price, category, image};
+            products[index] = normalizeAdminProduct({ ...products[index], id: parseInt(id), name, desc, price, category, image });
         }
     } else {
         const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
-        products.push({id: newId, name, price, category, image});
+        products.push(normalizeAdminProduct({id: newId, name, desc, price, category, image, stock: 0, rating: 0, reviews: []}));
     }
 
-    localStorage.setItem('adminProducts', JSON.stringify(products));
+    syncAdminProducts();
     closeModal();
     loadProducts();
+    showToast('✅ تم حفظ المنتج وتحديثه في الموقع');
     return false;
 }
 
 function deleteProduct(id) {
     if (!confirm('هل أنت متأكد من حذف هذا المنتج؟')) return;
     products = products.filter(p => p.id !== id);
-    localStorage.setItem('adminProducts', JSON.stringify(products));
+    syncAdminProducts();
     loadProducts();
 }
 

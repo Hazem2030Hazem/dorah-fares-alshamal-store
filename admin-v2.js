@@ -17,7 +17,8 @@ const adminState = {
   customers: [],
   receipts: [],
   reviews: [],
-  messages: []
+  messages: [],
+  settings: null
 };
 
 const orderStatuses = {
@@ -127,6 +128,7 @@ window.showDashboard = function(){
   document.getElementById('loginSection').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
   if (typeof loadProducts === 'function') loadProducts();
+  if (typeof loadSettings === 'function') loadSettings();
   loadAdminV2Data();
 };
 
@@ -174,6 +176,7 @@ window.showTab = function(tabName){
   if (tabName === 'receipts') loadReceipts();
   if (tabName === 'reviews') loadReviews();
   if (tabName === 'messages') loadMessages();
+  if (tabName === 'settings') loadSettings();
 };
 
 async function loadAdminV2Data(){
@@ -526,6 +529,94 @@ window.deleteMessageAdmin = async function(id){
   await loadMessages();
 };
 window.exportMessages = function(){ exportJson(adminState.messages, 'dora-messages'); };
+
+/* ============================================================
+   إعدادات الموقع العامة — Supabase + localStorage fallback
+   ============================================================ */
+const defaultSiteSettings = {
+  companyName: 'شركة درة فارس الشمال',
+  companyAddress: 'الرياض، المملكة العربية السعودية',
+  companyPhone1: '966568717449',
+  companyPhone2: '966545358773',
+  companyEmail: 'info@alshamal-df.com',
+  socialTwitter: 'https://twitter.com/dorafares',
+  socialInstagram: 'https://instagram.com/dorafares',
+  socialFacebook: 'https://facebook.com/dorafares',
+  socialLinkedin: 'https://linkedin.com/company/dorafares',
+  whatsappMessage: 'مرحباً شركة درة فارس الشمال، أرغب في الاستفسار عن منتجاتكم'
+};
+
+function readSettingsForm(){
+  return {
+    companyName: document.getElementById('companyName')?.value.trim() || defaultSiteSettings.companyName,
+    companyAddress: document.getElementById('companyAddress')?.value.trim() || defaultSiteSettings.companyAddress,
+    companyPhone1: normalizePhone(document.getElementById('companyPhone1')?.value || defaultSiteSettings.companyPhone1),
+    companyPhone2: normalizePhone(document.getElementById('companyPhone2')?.value || defaultSiteSettings.companyPhone2),
+    companyEmail: document.getElementById('companyEmail')?.value.trim() || defaultSiteSettings.companyEmail,
+    socialTwitter: document.getElementById('socialTwitter')?.value.trim() || '',
+    socialInstagram: document.getElementById('socialInstagram')?.value.trim() || '',
+    socialFacebook: document.getElementById('socialFacebook')?.value.trim() || '',
+    socialLinkedin: document.getElementById('socialLinkedin')?.value.trim() || '',
+    whatsappMessage: document.getElementById('whatsappMessage')?.value.trim() || defaultSiteSettings.whatsappMessage
+  };
+}
+
+function fillSettingsForm(settings){
+  const merged = { ...defaultSiteSettings, ...(settings || {}) };
+  const fields = {
+    companyName: merged.companyName,
+    companyAddress: merged.companyAddress,
+    companyPhone1: merged.companyPhone1,
+    companyPhone2: merged.companyPhone2,
+    companyEmail: merged.companyEmail,
+    socialTwitter: merged.socialTwitter,
+    socialInstagram: merged.socialInstagram,
+    socialFacebook: merged.socialFacebook,
+    socialLinkedin: merged.socialLinkedin,
+    whatsappMessage: merged.whatsappMessage
+  };
+  Object.entries(fields).forEach(([id, value]) => {
+    const input = document.getElementById(id);
+    if (input) input.value = value || '';
+  });
+  adminState.settings = merged;
+  localStorage.setItem('doraSettings', JSON.stringify(merged));
+}
+
+window.loadSettings = async function(){
+  let settings = JSON.parse(localStorage.getItem('doraSettings') || 'null') || defaultSiteSettings;
+  const { data, error } = await supabaseClient
+    .from('site_settings')
+    .select('settings')
+    .eq('id', 1)
+    .maybeSingle();
+
+  if (error) {
+    console.warn('site_settings:', error);
+    adminToast('⚠️ يتم عرض الإعدادات المحلية. شغّل ملف إعداد-إعدادات-الموقع.sql لتفعيل الحفظ العام.', 'warning');
+  } else if (data?.settings) {
+    settings = { ...defaultSiteSettings, ...data.settings };
+  }
+  fillSettingsForm(settings);
+};
+
+window.saveSettings = async function(){
+  const settings = readSettingsForm();
+  fillSettingsForm(settings);
+
+  const user = await currentUser();
+  const { error } = await supabaseClient
+    .from('site_settings')
+    .upsert([{ id: 1, settings, updated_by: user?.id || null, updated_at: new Date().toISOString() }], { onConflict: 'id' });
+
+  if (error) {
+    console.error('save site settings:', error);
+    adminToast('❌ تم الحفظ محليًا فقط. شغّل ملف إعداد-إعدادات-الموقع.sql ثم أعد المحاولة: ' + error.message, 'error');
+    return;
+  }
+
+  adminToast('✅ تم حفظ الإعدادات ونشرها على الموقع');
+};
 
 /* ============================================================
    إحصائيات وتصدير
