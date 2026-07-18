@@ -1960,7 +1960,21 @@ function closeQuickView(e) {
 // ===== SIDEBAR INTERACTIONS =====
 function initSidebar() {
   const sidebarWrapper = document.getElementById('sidebarWrapper');
-  if (!sidebarWrapper) return;
+  const sidebarPanel = document.getElementById('sidebarPanel');
+  if (!sidebarWrapper || !sidebarPanel) return;
+
+  // Click to toggle
+  sidebarWrapper.addEventListener('click', function(e) {
+    // Don't toggle if clicking inside the panel (on an icon)
+    if (e.target.closest('.sidebar-icon')) return;
+
+    sidebarWrapper.classList.toggle('open');
+  });
+
+  // Close when mouse leaves the panel
+  sidebarPanel.addEventListener('mouseleave', function() {
+    sidebarWrapper.classList.remove('open');
+  });
 
   // Touch support for mobile
   let touchStartX = 0;
@@ -1974,9 +1988,9 @@ function initSidebar() {
     const diff = touchEndX - touchStartX;
 
     if (diff > 50) {
-      sidebarWrapper.classList.add('active');
+      sidebarWrapper.classList.add('open');
     } else if (diff < -50) {
-      sidebarWrapper.classList.remove('active');
+      sidebarWrapper.classList.remove('open');
     }
   });
 }

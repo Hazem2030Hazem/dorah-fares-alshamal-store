@@ -3142,13 +3142,12 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
   -webkit-backdrop-filter: blur(20px);
 }
 
-.sidebar-wrapper:hover .sidebar-panel,
-.sidebar-wrapper.active .sidebar-panel {
+/* Click-based sidebar - opens on click, not hover */
+.sidebar-wrapper.open .sidebar-panel {
   left: 0;
 }
 
-.sidebar-wrapper:hover .sidebar-tab,
-.sidebar-wrapper.active .sidebar-tab {
+.sidebar-wrapper.open .sidebar-tab {
   opacity: 0;
   pointer-events: none;
 }
