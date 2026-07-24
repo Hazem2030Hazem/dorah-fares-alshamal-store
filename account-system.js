@@ -1,4 +1,3 @@
-account-system.js
 /* ============================================================
    درة فارس الشمال — نظام الحسابات والطلبات والتقييمات الموثقة
    يعمل مع Supabase ولا يغير شكل الموقع الحالي
@@ -868,20 +867,120 @@ window.doraSubmitAccountService = async function(event){
   await loadAccountData(); renderDashboard();
 };
 
+// ============================================================
+// ⭐ تقييماتي — مع زر تعديل وحذف
+// ============================================================
 function renderReviewsTab(){
   const list = state.reviews.length ? state.reviews.map(review => `
-    <div class="account-list-item">
+    <div class="account-list-item" id="review-${review.id}">
       <div>
         <strong>${esc(review.product || 'الموقع عامةً')}</strong>
         <div class="account-stars">${'★'.repeat(Number(review.rating || 5))}${'☆'.repeat(5 - Number(review.rating || 5))}</div>
         <p>${esc(review.text || '')}</p>
         ${review.verified_purchase ? '<span class="account-badge success">مشتري موثق</span>' : ''}
       </div>
-      <span class="account-status">${esc(reviewStatusLabels[review.status] || review.status || 'منشور')}</span>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="account-status">${esc(reviewStatusLabels[review.status] || review.status || 'منشور')}</span>
+        <button class="btn-edit" onclick="doraEditReview('${review.id}', '${esc(review.product || '')}', ${review.rating || 5}, '${esc((review.text || '').replace(/'/g, "\\'"))}')" style="background:rgba(59,130,246,0.2);color:#60A5FA;border:none;padding:6px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700">✏️ تعديل</button>
+        <button class="btn-delete" onclick="doraDeleteReview('${review.id}')" style="background:rgba(239,68,68,0.2);color:#F87171;border:none;padding:6px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700">🗑️ حذف</button>
+      </div>
     </div>
   `).join('') : '<div class="account-empty">⭐ لم تقم بإضافة تقييمات بعد.</div>';
-  return `<div class="account-card"><h3>⭐ تقييماتي</h3><div class="account-list">${list}</div></div>`;
+  return `
+    <div class="account-card"><h3>⭐ تقييماتي</h3><div class="account-list">${list}</div></div>
+    ${renderEditReviewModal()}
+  `;
 }
+
+function renderEditReviewModal(){
+  return `
+    <div class="modal" id="editReviewModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;padding:20px">
+      <div class="modal-content" style="background:rgba(15,12,41,0.95);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.2);border-radius:24px;padding:40px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+          <h3 style="color:white;margin:0">✏️ تعديل التقييم</h3>
+          <button onclick="doraCloseEditReview()" style="background:none;border:none;color:white;font-size:24px;cursor:pointer">✕</button>
+        </div>
+        <form onsubmit="doraSaveEditReview(event)">
+          <input type="hidden" id="editReviewId">
+          <div class="form-group">
+            <label style="color:rgba(255,255,255,0.8)">⭐ التقييم</label>
+            <div id="editStarRating" style="font-size:32px">
+              <span onclick="doraSetEditStar(1)" style="cursor:pointer;color:#FFD700">★</span>
+              <span onclick="doraSetEditStar(2)" style="cursor:pointer;color:#FFD700">★</span>
+              <span onclick="doraSetEditStar(3)" style="cursor:pointer;color:#FFD700">★</span>
+              <span onclick="doraSetEditStar(4)" style="cursor:pointer;color:#FFD700">★</span>
+              <span onclick="doraSetEditStar(5)" style="cursor:pointer;color:#FFD700">★</span>
+            </div>
+            <input type="hidden" id="editReviewRating" value="5">
+          </div>
+          <div class="form-group">
+            <label style="color:rgba(255,255,255,0.8)">💬 رأيك</label>
+            <textarea id="editReviewText" rows="4" required style="width:100%;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:white;font-family:inherit"></textarea>
+          </div>
+          <button type="submit" class="btn-save" style="width:100%;padding:14px;background:linear-gradient(135deg,#10B981,#059669);color:white;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer">💾 حفظ التعديلات</button>
+        </form>
+      </div>
+    </div>
+  `;
+}
+
+window.doraEditReview = function(id, product, rating, text){
+  document.getElementById('editReviewId').value = id;
+  document.getElementById('editReviewRating').value = rating;
+  document.getElementById('editReviewText').value = text;
+  doraSetEditStar(rating);
+  document.getElementById('editReviewModal').style.display = 'flex';
+};
+
+window.doraCloseEditReview = function(){
+  document.getElementById('editReviewModal').style.display = 'none';
+};
+
+window.doraSetEditStar = function(value){
+  document.getElementById('editReviewRating').value = value;
+  const stars = document.querySelectorAll('#editStarRating span');
+  stars.forEach((star, index) => {
+    star.style.color = index < value ? '#FFD700' : 'rgba(255,255,255,0.3)';
+  });
+};
+
+window.doraSaveEditReview = async function(event){
+  event.preventDefault();
+  const id = document.getElementById('editReviewId').value;
+  const rating = parseInt(document.getElementById('editReviewRating').value);
+  const text = document.getElementById('editReviewText').value.trim();
+  
+  if (!text) return notify('❌ الرجاء كتابة التقييم', 'error');
+  
+  const { error } = await supabaseClient
+    .from('reviews')
+    .update({ rating, text })
+    .eq('id', id);
+  
+  if (error) return notify('❌ تعذر تعديل التقييم: ' + error.message, 'error');
+  
+  doraCloseEditReview();
+  notify('✅ تم تعديل التقييم بنجاح');
+  await loadAccountData();
+  renderDashboard();
+  if (typeof renderReviews === 'function') renderReviews();
+};
+
+window.doraDeleteReview = async function(id){
+  if (!confirm('هل أنت متأكد من حذف هذا التقييم؟')) return;
+  
+  const { error } = await supabaseClient
+    .from('reviews')
+    .delete()
+    .eq('id', id);
+  
+  if (error) return notify('❌ تعذر حذف التقييم: ' + error.message, 'error');
+  
+  notify('✅ تم حذف التقييم بنجاح');
+  await loadAccountData();
+  renderDashboard();
+  if (typeof renderReviews === 'function') renderReviews();
+};
 
 /* ============================================================
    checkout — حفظ الطلب في Supabase ثم فتح واتساب
