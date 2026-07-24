@@ -1064,4 +1064,144 @@ window.editSitePage = async function(pageKey){
   if (updateError) { alert('❌ خطأ: ' + updateError.message); return; }
   alert('✅ تم حفظ جميع التغييرات بنجاح!');
   loadSitePages();
+   /* ============================================================
+   إدارة الملفات والمستندات — Site Files Management
+   ============================================================ */
+window.loadSiteFiles = async function(){
+  const container = document.getElementById('siteFilesList');
+  if (!container) return;
+  container.innerHTML = '<div class="admin-empty">⏳ جاري تحميل الملفات...</div>';
+
+  const { data, error } = await supabaseClient
+    .from('site_files')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    container.innerHTML = `<div class="admin-empty error">❌ خطأ: ${error.message}</div>`;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    container.innerHTML = '<div class="admin-empty">📁 لا توجد ملفات مرفوعة حالياً. اضغط على «رفع ملف جديد».</div>';
+    return;
+  }
+
+  container.innerHTML = data.map(item => `
+    <div class="admin-data-card">
+      <div class="admin-card-main">
+        <div class="admin-card-title">
+          <strong>📄 ${item.file_label || item.file_name}</strong>
+          <span>${item.category} | ${item.is_active ? '✅ نشط' : '❌ مخفي'}</span>
+        </div>
+        <div class="admin-meta" style="margin-top:8px;">
+          <span>📅 ${new Date(item.created_at).toLocaleDateString('ar-SA')}</span>
+          <a href="${item.file_url}" target="_blank" style="color:#1D4ED8;font-weight:800;">🔗 رابط الملف</a>
+        </div>
+      </div>
+      <div class="admin-card-actions buttons">
+        <button class="btn-view" onclick="window.open('${item.file_url}', '_blank')">👁️ عرض</button>
+        <button class="btn-edit" onclick="editSiteFile(${item.id})">✏️ تعديل</button>
+        <button class="btn-delete" onclick="deleteSiteFile(${item.id})">🗑️ حذف</button>
+      </div>
+    </div>
+  `).join('');
+};
+
+window.addNewFile = function(){
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.pdf,.doc,.docx,.jpg,.jpeg,.png,.xls,.xlsx,.ppt,.pptx';
+  input.onchange = async function(e){
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const label = prompt('اسم العرض للملف (مثلاً: شهادة HP للشركة):', file.name);
+    if (!label) return;
+
+    const category = prompt('التصنيف (مثلاً: شهادات، ملفات تعريفية، عقود):', 'عام');
+    if (!category) return;
+
+    const safeName = file.name.replace(/[^\w.\-]+/g, '-');
+    const path = `public/${Date.now()}-${safeName}`;
+
+    const { error: uploadError } = await supabaseClient.storage
+      .from('site-files')
+      .upload(path, file, { cacheControl: '3600', upsert: false });
+
+    if (uploadError) {
+      alert('❌ فشل رفع الملف: ' + uploadError.message);
+      return;
+    }
+
+    const { data: urlData } = await supabaseClient.storage
+      .from('site-files')
+      .getPublicUrl(path);
+
+    const { error: dbError } = await supabaseClient
+      .from('site_files')
+      .insert([{
+        file_name: safeName,
+        file_label: label,
+        file_url: urlData.publicUrl,
+        category: category,
+        is_active: true
+      }]);
+
+    if (dbError) {
+      alert('❌ خطأ في حفظ بيانات الملف: ' + dbError.message);
+      return;
+    }
+
+    alert('✅ تم رفع الملف بنجاح!');
+    loadSiteFiles();
+  };
+  // ✅ إضافة العنصر للصفحة
+  document.body.appendChild(input);
+  input.click();
+  // ✅ حذف العنصر بعد اختيار الملف
+  setTimeout(() => { if (input && input.parentNode) input.parentNode.removeChild(input); }, 1000);
+};
+
+window.editSiteFile = async function(id){
+  const { data, error } = await supabaseClient
+    .from('site_files')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error || !data) { alert('❌ لم يتم العثور على الملف'); return; }
+
+  const label = prompt('اسم العرض:', data.file_label);
+  if (label === null) return;
+  const category = prompt('التصنيف:', data.category);
+  if (category === null) return;
+  const isActive = confirm('الملف نشط؟ (OK = نعم, Cancel = لا)');
+
+  const { error: updateError } = await supabaseClient
+    .from('site_files')
+    .update({
+      file_label: label,
+      category: category,
+      is_active: isActive,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', id);
+
+  if (updateError) { alert('❌ خطأ: ' + updateError.message); return; }
+  alert('✅ تم تحديث الملف بنجاح!');
+  loadSiteFiles();
+};
+
+window.deleteSiteFile = async function(id){
+  if (!confirm('هل أنت متأكد من حذف هذا الملف؟')) return;
+  const { error } = await supabaseClient
+    .from('site_files')
+    .delete()
+    .eq('id', id);
+
+  if (error) { alert('❌ خطأ: ' + error.message); return; }
+  alert('✅ تم حذف الملف!');
+  loadSiteFiles();
+};
 };
