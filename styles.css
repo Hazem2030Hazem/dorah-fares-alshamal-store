@@ -2622,11 +2622,7 @@ p,span,li,label,td,th{ text-shadow:none !important }
 .float-card p{color:rgba(255,255,255,.7) !important}
 
 
-/* ============================================================
-   FIX — صفحات data-theme="dark": إلغاء الخلفية السوداء القديمة
-   ============================================================ */
-html[data-theme="dark"] body{background:#ffffff !important;background-image:none !important;animation:none !important;color:#1F2937 !important}
-html[data-theme="dark"] .ocean-bg{display:block !important}
+
 
 
 /* ============================================================
