@@ -731,14 +731,7 @@ function toggleTheme() {
   html.setAttribute('data-theme', next);
   localStorage.setItem('doraTheme', next);
 
-  if (next === 'dark') {
-    document.body.style.setProperty('background', "#ffffff url('hero-bg-white-logo-pattern.jpg') center/cover no-repeat fixed", 'important');
-    document.body.style.setProperty('animation', 'none', 'important');
-  } else {
-    document.body.style.setProperty('background', "#ffffff url('hero-bg-white-logo-pattern.jpg') center/cover no-repeat fixed", 'important');
-    document.body.style.setProperty('animation', 'none', 'important');
-  }
-
+  // تحديث أيقونة الزر فقط
   const themeIcon = document.getElementById('themeIcon');
   if (themeIcon) {
     if (next === 'dark') {
@@ -752,14 +745,7 @@ function initTheme() {
   const saved = localStorage.getItem('doraTheme') || 'light';
   document.documentElement.setAttribute('data-theme', saved);
 
-  if (saved === 'dark') {
-    document.body.style.setProperty('background', "#ffffff url('hero-bg-white-logo-pattern.jpg') center/cover no-repeat fixed", 'important');
-    document.body.style.setProperty('animation', 'none', 'important');
-  } else {
-    document.body.style.setProperty('background', "#ffffff url('hero-bg-white-logo-pattern.jpg') center/cover no-repeat fixed", 'important');
-    document.body.style.setProperty('animation', 'none', 'important');
-  }
-
+  // تحديث أيقونة الزر فقط
   const themeIcon = document.getElementById('themeIcon');
   if (themeIcon) {
     if (saved === 'dark') {
