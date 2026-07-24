@@ -701,32 +701,6 @@ function checkout() {
     // توجيه لصفحة الدفع الجديدة
     window.location.href = 'checkout.html';
 }
-
- const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
- const discount = activeCoupon ? Math.round(subtotal * activeCoupon.discount) : 0;
- const afterDiscount = subtotal - discount;
- const tax = calculateTax(afterDiscount);
- const total = afterDiscount + tax;
-
- let msg = '*طلب جديد من شركة درة فارس الشمال*\n\n';
- msg += '*المنتجات:*\n';
- cart.forEach((item, i) => {
-  msg += `${i+1}. ${item.name}\n  الكمية: ${item.qty}\n  السعر: ${item.price.toLocaleString()} ر.س\n  المجموع: ${(item.price*item.qty).toLocaleString()} ر.س\n\n`;
- });
- msg += `*المجموع الفرعي: ${subtotal.toLocaleString()} ر.س*\n`;
- if (discount > 0) msg += `*الخصم: ${discount.toLocaleString()} ر.س*\n`;
- msg += `*الضريبة (15%): ${tax.toLocaleString()} ر.س*\n`;
- msg += `*المجموع الكلي: ${total.toLocaleString()} ر.س*\n\n`;
- msg += 'يرجى تأكيد الطلب.';
-
- const settings = getDoraSiteSettings();
- const phone1 = formatDoraPhone(settings.companyPhone1);
- const phone2 = formatDoraPhone(settings.companyPhone2);
- const choice = confirm(`اضغط "موافق" للتواصل عبر الرقم الأول (${phone1})\n\nاضغط "إلغاء" للتواصل عبر الرقم الثاني (${phone2})`);
- const phone = normalizeDoraPhone(choice ? settings.companyPhone1 : settings.companyPhone2);
- window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
-}
-
 function toggleTheme() {
   const html = document.documentElement;
   const current = html.getAttribute('data-theme');
