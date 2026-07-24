@@ -1320,3 +1320,118 @@ window.deleteProduct = async function(id){
 
 // ✅ تحميل المنتجات أول ما تفتح الصفحة
 if (document.getElementById('productsTable')) loadProducts();
+// ===== إدارة الشركاء والعملاء =====
+async function loadPartnersAdmin() {
+    var tbody = document.getElementById('partnersTable');
+    if (!tbody) return;
+
+    try {
+        var result = await supabaseClient
+            .from('partners')
+            .select('*')
+            .order('id', { ascending: false });
+
+        if (result.error) throw result.error;
+
+        var partners = result.data || [];
+
+        if (partners.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:rgba(255,255,255,0.5)">🤝 لم يتم إضافة شركاء بعد</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = partners.map(function(p, index) {
+            var imgHtml = p.image_url 
+                ? '<img src="' + p.image_url + '" style="width:50px;height:50px;border-radius:10px;object-fit:cover" onerror="this.style.display=\'none\'">' 
+                : '<span style="font-size:30px">🏢</span>';
+            return '<tr>' +
+                '<td>' + (index + 1) + '</td>' +
+                '<td>' + imgHtml + '</td>' +
+                '<td><strong>' + p.name + '</strong></td>' +
+                '<td>' + p.category + '</td>' +
+                '<td>' +
+                '<button class="btn-edit" onclick="editPartner(\'' + p.id + '\', \'' + p.name.replace(/'/g, "\\'") + '\', \'' + p.category + '\', \'' + (p.image_url || '') + '\')">✏️ تعديل</button>' +
+                '<button class="btn-delete" onclick="deletePartner(\'' + p.id + '\')">🗑️ حذف</button>' +
+                '</td>' +
+                '</tr>';
+        }).join('');
+
+    } catch (e) {
+        console.log('Partners admin load error:', e);
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#EF4444">⚠️ تعذر تحميل الشركاء</td></tr>';
+    }
+}
+
+function openPartnerModal(id, name, category, imageUrl) {
+    if (id) {
+        document.getElementById('partnerModalTitle').textContent = '✏️ تعديل شريك';
+        document.getElementById('partnerId').value = id;
+        document.getElementById('partnerName').value = name || '';
+        document.getElementById('partnerCategory').value = category || 'شريك';
+        document.getElementById('partnerImage').value = imageUrl || '';
+    } else {
+        document.getElementById('partnerModalTitle').textContent = '➕ إضافة شريك';
+        document.getElementById('partnerId').value = '';
+        document.getElementById('partnerName').value = '';
+        document.getElementById('partnerCategory').value = 'شريك';
+        document.getElementById('partnerImage').value = '';
+    }
+    document.getElementById('partnerModal').style.display = 'flex';
+}
+
+function closePartnerModal() {
+    document.getElementById('partnerModal').style.display = 'none';
+}
+
+function editPartner(id, name, category, imageUrl) {
+    openPartnerModal(id, name, category, imageUrl);
+}
+
+async function savePartner(event) {
+    event.preventDefault();
+    var id = document.getElementById('partnerId').value;
+    var name = document.getElementById('partnerName').value.trim();
+    var category = document.getElementById('partnerCategory').value;
+    var imageUrl = document.getElementById('partnerImage').value.trim();
+
+    if (!name) {
+        adminToast('❌ الرجاء إدخال اسم الشريك', 'error');
+        return false;
+    }
+
+    var payload = {
+        name: name,
+        category: category,
+        image_url: imageUrl
+    };
+
+    var result;
+    if (id) {
+        result = await supabaseClient.from('partners').update(payload).eq('id', id);
+    } else {
+        result = await supabaseClient.from('partners').insert([payload]);
+    }
+
+    if (result.error) {
+        adminToast('❌ تعذر حفظ الشريك: ' + result.error.message, 'error');
+        return false;
+    }
+
+    closePartnerModal();
+    adminToast('✅ تم حفظ الشريك بنجاح');
+    loadPartnersAdmin();
+    return false;
+}
+
+async function deletePartner(id) {
+    if (!confirm('هل أنت متأكد من حذف هذا الشريك؟')) return;
+
+    var result = await supabaseClient.from('partners').delete().eq('id', id);
+    if (result.error) {
+        adminToast('❌ تعذر حذف الشريك: ' + result.error.message, 'error');
+        return;
+    }
+
+    adminToast('✅ تم حذف الشريك بنجاح');
+    loadPartnersAdmin();
+}
