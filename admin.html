@@ -64,6 +64,7 @@
             <button class="tab-btn" onclick="showTab('bank_accounts')">🏦 الحسابات</button>
             <button class="tab-btn" onclick="showTab('files')">📁 الملفات</button>
             <button class="tab-btn" onclick="showTab('settings')">⚙️ الإعدادات</button>
+            <button class="tab-btn" onclick="showTab('partners')">🤝 الشركاء</button>
         </div>
 
         <!-- Tab Contents -->
@@ -79,6 +80,24 @@
         <div class="tab-content" id="services_contentTab"><div class="table-container"><div class="table-header"><h3>🛠️ محتوى الخدمات</h3><button class="btn-add" onclick="loadServicePagesContent()">🔄 تحديث</button></div><div id="servicePagesList" style="padding:20px"><div class="admin-empty">⏳ جاري التحميل...</div></div></div></div>
         <div class="tab-content" id="bank_accountsTab"><div class="table-container"><div class="table-header"><h3>🏦 الحسابات البنكية</h3><button class="btn-add" onclick="addBankAccount()">➕ إضافة</button></div><div id="bankAccountsList" style="padding:20px"><div class="admin-empty">⏳ جاري التحميل...</div></div></div></div>
         <div class="tab-content" id="filesTab"><div class="table-container"><div class="table-header"><h3>📁 الملفات والمستندات</h3><button class="btn-add" onclick="addNewFile()">➕ رفع</button></div><div id="siteFilesList" style="padding:20px"><div class="admin-empty">⏳ جاري التحميل...</div></div></div></div>
+       <div class="tab-content" id="partnersTab">
+    <div class="table-container">
+        <div class="table-header">
+            <h3>🤝 إدارة الشركاء والعملاء</h3>
+            <button class="btn-add" onclick="openPartnerModal()">➕ إضافة شريك</button>
+        </div>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr><th>#</th><th>الصورة</th><th>الاسم</th><th>التصنيف</th><th>الإجراءات</th></tr>
+                </thead>
+                <tbody id="partnersTable">
+                    <tr><td colspan="5" style="text-align:center">⏳ جاري التحميل...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
         <div class="tab-content" id="settingsTab">
             <div class="settings-section"><h4>🏢 معلومات الشركة</h4>
                 <div class="form-group"><label>اسم الشركة</label><input type="text" id="companyName" value="شركة درة فارس الشمال"></div>
