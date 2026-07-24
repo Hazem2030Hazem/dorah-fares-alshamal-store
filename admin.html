@@ -31,6 +31,41 @@
             <div class="error-msg" id="errorMsg" style="color:#EF4444;font-size:14px;text-align:center;margin-top:15px;display:none">❌ بيانات الدخول غير صحيحة أو الحساب لا يملك صلاحية الإدارة</div>
         </form>
     </div>
+<div class="tab-content" id="payment_methodsTab">
+    <div class="table-container">
+        <div class="table-header">
+            <h3>💳 إدارة طرق الدفع</h3>
+            <button class="btn-add" onclick="openPaymentMethodModal()">➕ إضافة طريقة</button>
+        </div>
+        <div class="table-responsive">
+            <table>
+                <thead><tr><th>#</th><th>الأيقونة</th><th>الاسم</th><th>الوصف</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
+                <tbody id="paymentMethodsTable">
+                    <tr><td colspan="6" style="text-align:center">⏳ جاري التحميل...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Payment Method Modal -->
+<div class="modal" id="paymentMethodModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="paymentMethodModalTitle">➕ إضافة طريقة دفع</h3>
+            <button class="btn-close" onclick="closePaymentMethodModal()">✕</button>
+        </div>
+        <form id="paymentMethodForm" onsubmit="return savePaymentMethod(event)">
+            <input type="hidden" id="paymentMethodId">
+            <div class="form-group"><label>🏷️ الاسم</label><input type="text" id="paymentMethodName" required placeholder="مثال: Visa"></div>
+            <div class="form-group"><label>🎨 الأيقونة</label><input type="text" id="paymentMethodIcon" placeholder="💳"></div>
+            <div class="form-group"><label>📝 الوصف</label><input type="text" id="paymentMethodDesc" placeholder="مثال: الدفع ببطاقة Visa"></div>
+            <div class="form-group"><label>🔢 الترتيب</label><input type="number" id="paymentMethodOrder" value="1" min="1"></div>
+            <div class="form-group"><label><input type="checkbox" id="paymentMethodActive" checked> ✅ نشط</label></div>
+            <button type="submit" class="btn-save">💾 حفظ</button>
+        </form>
+    </div>
+</div>
 </section>
 
 <!-- Dashboard -->
@@ -65,6 +100,7 @@
             <button class="tab-btn" onclick="showTab('files')">📁 الملفات</button>
             <button class="tab-btn" onclick="showTab('settings')">⚙️ الإعدادات</button>
             <button class="tab-btn" onclick="showTab('partners')">🤝 الشركاء</button>
+            <button class="tab-btn" onclick="showTab('payment_methods')">💳 طرق الدفع</button>
         </div>
 
         <!-- Tab Contents -->
