@@ -707,3 +707,191 @@ async function updateSiteContent(id, value){
   alert('✅ تم حفظ التغيير بنجاح');
   loadSiteContent();
 }
+/* ============================================================
+   إدارة محتوى صفحات الخدمات
+   ============================================================ */
+window.loadServicePagesContent = async function(){
+  const container = document.getElementById('servicePagesList');
+  if (!container) return;
+  container.innerHTML = '<div class="admin-empty">⏳ جاري التحميل...</div>';
+
+  const { data, error } = await supabaseClient
+    .from('service_pages_content')
+    .select('*')
+    .order('page_key');
+
+  if (error) {
+    container.innerHTML = `<div class="admin-empty error">❌ خطأ: ${error.message}</div>`;
+    return;
+  }
+
+  const pageNames = {
+    printing: 'الطباعة', cameras: 'كاميرات المراقبة', pos: 'نقاط البيع',
+    network: 'الشبكات', barcode: 'الباركود', maintenance: 'الصيانة'
+  };
+
+  container.innerHTML = data.map(item => `
+    <div class="admin-data-card">
+      <div class="admin-card-main">
+        <div class="admin-card-title">
+          <strong>📄 ${pageNames[item.page_key] || item.page_key}</strong>
+          <span>آخر تحديث: ${item.updated_at ? new Date(item.updated_at).toLocaleDateString('ar-SA') : '—'}</span>
+        </div>
+        <div style="margin-top:10px;display:grid;gap:6px;">
+          <div><small style="color:#64748B;">العنوان:</small> <span style="color:#111827;font-weight:700;">${item.hero_title || '(فارغ)'}</span></div>
+          <div><small style="color:#64748B;">الوصف:</small> <span style="color:#111827;">${item.hero_subtitle || '(فارغ)'}</span></div>
+          <div><small style="color:#64748B;">الإحصائية:</small> <span style="color:#111827;font-weight:700;">${item.stats_count || '(فارغ)'}</span> — ${item.stats_label || ''}</div>
+        </div>
+      </div>
+      <div class="admin-card-actions buttons">
+        <button class="btn-edit" onclick="editServicePage('${item.page_key}')">✏️ تعديل</button>
+      </div>
+    </div>
+  `).join('');
+};
+
+window.editServicePage = function(pageKey){
+  const newTitle = prompt('العنوان الجديد:');
+  if (newTitle === null) return;
+  const newSubtitle = prompt('الوصف الجديد:');
+  if (newSubtitle === null) return;
+  const newStatsCount = prompt('رقم الإحصائية (مثلاً: +500):');
+  if (newStatsCount === null) return;
+  const newStatsLabel = prompt('نص الإحصائية (مثلاً: طابعة مباعة):');
+  if (newStatsLabel === null) return;
+  const newCta = prompt('نص زر الدعوة (مثلاً: جاهز لتحسين طباعتك؟):');
+  if (newCta === null) return;
+
+  updateServicePage(pageKey, newTitle, newSubtitle, newStatsCount, newStatsLabel, newCta);
+};
+
+async function updateServicePage(pageKey, title, subtitle, statsCount, statsLabel, cta){
+  const { error } = await supabaseClient
+    .from('service_pages_content')
+    .update({
+      hero_title: title,
+      hero_subtitle: subtitle,
+      stats_count: statsCount,
+      stats_label: statsLabel,
+      cta_text: cta,
+      updated_at: new Date().toISOString()
+    })
+    .eq('page_key', pageKey);
+
+  if (error) { alert('❌ خطأ: ' + error.message); return; }
+  alert('✅ تم حفظ التغييرات بنجاح!');
+  loadServicePagesContent();
+}
+
+
+/* ============================================================
+   إدارة الحسابات البنكية
+   ============================================================ */
+window.loadBankAccounts = async function(){
+  const container = document.getElementById('bankAccountsList');
+  if (!container) return;
+  container.innerHTML = '<div class="admin-empty">⏳ جاري التحميل...</div>';
+
+  const { data, error } = await supabaseClient
+    .from('company_bank_accounts')
+    .select('*')
+    .order('sort_order');
+
+  if (error) {
+    container.innerHTML = `<div class="admin-empty error">❌ خطأ: ${error.message}</div>`;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    container.innerHTML = '<div class="admin-empty">🏦 لا توجد حسابات بنكية مضافة.</div>';
+    return;
+  }
+
+  container.innerHTML = data.map(item => `
+    <div class="admin-data-card">
+      <div class="admin-card-main">
+        <div class="admin-card-title">
+          <strong>🏦 ${item.bank_name}</strong>
+          <span>${item.is_active ? '✅ نشط' : '❌ غير نشط'}</span>
+        </div>
+        <div class="admin-meta" style="margin-top:8px;">
+          <span>👤 ${item.account_name || '—'}</span>
+          <span>🔢 ${item.account_number || '—'}</span>
+          <span>📋 ${item.iban || '—'}</span>
+        </div>
+      </div>
+      <div class="admin-card-actions buttons">
+        <button class="btn-edit" onclick="editBankAccount(${item.id})">✏️ تعديل</button>
+        <button class="btn-delete" onclick="deleteBankAccount(${item.id})">🗑️ حذف</button>
+      </div>
+    </div>
+  `).join('');
+};
+
+window.addBankAccount = async function(){
+  const name = prompt('اسم البنك:');
+  if (!name) return;
+  const accountName = prompt('اسم صاحب الحساب:');
+  const accountNumber = prompt('رقم الحساب:');
+  const iban = prompt('IBAN:');
+
+  const { error } = await supabaseClient
+    .from('company_bank_accounts')
+    .insert([{
+      bank_name: name,
+      account_name: accountName,
+      account_number: accountNumber,
+      iban: iban,
+      is_active: true
+    }]);
+
+  if (error) { alert('❌ خطأ: ' + error.message); return; }
+  alert('✅ تم إضافة الحساب البنكي بنجاح!');
+  loadBankAccounts();
+};
+
+window.editBankAccount = async function(id){
+  const { data, error } = await supabaseClient
+    .from('company_bank_accounts')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error || !data) { alert('❌ لم يتم العثور على الحساب'); return; }
+
+  const name = prompt('اسم البنك:', data.bank_name);
+  if (name === null) return;
+  const accountName = prompt('اسم صاحب الحساب:', data.account_name);
+  if (accountName === null) return;
+  const accountNumber = prompt('رقم الحساب:', data.account_number);
+  if (accountNumber === null) return;
+  const iban = prompt('IBAN:', data.iban);
+  if (iban === null) return;
+
+  const { error: updateError } = await supabaseClient
+    .from('company_bank_accounts')
+    .update({
+      bank_name: name,
+      account_name: accountName,
+      account_number: accountNumber,
+      iban: iban,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', id);
+
+  if (updateError) { alert('❌ خطأ: ' + updateError.message); return; }
+  alert('✅ تم تحديث الحساب البنكي بنجاح!');
+  loadBankAccounts();
+};
+
+window.deleteBankAccount = async function(id){
+  if (!confirm('هل أنت متأكد من حذف هذا الحساب البنكي؟')) return;
+  const { error } = await supabaseClient
+    .from('company_bank_accounts')
+    .delete()
+    .eq('id', id);
+
+  if (error) { alert('❌ خطأ: ' + error.message); return; }
+  alert('✅ تم حذف الحساب البنكي!');
+  loadBankAccounts();
+};
