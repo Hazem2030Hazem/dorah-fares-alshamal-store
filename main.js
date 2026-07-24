@@ -694,10 +694,13 @@ function removeCoupon() {
 }
 
 function checkout() {
- if (cart.length === 0) {
-  showToast('السلة فارغة! أضف منتجات أولاً', 'warning');
-  return;
- }
+    if (cart.length === 0) {
+        showToast('السلة فارغة! أضف منتجات أولاً', 'warning');
+        return;
+    }
+    // توجيه لصفحة الدفع الجديدة
+    window.location.href = 'checkout.html';
+}
 
  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
  const discount = activeCoupon ? Math.round(subtotal * activeCoupon.discount) : 0;
