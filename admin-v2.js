@@ -984,87 +984,81 @@ window.showTab = function(tabName){
 /* ============================================================
    إدارة صفحات الموقع — تحكم كامل (موسع)
    ============================================================ */
-window.editSitePage = async function(pageKey){
-  // جلب البيانات الحالية للصفحة
+/* ============================================================
+   إدارة صفحات الموقع — Site Pages Management
+   ============================================================ */
+window.loadSitePages = async function(){
+  const container = document.getElementById('sitePagesList');
+  if (!container) return;
+  container.innerHTML = '<div class="admin-empty">⏳ جاري التحميل...</div>';
+
   const { data, error } = await supabaseClient
     .from('site_pages')
     .select('*')
-    .eq('page_key', pageKey)
-    .single();
+    .order('page_key');
 
-  if (error || !data) { alert('❌ لم يتم العثور على الصفحة'); return; }
+  if (error) {
+    container.innerHTML = `<div class="admin-empty error">❌ خطأ: ${error.message}</div>`;
+    return;
+  }
 
-  // تعديل الحقول الأساسية
-  const heroTitle = prompt('العنوان الرئيسي للصفحة:', data.hero_title || '');
+  const pageNames = {
+    about: 'عن الشركة', vision: 'رؤيتنا', mission: 'رسالتنا',
+    team: 'فريق العمل', certifications: 'الشهادات',
+    privacy: 'سياسة الخصوصية', terms: 'شروط الاستخدام',
+    faq: 'الأسئلة الشائعة', contact: 'تواصل معنا'
+  };
+
+  container.innerHTML = data.map(item => `
+    <div class="admin-data-card">
+      <div class="admin-card-main">
+        <div class="admin-card-title">
+          <strong>📄 ${pageNames[item.page_key] || item.page_key}</strong>
+          <span>${item.updated_at ? new Date(item.updated_at).toLocaleDateString('ar-SA') : '—'}</span>
+        </div>
+        <div style="margin-top:10px;display:grid;gap:6px;">
+          <div><small>العنوان:</small> <strong>${item.hero_title || '(فارغ)'}</strong></div>
+          <div><small>الوصف:</small> ${item.hero_subtitle || '(فارغ)'}</div>
+        </div>
+      </div>
+      <div class="admin-card-actions buttons">
+        <button class="btn-edit" onclick="editSitePage('${item.page_key}')">✏️ تعديل</button>
+        <button class="btn-view" onclick="window.open('https://alshamal-df.com/${item.page_key}.html', '_blank')">👁️ معاينة</button>
+      </div>
+    </div>
+  `).join('');
+};
+
+window.editSitePage = function(pageKey){
+  const heroTitle = prompt('العنوان الرئيسي للصفحة:');
   if (heroTitle === null) return;
-  const heroSubtitle = prompt('الوصف تحت العنوان:', data.hero_subtitle || '');
+  const heroSubtitle = prompt('الوصف تحت العنوان:');
   if (heroSubtitle === null) return;
-
-  // القسم الأول
-  const section1Title = prompt('عنوان القسم الأول:', data.section_1_title || '');
+  const section1Title = prompt('عنوان القسم الأول:');
   if (section1Title === null) return;
-  const section1Content = prompt('محتوى القسم الأول (نص طويل):', data.section_1_content || '');
+  const section1Content = prompt('محتوى القسم الأول:');
   if (section1Content === null) return;
-  const section1Image = prompt('رابط صورة القسم الأول (اختياري):', data.section_1_image || '');
-  if (section1Image === null) return;
-  const section1ButtonText = prompt('نص زر القسم الأول (اختياري):', data.section_1_button_text || '');
-  if (section1ButtonText === null) return;
-  const section1ButtonUrl = prompt('رابط زر القسم الأول (اختياري):', data.section_1_button_url || '');
-  if (section1ButtonUrl === null) return;
 
-  // الإحصائيات
-  const stats = prompt('الإحصائيات (مثلاً: +15,سنة خبرة|+500,عميل سعيد|+1000,مشروع|4.9/5,تقييم):', data.section_1_stats || '');
-  if (stats === null) return;
+  updateSitePage(pageKey, {
+    hero_title: heroTitle,
+    hero_subtitle: heroSubtitle,
+    section_1_title: section1Title,
+    section_1_content: section1Content
+  });
+};
 
-  // أعضاء الفريق
-  const teamMembers = prompt('أعضاء الفريق (مثلاً: 👨‍💼,محمد علي,المدير العام|👨‍🔧,فريق الفنيين,+12 فني):', data.team_members || '');
-  if (teamMembers === null) return;
-
-  // الشهادات
-  const certifications = prompt('الشهادات (مثلاً: 🏆,شهادة HP,شريك معتمد|✅,ISO 9001,معتمد):', data.certifications_list || '');
-  if (certifications === null) return;
-
-  // الأسئلة الشائعة
-  const faqItems = prompt('الأسئلة الشائعة (مثلاً: كيف أطلب؟,يمكنك الطلب عبر...|ما هي طرق الدفع؟,نقبل...):', data.faq_items || '');
-  if (faqItems === null) return;
-
-  // معلومات التواصل
-  const contactEmail = prompt('البريد الإلكتروني:', data.contact_email || '');
-  if (contactEmail === null) return;
-  const contactPhone = prompt('رقم الهاتف:', data.contact_phone || '');
-  if (contactPhone === null) return;
-  const contactWhatsapp = prompt('رقم الواتساب:', data.contact_whatsapp || '');
-  if (contactWhatsapp === null) return;
-  const contactAddress = prompt('العنوان:', data.contact_address || '');
-  if (contactAddress === null) return;
-
-  // حفظ كل التغييرات
-  const { error: updateError } = await supabaseClient
+async function updateSitePage(pageKey, updates){
+  const { error } = await supabaseClient
     .from('site_pages')
-    .update({
-      hero_title: heroTitle,
-      hero_subtitle: heroSubtitle,
-      section_1_title: section1Title,
-      section_1_content: section1Content,
-      section_1_image: section1Image,
-      section_1_button_text: section1ButtonText,
-      section_1_button_url: section1ButtonUrl,
-      section_1_stats: stats,
-      team_members: teamMembers,
-      certifications_list: certifications,
-      faq_items: faqItems,
-      contact_email: contactEmail,
-      contact_phone: contactPhone,
-      contact_whatsapp: contactWhatsapp,
-      contact_address: contactAddress,
-      updated_at: new Date().toISOString()
-    })
+    .update({ ...updates, updated_at: new Date().toISOString() })
     .eq('page_key', pageKey);
 
-  if (updateError) { alert('❌ خطأ: ' + updateError.message); return; }
-  alert('✅ تم حفظ جميع التغييرات بنجاح!');
+  if (error) { alert('❌ خطأ: ' + error.message); return; }
+  alert('✅ تم حفظ التغييرات بنجاح!');
   loadSitePages();
-   /* ============================================================
+};
+
+/* ============================================================
    إدارة الملفات والمستندات — Site Files Management
    ============================================================ */
 window.loadSiteFiles = async function(){
@@ -1204,4 +1198,16 @@ window.deleteSiteFile = async function(id){
   alert('✅ تم حذف الملف!');
   loadSiteFiles();
 };
+
+/* ============================================================
+   تحميل التبويبات تلقائياً
+   ============================================================ */
+const origShowTab = window.showTab;
+window.showTab = function(tabName){
+  origShowTab(tabName);
+  if (tabName === 'pages') loadSitePages();
+  if (tabName === 'services_content') loadServicePagesContent();
+  if (tabName === 'bank_accounts') loadBankAccounts();
+  if (tabName === 'files') loadSiteFiles();
+  if (tabName === 'content') loadSiteContent();
 };
