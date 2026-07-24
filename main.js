@@ -1638,4 +1638,62 @@ document.addEventListener('DOMContentLoaded', function() {
   initSidebar();
   const sidebarCartCount = document.getElementById('sidebarCartCount');
   if (sidebarCartCount) { const count = cart.reduce((sum, item) => sum + item.qty, 0); sidebarCartCount.textContent = count; sidebarCartCount.style.display = count > 0 ? 'flex' : 'none'; }
+  // ===== عرض تقييمات الشركات والمؤسسات في قسم testimonials =====
+async function loadCompanyTestimonials() {
+    var grid = document.querySelector('#testimonials .testimonials-grid');
+    if (!grid) return;
+
+    try {
+        var result = await supabaseClient
+            .from('reviews')
+            .select('*')
+            .or('status.eq.published,status.eq.approved,status.is.null')
+            .order('id', { ascending: false })
+            .limit(50);
+
+        if (result.error) return;
+
+        var allReviews = result.data || [];
+        
+        var companyKeywords = ['شركة', 'مؤسسة', 'مجموعة', 'فندق', 'مطاعم', 'صيدلية', 'مكتب', 'مستشفى', 'مركز', 'معرض', 'مصنع', 'متجر', 'وكالة', 'جامعة', 'مدرسة'];
+        
+        var companyReviews = allReviews.filter(function(r) {
+            var name = (r.name || '').trim();
+            var product = (r.product || '').trim();
+            
+            if (name.split(' ').length >= 3) return true;
+            
+            for (var i = 0; i < companyKeywords.length; i++) {
+                if (name.includes(companyKeywords[i]) || product.includes(companyKeywords[i])) return true;
+            }
+            
+            return false;
+        });
+
+        if (companyReviews.length === 0) return;
+
+        grid.innerHTML = companyReviews.slice(0, 6).map(function(r) {
+            var stars = '⭐'.repeat(r.rating || 5);
+            var initials = (r.name || 'ش').trim().charAt(0);
+            return '<div class="testimonial-card">' +
+                '<div class="testimonial-stars">' + stars + '</div>' +
+                '<p class="testimonial-text">"' + (r.text || '').replace(/"/g, '&quot;') + '"</p>' +
+                '<div class="testimonial-author">' +
+                '<div class="testimonial-avatar">' + initials + '</div>' +
+                '<div class="testimonial-info">' +
+                '<h5>' + (r.name || 'عميل') + '</h5>' +
+                '<span>' + (r.product || 'جهة معتمدة') + '</span>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+        }).join('');
+
+    } catch (e) {
+        console.log('Company testimonials:', e);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(loadCompanyTestimonials, 1000);
+});
 });
