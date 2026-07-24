@@ -647,3 +647,63 @@ if (document.readyState === 'loading') document.addEventListener('DOMContentLoad
 else initAdminAuth();
 
 })();
+/* ============================================================
+   إدارة محتوى الموقع — Site Content Management
+   ============================================================ */
+window.loadSiteContent = async function(){
+  const container = document.getElementById('siteContentList');
+  if (!container) return;
+  container.innerHTML = '<div class="admin-empty">⏳ جاري تحميل المحتوى...</div>';
+
+  const { data, error } = await supabaseClient
+    .from('site_content')
+    .select('*')
+    .order('section', { ascending: true });
+
+  if (error) {
+    container.innerHTML = `<div class="admin-empty error">❌ تعذر تحميل المحتوى: ${error.message}</div>`;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    container.innerHTML = '<div class="admin-empty">📝 لا يوجد محتوى لإدارته حالياً.</div>';
+    return;
+  }
+
+  container.innerHTML = data.map(item => `
+    <div class="admin-data-card" style="grid-template-columns: 1fr auto;">
+      <div class="admin-card-main">
+        <div class="admin-card-title">
+          <strong>${item.section} — ${item.field_name}</strong>
+        </div>
+        <div class="admin-note" style="margin-top: 8px; word-break: break-all;">
+          القيمة الحالية: <span style="color:#2C4F86;font-weight:800;">${item.field_value || '(فارغ)'}</span>
+        </div>
+      </div>
+      <div class="admin-card-actions buttons">
+        <button class="btn-edit" onclick="editSiteContent(${item.id}, '${item.field_name.replace(/'/g, "\\'")}', '${(item.field_value || '').replace(/'/g, "\\'")}')">✏️ تعديل</button>
+      </div>
+    </div>
+  `).join('');
+};
+
+window.editSiteContent = function(id, fieldName, currentValue){
+  const newValue = prompt(`تعديل: ${fieldName}`, currentValue);
+  if (newValue === null || newValue === currentValue) return;
+
+  updateSiteContent(id, newValue);
+};
+
+async function updateSiteContent(id, value){
+  const { error } = await supabaseClient
+    .from('site_content')
+    .update({ field_value: value, updated_at: new Date().toISOString() })
+    .eq('id', id);
+
+  if (error) {
+    alert('❌ تعذر حفظ التغيير: ' + error.message);
+    return;
+  }
+  alert('✅ تم حفظ التغيير بنجاح');
+  loadSiteContent();
+}
