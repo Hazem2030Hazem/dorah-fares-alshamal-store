@@ -867,6 +867,9 @@ window.doraSubmitAccountService = async function(event){
   await loadAccountData(); renderDashboard();
 };
 
+// ============================================================
+// ⭐ تقييماتي — مع زر تعديل وحذف
+// ============================================================
 function renderReviewsTab(){
   const list = state.reviews.length ? state.reviews.map(review => `
     <div class="account-list-item" id="review-${review.id}">
@@ -921,12 +924,7 @@ function renderEditReviewModal(){
   `;
 }
 
-let currentEditReviewId = null;
-let currentEditRating = 5;
-
 window.doraEditReview = function(id, product, rating, text){
-  currentEditReviewId = id;
-  currentEditRating = rating;
   document.getElementById('editReviewId').value = id;
   document.getElementById('editReviewRating').value = rating;
   document.getElementById('editReviewText').value = text;
@@ -936,11 +934,9 @@ window.doraEditReview = function(id, product, rating, text){
 
 window.doraCloseEditReview = function(){
   document.getElementById('editReviewModal').style.display = 'none';
-  currentEditReviewId = null;
 };
 
 window.doraSetEditStar = function(value){
-  currentEditRating = value;
   document.getElementById('editReviewRating').value = value;
   const stars = document.querySelectorAll('#editStarRating span');
   stars.forEach((star, index) => {
