@@ -979,6 +979,7 @@ window.showTab = function(tabName){
   if (tabName === 'services_content') loadServicePagesContent();
   if (tabName === 'bank_accounts') loadBankAccounts();
   if (tabName === 'files') loadSiteFiles();
+   if (tabName === 'partners') loadPartnersAdmin();
   if (tabName === 'content') loadSiteContent();
 };
 /* ============================================================
