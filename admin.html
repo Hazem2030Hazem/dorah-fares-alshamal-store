@@ -31,41 +31,6 @@
             <div class="error-msg" id="errorMsg" style="color:#EF4444;font-size:14px;text-align:center;margin-top:15px;display:none">❌ بيانات الدخول غير صحيحة أو الحساب لا يملك صلاحية الإدارة</div>
         </form>
     </div>
-<div class="tab-content" id="payment_methodsTab">
-    <div class="table-container">
-        <div class="table-header">
-            <h3>💳 إدارة طرق الدفع</h3>
-            <button class="btn-add" onclick="openPaymentMethodModal()">➕ إضافة طريقة</button>
-        </div>
-        <div class="table-responsive">
-            <table>
-                <thead><tr><th>#</th><th>الأيقونة</th><th>الاسم</th><th>الوصف</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
-                <tbody id="paymentMethodsTable">
-                    <tr><td colspan="6" style="text-align:center">⏳ جاري التحميل...</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<!-- Payment Method Modal -->
-<div class="modal" id="paymentMethodModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 id="paymentMethodModalTitle">➕ إضافة طريقة دفع</h3>
-            <button class="btn-close" onclick="closePaymentMethodModal()">✕</button>
-        </div>
-        <form id="paymentMethodForm" onsubmit="return savePaymentMethod(event)">
-            <input type="hidden" id="paymentMethodId">
-            <div class="form-group"><label>🏷️ الاسم</label><input type="text" id="paymentMethodName" required placeholder="مثال: Visa"></div>
-            <div class="form-group"><label>🎨 الأيقونة</label><input type="text" id="paymentMethodIcon" placeholder="💳"></div>
-            <div class="form-group"><label>📝 الوصف</label><input type="text" id="paymentMethodDesc" placeholder="مثال: الدفع ببطاقة Visa"></div>
-            <div class="form-group"><label>🔢 الترتيب</label><input type="number" id="paymentMethodOrder" value="1" min="1"></div>
-            <div class="form-group"><label><input type="checkbox" id="paymentMethodActive" checked> ✅ نشط</label></div>
-            <button type="submit" class="btn-save">💾 حفظ</button>
-        </form>
-    </div>
-</div>
 </section>
 
 <!-- Dashboard -->
@@ -116,24 +81,34 @@
         <div class="tab-content" id="services_contentTab"><div class="table-container"><div class="table-header"><h3>🛠️ محتوى الخدمات</h3><button class="btn-add" onclick="loadServicePagesContent()">🔄 تحديث</button></div><div id="servicePagesList" style="padding:20px"><div class="admin-empty">⏳ جاري التحميل...</div></div></div></div>
         <div class="tab-content" id="bank_accountsTab"><div class="table-container"><div class="table-header"><h3>🏦 الحسابات البنكية</h3><button class="btn-add" onclick="addBankAccount()">➕ إضافة</button></div><div id="bankAccountsList" style="padding:20px"><div class="admin-empty">⏳ جاري التحميل...</div></div></div></div>
         <div class="tab-content" id="filesTab"><div class="table-container"><div class="table-header"><h3>📁 الملفات والمستندات</h3><button class="btn-add" onclick="addNewFile()">➕ رفع</button></div><div id="siteFilesList" style="padding:20px"><div class="admin-empty">⏳ جاري التحميل...</div></div></div></div>
-       <div class="tab-content" id="partnersTab">
-    <div class="table-container">
-        <div class="table-header">
-            <h3>🤝 إدارة الشركاء والعملاء</h3>
-            <button class="btn-add" onclick="openPartnerModal()">➕ إضافة شريك</button>
+        <div class="tab-content" id="partnersTab">
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>🤝 إدارة الشركاء والعملاء</h3>
+                    <button class="btn-add" onclick="openPartnerModal()">➕ إضافة شريك</button>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead><tr><th>#</th><th>الصورة</th><th>الاسم</th><th>التصنيف</th><th>الإجراءات</th></tr></thead>
+                        <tbody id="partnersTable"><tr><td colspan="5" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="table-responsive">
-            <table>
-                <thead>
-                    <tr><th>#</th><th>الصورة</th><th>الاسم</th><th>التصنيف</th><th>الإجراءات</th></tr>
-                </thead>
-                <tbody id="partnersTable">
-                    <tr><td colspan="5" style="text-align:center">⏳ جاري التحميل...</td></tr>
-                </tbody>
-            </table>
+        <div class="tab-content" id="payment_methodsTab">
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>💳 إدارة طرق الدفع</h3>
+                    <button class="btn-add" onclick="openPaymentMethodModal()">➕ إضافة طريقة</button>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead><tr><th>#</th><th>الأيقونة</th><th>الاسم</th><th>الوصف</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
+                        <tbody id="paymentMethodsTable"><tr><td colspan="6" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
         <div class="tab-content" id="settingsTab">
             <div class="settings-section"><h4>🏢 معلومات الشركة</h4>
                 <div class="form-group"><label>اسم الشركة</label><input type="text" id="companyName" value="شركة درة فارس الشمال"></div>
@@ -157,7 +132,8 @@
         </div>
     </div>
 </section>
-    
+
+<!-- Modals -->
 <!-- Partner Modal -->
 <div class="modal" id="partnerModal">
     <div class="modal-content">
@@ -167,22 +143,14 @@
         </div>
         <form id="partnerForm" onsubmit="return savePartner(event)">
             <input type="hidden" id="partnerId">
-            <div class="form-group">
-                <label>🏢 اسم الشريك</label>
-                <input type="text" id="partnerName" required placeholder="مثال: شركة التقنية">
-            </div>
-            <div class="form-group">
-                <label>📂 التصنيف</label>
+            <div class="form-group"><label>🏢 اسم الشريك</label><input type="text" id="partnerName" required placeholder="مثال: شركة التقنية"></div>
+            <div class="form-group"><label>📂 التصنيف</label>
                 <select id="partnerCategory">
-                    <option value="شريك">🤝 شريك</option>
-                    <option value="عميل">👤 عميل</option>
-                    <option value="مورد">📦 مورد</option>
-                    <option value="موزع">🚚 موزع</option>
+                    <option value="شريك">🤝 شريك</option><option value="عميل">👤 عميل</option>
+                    <option value="مورد">📦 مورد</option><option value="موزع">🚚 موزع</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label>🖼️ رابط الصورة</label>
-                <input type="text" id="partnerImage" placeholder="https://example.com/logo.png">
+            <div class="form-group"><label>🖼️ رابط الصورة</label><input type="text" id="partnerImage" placeholder="https://example.com/logo.png">
                 <small style="color:rgba(255,255,255,0.5)">اتركه فارغاً إذا لم تتوفر صورة</small>
             </div>
             <button type="submit" class="btn-save">💾 حفظ الشريك</button>
@@ -190,38 +158,26 @@
     </div>
 </div>
 
-        <form id="partnerForm" onsubmit="return savePartner(event)">
-            <input type="hidden" id="partnerId">
-            <div class="form-group">
-                <label>🏢 اسم الشريك</label>
-                <input type="text" id="partnerName" required placeholder="مثال: شركة التقنية">
-            </div>
-            <div class="form-group">
-                <label>📂 التصنيف</label>
-                <select id="partnerCategory">
-                    <option value="شريك">🤝 شريك</option>
-                    <option value="عميل">👤 عميل</option>
-                    <option value="مورد">📦 مورد</option>
-                    <option value="موزع">🚚 موزع</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>🖼️ رابط الصورة</label>
-                <input type="text" id="partnerImage" placeholder="https://example.com/logo.png">
-                <small style="color:rgba(255,255,255,0.5)">اتركه فارغاً إذا لم تتوفر صورة</small>
-            </div>
-            <button type="submit" class="btn-save">💾 حفظ الشريك</button>
+<!-- Payment Method Modal -->
+<div class="modal" id="paymentMethodModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="paymentMethodModalTitle">➕ إضافة طريقة دفع</h3>
+            <button class="btn-close" onclick="closePaymentMethodModal()">✕</button>
+        </div>
+        <form id="paymentMethodForm" onsubmit="return savePaymentMethod(event)">
+            <input type="hidden" id="paymentMethodId">
+            <div class="form-group"><label>🏷️ الاسم</label><input type="text" id="paymentMethodName" required placeholder="مثال: Visa"></div>
+            <div class="form-group"><label>🎨 الأيقونة</label><input type="text" id="paymentMethodIcon" placeholder="💳"></div>
+            <div class="form-group"><label>📝 الوصف</label><input type="text" id="paymentMethodDesc" placeholder="مثال: الدفع ببطاقة Visa"></div>
+            <div class="form-group"><label>🔢 الترتيب</label><input type="number" id="paymentMethodOrder" value="1" min="1"></div>
+            <div class="form-group"><label><input type="checkbox" id="paymentMethodActive" checked> ✅ نشط</label></div>
+            <button type="submit" class="btn-save">💾 حفظ</button>
         </form>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const SUPABASE_URL = 'https://kcbmvxuzjlaooknwhqqb.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjYm12eHV6amxhb29rbndocXFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NzkyMjAsImV4cCI6MjA5OTU1NTIyMH0.ayDpkfCKL90GcUKjbHQs7OvS5sxF1VSraWg58NHJ7ek';
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-console.log('✅ Supabase ready');
-</script>
-    <!-- Product Modal -->
+
+<!-- Product Modal -->
 <div class="modal" id="productModal">
     <div class="modal-content">
         <div class="modal-header">
@@ -246,6 +202,14 @@ console.log('✅ Supabase ready');
         </form>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://kcbmvxuzjlaooknwhqqb.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjYm12eHV6amxhb29rbndocXFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NzkyMjAsImV4cCI6MjA5OTU1NTIyMH0.ayDpkfCKL90GcUKjbHQs7OvS5sxF1VSraWg58NHJ7ek';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+console.log('✅ Supabase ready');
+</script>
 <script src="admin-v2.js"></script>
 </body>
 </html>
