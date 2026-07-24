@@ -2112,6 +2112,7 @@ html@keyframes gradientBG{0%{background-position:0% 50%}25%{background-position:
 /* ============================================================
    DARK MODE — وضع داكن كامل
    ============================================================ */
+
 [data-theme="dark"] body {
   background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e, #16213e, #0f3460, #0f0c29) !important;
   background-size: 400% 400% !important;
@@ -2119,6 +2120,10 @@ html@keyframes gradientBG{0%{background-position:0% 50%}25%{background-position:
   color: #f8fafc !important;
 }
 [data-theme="dark"] .ocean-bg {
+  display: none !important;
+}
+/* إخفاء particles كمان */
+[data-theme="dark"] .particles {
   display: none !important;
 }
 
