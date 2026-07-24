@@ -1436,3 +1436,63 @@ async function deletePartner(id) {
     adminToast('✅ تم حذف الشريك بنجاح');
     loadPartnersAdmin();
 }
+async function loadPaymentMethodsAdmin() {
+    var tbody = document.getElementById('paymentMethodsTable');
+    if (!tbody) return;
+    try {
+        var result = await supabaseClient.from('payment_methods').select('*').order('sort_order');
+        var methods = result.data || [];
+        if (methods.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">💳 لا توجد طرق دفع</td></tr>';
+            return;
+        }
+        tbody.innerHTML = methods.map(function(m, i) {
+            return '<tr><td>' + (i+1) + '</td><td style="font-size:30px">' + (m.icon||'💳') + '</td><td>' + m.name + '</td><td>' + (m.description||'—') + '</td>' +
+                '<td style="color:' + (m.is_active?'#10B981':'#EF4444') + '">' + (m.is_active?'✅ نشط':'❌ غير نشط') + '</td>' +
+                '<td><button class="btn-edit" onclick="editPaymentMethod(' + m.id + ',\'' + m.name + '\',\'' + (m.icon||'💳') + '\',\'' + (m.description||'') + '\',' + m.sort_order + ',' + m.is_active + ')">✏️</button>' +
+                '<button class="btn-delete" onclick="deletePaymentMethod(' + m.id + ')">🗑️</button></td></tr>';
+        }).join('');
+    } catch(e) { console.log(e); }
+}
+
+function openPaymentMethodModal(id, name, icon, desc, order, active) {
+    document.getElementById('paymentMethodModalTitle').textContent = id ? '✏️ تعديل' : '➕ إضافة';
+    document.getElementById('paymentMethodId').value = id || '';
+    document.getElementById('paymentMethodName').value = name || '';
+    document.getElementById('paymentMethodIcon').value = icon || '💳';
+    document.getElementById('paymentMethodDesc').value = desc || '';
+    document.getElementById('paymentMethodOrder').value = order || 1;
+    document.getElementById('paymentMethodActive').checked = active !== false;
+    document.getElementById('paymentMethodModal').style.display = 'flex';
+}
+
+function closePaymentMethodModal() { document.getElementById('paymentMethodModal').style.display = 'none'; }
+
+function editPaymentMethod(id, name, icon, desc, order, active) { openPaymentMethodModal(id, name, icon, desc, order, active); }
+
+async function savePaymentMethod(event) {
+    event.preventDefault();
+    var id = document.getElementById('paymentMethodId').value;
+    var payload = {
+        name: document.getElementById('paymentMethodName').value.trim(),
+        icon: document.getElementById('paymentMethodIcon').value.trim() || '💳',
+        description: document.getElementById('paymentMethodDesc').value.trim(),
+        sort_order: parseInt(document.getElementById('paymentMethodOrder').value) || 1,
+        is_active: document.getElementById('paymentMethodActive').checked
+    };
+    if (!payload.name) { adminToast('❌ أدخل الاسم', 'error'); return false; }
+    var result = id ? await supabaseClient.from('payment_methods').update(payload).eq('id', id)
+                    : await supabaseClient.from('payment_methods').insert([payload]);
+    if (result.error) { adminToast('❌ خطأ: ' + result.error.message, 'error'); return false; }
+    closePaymentMethodModal();
+    adminToast('✅ تم الحفظ');
+    loadPaymentMethodsAdmin();
+    return false;
+}
+
+async function deletePaymentMethod(id) {
+    if (!confirm('حذف طريقة الدفع؟')) return;
+    await supabaseClient.from('payment_methods').delete().eq('id', id);
+    adminToast('✅ تم الحذف');
+    loadPaymentMethodsAdmin();
+}
