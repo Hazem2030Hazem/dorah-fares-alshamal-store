@@ -2109,16 +2109,409 @@ html@keyframes gradientBG{0%{background-position:0% 50%}25%{background-position:
 
 
 
-/* DARK MODE - Only body background changes */
+/* ============================================================
+   DARK MODE — وضع داكن كامل
+   ============================================================ */
 [data-theme="dark"] body {
-  background: #000000 !important;
-  background-image: none !important;
-  background-size: 100% 100% !important;
-  animation: none !important;
+  background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e, #16213e, #0f3460, #0f0c29) !important;
+  background-size: 400% 400% !important;
+  animation: gradientBG 15s ease infinite !important;
+  color: #f8fafc !important;
 }
 [data-theme="dark"] .ocean-bg {
   display: none !important;
 }
+
+/* نصوص عامة */
+[data-theme="dark"] h1, [data-theme="dark"] h2, [data-theme="dark"] h3,
+[data-theme="dark"] h4, [data-theme="dark"] h5, [data-theme="dark"] h6 {
+  color: #ffffff !important;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5) !important;
+}
+[data-theme="dark"] p, [data-theme="dark"] span, [data-theme="dark"] li,
+[data-theme="dark"] label, [data-theme="dark"] td, [data-theme="dark"] th {
+  color: rgba(255,255,255,0.9) !important;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5) !important;
+}
+
+/* الهيدر */
+[data-theme="dark"] .header {
+  background: rgba(15,12,41,0.75) !important;
+  border-bottom: 1px solid rgba(233,69,96,0.3) !important;
+  box-shadow: 0 4px 30px rgba(0,0,0,.5) !important;
+}
+[data-theme="dark"] .logo-text h1 { color: #ffffff !important; }
+[data-theme="dark"] .logo-text span { color: rgba(255,255,255,0.8) !important; }
+[data-theme="dark"] .nav-links a, [data-theme="dark"] .nav-trigger { color: #cbd5e1 !important; }
+[data-theme="dark"] .nav-links a:hover, [data-theme="dark"] .nav-trigger:hover {
+  color: #ffffff !important;
+  background: rgba(255,255,255,.12) !important;
+}
+[data-theme="dark"] .dropdown-menu {
+  background: rgba(15,12,41,0.95) !important;
+  border: 1px solid rgba(56,189,248,.35) !important;
+}
+[data-theme="dark"] .dropdown-menu a { color: #f8fafc !important; }
+[data-theme="dark"] .dropdown-menu a:hover {
+  background: rgba(255,255,255,.08) !important;
+  color: #ffffff !important;
+}
+
+/* الهيرو */
+[data-theme="dark"] .hero {
+  background: url(hero-bg-dark-logos.jpg) center/cover no-repeat !important;
+}
+[data-theme="dark"] .hero h2 {
+  color: #ffffff !important;
+  text-shadow: 0 2px 15px rgba(0,0,0,.4) !important;
+}
+[data-theme="dark"] .hero p { color: rgba(255,255,255,.8) !important; }
+[data-theme="dark"] .hero-stat {
+  background: rgba(10,15,35,.5) !important;
+  border: 1px solid rgba(255,255,255,.15) !important;
+}
+[data-theme="dark"] .hero-stat strong { color: #ffffff !important; }
+[data-theme="dark"] .hero-stat span { color: rgba(255,255,255,.65) !important; }
+[data-theme="dark"] .hero-stat::after { background: rgba(255,255,255,.15) !important; }
+[data-theme="dark"] .btn-secondary {
+  background: rgba(255,255,255,.1) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,.3) !important;
+}
+[data-theme="dark"] .btn-secondary:hover {
+  background: rgba(255,255,255,.18) !important;
+  border-color: rgba(255,255,255,.55) !important;
+  color: #ffffff !important;
+}
+
+/* الكروت والمنتجات */
+[data-theme="dark"] .prod-card,
+[data-theme="dark"] .cat-card,
+[data-theme="dark"] .about-feature,
+[data-theme="dark"] .stat-box,
+[data-theme="dark"] .filter-tab,
+[data-theme="dark"] .why-card,
+[data-theme="dark"] .feature-card,
+[data-theme="dark"] .team-card,
+[data-theme="dark"] .mission-card {
+  background: rgba(15,12,41,0.45) !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+[data-theme="dark"] .prod-card:hover,
+[data-theme="dark"] .cat-card:hover {
+  border-color: rgba(233,69,96,0.5) !important;
+  box-shadow: 0 12px 40px rgba(233,69,96,0.2) !important;
+}
+[data-theme="dark"] .prod-name { color: #ffffff !important; }
+[data-theme="dark"] .prod-desc { color: rgba(255,255,255,0.8) !important; }
+[data-theme="dark"] .prod-price { color: #ffffff !important; text-shadow: 0 2px 8px rgba(0,0,0,0.5) !important; }
+[data-theme="dark"] .prod-tag { background: rgba(239,68,68,0.25) !important; color: #ffffff !important; }
+[data-theme="dark"] .stock-value { color: #ffffff !important; }
+[data-theme="dark"] .stock-label { color: rgba(255,255,255,0.8) !important; }
+[data-theme="dark"] .cat-name { color: #ffffff !important; }
+[data-theme="dark"] .cat-count { color: rgba(255,255,255,0.6) !important; }
+[data-theme="dark"] .section-header h3 { color: #ffffff !important; }
+[data-theme="dark"] .section-header p { color: rgba(255,255,255,0.7) !important; }
+
+/* الكروت العائمة */
+[data-theme="dark"] .float-card {
+  background: rgba(10,15,35,.55) !important;
+  border: 1px solid rgba(255,255,255,.15) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4) !important;
+}
+[data-theme="dark"] .float-card h4 { color: #ffffff !important; }
+[data-theme="dark"] .float-card p { color: rgba(255,255,255,.7) !important; }
+
+/* عن الشركة */
+[data-theme="dark"] .about-text {
+  background: rgba(15,12,41,0.45) !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+}
+[data-theme="dark"] .about-text h3 { color: #ffffff !important; }
+[data-theme="dark"] .about-text p { color: rgba(255,255,255,0.9) !important; }
+
+/* الفورم والتواصل */
+[data-theme="dark"] .contact-form,
+[data-theme="dark"] .info-card {
+  background: rgba(15,12,41,0.45) !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+}
+[data-theme="dark"] .contact-form input,
+[data-theme="dark"] .contact-form select,
+[data-theme="dark"] .contact-form textarea,
+[data-theme="dark"] .search-bar input {
+  background: rgba(15,12,41,0.7) !important;
+  border: 1px solid rgba(255,255,255,0.2) !important;
+  color: #ffffff !important;
+}
+[data-theme="dark"] .contact-form input::placeholder,
+[data-theme="dark"] .search-bar input::placeholder { color: rgba(255,255,255,0.5) !important; }
+[data-theme="dark"] .contact-form select option {
+  background: #1a1a2e !important;
+  color: #ffffff !important;
+}
+
+/* الفوتر */
+[data-theme="dark"] .footer {
+  background: rgba(10,12,41,0.6) !important;
+  border-top: 1px solid rgba(255,255,255,0.1) !important;
+}
+[data-theme="dark"] .footer h4, [data-theme="dark"] .footer h5 { color: #ffffff !important; }
+[data-theme="dark"] .footer-col a, [data-theme="dark"] .footer p { color: rgba(255,255,255,0.7) !important; }
+[data-theme="dark"] .footer-col a:hover { color: #EF4444 !important; }
+[data-theme="dark"] .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1) !important; }
+[data-theme="dark"] .payment-methods span {
+  background: rgba(255,255,255,.08) !important;
+  border-color: rgba(255,255,255,.15) !important;
+  color: rgba(255,255,255,.8) !important;
+}
+
+/* سلة المشتريات */
+[data-theme="dark"] .cart-sidebar {
+  background: rgba(15,12,41,0.97) !important;
+  border-left: 1px solid rgba(255,255,255,0.15) !important;
+}
+[data-theme="dark"] .cart-item-name { color: #ffffff !important; }
+[data-theme="dark"] .qty-btn {
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,.3) !important;
+}
+
+/* فلاتر وتبويبات */
+[data-theme="dark"] .filter-tab { color: rgba(255,255,255,0.7) !important; }
+[data-theme="dark"] .filter-tab:hover,
+[data-theme="dark"] .filter-tab.active {
+  background: linear-gradient(135deg, #EF4444, #DC2626) !important;
+  color: #ffffff !important;
+}
+
+/* مودال المنتجات */
+[data-theme="dark"] .product-modal {
+  background: rgba(15,12,41,0.98) !important;
+}
+[data-theme="dark"] .modal-name { color: #ffffff !important; }
+[data-theme="dark"] .modal-desc { color: rgba(255,255,255,0.8) !important; }
+[data-theme="dark"] .modal-price { color: #ffffff !important; }
+[data-theme="dark"] .modal-category {
+  background: rgba(239,68,68,0.2) !important;
+  color: #ffffff !important;
+}
+[data-theme="dark"] .modal-close {
+  background: rgba(255,255,255,.08) !important;
+  border-color: rgba(255,255,255,.2) !important;
+  color: rgba(255,255,255,.7) !important;
+}
+[data-theme="dark"] .modal-btn-secondary {
+  background: rgba(255,255,255,.05) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,.3) !important;
+}
+[data-theme="dark"] .modal-btn-secondary:hover {
+  border-color: #EF4444 !important;
+  color: #EF4444 !important;
+  background: rgba(239,68,68,0.1) !important;
+}
+[data-theme="dark"] .modal-reviews h4 { color: #ffffff !important; }
+[data-theme="dark"] .review-card {
+  background: rgba(15,12,41,0.5) !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+}
+[data-theme="dark"] .review-card-text { color: rgba(255,255,255,0.8) !important; }
+[data-theme="dark"] .review-card-product { color: #10B981 !important; }
+
+/* Search Results */
+[data-theme="dark"] .search-results,
+[data-theme="dark"] .search-results.active {
+  background: rgba(15,12,41,0.97) !important;
+  border: 1px solid rgba(255,255,255,0.2) !important;
+}
+[data-theme="dark"] .search-result-item {
+  background: rgba(15,12,41,0.97) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+}
+[data-theme="dark"] .search-result-item:hover { background: rgba(255,255,255,.06) !important; }
+[data-theme="dark"] .search-result-name { color: #ffffff !important; }
+[data-theme="dark"] .search-no-results {
+  background: rgba(15,12,41,0.97) !important;
+  color: rgba(255,255,255,0.6) !important;
+}
+
+/* أيقونات السايدبار */
+[data-theme="dark"] .sidebar-icon .icon-svg {
+  stroke: rgba(255,255,255,0.7);
+}
+[data-theme="dark"] .sidebar-tab {
+  background: linear-gradient(180deg, rgba(15, 12, 41, 0.95), rgba(30, 24, 80, 0.95));
+  border-color: rgba(233, 69, 96, 0.4);
+}
+[data-theme="dark"] .sidebar-panel {
+  background: linear-gradient(180deg, rgba(15, 12, 41, 0.98), rgba(30, 24, 80, 0.98));
+  border-color: rgba(233, 69, 96, 0.3);
+}
+
+/* مودال التقييم */
+[data-theme="dark"] .rating-modal-content {
+  background: rgba(15,12,41,0.97) !important;
+}
+[data-theme="dark"] .rating-modal-content h3 { color: #ffffff !important; }
+[data-theme="dark"] .rating-modal-content p { color: rgba(255,255,255,0.7) !important; }
+[data-theme="dark"] .rating-form input,
+[data-theme="dark"] .rating-form textarea {
+  background: rgba(15,12,41,0.8) !important;
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,0.2) !important;
+}
+[data-theme="dark"] .rating-form input::placeholder,
+[data-theme="dark"] .rating-form textarea::placeholder { color: rgba(255,255,255,0.5) !important; }
+
+/* Admin Panel */
+[data-theme="dark"] .admin-panel {
+  background: rgba(15,12,41,0.97) !important;
+  border-color: rgba(255,255,255,0.2) !important;
+}
+[data-theme="dark"] .admin-panel h4 { color: #ffffff !important; }
+[data-theme="dark"] .admin-panel input,
+[data-theme="dark"] .admin-panel select,
+[data-theme="dark"] .admin-panel textarea {
+  background: rgba(255,255,255,0.05) !important;
+  border-color: rgba(255,255,255,0.2) !important;
+  color: #ffffff !important;
+}
+[data-theme="dark"] .admin-panel input::placeholder { color: rgba(255,255,255,0.5) !important; }
+
+/* Password Modal */
+[data-theme="dark"] .password-box {
+  background: rgba(15,12,41,0.97) !important;
+  border-color: rgba(255,255,255,0.2) !important;
+}
+[data-theme="dark"] .password-box h4 { color: #ffffff !important; }
+[data-theme="dark"] .password-box input {
+  background: rgba(255,255,255,0.05) !important;
+  border-color: rgba(255,255,255,0.2) !important;
+  color: #ffffff !important;
+}
+
+/* Page Hero */
+[data-theme="dark"] .page-hero,
+[data-theme="dark"] .service-hero,
+[data-theme="dark"] .services-hero {
+  background: url(hero-bg-dark-logos.jpg) center/cover no-repeat !important;
+}
+[data-theme="dark"] .page-title,
+[data-theme="dark"] .service-hero h1,
+[data-theme="dark"] .services-hero h1 {
+  color: #ffffff !important;
+  text-shadow: 0 4px 25px rgba(0,0,0,.55) !important;
+}
+[data-theme="dark"] .page-subtitle,
+[data-theme="dark"] .service-hero p,
+[data-theme="dark"] .services-hero p {
+  color: rgba(255,255,255,.88) !important;
+}
+
+/* Content Cards */
+[data-theme="dark"] .content-card {
+  background: rgba(15,12,41,0.5) !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+}
+[data-theme="dark"] .content-card h2 { color: #ffffff !important; }
+[data-theme="dark"] .content-card h3 { color: #EF4444 !important; }
+[data-theme="dark"] .content-card p,
+[data-theme="dark"] .content-card li { color: rgba(255,255,255,0.85) !important; }
+
+/* FAQ */
+[data-theme="dark"] .faq-item {
+  background: rgba(15,12,41,0.5) !important;
+  border-color: rgba(255,255,255,0.15) !important;
+}
+[data-theme="dark"] .faq-question span { color: #ffffff !important; }
+[data-theme="dark"] .faq-answer { color: rgba(255,255,255,0.8) !important; }
+[data-theme="dark"] .faq-answer p { color: rgba(255,255,255,0.8) !important; }
+
+/* Contact Info */
+[data-theme="dark"] .contact-info-card {
+  background: rgba(15,12,41,0.5) !important;
+  border-color: rgba(255,255,255,0.15) !important;
+}
+[data-theme="dark"] .contact-info-card h3 { color: #ffffff !important; }
+[data-theme="dark"] .contact-info-card p,
+[data-theme="dark"] .contact-info-card a { color: rgba(255,255,255,0.8) !important; }
+
+/* Brands & Partners */
+[data-theme="dark"] .brand-card {
+  background: rgba(15,12,41,0.45) !important;
+  border-color: rgba(255,255,255,0.15) !important;
+}
+[data-theme="dark"] .brand-card h3,
+[data-theme="dark"] .brand-card h4 { color: #ffffff !important; }
+[data-theme="dark"] .brand-card p { color: rgba(255,255,255,0.7) !important; }
+
+/* CTA Box */
+[data-theme="dark"] .cta-box {
+  background: linear-gradient(135deg, #1E3A63, #2C4F86) !important;
+}
+[data-theme="dark"] .cta-box h2 { color: #ffffff !important; }
+[data-theme="dark"] .cta-box p { color: rgba(255,255,255,.9) !important; }
+
+/* Service Cards */
+[data-theme="dark"] .service-card {
+  background: rgba(15,12,41,0.45) !important;
+  border-color: rgba(255,255,255,0.15) !important;
+}
+[data-theme="dark"] .service-card h3 { color: #ffffff !important; }
+[data-theme="dark"] .service-card p { color: rgba(255,255,255,0.75) !important; }
+[data-theme="dark"] .service-card .btn { color: #EF4444 !important; }
+
+/* Achievements */
+[data-theme="dark"] .achievements {
+  background: linear-gradient(135deg, #1a1a2e, #0f0c29) !important;
+}
+[data-theme="dark"] .achievement-item {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.2);
+}
+[data-theme="dark"] .achievement-num { color: #ffffff !important; }
+[data-theme="dark"] .achievement-label { color: rgba(255,255,255,0.8) !important; }
+
+/* Testimonials */
+[data-theme="dark"] .testimonial-card {
+  background: rgba(15,12,41,0.45) !important;
+  border-color: rgba(255,255,255,0.15) !important;
+}
+[data-theme="dark"] .testimonial-text { color: rgba(255,255,255,0.8) !important; }
+[data-theme="dark"] .testimonial-info h5 { color: #ffffff !important; }
+
+/* Projects */
+[data-theme="dark"] .project-card {
+  background: rgba(15,12,41,0.45) !important;
+  border-color: rgba(255,255,255,0.15) !important;
+}
+[data-theme="dark"] .project-body h4 { color: #ffffff !important; }
+[data-theme="dark"] .project-body p { color: rgba(255,255,255,0.75) !important; }
+
+/* Compare */
+[data-theme="dark"] .compare-bar {
+  background: rgba(15,12,41,0.95) !important;
+  border-color: rgba(233,69,96,0.5) !important;
+}
+[data-theme="dark"] .compare-table th {
+  background: rgba(255,255,255,.08) !important;
+  color: #ffffff !important;
+}
+[data-theme="dark"] .compare-table td {
+  color: rgba(255,255,255,0.8) !important;
+  border-color: rgba(255,255,255,0.15) !important;
+}
+[data-theme="dark"] .compare-table .compare-product-name { color: #ffffff !important; }
+[data-theme="dark"] .compare-table .compare-product-price { color: #10B981 !important; }
+[data-theme="dark"] .compare-item {
+  background: rgba(255,255,255,.05) !important;
+  border-color: rgba(255,255,255,.15) !important;
+}
+[data-theme="dark"] .compare-item-name { color: #ffffff !important; }
 
 
 /* Hide modals that appear always */
