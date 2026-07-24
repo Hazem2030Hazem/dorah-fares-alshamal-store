@@ -1681,6 +1681,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // تحميل تقييمات الشركات
   setTimeout(loadCompanyTestimonials, 1000);
 });
+// تحميل الشركاء
+setTimeout(loadPartners, 500);
 
 // ===== عرض تقييمات الشركات والمؤسسات =====
 async function loadCompanyTestimonials() {
