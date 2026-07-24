@@ -386,6 +386,57 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     </div>
   </div>
 </div>
+        <!-- Site Pages Management Tab -->
+<div class="tab-content" id="pagesTab">
+  <div class="table-container">
+    <div class="table-header">
+      <h3>📄 إدارة محتوى كل صفحات الموقع</h3>
+      <button class="btn-add" onclick="loadSitePages()">🔄 تحديث</button>
+    </div>
+    <div id="sitePagesList" style="padding: 20px;">
+      <div class="admin-empty">⏳ جاري تحميل الصفحات...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Service Pages Content Tab -->
+<div class="tab-content" id="services_contentTab">
+  <div class="table-container">
+    <div class="table-header">
+      <h3>🛠️ إدارة محتوى صفحات الخدمات</h3>
+      <button class="btn-add" onclick="loadServicePagesContent()">🔄 تحديث</button>
+    </div>
+    <div id="servicePagesList" style="padding: 20px;">
+      <div class="admin-empty">⏳ جاري تحميل محتوى الخدمات...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Bank Accounts Tab -->
+<div class="tab-content" id="bank_accountsTab">
+  <div class="table-container">
+    <div class="table-header">
+      <h3>🏦 إدارة الحسابات البنكية</h3>
+      <button class="btn-add" onclick="addBankAccount()">➕ إضافة حساب</button>
+    </div>
+    <div id="bankAccountsList" style="padding: 20px;">
+      <div class="admin-empty">⏳ جاري تحميل الحسابات البنكية...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Files Management Tab -->
+<div class="tab-content" id="filesTab">
+  <div class="table-container">
+    <div class="table-header">
+      <h3>📁 إدارة الملفات والمستندات</h3>
+      <button class="btn-add" onclick="addNewFile()">➕ رفع ملف جديد</button>
+    </div>
+    <div id="siteFilesList" style="padding: 20px;">
+      <div class="admin-empty">⏳ جاري تحميل الملفات...</div>
+    </div>
+  </div>
+</div>
         <!-- Content Management Tab -->
 <div class="tab-content" id="contentTab">
   <div class="table-container">
