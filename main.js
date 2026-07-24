@@ -438,16 +438,6 @@ function closeProductModal(e) {
  currentProductId = null;
 }
 
-function toggleWishlist(productId, event) {
- if (event) event.stopPropagation();
- const index = wishlist.indexOf(productId);
- if (index > -1) {
-  wishlist.splice(index, 1);
-  showToast('💔 تمت الإزالة من المفضلة', 'warning');
- } else {
-  wishlist.push(productId);
-  showToast('❤️ تمت الإضافة للمفضلة');
- }
  localStorage.setItem('doraWishlist', JSON.stringify(wishlist));
  renderProducts(currentFilter);
 }
