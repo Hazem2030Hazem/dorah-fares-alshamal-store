@@ -32,11 +32,11 @@ img{max-width:100%;display:block}
 .nav-links a:hover{color:#f8fafc;background:rgba(255,255,255,.1)}
 .nav-links a.active{color:#f8fafc;background:rgba(255,255,255,.1)}
 
-/* Login Section */
 .login-section{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:120px 25px 50px}
 .login-box{background:rgba(15,12,41,0.5) !important;backdrop-filter:blur(20px) !important;-webkit-backdrop-filter:blur(20px) !important;border:1px solid rgba(255,255,255,0.2) !important;border-radius:24px;padding:50px;width:100%;max-width:450px;box-shadow:0 8px 32px rgba(0,0,0,0.4) !important}
 .login-box h2{font-size:32px;font-weight:900;color:#ffffff;text-align:center;margin-bottom:30px;text-shadow:0 2px 10px rgba(255,255,255,0.2)}
 .login-box h2 span{color:#EF4444}
+.login-subtitle{color:rgba(255,255,255,0.7);text-align:center;margin-bottom:20px;font-size:14px}
 .form-group{margin-bottom:20px}
 .form-group label{display:block;color:rgba(255,255,255,0.8);font-size:14px;margin-bottom:8px;font-weight:600}
 .form-group input, .form-group textarea, .form-group select{width:100%;padding:14px 18px;border-radius:12px;border:1px solid rgba(255,255,255,0.3);background:rgba(15,12,41,0.85);color:#ffffff;font-size:16px;font-family:inherit;transition:all 0.3s ease}
@@ -48,14 +48,12 @@ img{max-width:100%;display:block}
 .btn-login:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(239,68,68,0.4)}
 .error-msg{color:#EF4444;font-size:14px;text-align:center;margin-top:15px;display:none}
 
-/* Dashboard */
 .dashboard{display:none;padding:140px 25px 50px;min-height:100vh}
 .dashboard-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;flex-wrap:wrap;gap:20px}
 .dashboard-header h1{font-size:36px;font-weight:900;color:#ffffff;text-shadow:0 2px 10px rgba(255,255,255,0.2)}
 .btn-logout{padding:10px 25px;background:rgba(239,68,68,0.2);color:#EF4444;border:1px solid rgba(239,68,68,0.5);border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.3s ease;font-family:inherit}
 .btn-logout:hover{background:rgba(239,68,68,0.3)}
 
-/* Stats Grid */
 .stats-grid{display:grid;grid-template-columns:repeat(4, 1fr);gap:20px;margin-bottom:40px}
 .stat-card{background:rgba(15,12,41,0.4) !important;backdrop-filter:blur(15px) !important;border:1px solid rgba(255,255,255,0.15) !important;border-radius:16px;padding:25px;text-align:center;transition:all 0.3s ease}
 .stat-card:hover{transform:translateY(-5px);border-color:rgba(239,68,68,0.4) !important}
@@ -66,17 +64,14 @@ img{max-width:100%;display:block}
 .stat-card:nth-child(3){border-top:3px solid #F59E0B}
 .stat-card:nth-child(4){border-top:3px solid #3B82F6}
 
-/* Tabs */
 .tabs{display:flex;gap:10px;margin-bottom:30px;flex-wrap:wrap}
 .tab-btn{padding:12px 24px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:#ffffff;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.3s ease;font-family:inherit}
 .tab-btn:hover{background:rgba(255,255,255,0.1)}
 .tab-btn.active{background:linear-gradient(135deg, #EF4444, #DC2626);border-color:transparent}
 
-/* Tab Content */
 .tab-content{display:none}
 .tab-content.active{display:block}
 
-/* Products Table */
 .table-container{background:rgba(15,12,41,0.4) !important;backdrop-filter:blur(15px) !important;border:1px solid rgba(255,255,255,0.15) !important;border-radius:16px;overflow:hidden;margin-bottom:30px}
 .table-header{display:flex;justify-content:space-between;align-items:center;padding:20px 25px;border-bottom:1px solid rgba(255,255,255,0.1)}
 .table-header h3{font-size:20px;font-weight:800;color:#ffffff}
@@ -99,18 +94,14 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .btn-reply{padding:6px 12px;background:rgba(245,158,11,0.2);color:#F59E0B;border:1px solid rgba(245,158,11,0.3);border-radius:8px;font-size:12px;cursor:pointer;transition:all 0.3s ease;font-family:inherit;margin-left:5px}
 .btn-reply:hover{background:rgba(245,158,11,0.3)}
 
-/* Modal */
 .modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;padding:20px}
 .modal.active{display:flex}
 .modal-content{background:rgba(15,12,41,0.95) !important;backdrop-filter:blur(20px) !important;border:1px solid rgba(255,255,255,0.2) !important;border-radius:24px;padding:40px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto}
 .modal-content form{background:rgba(15,12,41,0.8);padding:20px;border-radius:16px}
-
 .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}
 .modal-header h3{font-size:24px;font-weight:900;color:#ffffff}
 .btn-close{background:none;border:none;color:#ffffff;font-size:24px;cursor:pointer;padding:0;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all 0.3s ease}
 .btn-close:hover{background:rgba(255,255,255,0.1)}
-
-/* Form in modal */
 .modal .form-group{margin-bottom:18px}
 .modal .form-group label{font-size:13px;margin-bottom:6px}
 .modal .form-group input, .modal .form-group textarea, .modal .form-group select{padding:12px 16px;font-size:14px}
@@ -119,55 +110,27 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .btn-save{width:100%;padding:14px;background:linear-gradient(135deg, #10B981, #059669);color:white;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.3s ease;font-family:inherit;margin-top:10px}
 .btn-save:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(16,185,129,0.3)}
 
-/* Orders */
-.order-card{background:rgba(15,12,41,0.4) !important;backdrop-filter:blur(15px) !important;border:1px solid rgba(255,255,255,0.15) !important;border-radius:16px;padding:20px;margin-bottom:15px;display:grid;grid-template-columns:1fr auto auto;gap:20px;align-items:center}
-.order-info h4{font-size:16px;font-weight:700;color:#ffffff;margin-bottom:5px}
-.order-info p{font-size:13px;color:rgba(255,255,255,0.6)}
-.order-status{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700}
-.status-pending{background:rgba(245,158,11,0.2);color:#F59E0B;border:1px solid rgba(245,158,11,0.3)}
-.status-completed{background:rgba(16,185,129,0.2);color:#10B981;border:1px solid rgba(16,185,129,0.3)}
-.status-cancelled{background:rgba(239,68,68,0.2);color:#EF4444;border:1px solid rgba(239,68,68,0.3)}
-
-/* Reviews */
-.review-card{background:rgba(15,12,41,0.4) !important;backdrop-filter:blur(15px) !important;border:1px solid rgba(255,255,255,0.15) !important;border-radius:16px;padding:20px;margin-bottom:15px}
-.review-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.review-author{font-size:16px;font-weight:700;color:#ffffff}
-.review-date{font-size:13px;color:rgba(255,255,255,0.6)}
-.review-rating{color:#F59E0B;font-size:18px;margin-bottom:10px}
-.review-text{font-size:14px;color:rgba(255,255,255,0.8);line-height:1.6;margin-bottom:10px}
-.review-product{font-size:13px;color:#10B981;margin-bottom:10px}
-.review-actions{display:flex;gap:10px;justify-content:flex-end}
-
-/* Messages */
-.message-card{background:rgba(15,12,41,0.4) !important;backdrop-filter:blur(15px) !important;border:1px solid rgba(255,255,255,0.15) !important;border-radius:16px;padding:20px;margin-bottom:15px}
-.message-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.message-sender{font-size:16px;font-weight:700;color:#ffffff}
-.message-date{font-size:13px;color:rgba(255,255,255,0.6)}
-.message-subject{font-size:14px;color:#F59E0B;margin-bottom:8px;font-weight:600}
-.message-text{font-size:14px;color:rgba(255,255,255,0.8);line-height:1.6;margin-bottom:10px}
-.message-contact{font-size:13px;color:#3B82F6;margin-bottom:10px}
-.message-status{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;display:inline-block;margin-bottom:10px}
-.status-new{background:rgba(59,130,246,0.2);color:#3B82F6;border:1px solid rgba(59,130,246,0.3)}
-.status-read{background:rgba(16,185,129,0.2);color:#10B981;border:1px solid rgba(16,185,129,0.3)}
-.status-replied{background:rgba(245,158,11,0.2);color:#F59E0B;border:1px solid rgba(245,158,11,0.3)}
-
-/* Settings Sections */
 .settings-section{background:rgba(15,12,41,0.4) !important;backdrop-filter:blur(15px) !important;border:1px solid rgba(255,255,255,0.15) !important;border-radius:16px;padding:25px;margin-bottom:20px}
 .settings-section h4{font-size:18px;font-weight:800;color:#ffffff;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.1)}
 
-/* Footer */
 .footer{background:transparent;color:rgba(255,255,255,0.6);padding:40px 25px;text-align:center;border-top:1px solid rgba(255,255,255,0.1)}
 .footer a{color:#EF4444;text-decoration:none}
 
-/* Star Rating */
-.star-rating{display:flex;gap:5px;font-size:24px;cursor:pointer}
-.star-rating .star{color:rgba(255,255,255,0.3);transition:all 0.2s ease}
-.star-rating .star.active, .star-rating .star:hover{color:#F59E0B}
+.admin-data-card{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start;background:rgba(15,12,41,0.4);border:1px solid rgba(255,255,255,0.15);border-radius:16px;padding:20px;margin-bottom:15px}
+.admin-card-main{min-width:0}
+.admin-card-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+.admin-card-title strong{color:#ffffff;font-size:16px}
+.admin-card-title span{color:rgba(255,255,255,0.6);font-size:12px;font-weight:600}
+.admin-meta{display:flex;gap:10px;flex-wrap:wrap}
+.admin-meta span{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.8);font-size:12px;font-weight:600}
+.admin-note{color:rgba(255,255,255,0.7);line-height:1.7;margin:8px 0}
+.admin-card-actions{display:flex;gap:8px;flex-wrap:wrap}
+.admin-card-actions.buttons{flex-direction:column}
+.admin-empty{padding:38px 20px;text-align:center;border:1px dashed rgba(255,255,255,0.2);border-radius:16px;color:rgba(255,255,255,0.6);font-weight:600}
+.admin-empty.error{border-color:rgba(239,68,68,0.4);color:#EF4444}
 
-/* Responsive */
 @media(max-width:768px){
  .stats-grid{grid-template-columns:repeat(2, 1fr)}
- .order-card{grid-template-columns:1fr}
  .dashboard-header h1{font-size:24px}
  .login-box{padding:30px 20px}
  .header-inner{height:80px;padding:0 15px}
@@ -175,21 +138,21 @@ tr:hover td{background:rgba(255,255,255,0.02)}
  .logo-text h1{font-size:16px}
  .nav-links{display:none}
  .tabs{overflow-x:auto;flex-wrap:nowrap;padding-bottom:10px}
+ .admin-data-card{grid-template-columns:1fr}
 }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-// Supabase Configuration
-const SUPABASE_URL = 'https://kcbmvxuzjlaooknwhqqb.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjYm12eHV6amxhb29rbndocXFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NzkyMjAsImV4cCI6MjA5OTU1NTIyMH0.ayDpkfCKL90GcUKjbHQs7OvS5sxF1VSraWg58NHJ7ek';
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-</script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+    const SUPABASE_URL = 'https://kcbmvxuzjlaooknwhqqb.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjYm12eHV6amxhb29rbndocXFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NzkyMjAsImV4cCI6MjA5OTU1NTIyMH0.ayDpkfCKL90GcUKjbHQs7OvS5sxF1VSraWg58NHJ7ek';
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    </script>
     <link rel="stylesheet" href="admin-v2.css">
 </head>
 <body>
 <div class="particles" id="particles"></div>
 
-<!-- Header -->
 <header class="header">
     <div class="container">
         <div class="header-inner">
@@ -209,7 +172,6 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     </div>
 </header>
 
-<!-- Login Section -->
 <section class="login-section" id="loginSection">
     <div class="login-box">
         <h2>🔐 <span>لوحة</span> الإدارة</h2>
@@ -229,7 +191,6 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     </div>
 </section>
 
-<!-- Dashboard -->
 <section class="dashboard" id="dashboard">
     <div class="container">
         <div class="dashboard-header">
@@ -237,27 +198,13 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             <button class="btn-logout" onclick="logout()">🚪 تسجيل الخروج</button>
         </div>
 
-        <!-- Stats -->
         <div class="stats-grid">
-            <div class="stat-card">
-                <span class="num" id="totalProducts">0</span>
-                <span class="label">إجمالي المنتجات</span>
-            </div>
-            <div class="stat-card">
-                <span class="num" id="totalOrders">0</span>
-                <span class="label">الطلبات الجديدة</span>
-            </div>
-            <div class="stat-card">
-                <span class="num" id="totalReviews">0</span>
-                <span class="label">التقييمات</span>
-            </div>
-            <div class="stat-card">
-                <span class="num" id="totalMessages">0</span>
-                <span class="label">الرسائل الجديدة</span>
-            </div>
+            <div class="stat-card"><span class="num" id="totalProducts">0</span><span class="label">إجمالي المنتجات</span></div>
+            <div class="stat-card"><span class="num" id="totalOrders">0</span><span class="label">الطلبات الجديدة</span></div>
+            <div class="stat-card"><span class="num" id="totalReviews">0</span><span class="label">التقييمات</span></div>
+            <div class="stat-card"><span class="num" id="totalMessages">0</span><span class="label">الرسائل الجديدة</span></div>
         </div>
 
-        <!-- Tabs -->
         <div class="tabs">
             <button class="tab-btn active" onclick="showTab('products')">📦 المنتجات</button>
             <button class="tab-btn" onclick="showTab('orders')">🛒 الطلبات</button>
@@ -266,328 +213,91 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             <button class="tab-btn" onclick="showTab('customers')">👥 العملاء</button>
             <button class="tab-btn" onclick="showTab('receipts')">🧾 المدفوعات</button>
             <button class="tab-btn" onclick="showTab('messages')">📨 الرسائل</button>
-            <button class="tab-btn" onclick="showTab('settings')">⚙️ الإعدادات</button>
             <button class="tab-btn" onclick="showTab('content')">📝 إدارة المحتوى</button>
             <button class="tab-btn" onclick="showTab('pages')">📄 إدارة الصفحات</button>
-<button class="tab-btn" onclick="showTab('services_content')">🛠️ محتوى الخدمات</button>
-<button class="tab-btn" onclick="showTab('bank_accounts')">🏦 الحسابات البنكية</button>
-<button class="tab-btn" onclick="showTab('files')">📁 الملفات والمستندات</button>
             <button class="tab-btn" onclick="showTab('services_content')">🛠️ محتوى الخدمات</button>
-<button class="tab-btn" onclick="showTab('bank_accounts')">🏦 الحسابات البنكية</button>
+            <button class="tab-btn" onclick="showTab('bank_accounts')">🏦 الحسابات البنكية</button>
+            <button class="tab-btn" onclick="showTab('files')">📁 الملفات والمستندات</button>
+            <button class="tab-btn" onclick="showTab('settings')">⚙️ الإعدادات</button>
         </div>
 
-        <!-- Products Tab -->
         <div class="tab-content active" id="productsTab">
             <div class="table-container">
-                <div class="table-header">
-                    <h3>📦 قائمة المنتجات</h3>
-                    <button class="btn-add" onclick="openModal()">➕ إضافة منتج</button>
-                </div>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>الصورة</th>
-                                <th>الاسم</th>
-                                <th>الوصف</th>
-                                <th>السعر</th>
-                                <th>التصنيف</th>
-                                <th>الإجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="productsTable">
-                        </tbody>
-                    </table>
-                </div>
+                <div class="table-header"><h3>📦 قائمة المنتجات</h3><button class="btn-add" onclick="openModal()">➕ إضافة منتج</button></div>
+                <div class="table-responsive"><table><thead><tr><th>#</th><th>الصورة</th><th>الاسم</th><th>الوصف</th><th>السعر</th><th>التصنيف</th><th>الإجراءات</th></tr></thead><tbody id="productsTable"></tbody></table></div>
             </div>
         </div>
 
-        <!-- Orders Tab -->
-        <div class="tab-content" id="ordersTab">
-            <div id="ordersList"></div>
+        <div class="tab-content" id="ordersTab"><div id="ordersList"></div></div>
+        <div class="tab-content" id="reviewsTab"><div class="table-container"><div class="table-header"><h3>⭐ التقييمات</h3><button class="btn-add" onclick="exportReviews()">📥 تصدير</button></div><div id="reviewsList"></div></div></div>
+        <div class="tab-content" id="messagesTab"><div class="table-container"><div class="table-header"><h3>📨 الرسائل</h3><button class="btn-add" onclick="exportMessages()">📥 تصدير</button></div><div id="messagesList"></div></div></div>
+        <div class="tab-content" id="servicesTab"><div class="table-container"><div class="table-header"><h3>🔧 طلبات الخدمات</h3></div><div id="servicesList"></div></div></div>
+        <div class="tab-content" id="customersTab"><div class="table-container"><div class="table-header"><h3>👥 العملاء المسجلون</h3></div><div id="customersList"></div></div></div>
+        <div class="tab-content" id="receiptsTab"><div class="table-container"><div class="table-header"><h3>🧾 إيصالات الدفع</h3></div><div id="receiptsList"></div></div></div>
+
+        <div class="tab-content" id="contentTab">
+            <div class="table-container"><div class="table-header"><h3>📝 إدارة محتوى الموقع</h3><button class="btn-add" onclick="loadSiteContent()">🔄 تحديث</button></div><div id="siteContentList" style="padding:20px;"><div class="admin-empty">⏳ جاري تحميل المحتوى...</div></div></div>
         </div>
 
-        <!-- Reviews Tab -->
-        <div class="tab-content" id="reviewsTab">
-            <div class="table-container">
-                <div class="table-header">
-                    <h3>⭐ التقييمات</h3>
-                    <button class="btn-add" onclick="exportReviews()">📥 تصدير التقييمات</button>
-                </div>
-                <div id="reviewsList"></div>
-            </div>
+        <div class="tab-content" id="pagesTab">
+            <div class="table-container"><div class="table-header"><h3>📄 إدارة محتوى كل صفحات الموقع</h3><button class="btn-add" onclick="loadSitePages()">🔄 تحديث</button></div><div id="sitePagesList" style="padding:20px;"><div class="admin-empty">⏳ جاري تحميل الصفحات...</div></div></div>
         </div>
 
-        <!-- Messages Tab -->
-        <div class="tab-content" id="messagesTab">
-            <div class="table-container">
-                <div class="table-header">
-                    <h3>📨 الرسائل والشكاوى</h3>
-                    <button class="btn-add" onclick="exportMessages()">📥 تصدير الرسائل</button>
-                </div>
-                <div id="messagesList"></div>
-            </div>
+        <div class="tab-content" id="services_contentTab">
+            <div class="table-container"><div class="table-header"><h3>🛠️ إدارة محتوى صفحات الخدمات</h3><button class="btn-add" onclick="loadServicePagesContent()">🔄 تحديث</button></div><div id="servicePagesList" style="padding:20px;"><div class="admin-empty">⏳ جاري تحميل محتوى الخدمات...</div></div></div>
         </div>
 
-        <!-- Service Requests Tab -->
-        <div class="tab-content" id="servicesTab">
-            <div class="table-container">
-                <div class="table-header">
-                    <h3>🔧 طلبات الخدمات</h3>
-                </div>
-                <div id="servicesList"></div>
-            </div>
+        <div class="tab-content" id="bank_accountsTab">
+            <div class="table-container"><div class="table-header"><h3>🏦 إدارة الحسابات البنكية</h3><button class="btn-add" onclick="addBankAccount()">➕ إضافة حساب</button></div><div id="bankAccountsList" style="padding:20px;"><div class="admin-empty">⏳ جاري تحميل الحسابات...</div></div></div>
         </div>
 
-        <!-- Customers Tab -->
-        <div class="tab-content" id="customersTab">
-            <div class="table-container">
-                <div class="table-header">
-                    <h3>👥 العملاء المسجلون</h3>
-                </div>
-                <div id="customersList"></div>
-            </div>
+        <div class="tab-content" id="filesTab">
+            <div class="table-container"><div class="table-header"><h3>📁 إدارة الملفات والمستندات</h3><button class="btn-add" onclick="addNewFile()">➕ رفع ملف جديد</button></div><div id="siteFilesList" style="padding:20px;"><div class="admin-empty">⏳ جاري تحميل الملفات...</div></div></div>
         </div>
 
-        <!-- Payment Receipts Tab -->
-        <div class="tab-content" id="receiptsTab">
-            <div class="table-container">
-                <div class="table-header">
-                    <h3>🧾 إيصالات الدفع</h3>
-                </div>
-                <div id="receiptsList"></div>
-            </div>
-        </div>
-
-        <!-- Settings Tab -->
-        <!-- Service Pages Content Tab -->
-<div class="tab-content" id="services_contentTab">
-  <div class="table-container">
-    <div class="table-header">
-      <h3>🛠️ إدارة محتوى صفحات الخدمات</h3>
-      <button class="btn-add" onclick="loadServicePagesContent()">🔄 تحديث</button>
-    </div>
-    <div id="servicePagesList" style="padding: 20px;">
-      <div class="admin-empty">⏳ جاري تحميل محتوى الخدمات...</div>
-    </div>
-  </div>
-</div>
-
-<!-- Bank Accounts Tab -->
-<div class="tab-content" id="bank_accountsTab">
-  <div class="table-container">
-    <div class="table-header">
-      <h3>🏦 إدارة الحسابات البنكية</h3>
-      <button class="btn-add" onclick="addBankAccount()">➕ إضافة حساب</button>
-    </div>
-    <div id="bankAccountsList" style="padding: 20px;">
-      <div class="admin-empty">⏳ جاري تحميل الحسابات البنكية...</div>
-    </div>
-  </div>
-</div>
-        <!-- Site Pages Management Tab -->
-<div class="tab-content" id="pagesTab">
-  <div class="table-container">
-    <div class="table-header">
-      <h3>📄 إدارة محتوى كل صفحات الموقع</h3>
-      <button class="btn-add" onclick="loadSitePages()">🔄 تحديث</button>
-    </div>
-    <div id="sitePagesList" style="padding: 20px;">
-      <div class="admin-empty">⏳ جاري تحميل الصفحات...</div>
-    </div>
-  </div>
-</div>
-
-<!-- Service Pages Content Tab -->
-<div class="tab-content" id="services_contentTab">
-  <div class="table-container">
-    <div class="table-header">
-      <h3>🛠️ إدارة محتوى صفحات الخدمات</h3>
-      <button class="btn-add" onclick="loadServicePagesContent()">🔄 تحديث</button>
-    </div>
-    <div id="servicePagesList" style="padding: 20px;">
-      <div class="admin-empty">⏳ جاري تحميل محتوى الخدمات...</div>
-    </div>
-  </div>
-</div>
-
-<!-- Bank Accounts Tab -->
-<div class="tab-content" id="bank_accountsTab">
-  <div class="table-container">
-    <div class="table-header">
-      <h3>🏦 إدارة الحسابات البنكية</h3>
-      <button class="btn-add" onclick="addBankAccount()">➕ إضافة حساب</button>
-    </div>
-    <div id="bankAccountsList" style="padding: 20px;">
-      <div class="admin-empty">⏳ جاري تحميل الحسابات البنكية...</div>
-    </div>
-  </div>
-</div>
-
-<!-- Files Management Tab -->
-<div class="tab-content" id="filesTab">
-  <div class="table-container">
-    <div class="table-header">
-      <h3>📁 إدارة الملفات والمستندات</h3>
-      <button class="btn-add" onclick="addNewFile()">➕ رفع ملف جديد</button>
-    </div>
-    <div id="siteFilesList" style="padding: 20px;">
-      <div class="admin-empty">⏳ جاري تحميل الملفات...</div>
-    </div>
-  </div>
-</div>
-        <!-- Content Management Tab -->
-<div class="tab-content" id="contentTab">
-  <div class="table-container">
-    <div class="table-header">
-      <h3>📝 إدارة محتوى الموقع</h3>
-      <button class="btn-add" onclick="loadSiteContent()">🔄 تحديث</button>
-    </div>
-    <div id="siteContentList" style="padding: 20px;">
-      <div class="admin-empty">⏳ جاري تحميل المحتوى...</div>
-    </div>
-  </div>
-</div>
         <div class="tab-content" id="settingsTab">
-            <div class="settings-section">
-                <h4>🏢 معلومات الشركة</h4>
-                <div class="form-group">
-                    <label>اسم الشركة</label>
-                    <input type="text" id="companyName" value="شركة درة فارس الشمال">
-                </div>
-                <div class="form-group">
-                    <label>العنوان</label>
-                    <input type="text" id="companyAddress" value="الرياض، المملكة العربية السعودية">
-                </div>
+            <div class="settings-section"><h4>🏢 معلومات الشركة</h4>
+                <div class="form-group"><label>اسم الشركة</label><input type="text" id="companyName" value="شركة درة فارس الشمال"></div>
+                <div class="form-group"><label>العنوان</label><input type="text" id="companyAddress" value="الرياض، المملكة العربية السعودية"></div>
             </div>
-
-            <div class="settings-section">
-                <h4>📞 أرقام التواصل</h4>
-                <div class="form-group">
-                    <label>رقم الهاتف الأول (واتساب)</label>
-                    <input type="text" id="companyPhone1" value="966568717449">
-                </div>
-                <div class="form-group">
-                    <label>رقم الهاتف الثاني</label>
-                    <input type="text" id="companyPhone2" value="966545358773">
-                </div>
-                <div class="form-group">
-                    <label>البريد الإلكتروني</label>
-                    <input type="email" id="companyEmail" value="info@alshamal-df.com">
-                </div>
+            <div class="settings-section"><h4>📞 أرقام التواصل</h4>
+                <div class="form-group"><label>رقم الهاتف الأول</label><input type="text" id="companyPhone1" value="966568717449"></div>
+                <div class="form-group"><label>رقم الهاتف الثاني</label><input type="text" id="companyPhone2" value="966545358773"></div>
+                <div class="form-group"><label>البريد الإلكتروني</label><input type="email" id="companyEmail" value="info@alshamal-df.com"></div>
             </div>
-
-            <div class="settings-section">
-                <h4>🌐 روابط التواصل الاجتماعي</h4>
-                <div class="form-group">
-                    <label>تويتر (X)</label>
-                    <input type="text" id="socialTwitter" value="https://twitter.com/dorafares">
-                </div>
-                <div class="form-group">
-                    <label>انستقرام</label>
-                    <input type="text" id="socialInstagram" value="https://instagram.com/dorafares">
-                </div>
-                <div class="form-group">
-                    <label>فيسبوك</label>
-                    <input type="text" id="socialFacebook" value="https://facebook.com/dorafares">
-                </div>
-                <div class="form-group">
-                    <label>لينكدإن</label>
-                    <input type="text" id="socialLinkedin" value="https://linkedin.com/company/dorafares">
-                </div>
+            <div class="settings-section"><h4>🌐 روابط التواصل</h4>
+                <div class="form-group"><label>تويتر</label><input type="text" id="socialTwitter"></div>
+                <div class="form-group"><label>انستقرام</label><input type="text" id="socialInstagram"></div>
+                <div class="form-group"><label>فيسبوك</label><input type="text" id="socialFacebook"></div>
+                <div class="form-group"><label>لينكدإن</label><input type="text" id="socialLinkedin"></div>
             </div>
-
-            <div class="settings-section">
-                <h4>💬 رسالة واتساب التلقائية</h4>
-                <div class="form-group">
-                    <label>نص الرسالة الافتراضي</label>
-                    <textarea id="whatsappMessage" rows="3">مرحباً شركة درة فارس الشمال، أرغب في الاستفسار عن منتجاتكم</textarea>
-                </div>
+            <div class="settings-section"><h4>💬 رسالة واتساب</h4>
+                <div class="form-group"><label>نص الرسالة</label><textarea id="whatsappMessage" rows="3">مرحباً شركة درة فارس الشمال، أرغب في الاستفسار عن منتجاتكم</textarea></div>
             </div>
-
             <button class="btn-save" onclick="saveSettings()">💾 حفظ جميع الإعدادات</button>
         </div>
     </div>
 </section>
 
-<!-- Add/Edit Product Modal -->
 <div class="modal" id="productModal">
     <div class="modal-content">
-        <div class="modal-header">
-            <h3 id="modalTitle">➕ إضافة منتج</h3>
-            <button class="btn-close" onclick="closeModal()">✕</button>
-        </div>
+        <div class="modal-header"><h3 id="modalTitle">➕ إضافة منتج</h3><button class="btn-close" onclick="closeModal()">✕</button></div>
         <form id="productForm" onsubmit="return saveProduct(event)">
             <input type="hidden" id="productId">
-            <div class="form-group">
-                <label>📷 رابط الصورة</label>
-                <input type="text" id="productImage" placeholder="https://example.com/image.jpg">
-            </div>
-            <div class="form-group">
-                <label>🏷️ اسم المنتج</label>
-                <input type="text" id="productName" placeholder="اسم المنتج" required>
-            </div>
-            <div class="form-group">
-                <label>📝 وصف المنتج</label>
-                <textarea id="productDesc" rows="4" placeholder="اكتب وصفًا واضحًا يظهر للعميل داخل بطاقة المنتج وصفحة تفاصيله"></textarea>
-            </div>
-            <div class="form-group">
-                <label>💰 السعر (ريال)</label>
-                <input type="number" id="productPrice" placeholder="1000" required>
-            </div>
-            <div class="form-group">
-                <label>📂 التصنيف</label>
-                <select id="productCategory">
-                    <option value="printers">طابعات</option>
-                    <option value="computers">كمبيوتر</option>
-                    <option value="ram">رامات</option>
-                    <option value="storage">هاردات</option>
-                    <option value="cables">وصلات</option>
-                    <option value="projectors">بروجكتور</option>
-                    <option value="accessories">إكسسوارات</option>
-                    <option value="ink">أحبار الطابعات</option>
-                    <option value="food">المواد الغذائية</option>
-                </select>
-            </div>
+            <div class="form-group"><label>📷 رابط الصورة</label><input type="text" id="productImage"></div>
+            <div class="form-group"><label>🏷️ اسم المنتج</label><input type="text" id="productName" required></div>
+            <div class="form-group"><label>📝 وصف المنتج</label><textarea id="productDesc" rows="4"></textarea></div>
+            <div class="form-group"><label>💰 السعر (ريال)</label><input type="number" id="productPrice" required></div>
+            <div class="form-group"><label>📂 التصنيف</label><select id="productCategory">
+                <option value="printers">طابعات</option><option value="computers">كمبيوتر</option><option value="ram">رامات</option>
+                <option value="storage">هاردات</option><option value="cables">وصلات</option><option value="projectors">بروجكتور</option>
+                <option value="accessories">إكسسوارات</option><option value="ink">أحبار</option><option value="food">مواد غذائية</option>
+            </select></div>
             <button type="submit" class="btn-save">💾 حفظ المنتج</button>
         </form>
     </div>
 </div>
 
-<!-- Reply Message Modal -->
 <div class="modal" id="replyModal">
     <div class="modal-content">
-        <div class="modal-header">
-            <h3>📨 الرد على الرسالة</h3>
-            <button class="btn-close" onclick="closeReplyModal()">✕</button>
-        </div>
-        <div class="form-group">
-            <label>المرسل</label>
-            <input type="text" id="replySender" readonly>
-        </div>
-        <div class="form-group">
-            <label>الرسالة الأصلية</label>
-            <textarea id="replyOriginal" readonly rows="3"></textarea>
-        </div>
-        <div class="form-group">
-            <label>ردك</label>
-            <textarea id="replyText" rows="4" placeholder="اكتب ردك هنا..."></textarea>
-        </div>
-        <button class="btn-save" onclick="sendReply()">📨 إرسال الرد</button>
-    </div>
-</div>
-
-<!-- Footer -->
-<footer class="footer">
-    <div class="container">
-        <p>© 2024 شركة درة فارس الشمال. جميع الحقوق محفوظة. | <a href="index.html">العودة للرئيسية</a></p>
-    </div>
-</footer>
-
-<script>
-
-</script>
-<script src="admin-v2.js"></script>
-</body>
-</html>
+        <div class="modal-header"><h3>📨 الرد على الرسالة</h3><button class="btn-close"
