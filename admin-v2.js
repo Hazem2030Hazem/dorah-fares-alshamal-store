@@ -981,3 +981,87 @@ window.showTab = function(tabName){
   if (tabName === 'files') loadSiteFiles();
   if (tabName === 'content') loadSiteContent();
 };
+/* ============================================================
+   إدارة صفحات الموقع — تحكم كامل (موسع)
+   ============================================================ */
+window.editSitePage = async function(pageKey){
+  // جلب البيانات الحالية للصفحة
+  const { data, error } = await supabaseClient
+    .from('site_pages')
+    .select('*')
+    .eq('page_key', pageKey)
+    .single();
+
+  if (error || !data) { alert('❌ لم يتم العثور على الصفحة'); return; }
+
+  // تعديل الحقول الأساسية
+  const heroTitle = prompt('العنوان الرئيسي للصفحة:', data.hero_title || '');
+  if (heroTitle === null) return;
+  const heroSubtitle = prompt('الوصف تحت العنوان:', data.hero_subtitle || '');
+  if (heroSubtitle === null) return;
+
+  // القسم الأول
+  const section1Title = prompt('عنوان القسم الأول:', data.section_1_title || '');
+  if (section1Title === null) return;
+  const section1Content = prompt('محتوى القسم الأول (نص طويل):', data.section_1_content || '');
+  if (section1Content === null) return;
+  const section1Image = prompt('رابط صورة القسم الأول (اختياري):', data.section_1_image || '');
+  if (section1Image === null) return;
+  const section1ButtonText = prompt('نص زر القسم الأول (اختياري):', data.section_1_button_text || '');
+  if (section1ButtonText === null) return;
+  const section1ButtonUrl = prompt('رابط زر القسم الأول (اختياري):', data.section_1_button_url || '');
+  if (section1ButtonUrl === null) return;
+
+  // الإحصائيات
+  const stats = prompt('الإحصائيات (مثلاً: +15,سنة خبرة|+500,عميل سعيد|+1000,مشروع|4.9/5,تقييم):', data.section_1_stats || '');
+  if (stats === null) return;
+
+  // أعضاء الفريق
+  const teamMembers = prompt('أعضاء الفريق (مثلاً: 👨‍💼,محمد علي,المدير العام|👨‍🔧,فريق الفنيين,+12 فني):', data.team_members || '');
+  if (teamMembers === null) return;
+
+  // الشهادات
+  const certifications = prompt('الشهادات (مثلاً: 🏆,شهادة HP,شريك معتمد|✅,ISO 9001,معتمد):', data.certifications_list || '');
+  if (certifications === null) return;
+
+  // الأسئلة الشائعة
+  const faqItems = prompt('الأسئلة الشائعة (مثلاً: كيف أطلب؟,يمكنك الطلب عبر...|ما هي طرق الدفع؟,نقبل...):', data.faq_items || '');
+  if (faqItems === null) return;
+
+  // معلومات التواصل
+  const contactEmail = prompt('البريد الإلكتروني:', data.contact_email || '');
+  if (contactEmail === null) return;
+  const contactPhone = prompt('رقم الهاتف:', data.contact_phone || '');
+  if (contactPhone === null) return;
+  const contactWhatsapp = prompt('رقم الواتساب:', data.contact_whatsapp || '');
+  if (contactWhatsapp === null) return;
+  const contactAddress = prompt('العنوان:', data.contact_address || '');
+  if (contactAddress === null) return;
+
+  // حفظ كل التغييرات
+  const { error: updateError } = await supabaseClient
+    .from('site_pages')
+    .update({
+      hero_title: heroTitle,
+      hero_subtitle: heroSubtitle,
+      section_1_title: section1Title,
+      section_1_content: section1Content,
+      section_1_image: section1Image,
+      section_1_button_text: section1ButtonText,
+      section_1_button_url: section1ButtonUrl,
+      section_1_stats: stats,
+      team_members: teamMembers,
+      certifications_list: certifications,
+      faq_items: faqItems,
+      contact_email: contactEmail,
+      contact_phone: contactPhone,
+      contact_whatsapp: contactWhatsapp,
+      contact_address: contactAddress,
+      updated_at: new Date().toISOString()
+    })
+    .eq('page_key', pageKey);
+
+  if (updateError) { alert('❌ خطأ: ' + updateError.message); return; }
+  alert('✅ تم حفظ جميع التغييرات بنجاح!');
+  loadSitePages();
+};
