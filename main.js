@@ -1629,7 +1629,46 @@ function renderWishlistPage() {
         return `<div class="prod-card wishlisted" data-id="${p.id}"><div class="prod-img" onclick="openQuickView(${p.id})">${p.badge ? `<div class="prod-badge">${p.badge}</div>` : ''}<img src="${p.image}" alt="${p.name}" loading="lazy"></div><button class="wishlist-btn active" onclick="toggleWishlist(${p.id}, event); renderWishlistPage();">❤️</button><div class="prod-body"><span class="prod-tag">${catLabels[p.category]}</span><h4 class="prod-name" onclick="openProductModal(${p.id})">${p.name}</h4><div class="modal-rating" style="margin-bottom:8px"><span class="stars">${stars}</span><span class="rating-text">${p.rating || 0}</span></div><p class="prod-desc">${p.desc}</p><div class="prod-footer"><div class="prod-price">${hasDiscount ? `<span class="old-price">${formatPrice(p.oldPrice)}</span>` : ''} ${formatPrice(p.price)}</div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"><button class="add-btn" onclick="addToCart(${p.id})">🛒 أضف للسلة</button><button class="quote-btn" onclick="requestQuote(${p.id}, event)">📋 عرض سعر</button></div></div></div></div>`;
       }).join('')}</div>`;
 }
+// ===== تحميل الشركاء والعملاء =====
+async function loadPartners() {
+    var grid = document.getElementById('partnersGrid');
+    var countText = document.getElementById('partnersCount');
+    if (!grid) return;
 
+    try {
+        var result = await supabaseClient
+            .from('partners')
+            .select('*')
+            .order('id', { ascending: false });
+
+        if (result.error) throw result.error;
+
+        var partners = result.data || [];
+
+        if (partners.length === 0) {
+            grid.innerHTML = '<div style="text-align:center;width:100%;padding:30px;color:rgba(255,255,255,0.5)">🤝 لم يتم إضافة شركاء بعد</div>';
+            if (countText) countText.textContent = '';
+            return;
+        }
+
+        grid.innerHTML = partners.map(function(p) {
+            var imgHtml = '';
+            if (p.image_url) {
+                imgHtml = '<img src="' + p.image_url + '" alt="' + p.name + '" class="partner-logo" style="width:60px;height:60px;border-radius:12px;object-fit:cover;margin-left:10px" loading="lazy">';
+            }
+            return '<div class="partner-item" style="display:flex;align-items:center;justify-content:center;gap:10px">' +
+                imgHtml +
+                '<span>' + p.name + '</span>' +
+                '</div>';
+        }).join('');
+
+        if (countText) countText.textContent = 'وأكثر من ' + partners.length + ' شريك وعميل يثقون بخدماتنا';
+
+    } catch (e) {
+        console.log('Partners load error:', e);
+        grid.innerHTML = '<div style="text-align:center;width:100%;padding:30px;color:#EF4444">⚠️ تعذر تحميل الشركاء</div>';
+    }
+}
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', function() {
   injectSidebar();
