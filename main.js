@@ -1693,7 +1693,6 @@ async function loadCompanyTestimonials() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(loadCompanyTestimonials, 1000);
+setTimeout(loadCompanyTestimonials, 1000);
 });
 });
