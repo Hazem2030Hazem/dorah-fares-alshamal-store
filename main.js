@@ -1426,8 +1426,7 @@ let doraSiteSettings = { ...DORA_DEFAULT_SITE_SETTINGS, ...(JSON.parse(localStor
 function normalizeDoraPhone(phone){ let p = String(phone || '').replace(/\D/g, ''); if (p.startsWith('05')) p = '966' + p.slice(1); return p || DORA_DEFAULT_SITE_SETTINGS.companyPhone1; }
 function formatDoraPhone(phone){ const p = normalizeDoraPhone(phone); if (p.length === 12 && p.startsWith('966')) return `+966 ${p.slice(3,5)} ${p.slice(5,8)} ${p.slice(8)}`; return '+' + p; }
 function getDoraSiteSettings(){ return { ...DORA_DEFAULT_SITE_SETTINGS, ...doraSiteSettings }; }
-function doraWhatsAppLink(message, phone){ const settings = getDoraSiteSettings(); return 'https://wa.me/' + normalizeDoraPhone(phone || settings.companyPhone1) + '?text=' + encodeURIComponent(message || settings.whatsappMessage); }
-function replaceDoraText(search, replacement){
+function doraWhatsAppLink(message, phone){ const settings = getDoraSiteSettings(); return 'https://wa.me/' + normalizeDoraPhone(phone || settings.companyPhone2) + '?text=' + encodeURIComponent(message || settings.whatsappMessage); }
   if (!search || !replacement || search === replacement) return;
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   const nodes = [];
