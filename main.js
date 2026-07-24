@@ -25,11 +25,9 @@ document.addEventListener('DOMContentLoaded', function(){
       var lx = Math.random() * 92, ty = Math.random() * 82;
       img.style.left = lx.toFixed(1) + '%';
       img.style.top = ty.toFixed(1) + '%';
-      // اللوجوهات في النص (ورا العنوان) تفضل خفيفة، واللي على الجوانب بألوان حقيقية زاهية
       var inCenter = (lx > 28 && lx < 62 && ty > 25 && ty < 72);
       img.style.opacity = inCenter ? (0.12 + Math.random() * 0.13).toFixed(2)
                                    : (0.38 + Math.random() * 0.4).toFixed(2);
-      // سرعة أعلى بكثير — حركة واضحة
       img.style.animationDuration = (3.5 + Math.random() * 5.5).toFixed(1) + 's';
       img.style.animationDelay = (-Math.random() * 8).toFixed(1) + 's';
       var f=''; if (Math.random()<0.3) f+='blur('+(1+Math.random()*1.6).toFixed(1)+'px) ';
@@ -148,7 +146,6 @@ function calculateDiscount(amount, discountPercent) {
 }
 
 document.addEventListener('keydown', function(e) {
- // Ctrl + Alt + H → Open admin page directly
  if (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'h') {
   e.preventDefault();
   window.open('admin.html?secret=dora2024', '_blank');
@@ -282,7 +279,7 @@ function renderProducts(filter) {
        <button class="quote-btn" onclick="requestQuote(${p.id}, event)" aria-label="اطلب عرض سعر">
         📋 عرض سعر
        </button>
-              <button class="quick-view-btn-icon" onclick="openQuickView(${p.id})" aria-label="نظرة سريعة" style="background:transparent;border:1px solid #D1D5DB;color:#374151;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;display:inline-flex;align-items:center;gap:4px;transition:all 0.3s ease">
+       <button class="quick-view-btn-icon" onclick="openQuickView(${p.id})" aria-label="نظرة سريعة" style="background:transparent;border:1px solid #D1D5DB;color:#374151;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;display:inline-flex;align-items:center;gap:4px;transition:all 0.3s ease">
         👁️
        </button>
        <button class="compare-btn ${isCompared ? 'active' : ''}" onclick="toggleCompare(${p.id}, event)" aria-label="مقارنة">
@@ -439,10 +436,6 @@ function closeProductModal(e) {
  document.getElementById('productModalOverlay').classList.remove('active');
  document.body.style.overflow = '';
  currentProductId = null;
-}
-
- localStorage.setItem('doraWishlist', JSON.stringify(wishlist));
- renderProducts(currentFilter);
 }
 
 function toggleCompare(productId, event) {
@@ -738,7 +731,6 @@ function toggleTheme() {
   html.setAttribute('data-theme', next);
   localStorage.setItem('doraTheme', next);
 
-  // Direct style manipulation for immediate effect
   if (next === 'dark') {
     document.body.style.setProperty('background', "#ffffff url('hero-bg-white-logo-pattern.jpg') center/cover no-repeat fixed", 'important');
     document.body.style.setProperty('animation', 'none', 'important');
@@ -760,7 +752,6 @@ function initTheme() {
   const saved = localStorage.getItem('doraTheme') || 'light';
   document.documentElement.setAttribute('data-theme', saved);
 
-  // Direct style manipulation for immediate effect
   if (saved === 'dark') {
     document.body.style.setProperty('background', "#ffffff url('hero-bg-white-logo-pattern.jpg') center/cover no-repeat fixed", 'important');
     document.body.style.setProperty('animation', 'none', 'important');
@@ -876,7 +867,7 @@ function showToast(message, type) {
  }
 
  toast.classList.add('show');
- setTimeout(() => toast.classList.remove('show'), 10000); // 10 seconds for user to read
+ setTimeout(() => toast.classList.remove('show'), 10000);
 }
 
 function showPrivacyPolicy() {
@@ -994,23 +985,15 @@ function initHeaderScroll() {
  }
 }
 
-
-
 // ===== AUDIO VOLUME CONTROL =====
 let currentVolume = 0.30;
 let audioVolumePopupOpen = false;
 let isDraggingVolume = false;
 
-// Get the audio element - use the global one from the autoplay script
 function getAudioElement() {
-  // First try the global audio from the autoplay script
   if (window.doraAudio) return window.doraAudio;
-
-  // Fallback: find any audio element in the DOM
   const audios = document.querySelectorAll('audio');
   if (audios.length > 0) return audios[0];
-
-  // If not found, create one with the same URL
   const AUDIO_URL = 'https://raw.githubusercontent.com/Hazem2030Hazem/dorah-fares-alshamal-store/refs/heads/main/music.mp3';
   const newAudio = new Audio(AUDIO_URL);
   newAudio.loop = true;
@@ -1020,20 +1003,11 @@ function getAudioElement() {
   return newAudio;
 }
 
-// Set volume with higher max (up to 200% using exponential curve)
 function setAudioVolume(percentage) {
-  // percentage is 0-100
-  // Use exponential curve for louder perceived volume
-  // 0% -> 0.0, 50% -> 0.5, 100% -> 1.0 (but we can go higher with exponential)
   const normalizedVolume = percentage / 100;
-
-  // Use exponential curve: volume = normalizedVolume^2 * 2
-  // This gives: 0% -> 0, 50% -> 0.5, 100% -> 2.0 (200%)
   const gainValue = Math.min(2.0, normalizedVolume * normalizedVolume * 2);
-
   const audio = getAudioElement();
   if (audio) {
-    // Standard audio volume (0.0 - 1.0)
     audio.volume = Math.min(1.0, gainValue);
   }
 }
@@ -1042,11 +1016,9 @@ function toggleAudioVolumePopup(e) {
   if (e) e.stopPropagation();
   const popup = document.getElementById('audioVolumePopup');
   if (!popup) return;
-
   audioVolumePopupOpen = !audioVolumePopupOpen;
   if (audioVolumePopupOpen) {
     popup.classList.add('show');
-    // Update slider position based on current volume
     const audio = getAudioElement();
     if (audio) {
       const vol = audio.volume * 100;
@@ -1062,42 +1034,21 @@ function setVolumeFromClick(e) {
   if (e) e.stopPropagation();
   const slider = document.getElementById('volumeSlider');
   if (!slider) return;
-
   const rect = slider.getBoundingClientRect();
   const sliderWidth = rect.width;
-
-  // For RTL (Arabic): 
-  // The slider is horizontal but RTL means right-to-left
-  // We need to calculate based on the click position relative to the slider width
-
   const clickX = e.clientX - rect.left;
-
-  // For RTL: 
-  // clickX = 0 means right edge (100% volume)
-  // clickX = sliderWidth means left edge (0% volume)
-  // So percentage = 100 - (clickX / sliderWidth * 100)
   let percentage = 100 - ((clickX / sliderWidth) * 100);
   percentage = Math.max(0, Math.min(100, percentage));
-
   currentVolume = percentage / 100;
-
-  // Update visual elements
   const fill = document.getElementById('volumeSliderFill');
   const thumb = document.getElementById('volumeSliderThumb');
   const value = document.getElementById('volumeValue');
-
   if (fill) fill.style.width = percentage + '%';
-
-  // Move thumb to follow the fill position
-  // For RTL: thumb position = percentage from the right
   if (thumb) {
     thumb.style.left = 'auto';
     thumb.style.right = (percentage - 1) + '%';
   }
-
   if (value) value.textContent = Math.round(percentage) + '%';
-
-  // Update the actual audio volume
   setAudioVolume(percentage);
 }
 
@@ -1107,14 +1058,12 @@ function toggleMute() {
     showToast('❌ الصوت غير متاح حالياً');
     return;
   }
-
   if (currentVolume > 0) {
     audio._lastVolume = currentVolume;
     currentVolume = 0;
     window.doraAudioMuted = true;
     audio.volume = 0;
     audio.muted = true;
-
     const fill = document.getElementById('volumeSliderFill');
     const thumb = document.getElementById('volumeSliderThumb');
     const value = document.getElementById('volumeValue');
@@ -1127,7 +1076,6 @@ function toggleMute() {
     window.doraAudioMuted = false;
     audio.volume = currentVolume;
     audio.muted = false;
-
     const fill = document.getElementById('volumeSliderFill');
     const thumb = document.getElementById('volumeSliderThumb');
     const value = document.getElementById('volumeValue');
@@ -1139,7 +1087,6 @@ function toggleMute() {
   updateSpeakerIcon();
 }
 
-// Close popup when clicking outside
 document.addEventListener('click', function(e) {
   if (!e.target.closest('.audio-toggle-wrapper')) {
     const popup = document.getElementById('audioVolumePopup');
@@ -1150,7 +1097,6 @@ document.addEventListener('click', function(e) {
   }
 });
 
-// Drag support for slider
 document.addEventListener('DOMContentLoaded', function() {
   const slider = document.getElementById('volumeSlider');
   if (slider) {
@@ -1159,48 +1105,29 @@ document.addEventListener('DOMContentLoaded', function() {
       setVolumeFromClick(e);
     });
   }
-
   document.addEventListener('mousemove', function(e) {
-    if (isDraggingVolume) {
-      setVolumeFromClick(e);
-    }
+    if (isDraggingVolume) { setVolumeFromClick(e); }
   });
-
-  document.addEventListener('mouseup', function() {
-    isDraggingVolume = false;
-  });
-
-  // Touch support for mobile
+  document.addEventListener('mouseup', function() { isDraggingVolume = false; });
   document.addEventListener('touchmove', function(e) {
     if (isDraggingVolume && e.touches[0]) {
       const touch = e.touches[0];
-      const mouseEvent = {
-        clientX: touch.clientX,
-        clientY: touch.clientY,
-        stopPropagation: function() {}
-      };
+      const mouseEvent = { clientX: touch.clientX, clientY: touch.clientY, stopPropagation: function() {} };
       setVolumeFromClick(mouseEvent);
     }
   });
-
-  document.addEventListener('touchend', function() {
-    isDraggingVolume = false;
-  });
+  document.addEventListener('touchend', function() { isDraggingVolume = false; });
 });
+
 document.addEventListener('DOMContentLoaded', () => {
  initTheme();
  checkPWAInstallState();
  renderReviews();
 
- // Register Service Worker for PWA
  if ('serviceWorker' in navigator) {
    navigator.serviceWorker.register('sw.js')
-     .then(function(registration) {
-       console.log('✅ Service Worker registered:', registration.scope);
-     })
-     .catch(function(error) {
-       console.log('❌ Service Worker registration failed:', error);
-     });
+     .then(function(registration) { console.log('✅ Service Worker registered:', registration.scope); })
+     .catch(function(error) { console.log('❌ Service Worker registration failed:', error); });
  }
  renderProducts('all');
  updateCartUI();
@@ -1228,9 +1155,7 @@ let currentProductIdForRating = null;
 
 function scrollToSection(sectionId) {
     const section = document.getElementById(sectionId);
-    if (section) {
-        section.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (section) { section.scrollIntoView({ behavior: 'smooth' }); }
 }
 
 function openSiteRatingModal() {
@@ -1298,12 +1223,8 @@ async function submitSiteRating(event) {
     const comment = document.getElementById('siteRaterComment').value.trim();
     const rating = parseInt(document.getElementById('siteRatingValue').value);
 
-    if (!name || !comment) {
-        showToast('❌ الرجاء ملء جميع الحقول المطلوبة', 'error');
-        return;
-    }
+    if (!name || !comment) { showToast('❌ الرجاء ملء جميع الحقول المطلوبة', 'error'); return; }
 
-    // Show loading
     const form = document.getElementById('siteRatingForm');
     const submitBtn = form.querySelector('.rating-submit-btn');
     const originalText = submitBtn.textContent;
@@ -1311,24 +1232,9 @@ async function submitSiteRating(event) {
     submitBtn.disabled = true;
 
     try {
-        const review = {
-            name: name,
-            product: product || 'الموقع عامةً',
-            text: comment,
-            rating: rating
-        };
-
-        console.log('Submitting review:', review);
-
+        const review = { name: name, product: product || 'الموقع عامةً', text: comment, rating: rating };
         const { data, error } = await supabaseClient.from('reviews').insert([review]);
-
-        if (error) {
-            console.error('Supabase error:', error);
-            throw error;
-        }
-
-        console.log('Review saved:', data);
-
+        if (error) { throw error; }
         closeSiteRatingModal();
         document.getElementById('siteRaterName').value = '';
         document.getElementById('siteRaterProduct').value = '';
@@ -1336,29 +1242,25 @@ async function submitSiteRating(event) {
         setRating(5);
         showToast('✅ شكراً لتقييمك! تم حفظ التقييم بنجاح');
         await renderReviews();
-
     } catch (error) {
-        console.error('Error saving review:', error);
         showToast('❌ حدث خطأ! ' + (error.message || 'حاول مرة أخرى'), 'error');
     } finally {
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
     }
-}async function submitProductRating() {
+}
+
+async function submitProductRating() {
     const name = document.getElementById('productRaterName').value.trim();
     const comment = document.getElementById('productRaterComment').value.trim();
     const rating = parseInt(document.getElementById('productRatingValue').value);
     const productId = parseInt(document.getElementById('productRatingId').value);
 
-    if (!name || !comment) {
-        showToast('❌ الرجاء ملء جميع الحقول المطلوبة', 'error');
-        return;
-    }
+    if (!name || !comment) { showToast('❌ الرجاء ملء جميع الحقول المطلوبة', 'error'); return; }
 
     const product = productsData.find(p => p.id === productId);
     const productName = product ? product.name : 'منتج';
 
-    // Show loading
     const form = document.getElementById('productRatingForm');
     const submitBtn = form.querySelector('.rating-submit-btn');
     const originalText = submitBtn.textContent;
@@ -1366,48 +1268,24 @@ async function submitSiteRating(event) {
     submitBtn.disabled = true;
 
     try {
-        const review = {
-            name: name,
-            product: productName,
-            productId: productId,
-            comment: comment,
-            rating: rating,
-            type: 'product',
-            timestamp: new Date().toISOString()
-        };
-
+        const review = { name: name, product: productName, productId: productId, comment: comment, rating: rating, type: 'product', timestamp: new Date().toISOString() };
         await supabaseClient.from('reviews').insert([{name: review.name, product: review.product, text: review.comment, rating: review.rating, date: new Date().toLocaleDateString('ar-SA'), status: 'new'}]);
 
-        // Also add to product reviews locally
         if (product) {
             if (!product.reviews) product.reviews = [];
-            product.reviews.push({
-                author: name,
-                date: new Date().toISOString().split('T')[0],
-                stars: rating,
-                text: comment
-            });
+            product.reviews.push({ author: name, date: new Date().toISOString().split('T')[0], stars: rating, text: comment });
             const totalStars = product.reviews.reduce((sum, r) => sum + r.stars, 0);
             product.rating = Math.round((totalStars / product.reviews.length) * 10) / 10;
             localStorage.setItem('doraProducts', JSON.stringify(productsData));
         }
-
-        // Close modal first
         closeProductRatingModal();
-
-        // Reset form
         document.getElementById('productRaterName').value = '';
         document.getElementById('productRaterComment').value = '';
         setProductRating(5);
-
-        // Show success message
         showToast('✅ شكراً لتقييم المنتج! تم حفظ التقييم بنجاح');
-
-        // Refresh
         await renderReviews();
         renderProducts(currentFilter);
     } catch (error) {
-        console.error('Error saving product review:', error);
         showToast('❌ حدث خطأ! حاول مرة أخرى', 'error');
     } finally {
         submitBtn.textContent = originalText;
@@ -1418,30 +1296,15 @@ async function submitSiteRating(event) {
 async function renderReviews() {
     const reviewsGrid = document.getElementById('reviewsGrid');
     if (!reviewsGrid) return;
-
     try {
-        console.log('Fetching reviews from Supabase...');
         const { data: reviewsData, error } = await supabaseClient.from('reviews').select('*').order('id', {ascending: false});
-
-        if (error) {
-            console.error('Error fetching reviews:', error);
-            return;
-        }
-
-        console.log('Reviews fetched:', reviewsData);
-
+        if (error) { return; }
         let reviews = [];
-
         if (reviewsData && reviewsData.length > 0) {
             reviews = reviewsData.map(r => ({
-                name: r.name || 'زائر',
-                product: r.product || 'الموقع عامةً',
-                comment: r.text || '',
-                rating: r.rating || 5,
-                date: r.date || new Date().toLocaleDateString('ar-SA')
+                name: r.name || 'زائر', product: r.product || 'الموقع عامةً', comment: r.text || '', rating: r.rating || 5, date: r.date || new Date().toLocaleDateString('ar-SA')
             }));
         }
-
         if (reviews.length === 0) {
             reviews = [
                 {name: 'محمد العتيبي', product: 'طابعة HP LaserJet', comment: 'تم تركيب نظام الطباعة بالكامل خلال يوم واحد فقط.', rating: 5, date: '2024-06-15'},
@@ -1449,26 +1312,20 @@ async function renderReviews() {
                 {name: 'فهد الدوسري', product: 'نقاط البيع', comment: 'صيانة سريعة ودعم فني على مدار الساعة.', rating: 5, date: '2024-06-08'}
             ];
         }
-
         reviewsGrid.innerHTML = reviews.map(r => {
             const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
             return `
                 <div class="review-card">
-                    <div class="review-card-header">
-                        <span class="review-card-author">${r.name}</span>
-                        <span class="review-card-date">${r.date}</span>
-                    </div>
+                    <div class="review-card-header"><span class="review-card-author">${r.name}</span><span class="review-card-date">${r.date}</span></div>
                     <div class="review-card-stars">${stars}</div>
                     <p class="review-card-text">${r.comment}</p>
                     <div class="review-card-product">📦 ${r.product}</div>
-                </div>
-            `;
+                </div>`;
         }).join('');
+    } catch (error) { console.error('Error in renderReviews:', error); }
+}
 
-    } catch (error) {
-        console.error('Error in renderReviews:', error);
-    }
-}// ===== PWA INSTALL PROMPT =====
+// ===== PWA INSTALL PROMPT =====
 let deferredPrompt;
 let installPromptReady = false;
 
@@ -1487,76 +1344,42 @@ window.addEventListener('appinstalled', () => {
 });
 
 function installPWA() {
-    // Check if app is already installed
-    if (window.matchMedia('(display-mode: standalone)').matches || 
-        window.navigator.standalone === true) {
-        showToast('📱 التطبيق مثبت بالفعل!');
-        return;
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+        showToast('📱 التطبيق مثبت بالفعل!'); return;
     }
-
-    // Try deferredPrompt (Chrome/Desktop/Android)
     if (deferredPrompt) {
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {
             if (choiceResult.outcome === 'accepted') {
-                console.log('✅ User accepted the install prompt');
                 showToast('✅ تم تثبيت التطبيق بنجاح!');
             } else {
-                console.log('⚠️ User dismissed the install prompt');
                 showToast('⚠️ تم إلغاء التثبيت');
             }
             deferredPrompt = null;
-        }).catch((err) => {
-            console.error('❌ Error showing install prompt:', err);
-            showToast('❌ حدث خطأ في التثبيت');
-        });
+        }).catch(() => { showToast('❌ حدث خطأ في التثبيت'); });
     } else {
-        // If no deferredPrompt, show instructions
         showToast('⚠️ جرب تحديث الصفحة (F5) أو استخدم القائمة ⋮ → Install');
     }
-}function dismissInstallPrompt() {
+}
+
+function dismissInstallPrompt() {
   const prompt = document.getElementById('installPrompt');
-  if (prompt) {
-    prompt.classList.remove('show');
-    localStorage.setItem('doraInstallPromptDismissed', 'true');
-  }
+  if (prompt) { prompt.classList.remove('show'); localStorage.setItem('doraInstallPromptDismissed', 'true'); }
 }
 
 function checkPWAInstallState() {
-  // Check if already installed
-  if (window.matchMedia('(display-mode: standalone)').matches || 
-      window.navigator.standalone === true) {
-    console.log('✅ PWA already installed');
-    const prompt = document.getElementById('installPrompt');
-    if (prompt) {
-      prompt.classList.remove('show');
-    }
-    return;
+  if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+    const prompt = document.getElementById('installPrompt'); if (prompt) prompt.classList.remove('show'); return;
   }
-
-  // Check if user dismissed before
   if (localStorage.getItem('doraInstallPromptDismissed')) {
-    console.log('ℹ️ Prompt previously dismissed');
-    const prompt = document.getElementById('installPrompt');
-    if (prompt) {
-      prompt.classList.remove('show');
-    }
-    return;
+    const prompt = document.getElementById('installPrompt'); if (prompt) prompt.classList.remove('show'); return;
   }
-
-  // Show prompt by default (it will work when clicked)
-  console.log('ℹ️ Checking PWA install state...');
   const prompt = document.getElementById('installPrompt');
-  if (prompt) {
-    // Only show if we have deferred prompt or after a delay
-    if (deferredPrompt) {
-      prompt.classList.add('show');
-    }
-  }
+  if (prompt && deferredPrompt) { prompt.classList.add('show'); }
 }
+
 // ============================================================
-// PRODUCT MODAL PLUS v2 — مراقب تلقائي لنافذة المنتج
-// يضيف جدول المواصفات + زرار عرض السعر (مستقل عن أي دالة)
+// PRODUCT MODAL PLUS v2
 // ============================================================
 (function(){
   function injectCard(){
@@ -1565,8 +1388,7 @@ function checkPWAInstallState() {
     var m = info.innerHTML.match(/addToCart\((\d+)\)/);
     if (!m) return;
     var id = parseInt(m[1]);
-    var p = (typeof productsData !== 'undefined' && productsData && productsData.find)
-            ? productsData.find(function(x){ return x.id == id; }) : null;
+    var p = (typeof productsData !== 'undefined' && productsData && productsData.find) ? productsData.find(function(x){ return x.id == id; }) : null;
     if (!p) return;
     var catName = (typeof catLabels !== 'undefined' && catLabels[p.category]) ? catLabels[p.category] : p.category;
     var stockTxt = (typeof p.stock === 'number') ? (p.stock > 0 ? 'متوفر (' + p.stock + ')' : 'غير متوفر') : (p.stock || 'متوفر');
@@ -1574,8 +1396,7 @@ function checkPWAInstallState() {
     var quoteUrl = doraWhatsAppLink('مرحباً، أرغب في طلب عرض سعر لمنتج: ' + p.name);
     var card = document.createElement('div');
     card.className = 'mdf-card';
-    card.innerHTML =
-      '<div class="mdf-specs">' +
+    card.innerHTML = '<div class="mdf-specs">' +
         '<div><span>التصنيف</span><b>' + catName + '</b></div>' +
         '<div><span>التقييم</span><b>' + (p.rating || 0) + ' ★</b></div>' +
         '<div><span>المراجعات</span><b>' + revCount + '</b></div>' +
@@ -1597,40 +1418,22 @@ function checkPWAInstallState() {
   if (!arm()) document.addEventListener('DOMContentLoaded', arm);
 })();
 
-
 // ============================================================
 // COMPANY PAGES LINKS + GLOBAL APP DOWNLOAD BOX
-// يربط قائمة عن الشركة بالصفحات المستقلة ويضيف صندوق التحميل لكل الصفحات
 // ============================================================
 (function(){
-  function onReady(fn){
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
-    else fn();
-  }
-
+  function onReady(fn){ if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn); else fn(); }
   onReady(function(){
-    // 1) روابط قائمة «عن الشركة» في الهيدر — تعمل في كل الصفحات القديمة والجديدة
-    var companyPages = {
-      'نبذة عن الشركة': 'about.html',
-      'رؤيتنا': 'vision.html',
-      'رسالتنا': 'mission.html',
-      'فريق العمل': 'team.html',
-      'الشهادات': 'certifications.html'
-    };
-
+    var companyPages = { 'نبذة عن الشركة': 'about.html', 'رؤيتنا': 'vision.html', 'رسالتنا': 'mission.html', 'فريق العمل': 'team.html', 'الشهادات': 'certifications.html' };
     document.querySelectorAll('.dropdown-menu a').forEach(function(link){
       var label = (link.textContent || '').replace(/\s+/g, ' ').trim();
       if (companyPages[label]) link.setAttribute('href', companyPages[label]);
     });
-
-    // 2) صندوق التحميل الغامق — الرئيسية تحتوي عليه بالفعل، لذلك لا نكرره هناك
     if (document.querySelector('.app-download-btns')) return;
-
     var section = document.createElement('section');
     section.className = 'global-app-download';
     section.setAttribute('aria-label', 'تحميل تطبيق درة فارس الشمال');
-    section.innerHTML =
-      '<div class="global-app-download-box">' +
+    section.innerHTML = '<div class="global-app-download-box">' +
         '<p class="global-app-download-title">📲 حمّل تطبيق درة فارس الشمال على جوالك أو الكمبيوتر، أو اطلب عرض سعر الآن!</p>' +
         '<div class="app-download-btns">' +
           '<a href="https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk" download class="btn-primary">📱 تحميل تطبيق Android</a>' +
@@ -1639,94 +1442,50 @@ function checkPWAInstallState() {
         '</div>' +
         '<p class="global-app-download-note">اضغط للتثبيت على الشاشة الرئيسية</p>' +
       '</div>';
-
     var footer = document.querySelector('footer.footer, footer');
     if (footer && footer.parentNode) footer.parentNode.insertBefore(section, footer);
     else document.body.appendChild(section);
   });
 })();
 
-
 // ============================================================
-// SITE SETTINGS RUNTIME — قراءة إعدادات لوحة الإدارة وتطبيقها على الموقع
+// SITE SETTINGS RUNTIME
 // ============================================================
 const DORA_DEFAULT_SITE_SETTINGS = {
-  companyName: 'شركة درة فارس الشمال',
-  companyAddress: 'الرياض، المملكة العربية السعودية',
-  companyPhone1: '966568717449',
-  companyPhone2: '966545358773',
-  companyEmail: 'info@alshamal-df.com',
-  socialTwitter: 'https://twitter.com/dorafares',
-  socialInstagram: 'https://instagram.com/dorafares',
-  socialFacebook: 'https://facebook.com/dorafares',
-  socialLinkedin: 'https://linkedin.com/company/dorafares',
+  companyName: 'شركة درة فارس الشمال', companyAddress: 'الرياض، المملكة العربية السعودية',
+  companyPhone1: '966568717449', companyPhone2: '966545358773', companyEmail: 'info@alshamal-df.com',
+  socialTwitter: 'https://twitter.com/dorafares', socialInstagram: 'https://instagram.com/dorafares',
+  socialFacebook: 'https://facebook.com/dorafares', socialLinkedin: 'https://linkedin.com/company/dorafares',
   whatsappMessage: 'مرحباً شركة درة فارس الشمال، أرغب في الاستفسار عن منتجاتكم'
 };
 let doraSiteSettings = { ...DORA_DEFAULT_SITE_SETTINGS, ...(JSON.parse(localStorage.getItem('doraSettings') || '{}')) };
 
-function normalizeDoraPhone(phone){
-  let p = String(phone || '').replace(/\D/g, '');
-  if (p.startsWith('05')) p = '966' + p.slice(1);
-  return p || DORA_DEFAULT_SITE_SETTINGS.companyPhone1;
-}
-function formatDoraPhone(phone){
-  const p = normalizeDoraPhone(phone);
-  if (p.length === 12 && p.startsWith('966')) return `+966 ${p.slice(3,5)} ${p.slice(5,8)} ${p.slice(8)}`;
-  return '+' + p;
-}
-function getDoraSiteSettings(){
-  return { ...DORA_DEFAULT_SITE_SETTINGS, ...doraSiteSettings };
-}
-function doraWhatsAppLink(message, phone){
-  const settings = getDoraSiteSettings();
-  return 'https://wa.me/' + normalizeDoraPhone(phone || settings.companyPhone1) + '?text=' + encodeURIComponent(message || settings.whatsappMessage);
-}
+function normalizeDoraPhone(phone){ let p = String(phone || '').replace(/\D/g, ''); if (p.startsWith('05')) p = '966' + p.slice(1); return p || DORA_DEFAULT_SITE_SETTINGS.companyPhone1; }
+function formatDoraPhone(phone){ const p = normalizeDoraPhone(phone); if (p.length === 12 && p.startsWith('966')) return `+966 ${p.slice(3,5)} ${p.slice(5,8)} ${p.slice(8)}`; return '+' + p; }
+function getDoraSiteSettings(){ return { ...DORA_DEFAULT_SITE_SETTINGS, ...doraSiteSettings }; }
+function doraWhatsAppLink(message, phone){ const settings = getDoraSiteSettings(); return 'https://wa.me/' + normalizeDoraPhone(phone || settings.companyPhone1) + '?text=' + encodeURIComponent(message || settings.whatsappMessage); }
 function replaceDoraText(search, replacement){
   if (!search || !replacement || search === replacement) return;
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   const nodes = [];
-  while (walker.nextNode()) {
-    const node = walker.currentNode;
-    if (node.parentElement && ['SCRIPT','STYLE'].includes(node.parentElement.tagName)) continue;
-    if (node.nodeValue.includes(search)) nodes.push(node);
-  }
+  while (walker.nextNode()) { const node = walker.currentNode; if (node.parentElement && ['SCRIPT','STYLE'].includes(node.parentElement.tagName)) continue; if (node.nodeValue.includes(search)) nodes.push(node); }
   nodes.forEach(node => { node.nodeValue = node.nodeValue.split(search).join(replacement); });
 }
 function applyDoraSettings(settings){
   doraSiteSettings = { ...DORA_DEFAULT_SITE_SETTINGS, ...(settings || {}) };
   localStorage.setItem('doraSettings', JSON.stringify(doraSiteSettings));
-
   const s = getDoraSiteSettings();
   const phone1 = normalizeDoraPhone(s.companyPhone1);
   const formattedPhone1 = formatDoraPhone(phone1);
-
   document.querySelectorAll('a[href*="wa.me/"]').forEach(link => {
-    try {
-      const url = new URL(link.href);
-      url.pathname = '/' + phone1;
-      const text = url.searchParams.get('text');
-      if (text && !text.includes('عرض سعر') && !text.includes('استشارة') && !text.includes('منتج:')) {
-        url.searchParams.set('text', s.whatsappMessage);
-      }
-      link.href = url.toString();
-    } catch(_) {}
+    try { const url = new URL(link.href); url.pathname = '/' + phone1; const text = url.searchParams.get('text'); if (text && !text.includes('عرض سعر') && !text.includes('استشارة') && !text.includes('منتج:')) { url.searchParams.set('text', s.whatsappMessage); } link.href = url.toString(); } catch(_) {}
   });
-
-  document.querySelectorAll('a[href^="tel:"]').forEach(link => {
-    link.href = 'tel:+' + phone1;
-    if (/\+?\d[\d\s]{7,}/.test(link.textContent)) link.textContent = formattedPhone1;
-  });
-
-  document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
-    link.href = 'mailto:' + s.companyEmail;
-    if (link.textContent.includes('@')) link.textContent = s.companyEmail;
-  });
-
+  document.querySelectorAll('a[href^="tel:"]').forEach(link => { link.href = 'tel:+' + phone1; if (/\+?\d[\d\s]{7,}/.test(link.textContent)) link.textContent = formattedPhone1; });
+  document.querySelectorAll('a[href^="mailto:"]').forEach(link => { link.href = 'mailto:' + s.companyEmail; if (link.textContent.includes('@')) link.textContent = s.companyEmail; });
   if (s.socialTwitter) document.querySelectorAll('a[href*="twitter.com"], a[href*="x.com"]').forEach(a => a.href = s.socialTwitter);
   if (s.socialInstagram) document.querySelectorAll('a[href*="instagram.com"]').forEach(a => a.href = s.socialInstagram);
   if (s.socialFacebook) document.querySelectorAll('a[href*="facebook.com"]').forEach(a => a.href = s.socialFacebook);
   if (s.socialLinkedin) document.querySelectorAll('a[href*="linkedin.com"]').forEach(a => a.href = s.socialLinkedin);
-
   replaceDoraText(DORA_DEFAULT_SITE_SETTINGS.companyAddress, s.companyAddress);
   replaceDoraText(DORA_DEFAULT_SITE_SETTINGS.companyEmail, s.companyEmail);
   replaceDoraText(formatDoraPhone(DORA_DEFAULT_SITE_SETTINGS.companyPhone1), formattedPhone1);
@@ -1735,26 +1494,18 @@ function applyDoraSettings(settings){
 async function loadDoraSiteSettings(){
   applyDoraSettings(doraSiteSettings);
   try {
-    const { data, error } = await supabaseClient
-      .from('site_settings')
-      .select('settings')
-      .eq('id', 1)
-      .maybeSingle();
+    const { data, error } = await supabaseClient.from('site_settings').select('settings').eq('id', 1).maybeSingle();
     if (!error && data?.settings) applyDoraSettings(data.settings);
-  } catch (error) {
-    console.warn('تعذر تحميل إعدادات الموقع العامة:', error);
-  }
+  } catch (error) { console.warn('تعذر تحميل إعدادات الموقع العامة:', error); }
 }
 window.getDoraSiteSettings = getDoraSiteSettings;
 window.doraWhatsAppLink = doraWhatsAppLink;
-window.addEventListener('storage', function(event){
-  if (event.key === 'doraSettings') applyDoraSettings(JSON.parse(event.newValue || '{}'));
-});
+window.addEventListener('storage', function(event){ if (event.key === 'doraSettings') applyDoraSettings(JSON.parse(event.newValue || '{}')); });
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadDoraSiteSettings);
 else loadDoraSiteSettings();
 
 // ============================================================
-// ACCOUNT SYSTEM LOADER — يحمّل نظام الحسابات في كل الصفحات
+// ACCOUNT SYSTEM LOADER
 // ============================================================
 (function(){
   if (document.querySelector('script[data-account-system]')) return;
@@ -1768,386 +1519,137 @@ else loadDoraSiteSettings();
 
 // ============================================================
 // NEW FEATURES: SIDEBAR + QUICK VIEW + WISHLIST (Supabase)
-// Added: 2026-07-18 — These functions are ADDED to the original, not replacing anything
 // ============================================================
 
-// ===== WISHLIST FUNCTIONS (Supabase + localStorage) =====
+// ===== WISHLIST FUNCTIONS =====
 let wishlistItems = JSON.parse(localStorage.getItem('doraWishlistItems')) || [];
 
-async function initWishlistTable() {
-  try {
-    const { data, error } = await supabaseClient
-      .from('wishlist')
-      .select('*')
-      .limit(1);
-
-    if (error && error.code === '42P01') {
-      console.log('Wishlist table not found, using localStorage fallback');
-    }
-  } catch (e) {
-    console.log('Wishlist init check:', e);
-  }
-}
-
-function getDeviceId() {
-  let deviceId = localStorage.getItem('doraDeviceId');
-  if (!deviceId) {
-    deviceId = 'device_' + Math.random().toString(36).substr(2, 9);
-    localStorage.setItem('doraDeviceId', deviceId);
-  }
-  return deviceId;
-}
+async function initWishlistTable() { try { const { data, error } = await supabaseClient.from('wishlist').select('*').limit(1); if (error && error.code === '42P01') { console.log('Wishlist table not found'); } } catch (e) { console.log('Wishlist init check:', e); } }
+function getDeviceId() { let deviceId = localStorage.getItem('doraDeviceId'); if (!deviceId) { deviceId = 'device_' + Math.random().toString(36).substr(2, 9); localStorage.setItem('doraDeviceId', deviceId); } return deviceId; }
 
 async function toggleWishlist(productId, event) {
   if (event) event.stopPropagation();
-
   const index = wishlistItems.indexOf(productId);
-  const product = productsData.find(p => p.id === productId);
-
   if (index > -1) {
-    // Remove from wishlist
     wishlistItems.splice(index, 1);
     showToast('💔 تمت الإزالة من المفضلة', 'warning');
-
-    // Try to remove from Supabase
-    try {
-      await supabaseClient
-        .from('wishlist')
-        .delete()
-        .eq('product_id', productId)
-        .eq('user_id', 'anonymous_' + getDeviceId());
-    } catch (e) {
-      console.log('Supabase delete failed, using localStorage');
-    }
+    try { await supabaseClient.from('wishlist').delete().eq('product_id', productId).eq('user_id', 'anonymous_' + getDeviceId()); } catch (e) {}
   } else {
-    // Add to wishlist
     wishlistItems.push(productId);
     showToast('❤️ تمت الإضافة للمفضلة');
-
-    // Try to add to Supabase
-    try {
-      await supabaseClient
-        .from('wishlist')
-        .insert([{
-          product_id: productId,
-          user_id: 'anonymous_' + getDeviceId(),
-          created_at: new Date().toISOString()
-        }]);
-    } catch (e) {
-      console.log('Supabase insert failed, using localStorage');
-    }
+    try { await supabaseClient.from('wishlist').insert([{ product_id: productId, user_id: 'anonymous_' + getDeviceId(), created_at: new Date().toISOString() }]); } catch (e) {}
   }
-
   localStorage.setItem('doraWishlistItems', JSON.stringify(wishlistItems));
   updateWishlistUI();
   renderProducts(currentFilter);
 }
 
 function updateWishlistUI() {
-  // Update sidebar badge
   const sidebarBadge = document.getElementById('sidebarWishlistCount');
-  if (sidebarBadge) {
-    sidebarBadge.textContent = wishlistItems.length;
-    sidebarBadge.style.display = wishlistItems.length > 0 ? 'flex' : 'none';
-  }
-
-  // Update product card wishlist buttons
+  if (sidebarBadge) { sidebarBadge.textContent = wishlistItems.length; sidebarBadge.style.display = wishlistItems.length > 0 ? 'flex' : 'none'; }
   document.querySelectorAll('.wishlist-btn').forEach(btn => {
     const productId = parseInt(btn.getAttribute('data-product-id'));
-    if (wishlistItems.includes(productId)) {
-      btn.classList.add('active');
-      btn.innerHTML = '❤️';
-    } else {
-      btn.classList.remove('active');
-      btn.innerHTML = '🤍';
-    }
+    if (wishlistItems.includes(productId)) { btn.classList.add('active'); btn.innerHTML = '❤️'; }
+    else { btn.classList.remove('active'); btn.innerHTML = '🤍'; }
   });
 }
 
 async function loadWishlistFromSupabase() {
   try {
-    const { data, error } = await supabaseClient
-      .from('wishlist')
-      .select('product_id')
-      .eq('user_id', 'anonymous_' + getDeviceId());
-
-    if (!error && data) {
-      wishlistItems = data.map(item => item.product_id);
-      localStorage.setItem('doraWishlistItems', JSON.stringify(wishlistItems));
-      updateWishlistUI();
-    }
-  } catch (e) {
-    console.log('Loading from Supabase failed, using localStorage');
-    updateWishlistUI();
-  }
+    const { data, error } = await supabaseClient.from('wishlist').select('product_id').eq('user_id', 'anonymous_' + getDeviceId());
+    if (!error && data) { wishlistItems = data.map(item => item.product_id); localStorage.setItem('doraWishlistItems', JSON.stringify(wishlistItems)); updateWishlistUI(); }
+  } catch (e) { updateWishlistUI(); }
 }
 
-// ===== QUICK VIEW FUNCTIONS =====
+// ===== QUICK VIEW =====
 function openQuickView(productId) {
   const p = productsData.find(x => x.id === productId);
   if (!p) return;
-
   const stars = '★'.repeat(Math.floor(p.rating || 0)) + '☆'.repeat(5 - Math.floor(p.rating || 0));
   const hasDiscount = p.oldPrice && p.oldPrice > p.price;
   const isWishlisted = wishlistItems.includes(productId);
   const stockClass = getStockClass(p.stock);
   const stockLabel = getStockLabel(p.stock);
   const stockPercent = getStockPercent(p.stock);
-
   const content = document.getElementById('quickViewContent');
   if (!content) return;
-
   content.innerHTML = `
-    <div class="quick-view-image">
-      <img src="${p.image}" alt="${sanitizeInput(p.name)}" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=font-size:80px>📦</div>'">
-    </div>
+    <div class="quick-view-image"><img src="${p.image}" alt="${sanitizeInput(p.name)}" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=font-size:80px>📦</div>'"></div>
     <div class="quick-view-info">
       <span class="quick-view-category">${catLabels[p.category]}</span>
       <h3 class="quick-view-name">${sanitizeInput(p.name)}</h3>
-      <div class="quick-view-rating">
-        <span class="stars">${stars}</span>
-        <span class="rating-text">${p.rating || 0} (${p.reviews ? p.reviews.length : 0} تقييم)</span>
-      </div>
+      <div class="quick-view-rating"><span class="stars">${stars}</span><span class="rating-text">${p.rating || 0} (${p.reviews ? p.reviews.length : 0} تقييم)</span></div>
       <p class="quick-view-desc">${sanitizeInput(p.desc)}</p>
-      <div class="quick-view-stock ${stockClass}">
-        <span class="quick-view-stock-label">📦 المخزون:</span>
-        <span class="quick-view-stock-value">${stockLabel}</span>
-        <div class="quick-view-stock-bar">
-          <div class="quick-view-stock-fill" style="width:${stockPercent}%"></div>
-        </div>
-      </div>
-      <div class="quick-view-price">
-        ${hasDiscount ? `<span class="old-price">${formatPrice(p.oldPrice)}</span>` : ''}
-        ${formatPrice(p.price)}
-      </div>
+      <div class="quick-view-stock ${stockClass}"><span class="quick-view-stock-label">📦 المخزون:</span><span class="quick-view-stock-value">${stockLabel}</span><div class="quick-view-stock-bar"><div class="quick-view-stock-fill" style="width:${stockPercent}%"></div></div></div>
+      <div class="quick-view-price">${hasDiscount ? `<span class="old-price">${formatPrice(p.oldPrice)}</span>` : ''} ${formatPrice(p.price)}</div>
       <div class="quick-view-actions">
-        <button class="quick-view-btn quick-view-btn-primary" onclick="addToCart(${p.id}); closeQuickView();">
-          🛒 أضف للسلة
-        </button>
-        <button class="quick-view-btn quick-view-btn-wishlist ${isWishlisted ? 'active' : ''}" onclick="toggleWishlist(${p.id}, event); this.classList.toggle('active'); this.innerHTML = this.classList.contains('active') ? '❤️' : '🤍';">
-          ${isWishlisted ? '❤️' : '🤍'}
-        </button>
-        <button class="quick-view-btn quick-view-btn-secondary" onclick="openProductModal(${p.id}); closeQuickView();">
-          📋 التفاصيل
-        </button>
+        <button class="quick-view-btn quick-view-btn-primary" onclick="addToCart(${p.id}); closeQuickView();">🛒 أضف للسلة</button>
+        <button class="quick-view-btn quick-view-btn-wishlist ${isWishlisted ? 'active' : ''}" onclick="toggleWishlist(${p.id}, event); this.classList.toggle('active'); this.innerHTML = this.classList.contains('active') ? '❤️' : '🤍';">${isWishlisted ? '❤️' : '🤍'}</button>
+        <button class="quick-view-btn quick-view-btn-secondary" onclick="openProductModal(${p.id}); closeQuickView();">📋 التفاصيل</button>
       </div>
-    </div>
-  `;
-
+    </div>`;
   const overlay = document.getElementById('quickViewOverlay');
-  if (overlay) {
-    overlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
+  if (overlay) { overlay.classList.add('active'); document.body.style.overflow = 'hidden'; }
 }
-
-function closeQuickView(e) {
-  if (e && e.target !== e.currentTarget) return;
-  const overlay = document.getElementById('quickViewOverlay');
-  if (overlay) {
-    overlay.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-}
+function closeQuickView(e) { if (e && e.target !== e.currentTarget) return; const overlay = document.getElementById('quickViewOverlay'); if (overlay) { overlay.classList.remove('active'); document.body.style.overflow = ''; } }
 
 // ===== SIDEBAR INTERACTIONS =====
 function initSidebar() {
   const sidebarWrapper = document.getElementById('sidebarWrapper');
   const sidebarPanel = document.getElementById('sidebarPanel');
   if (!sidebarWrapper || !sidebarPanel) return;
-
-  // Click to toggle
-  sidebarWrapper.addEventListener('click', function(e) {
-    // Don't toggle if clicking inside the panel (on an icon)
-    if (e.target.closest('.sidebar-icon')) return;
-
-    sidebarWrapper.classList.toggle('open');
-  });
-
-  // Close when mouse leaves the panel
-  sidebarPanel.addEventListener('mouseleave', function() {
-    sidebarWrapper.classList.remove('open');
-  });
-
-  // Touch support for mobile
+  sidebarWrapper.addEventListener('click', function(e) { if (e.target.closest('.sidebar-icon')) return; sidebarWrapper.classList.toggle('open'); });
+  sidebarPanel.addEventListener('mouseleave', function() { sidebarWrapper.classList.remove('open'); });
   let touchStartX = 0;
+  sidebarWrapper.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; });
+  sidebarWrapper.addEventListener('touchend', function(e) { const diff = e.changedTouches[0].clientX - touchStartX; if (diff > 50) sidebarWrapper.classList.add('open'); else if (diff < -50) sidebarWrapper.classList.remove('open'); });
+}
 
-  sidebarWrapper.addEventListener('touchstart', function(e) {
-    touchStartX = e.touches[0].clientX;
-  });
-
-  sidebarWrapper.addEventListener('touchend', function(e) {
-    const touchEndX = e.changedTouches[0].clientX;
-    const diff = touchEndX - touchStartX;
-
-    if (diff > 50) {
-      sidebarWrapper.classList.add('open');
-    } else if (diff < -50) {
-      sidebarWrapper.classList.remove('open');
-    }
-  });
+// ===== SIDEBAR INJECTION =====
+function injectSidebar() {
+  const oldSidebars = document.querySelectorAll('.sidebar-icons');
+  oldSidebars.forEach(function(el) { if (!el.closest('#sidebarWrapper')) { el.remove(); } });
+  if (document.getElementById('sidebarWrapper')) return;
+  const sidebarHTML = `
+  <div class="sidebar-wrapper" id="sidebarWrapper">
+    <div class="sidebar-tab" id="sidebarTab"><span class="sidebar-tab-text">الاختصارات</span><span class="sidebar-tab-arrow">◀</span></div>
+    <div class="sidebar-panel" id="sidebarPanel">
+      <div class="sidebar-icons">
+        <div class="sidebar-icon" title="الرئيسية" onclick="window.location.href='index.html'"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span class="icon-glow"></span></div>
+        <div class="sidebar-icon" title="المنتجات" onclick="window.location.href='index.html#products'"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg><span class="icon-glow"></span></div>
+        <div class="sidebar-icon" title="عن الشركة" onclick="window.location.href='about.html'"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg><span class="icon-glow"></span></div>
+        <div class="sidebar-icon" title="تواصل معنا" onclick="window.location.href='index.html#contact'"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg><span class="icon-glow"></span></div>
+        <div class="sidebar-icon" title="السلة" onclick="toggleCart()"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg><span class="icon-glow"></span><span class="sidebar-badge" id="sidebarCartCount">0</span></div>
+        <div class="sidebar-icon" title="التقييم" onclick="openSiteRatingModal()"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg><span class="icon-glow"></span></div>
+        <div class="sidebar-icon" title="المفضلة" onclick="window.location.href='wishlist.html'"><svg class="icon-svg heart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg><span class="icon-glow heart-glow"></span><span class="sidebar-badge" id="sidebarWishlistCount">0</span></div>
+      </div>
+    </div>
+  </div>`;
+  const body = document.body;
+  if (body) { body.insertAdjacentHTML('afterbegin', sidebarHTML); }
 }
 
 // ===== WISHLIST PAGE RENDER =====
 function renderWishlistPage() {
   const container = document.getElementById('wishlistContent');
   if (!container) return;
-
   if (wishlistItems.length === 0) {
-    container.innerHTML = `
-      <div class="wishlist-empty">
-        <span class="icon">❤️</span>
-        <h3>قائمة المفضلة فارغة</h3>
-        <p>أضف منتجاتك المفضلة من صفحة المنتجات</p>
-        <a href="index.html#products" class="btn-primary" style="margin-top:20px;">🛍️ تصفح المنتجات</a>
-      </div>
-    `;
-    return;
+    container.innerHTML = `<div class="wishlist-empty"><span class="icon">❤️</span><h3>قائمة المفضلة فارغة</h3><p>أضف منتجاتك المفضلة من صفحة المنتجات</p><a href="index.html#products" class="btn-primary" style="margin-top:20px;">🛍️ تصفح المنتجات</a></div>`; return;
   }
-
   const wishlistProducts = productsData.filter(p => wishlistItems.includes(p.id));
-
-  container.innerHTML = `
-    <div class="prod-grid">
-      ${wishlistProducts.map(p => {
+  container.innerHTML = `<div class="prod-grid">${wishlistProducts.map(p => {
         const stars = '★'.repeat(Math.floor(p.rating || 0)) + '☆'.repeat(5 - Math.floor(p.rating || 0));
         const hasDiscount = p.oldPrice && p.oldPrice > p.price;
-        return `
-          <div class="prod-card wishlisted" data-id="${p.id}">
-            <div class="prod-img" onclick="openQuickView(${p.id})">
-              ${p.badge ? `<div class="prod-badge">${p.badge}</div>` : ''}
-              <img src="${p.image}" alt="${p.name}" loading="lazy">
-            </div>
-            <button class="wishlist-btn active" onclick="toggleWishlist(${p.id}, event); renderWishlistPage();">❤️</button>
-            <div class="prod-body">
-              <span class="prod-tag">${catLabels[p.category]}</span>
-              <h4 class="prod-name" onclick="openProductModal(${p.id})">${p.name}</h4>
-              <div class="modal-rating" style="margin-bottom:8px">
-                <span class="stars">${stars}</span>
-                <span class="rating-text">${p.rating || 0}</span>
-              </div>
-              <p class="prod-desc">${p.desc}</p>
-              <div class="prod-footer">
-                <div class="prod-price">
-                  ${hasDiscount ? `<span class="old-price">${formatPrice(p.oldPrice)}</span>` : ''}
-                  ${formatPrice(p.price)}
-                </div>
-                <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
-                  <button class="add-btn" onclick="addToCart(${p.id})">🛒 أضف للسلة</button>
-                  <button class="quote-btn" onclick="requestQuote(${p.id}, event)">📋 عرض سعر</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('')}
-    </div>
-  `;
+        return `<div class="prod-card wishlisted" data-id="${p.id}"><div class="prod-img" onclick="openQuickView(${p.id})">${p.badge ? `<div class="prod-badge">${p.badge}</div>` : ''}<img src="${p.image}" alt="${p.name}" loading="lazy"></div><button class="wishlist-btn active" onclick="toggleWishlist(${p.id}, event); renderWishlistPage();">❤️</button><div class="prod-body"><span class="prod-tag">${catLabels[p.category]}</span><h4 class="prod-name" onclick="openProductModal(${p.id})">${p.name}</h4><div class="modal-rating" style="margin-bottom:8px"><span class="stars">${stars}</span><span class="rating-text">${p.rating || 0}</span></div><p class="prod-desc">${p.desc}</p><div class="prod-footer"><div class="prod-price">${hasDiscount ? `<span class="old-price">${formatPrice(p.oldPrice)}</span>` : ''} ${formatPrice(p.price)}</div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"><button class="add-btn" onclick="addToCart(${p.id})">🛒 أضف للسلة</button><button class="quote-btn" onclick="requestQuote(${p.id}, event)">📋 عرض سعر</button></div></div></div></div>`;
+      }).join('')}</div>`;
 }
 
-// ===== SIDEBAR INJECTION — يضيف السايد بار تلقائياً في كل الصفحات =====
-function injectSidebar() {
-  // أولاً: احذف أي سايد بار قديم موجود في الصفحة
-  const oldSidebars = document.querySelectorAll('.sidebar-icons');
-  oldSidebars.forEach(function(el) {
-    // Check if it's inside the new sidebar wrapper (don't remove those)
-    if (!el.closest('#sidebarWrapper')) {
-      el.remove();
-      console.log('✅ Removed old sidebar from page');
-    }
-  });
-
-  // لو السايد بار الجديد موجود خلاص، متضيفش تاني
-  if (document.getElementById('sidebarWrapper')) return;
-
-  const sidebarHTML = `
-  <!-- ===== SIDEBAR (Auto-injected) ===== -->
-  <div class="sidebar-wrapper" id="sidebarWrapper">
-    <div class="sidebar-tab" id="sidebarTab">
-      <span class="sidebar-tab-text">الاختصارات</span>
-      <span class="sidebar-tab-arrow">◀</span>
-    </div>
-    <div class="sidebar-panel" id="sidebarPanel">
-      <div class="sidebar-icons">
-        <div class="sidebar-icon" title="الرئيسية" onclick="window.location.href='index.html'">
-          <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-          </svg>
-          <span class="icon-glow"></span>
-        </div>
-        <div class="sidebar-icon" title="المنتجات" onclick="window.location.href='index.html#products'">
-          <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <path d="M16 10a4 4 0 0 1-8 0"></path>
-          </svg>
-          <span class="icon-glow"></span>
-        </div>
-        <div class="sidebar-icon" title="عن الشركة" onclick="window.location.href='about.html'">
-          <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="16" x2="12" y2="12"></line>
-            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-          </svg>
-          <span class="icon-glow"></span>
-        </div>
-        <div class="sidebar-icon" title="تواصل معنا" onclick="window.location.href='index.html#contact'">
-          <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-          </svg>
-          <span class="icon-glow"></span>
-        </div>
-        <div class="sidebar-icon" title="السلة" onclick="toggleCart()">
-          <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="21" r="1"></circle>
-            <circle cx="20" cy="21" r="1"></circle>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-          </svg>
-          <span class="icon-glow"></span>
-          <span class="sidebar-badge" id="sidebarCartCount">0</span>
-        </div>
-        <div class="sidebar-icon" title="التقييم" onclick="openSiteRatingModal()">
-          <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-          </svg>
-          <span class="icon-glow"></span>
-        </div>
-        <div class="sidebar-icon" title="المفضلة" onclick="window.location.href='wishlist.html'">
-          <svg class="icon-svg heart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-          </svg>
-          <span class="icon-glow heart-glow"></span>
-          <span class="sidebar-badge" id="sidebarWishlistCount">0</span>
-        </div>
-      </div>
-    </div>
-  </div>`;
-
-  // Insert after <body> tag
-  const body = document.body;
-  if (body) {
-    body.insertAdjacentHTML('afterbegin', sidebarHTML);
-  }
-}
-
-// ===== INIT NEW FEATURES =====
+// ===== INIT =====
 document.addEventListener('DOMContentLoaded', function() {
-  // Inject sidebar automatically in ALL pages
   injectSidebar();
-
-  // Initialize wishlist
   initWishlistTable();
   loadWishlistFromSupabase();
-
-  // Initialize sidebar interactions
   initSidebar();
-
-  // Update sidebar cart count
   const sidebarCartCount = document.getElementById('sidebarCartCount');
-  if (sidebarCartCount) {
-    const count = cart.reduce((sum, item) => sum + item.qty, 0);
-    sidebarCartCount.textContent = count;
-    sidebarCartCount.style.display = count > 0 ? 'flex' : 'none';
-  }
+  if (sidebarCartCount) { const count = cart.reduce((sum, item) => sum + item.qty, 0); sidebarCartCount.textContent = count; sidebarCartCount.style.display = count > 0 ? 'flex' : 'none'; }
 });
