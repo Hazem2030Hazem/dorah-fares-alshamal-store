@@ -355,6 +355,18 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         </div>
 
         <!-- Settings Tab -->
+        <!-- Content Management Tab -->
+<div class="tab-content" id="contentTab">
+  <div class="table-container">
+    <div class="table-header">
+      <h3>📝 إدارة محتوى الموقع</h3>
+      <button class="btn-add" onclick="loadSiteContent()">🔄 تحديث</button>
+    </div>
+    <div id="siteContentList" style="padding: 20px;">
+      <div class="admin-empty">⏳ جاري تحميل المحتوى...</div>
+    </div>
+  </div>
+</div>
         <div class="tab-content" id="settingsTab">
             <div class="settings-section">
                 <h4>🏢 معلومات الشركة</h4>
