@@ -4040,5 +4040,46 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
   margin-bottom: 10px;
   color: #111827;
 }
+/* ===== NEON GLOW ICONS — أيقونات مضيئة للبطاقات العائمة ===== */
+.neon-icon {
+  width: 50px;
+  height: 50px;
+  stroke: rgba(255, 255, 255, 0.9);
+  filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.8)) 
+          drop-shadow(0 0 12px rgba(0, 212, 255, 0.5))
+          drop-shadow(0 0 20px rgba(0, 212, 255, 0.3));
+  transition: all 0.3s ease;
+}
 
+.float-card:hover .neon-icon {
+  stroke: #ffffff;
+  filter: drop-shadow(0 0 10px rgba(0, 212, 255, 1)) 
+          drop-shadow(0 0 20px rgba(0, 212, 255, 0.7))
+          drop-shadow(0 0 30px rgba(0, 212, 255, 0.5))
+          drop-shadow(0 0 50px rgba(0, 212, 255, 0.3));
+  transform: scale(1.1);
+}
+
+/* لون مختلف للبطاقات الخاصة */
+.ink-card .neon-icon {
+  stroke: rgba(255, 152, 0, 0.9);
+  filter: drop-shadow(0 0 6px rgba(255, 152, 0, 0.8))
+          drop-shadow(0 0 12px rgba(255, 152, 0, 0.5));
+}
+.ink-card:hover .neon-icon {
+  stroke: #ffffff;
+  filter: drop-shadow(0 0 10px rgba(255, 152, 0, 1))
+          drop-shadow(0 0 20px rgba(255, 152, 0, 0.7));
+}
+
+.food-card .neon-icon {
+  stroke: rgba(76, 175, 80, 0.9);
+  filter: drop-shadow(0 0 6px rgba(76, 175, 80, 0.8))
+          drop-shadow(0 0 12px rgba(76, 175, 80, 0.5));
+}
+.food-card:hover .neon-icon {
+  stroke: #ffffff;
+  filter: drop-shadow(0 0 10px rgba(76, 175, 80, 1))
+          drop-shadow(0 0 20px rgba(76, 175, 80, 0.7));
+}
 /* ===== END OF NEW FEATURES ===== */
