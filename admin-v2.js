@@ -1198,3 +1198,125 @@ window.deleteSiteFile = async function(id){
   alert('✅ تم حذف الملف!');
   loadSiteFiles();
 };
+/* ============================================================
+   إدارة المنتجات
+   ============================================================ */
+const catLabels = { printers:'طابعات', computers:'كمبيوتر', ram:'رامات', storage:'هاردات', cables:'وصلات', projectors:'بروجكتور', accessories:'إكسسوارات', ink:'أحبار', food:'مواد غذائية' };
+
+// ✅ تحميل المنتجات
+window.loadProducts = async function(){
+  const tbody = document.getElementById('productsTable');
+  if (!tbody) return;
+
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px">⏳ جاري تحميل المنتجات...</td></tr>';
+
+  const { data, error } = await supabaseClient
+    .from('store_products')
+    .select('*')
+    .order('id', { ascending: true });
+
+  if (error) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:30px;color:#EF4444">❌ خطأ: ${error.message}</td></tr>`;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px">📦 لا توجد منتجات</td></tr>';
+    document.getElementById('totalProducts').textContent = '0';
+    return;
+  }
+
+  tbody.innerHTML = data.map((product, index) => {
+    const shortDesc = (product.description || '').length > 60 ? (product.description || '').slice(0, 60) + '…' : (product.description || '—');
+    return `
+      <tr>
+        <td>${index + 1}</td>
+        <td><img src="${product.image || 'https://via.placeholder.com/50'}" class="product-img" alt=""></td>
+        <td>${product.name}</td>
+        <td title="${product.description || ''}">${shortDesc}</td>
+        <td>${Number(product.price).toLocaleString()} ر.س</td>
+        <td>${catLabels[product.category] || product.category}</td>
+        <td>
+          <button class="btn-edit" onclick="editProduct(${product.id})">✏️</button>
+          <button class="btn-delete" onclick="deleteProduct(${product.id})">🗑️</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  document.getElementById('totalProducts').textContent = data.length;
+};
+
+// ✅ فتح المودال لإضافة منتج
+window.openModal = function(){
+  document.getElementById('modalTitle').textContent = '➕ إضافة منتج';
+  document.getElementById('productForm').reset();
+  document.getElementById('productId').value = '';
+  document.getElementById('productModal').classList.add('active');
+};
+
+// ✅ إغلاق المودال
+window.closeModal = function(){
+  document.getElementById('productModal').classList.remove('active');
+};
+
+// ✅ تعديل منتج
+window.editProduct = async function(id){
+  const { data, error } = await supabaseClient
+    .from('store_products')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error || !data) { alert('❌ لم يتم العثور على المنتج'); return; }
+
+  document.getElementById('modalTitle').textContent = '✏️ تعديل منتج';
+  document.getElementById('productId').value = data.id;
+  document.getElementById('productImage').value = data.image || '';
+  document.getElementById('productName').value = data.name;
+  document.getElementById('productDesc').value = data.description || '';
+  document.getElementById('productPrice').value = data.price;
+  document.getElementById('productCategory').value = data.category;
+  document.getElementById('productModal').classList.add('active');
+};
+
+// ✅ حفظ المنتج
+window.saveProduct = async function(event){
+  event.preventDefault();
+  const id = document.getElementById('productId').value;
+  const payload = {
+    name: document.getElementById('productName').value.trim(),
+    price: parseFloat(document.getElementById('productPrice').value),
+    image: document.getElementById('productImage').value || 'https://via.placeholder.com/50',
+    description: document.getElementById('productDesc').value.trim(),
+    category: document.getElementById('productCategory').value,
+    updated_at: new Date().toISOString()
+  };
+
+  let error;
+  if (id) {
+    ({ error } = await supabaseClient.from('store_products').update(payload).eq('id', id));
+  } else {
+    payload.created_at = new Date().toISOString();
+    payload.stock = 10; payload.is_active = true;
+    ({ error } = await supabaseClient.from('store_products').insert([payload]));
+  }
+
+  if (error) { alert('❌ خطأ: ' + error.message); return false; }
+  alert('✅ تم الحفظ!');
+  closeModal();
+  loadProducts();
+  return false;
+};
+
+// ✅ حذف منتج
+window.deleteProduct = async function(id){
+  if (!confirm('حذف هذا المنتج؟')) return;
+  const { error } = await supabaseClient.from('store_products').delete().eq('id', id);
+  if (error) { alert('❌ خطأ: ' + error.message); return; }
+  alert('✅ تم الحذف!');
+  loadProducts();
+};
+
+// ✅ تحميل المنتجات أول ما تفتح الصفحة
+if (document.getElementById('productsTable')) loadProducts();
