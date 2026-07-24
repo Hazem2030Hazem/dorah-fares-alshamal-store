@@ -282,6 +282,9 @@ function renderProducts(filter) {
        <button class="quote-btn" onclick="requestQuote(${p.id}, event)" aria-label="اطلب عرض سعر">
         📋 عرض سعر
        </button>
+              <button class="quick-view-btn-icon" onclick="openQuickView(${p.id})" aria-label="نظرة سريعة" style="background:transparent;border:1px solid #D1D5DB;color:#374151;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;display:inline-flex;align-items:center;gap:4px;transition:all 0.3s ease">
+        👁️
+       </button>
        <button class="compare-btn ${isCompared ? 'active' : ''}" onclick="toggleCompare(${p.id}, event)" aria-label="مقارنة">
         ${isCompared ? '✓' : '⚖️'}
        </button>
