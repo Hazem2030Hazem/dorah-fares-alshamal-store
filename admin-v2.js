@@ -1198,16 +1198,3 @@ window.deleteSiteFile = async function(id){
   alert('✅ تم حذف الملف!');
   loadSiteFiles();
 };
-
-/* ============================================================
-   تحميل التبويبات تلقائياً
-   ============================================================ */
-const origShowTab = window.showTab;
-window.showTab = function(tabName){
-  origShowTab(tabName);
-  if (tabName === 'pages') loadSitePages();
-  if (tabName === 'services_content') loadServicePagesContent();
-  if (tabName === 'bank_accounts') loadBankAccounts();
-  if (tabName === 'files') loadSiteFiles();
-  if (tabName === 'content') loadSiteContent();
-};
