@@ -1636,9 +1636,14 @@ document.addEventListener('DOMContentLoaded', function() {
   initWishlistTable();
   loadWishlistFromSupabase();
   initSidebar();
-  const sidebarCartCount = document.getElementById('sidebarCartCount');
-  if (sidebarCartCount) { const count = cart.reduce((sum, item) => sum + item.qty, 0); sidebarCartCount.textContent = count; sidebarCartCount.style.display = count > 0 ? 'flex' : 'none'; }
-  // ===== عرض تقييمات الشركات والمؤسسات في قسم testimonials =====
+  var sidebarCartCount = document.getElementById('sidebarCartCount');
+  if (sidebarCartCount) { var count = cart.reduce(function(sum, item) { return sum + item.qty; }, 0); sidebarCartCount.textContent = count; sidebarCartCount.style.display = count > 0 ? 'flex' : 'none'; }
+  
+  // تحميل تقييمات الشركات
+  setTimeout(loadCompanyTestimonials, 1000);
+});
+
+// ===== عرض تقييمات الشركات والمؤسسات =====
 async function loadCompanyTestimonials() {
     var grid = document.querySelector('#testimonials .testimonials-grid');
     if (!grid) return;
@@ -1692,7 +1697,3 @@ async function loadCompanyTestimonials() {
         console.log('Company testimonials:', e);
     }
 }
-
-setTimeout(loadCompanyTestimonials, 1000);
-});
-});
