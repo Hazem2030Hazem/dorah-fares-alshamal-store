@@ -895,3 +895,89 @@ window.deleteBankAccount = async function(id){
   alert('✅ تم حذف الحساب البنكي!');
   loadBankAccounts();
 };
+/* ============================================================
+   إدارة صفحات الموقع — Site Pages Management
+   ============================================================ */
+window.loadSitePages = async function(){
+  const container = document.getElementById('sitePagesList');
+  if (!container) return;
+  container.innerHTML = '<div class="admin-empty">⏳ جاري التحميل...</div>';
+
+  const { data, error } = await supabaseClient
+    .from('site_pages')
+    .select('*')
+    .order('page_key');
+
+  if (error) {
+    container.innerHTML = `<div class="admin-empty error">❌ خطأ: ${error.message}</div>`;
+    return;
+  }
+
+  const pageNames = {
+    about: 'عن الشركة', vision: 'رؤيتنا', mission: 'رسالتنا',
+    team: 'فريق العمل', certifications: 'الشهادات',
+    privacy: 'سياسة الخصوصية', terms: 'شروط الاستخدام',
+    faq: 'الأسئلة الشائعة', contact: 'تواصل معنا'
+  };
+
+  container.innerHTML = data.map(item => `
+    <div class="admin-data-card">
+      <div class="admin-card-main">
+        <div class="admin-card-title">
+          <strong>📄 ${pageNames[item.page_key] || item.page_key}</strong>
+          <span>${item.updated_at ? new Date(item.updated_at).toLocaleDateString('ar-SA') : '—'}</span>
+        </div>
+        <div style="margin-top:10px;display:grid;gap:6px;">
+          <div><small>العنوان:</small> <strong>${item.hero_title || '(فارغ)'}</strong></div>
+          <div><small>الوصف:</small> ${item.hero_subtitle || '(فارغ)'}</div>
+        </div>
+      </div>
+      <div class="admin-card-actions buttons">
+        <button class="btn-edit" onclick="editSitePage('${item.page_key}')">✏️ تعديل</button>
+        <button class="btn-view" onclick="window.open('https://alshamal-df.com/${item.page_key}.html', '_blank')">👁️ معاينة</button>
+      </div>
+    </div>
+  `).join('');
+};
+
+window.editSitePage = function(pageKey){
+  const heroTitle = prompt('العنوان الرئيسي للصفحة:');
+  if (heroTitle === null) return;
+  const heroSubtitle = prompt('الوصف تحت العنوان:');
+  if (heroSubtitle === null) return;
+  const section1Title = prompt('عنوان القسم الأول:');
+  if (section1Title === null) return;
+  const section1Content = prompt('محتوى القسم الأول:');
+  if (section1Content === null) return;
+
+  updateSitePage(pageKey, {
+    hero_title: heroTitle,
+    hero_subtitle: heroSubtitle,
+    section_1_title: section1Title,
+    section_1_content: section1Content
+  });
+};
+
+async function updateSitePage(pageKey, updates){
+  const { error } = await supabaseClient
+    .from('site_pages')
+    .update({ ...updates, updated_at: new Date().toISOString() })
+    .eq('page_key', pageKey);
+
+  if (error) { alert('❌ خطأ: ' + error.message); return; }
+  alert('✅ تم حفظ التغييرات بنجاح!');
+  loadSitePages();
+};
+
+/* ============================================================
+   تحميل التبويبات تلقائياً
+   ============================================================ */
+const origShowTab = window.showTab;
+window.showTab = function(tabName){
+  origShowTab(tabName);
+  if (tabName === 'pages') loadSitePages();
+  if (tabName === 'services_content') loadServicePagesContent();
+  if (tabName === 'bank_accounts') loadBankAccounts();
+  if (tabName === 'files') loadSiteFiles();
+  if (tabName === 'content') loadSiteContent();
+};
