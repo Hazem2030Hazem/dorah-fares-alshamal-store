@@ -1678,12 +1678,12 @@ document.addEventListener('DOMContentLoaded', function() {
   var sidebarCartCount = document.getElementById('sidebarCartCount');
   if (sidebarCartCount) { var count = cart.reduce(function(sum, item) { return sum + item.qty; }, 0); sidebarCartCount.textContent = count; sidebarCartCount.style.display = count > 0 ? 'flex' : 'none'; }
   
-  // تحميل تقييمات الشركات
+ // تحميل تقييمات الشركات
   setTimeout(loadCompanyTestimonials, 1000);
+  
   // تحميل الشركاء
-setTimeout(loadPartners, 500);
+  setTimeout(loadPartners, 500);
 });
-
 
 // ===== عرض تقييمات الشركات والمؤسسات =====
 async function loadCompanyTestimonials() {
