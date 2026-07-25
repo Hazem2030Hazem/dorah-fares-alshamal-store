@@ -1713,6 +1713,47 @@ async function loadCompanyTestimonials() {
         }).join('');
 
     } catch (e) {
-        console.log('Company testimonials:', e);
+               console.log('Company testimonials:', e);
     }
 }
+
+// ===== WHATSAPP CHAT WIDGET =====
+(function() {
+    // إنشاء عنصر الشات
+    var widgetHTML = '<div class="wa-chat-widget" id="waWidget">' +
+        '<div class="wa-chat-bubble" id="waBubble" onclick="toggleWaChat()">' +
+        '<span class="wa-icon">💬</span>' +
+        '</div>' +
+        '<div class="wa-chat-box" id="waChatBox" style="display:none">' +
+        '<div class="wa-chat-header">' +
+        '<span>👋 مرحباً! كيف نقدر نساعدك؟</span>' +
+        '<button onclick="toggleWaChat()" style="background:none;border:none;color:white;font-size:20px;cursor:pointer">✕</button>' +
+        '</div>' +
+        '<div class="wa-chat-body">' +
+        '<p>اختر نوع الاستفسار:</p>' +
+        '<button onclick="waOpen(\'استفسار عن منتج\')">📦 استفسار عن منتج</button>' +
+        '<button onclick="waOpen(\'طلب خدمة\')">🔧 طلب خدمة</button>' +
+        '<button onclick="waOpen(\'طلب عرض سعر\')">📋 طلب عرض سعر</button>' +
+        '<button onclick="waOpen(\'استفسار عام\')">💬 استفسار عام</button>' +
+        '</div>' +
+        '</div>' +
+        '</div>';
+
+    // إضافة العنصر للصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+        document.body.insertAdjacentHTML('beforeend', widgetHTML);
+    });
+
+    // دوال التحكم
+    window.toggleWaChat = function() {
+        var box = document.getElementById('waChatBox');
+        if (box) {
+            box.style.display = box.style.display === 'none' ? 'block' : 'none';
+        }
+    };
+
+    window.waOpen = function(type) {
+        var msg = 'مرحباً شركة درة فارس الشمال،\n\n' + type + '\n\nالاسم: \nالجوال: \nالتفاصيل: ';
+        window.open('https://wa.me/966545358773?text=' + encodeURIComponent(msg), '_blank');
+    };
+})();
