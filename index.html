@@ -2714,4 +2714,54 @@ function init() {
 </div>
 
   <script src="main.js"></script>
+<!-- WhatsApp Chat Widget -->
+<div class="wa-chat-widget" id="waWidget">
+    <div class="wa-chat-bubble" id="waBubble" onclick="toggleWaChat()">
+        <span class="wa-icon">💬</span>
+    </div>
+    <div class="wa-chat-box" id="waChatBox" style="display:none">
+        <div class="wa-chat-header">
+            <span>👋 مرحباً! كيف نقدر نساعدك؟</span>
+            <button onclick="toggleWaChat()" style="background:none;border:none;color:white;font-size:20px;cursor:pointer">✕</button>
+        </div>
+        <div class="wa-chat-body">
+            <p style="color:rgba(255,255,255,0.7);font-size:13px">اختر نوع الاستفسار:</p>
+            <button onclick="waOpen('استفسار عن منتج')" style="display:block;width:100%;padding:12px;margin:5px 0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:10px;color:white;cursor:pointer;text-align:right;font-family:inherit">📦 استفسار عن منتج</button>
+            <button onclick="waOpen('طلب خدمة')" style="display:block;width:100%;padding:12px;margin:5px 0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:10px;color:white;cursor:pointer;text-align:right;font-family:inherit">🔧 طلب خدمة</button>
+            <button onclick="waOpen('طلب عرض سعر')" style="display:block;width:100%;padding:12px;margin:5px 0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:10px;color:white;cursor:pointer;text-align:right;font-family:inherit">📋 طلب عرض سعر</button>
+            <button onclick="waOpen('استفسار عام')" style="display:block;width:100%;padding:12px;margin:5px 0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:10px;color:white;cursor:pointer;text-align:right;font-family:inherit">💬 استفسار عام</button>
+        </div>
+    </div>
+</div>
+
+<style>
+.wa-chat-widget { position:fixed; bottom:100px; left:20px; z-index:9998; }
+.wa-chat-bubble { width:60px; height:60px; border-radius:50%; background:#25D366; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 8px 25px rgba(37,211,102,0.4); transition:all 0.3s; animation:pulse 2s infinite; }
+.wa-chat-bubble:hover { transform:scale(1.1); }
+.wa-icon { font-size:30px; }
+.wa-chat-box { position:absolute; bottom:70px; left:0; width:300px; background:rgba(15,12,41,0.97); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.2); border-radius:20px; overflow:hidden; }
+.wa-chat-header { background:linear-gradient(135deg,#075E54,#128C7E); padding:15px; color:white; display:flex; justify-content:space-between; align-items:center; font-weight:700; }
+.wa-chat-body { padding:15px; }
+@keyframes pulse { 0%,100% { box-shadow:0 8px 25px rgba(37,211,102,0.4); } 50% { box-shadow:0 8px 40px rgba(37,211,102,0.7); } }
+@media(max-width:768px) { .wa-chat-widget { bottom:80px; left:10px; } .wa-chat-box { width:280px; } }
+</style>
+
+<script>
+function toggleWaChat() {
+    var box = document.getElementById('waChatBox');
+    box.style.display = box.style.display === 'none' ? 'block' : 'none';
+}
+
+function waOpen(type) {
+    var msg = 'مرحباً شركة درة فارس الشمال،\n\n' + type + '\n\nالاسم: \nالجوال: \nالتفاصيل: ';
+    window.open('https://wa.me/966545358773?text=' + encodeURIComponent(msg), '_blank');
+    toggleWaChat();
+}
+
+// إخفاء أيقونة واتساب القديمة لو موجودة
+document.addEventListener('DOMContentLoaded', function() {
+    var oldFloat = document.querySelector('.whatsapp-float');
+    if (oldFloat) oldFloat.style.display = 'none';
+});
+</script>
 </body></html>
