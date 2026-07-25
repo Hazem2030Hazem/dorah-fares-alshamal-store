@@ -4210,6 +4210,11 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
   font-weight: 600;
 }
 .wa-chat-body button:hover { 
+  background: #EAF1FB !important; 
+  border-color: #3B639E !important;
+  color: #2C4F86 !important;
+}
+.wa-chat-body button:hover { 
   background: #EAF1FB; 
   border-color: #3B639E;
   color: #2C4F86;
