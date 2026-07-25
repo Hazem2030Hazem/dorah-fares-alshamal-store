@@ -389,6 +389,77 @@ function init() {
         </div>
     </section>
 
+  <!-- Service Request Form -->
+<section class="service-request-section" style="padding:40px 0">
+    <div class="container">
+        <div class="service-request-box" style="background:rgba(15,12,41,0.7);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:40px;max-width:700px;margin:0 auto">
+            <h2 style="color:#fff;font-size:24px;margin-bottom:10px;text-align:center">📋 اطلب هذه الخدمة الآن</h2>
+            <p style="color:rgba(255,255,255,0.6);text-align:center;margin-bottom:25px">املأ النموذج وسنتواصل معك في أقرب وقت</p>
+            <form id="serviceRequestForm" onsubmit="return submitServiceRequest(event)" style="display:grid;gap:15px">
+                <input type="hidden" id="srServiceType" value="خدمات الطباعة">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px">
+                    <input type="text" id="srName" placeholder="الاسم الكامل *" required style="padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;font-family:inherit">
+                    <input type="tel" id="srPhone" placeholder="رقم الجوال *" required style="padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;font-family:inherit">
+                </div>
+                <input type="email" id="srEmail" placeholder="البريد الإلكتروني" style="padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;font-family:inherit">
+                <input type="text" id="srCity" placeholder="المدينة" style="padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;font-family:inherit">
+                <textarea id="srDescription" rows="4" placeholder="اشرح الخدمة المطلوبة بالتفصيل..." required style="padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;font-family:inherit"></textarea>
+                <label style="color:rgba(255,255,255,0.7);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px">
+                    📸 <span>إرفاق صور (اختياري)</span>
+                    <input type="file" id="srImages" multiple accept="image/*" style="display:none" onchange="document.getElementById('imageCount').textContent = this.files.length + ' صور مختارة'">
+                    <span id="imageCount" style="color:#10B981;font-size:12px"></span>
+                </label>
+                <button type="submit" style="padding:16px;background:linear-gradient(135deg,#10B981,#059669);color:#fff;border:none;border-radius:12px;font-size:18px;font-weight:700;cursor:pointer;font-family:inherit">📨 إرسال الطلب</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+async function submitServiceRequest(event) {
+    event.preventDefault();
+    var btn = event.target.querySelector('button[type="submit"]');
+    var originalText = btn.textContent;
+    btn.textContent = '⏳ جاري الإرسال...';
+    btn.disabled = true;
+
+    var payload = {
+        service_type: document.getElementById('srServiceType').value,
+        customer_name: document.getElementById('srName').value.trim(),
+        customer_phone: document.getElementById('srPhone').value.trim(),
+        customer_email: document.getElementById('srEmail').value.trim(),
+        city: document.getElementById('srCity').value.trim(),
+        description: document.getElementById('srDescription').value.trim(),
+        status: 'new'
+    };
+
+    try {
+        var result = await supabaseClient.from('service_requests').insert([payload]);
+        if (result.error) throw result.error;
+        
+        // رفع الصور لو موجودة
+        var files = document.getElementById('srImages').files;
+        if (files.length > 0) {
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var path = 'service-requests/' + Date.now() + '-' + file.name;
+                await supabaseClient.storage.from('service-images').upload(path, file);
+            }
+        }
+        
+        alert('✅ تم إرسال طلب الخدمة بنجاح! سنتواصل معك قريباً');
+        event.target.reset();
+        document.getElementById('imageCount').textContent = '';
+    } catch(e) {
+        alert('❌ حدث خطأ: ' + (e.message || 'حاول مرة أخرى'));
+    } finally {
+        btn.textContent = originalText;
+        btn.disabled = false;
+    }
+    return false;
+}
+</script>
+
     <footer class="footer" style="background:transparent;">
         <div class="container">
             <div style="text-align:center;padding:40px 0;">
