@@ -1496,3 +1496,40 @@ async function deletePaymentMethod(id) {
     adminToast('✅ تم الحذف');
     loadPaymentMethodsAdmin();
 }
+// ===== نظام الإشعارات =====
+var notifSound = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2qEcP+1j2OUmpmEOQB1Y2N5mJumfVpWSpORrIdgWE+Cz9zSdGJ2/62Qb5ugoIVoY1p4raKMOUE+eNTLp2hsi4DK0MGXhHqNwaSHc4CHpZJ5cGxxsaqUZ2RycLOrj3JhY22glotoZFpsmJuJcWZjcKull3BgXmajnJBlZGRrrautZWNqfLOvk3htbneYlot7b2R/raeZcV9gXqGYhF5PUGiPiGlVUFBpiodjW11jaoB3XVVVX15dWVhYWFlYVg==');
+
+function playNotif() {
+    notifSound.play().catch(function(){});
+}
+
+function listenForNewOrders() {
+    supabaseClient
+        .channel('new-orders')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'store_orders' }, function() {
+            playNotif();
+            updateStats();
+            showToast('🔔 طلب جديد!', 'success');
+        })
+        .subscribe();
+}
+
+function listenForNewServices() {
+    supabaseClient
+        .channel('new-services')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'service_requests' }, function() {
+            playNotif();
+            updateStats();
+            showToast('🔔 طلب خدمة جديد!', 'success');
+        })
+        .subscribe();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        listenForNewOrders();
+        listenForNewServices();
+    }, 2000);
+});
+
+})();
