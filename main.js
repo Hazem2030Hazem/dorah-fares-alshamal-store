@@ -1419,7 +1419,7 @@ const DORA_DEFAULT_SITE_SETTINGS = {
   companyPhone1: '966568717449', companyPhone2: '966545358773', companyEmail: 'info@alshamal-df.com',
   socialTwitter: 'https://twitter.com/dorafares', socialInstagram: 'https://instagram.com/dorafares',
   socialFacebook: 'https://facebook.com/dorafares', socialLinkedin: 'https://linkedin.com/company/dorafares',
-  whatsappMessage: 'مرحباً شركة درة فارس الشمال، أرغب في الاستفسار عن منتجاتكم'
+  whatsappMessage: 'مرحباً شركة درة فارس الشمال،\n\nأرغب في الاستفسار عن:\n- \n- \n\nوشكراً'
 };
 let doraSiteSettings = { ...DORA_DEFAULT_SITE_SETTINGS, ...(JSON.parse(localStorage.getItem('doraSettings') || '{}')) };
 
