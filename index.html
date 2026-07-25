@@ -2764,4 +2764,34 @@ document.addEventListener('DOMContentLoaded', function() {
     if (oldFloat) oldFloat.style.display = 'none';
 });
 </script>
+<!-- WhatsApp Chat Widget -->
+<div class="wa-chat-widget" id="waWidget">
+    <div class="wa-chat-bubble" id="waBubble" onclick="toggleWaChat()">
+        <span class="wa-icon">💬</span>
+    </div>
+    <div class="wa-chat-box" id="waChatBox" style="display:none">
+        <div class="wa-chat-header">
+            <span>👋 مرحباً! كيف نقدر نساعدك؟</span>
+            <button onclick="toggleWaChat()" style="background:none;border:none;color:white;font-size:20px;cursor:pointer">✕</button>
+        </div>
+        <div class="wa-chat-body">
+            <p style="color:rgba(255,255,255,0.7);font-size:13px">اختر نوع الاستفسار:</p>
+            <button onclick="waOpen('استفسار عن منتج')">📦 استفسار عن منتج</button>
+            <button onclick="waOpen('طلب خدمة')">🔧 طلب خدمة</button>
+            <button onclick="waOpen('طلب عرض سعر')">📋 طلب عرض سعر</button>
+            <button onclick="waOpen('استفسار عام')">💬 استفسار عام</button>
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleWaChat() {
+    var box = document.getElementById('waChatBox');
+    box.style.display = box.style.display === 'none' ? 'block' : 'none';
+}
+function waOpen(type) {
+    var msg = 'مرحباً شركة درة فارس الشمال،\n\n' + type + '\n\nالاسم: \nالجوال: \nالتفاصيل: ';
+    window.open('https://wa.me/966545358773?text=' + encodeURIComponent(msg), '_blank');
+}
+</script>
 </body></html>
