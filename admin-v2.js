@@ -1996,7 +1996,11 @@ window.showTab = function(tabName) {
     
     // تحميل إعدادات الفوترة
     if (tabName === 'einvoice') {
-        var ei = JSON.parse(localStorage.getItem('doraEInvoice') || '{}');
+                var ei = {};
+        try {
+            var result = await supabaseClient.from('einvoice_settings').select('data').eq('id', 1).maybeSingle();
+            if (result.data?.data) ei = result.data.data;
+        } catch(e) {}
         if (ei.afaq_key) document.getElementById('ei_afaq_key').value = ei.afaq_key;
         if (ei.afaq_url) document.getElementById('ei_afaq_url').value = ei.afaq_url;
         if (ei.afaq_active) document.getElementById('ei_afaq_active').checked = ei.afaq_active;
