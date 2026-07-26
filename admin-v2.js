@@ -2254,15 +2254,156 @@ window.deleteContactInfo = async function(id) {
     loadSiteContact(); adminToast('✅ تم الحذف');
 };
 
-// ---------- ربط التبويبات مع showTab ----------
-var origShowTabDynamic = window.showTab;
+/* ============================================================
+   🌐 مدير المحتوى الديناميكي الموحد
+   ============================================================ */
+const sectionLabels = {
+  hero_stats: 'الإحصائيات',
+  about: 'عن الشركة',
+  testimonials: 'آراء العملاء',
+  projects: 'المشاريع',
+  blog: 'المقالات',
+  certifications: 'الشهادات والتراخيص',
+  contact: 'معلومات التواصل'
+};
+
+window.loadSiteItems = async function(sectionKey) {
+  var container = document.getElementById(sectionKey + 'List');
+  if (!container) return;
+  container.innerHTML = '<div class="admin-empty">⏳ جاري تحميل ' + (sectionLabels[sectionKey] || sectionKey) + '...</div>';
+
+  var result = await supabaseClient
+    .from('site_items')
+    .select('*')
+    .eq('section_key', sectionKey)
+    .order('sort_order');
+
+  if (result.error) {
+    container.innerHTML = '<div class="admin-empty" style="color:#EF4444">❌ خطأ: ' + result.error.message + '</div>';
+    return;
+  }
+
+  var items = result.data || [];
+  if (!items.length) {
+    container.innerHTML = '<div class="admin-empty">📭 لا توجد بيانات في ' + (sectionLabels[sectionKey] || sectionKey) + '</div>';
+    return;
+  }
+
+  container.innerHTML = items.map(function(item) {
+    var meta = item.metadata || {};
+    var icon = meta.icon_name ? '<span style="font-size:24px">' + meta.icon_name + '</span>' : '';
+    var color = meta.color || '#6366F1';
+    var number = meta.number ? '<span style="font-size:28px;font-weight:800;color:' + color + '">' + esc(meta.number) + '</span>' : '';
+    var badge = meta.badge_text ? '<span class="badge">' + esc(meta.badge_text) + '</span>' : '';
+    var link = meta.link_url ? '<a href="' + esc(meta.link_url) + '" target="_blank" class="btn-view">🔗 رابط</a>' : '';
+    var rating = meta.rating ? '⭐'.repeat(meta.rating) + '☆'.repeat(5 - meta.rating) : '';
+    var type = meta.type ? '<span style="color:#64748B">[' + esc(meta.type) + ']</span> ' : '';
+    var value = meta.value ? '<br><strong>' + esc(meta.value) + '</strong>' : '';
+
+    return '<div class="admin-data-card">' +
+      '<div class="admin-card-main">' +
+        '<div class="admin-card-title">' +
+          icon + ' <strong>' + esc(item.title_ar || 'بدون عنوان') + '</strong> ' + badge +
+          '<span>🔄 ' + item.sort_order + '</span>' +
+        '</div>' +
+        (number ? '<div style="margin:8px 0">' + number + '</div>' : '') +
+        '<p class="admin-note">' + type + esc(item.description_ar || '') + value + '</p>' +
+        (rating ? '<div class="admin-stars" style="color:#F59E0B;font-size:20px">' + rating + '</div>' : '') +
+        '<div class="admin-meta"><span>📅 ' + dateAr(item.updated_at) + '</span></div>' +
+      '</div>' +
+      '<div class="admin-card-actions buttons">' +
+        link +
+        '<button class="btn-edit" onclick="editSiteItem(' + item.id + ')">✏️ تعديل</button>' +
+        '<button class="btn-delete" onclick="deleteSiteItem(' + item.id + ', \'' + sectionKey + '\')">🗑️ حذف</button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+};
+
+window.addSiteItem = async function(sectionKey) {
+  var title = prompt('العنوان بالعربية:');
+  if (!title) return;
+  var description = prompt('الوصف (اختياري):') || '';
+  var sortOrder = parseInt(prompt('رقم الترتيب:', '1')) || 1;
+  var metadata = {};
+
+  if (sectionKey === 'hero_stats') {
+    var num = prompt('الرقم (مثلاً: +500):', '+0');
+    if (num === null) return;
+    var col = prompt('اللون (مثلاً: #22D3EE):', '#22D3EE');
+    if (col === null) return;
+    var ico = prompt('الأيقونة (مثلاً: 🏆):', '🏆');
+    if (ico === null) return;
+    metadata = { number: num, color: col, icon_name: ico };
+  } else if (sectionKey === 'testimonials') {
+    var rev = prompt('اسم المقيّم:');
+    if (rev === null) return;
+    var comp = prompt('اسم الشركة:') || '';
+    var rat = parseInt(prompt('التقييم (1-5):', '5')) || 5;
+    metadata = { reviewer_name: rev, company_name: comp, rating: rat };
+  } else if (sectionKey === 'blog') {
+    var dat = prompt('تاريخ النشر (مثلاً: يناير 2025):', '');
+    var tim = prompt('وقت القراءة (مثلاً: 5 دقائق):', '');
+    var lnk = prompt('الرابط:', '#');
+    metadata = { publish_date: dat, read_time: tim, link_url: lnk };
+  } else if (sectionKey === 'contact') {
+    var typ = prompt('النوع (phone/email/location):', 'phone');
+    var val = prompt('القيمة (مثلاً: +966 56 871 7449):', '');
+    var lnk2 = prompt('الرابط (مثلاً: tel:+966...):', '#');
+    metadata = { type: typ, value: val, link_url: lnk2 };
+  } else if (sectionKey === 'certifications') {
+    var bad = prompt('الشارة (مثلاً: معتمد):', '');
+    metadata = { badge_text: bad };
+  }
+
+  var result = await supabaseClient.from('site_items').insert([{
+    section_key: sectionKey, title_ar: title, description_ar: description,
+    metadata: metadata, sort_order: sortOrder
+  }]);
+
+  if (result.error) { adminToast('❌ خطأ: ' + result.error.message, 'error'); return; }
+  adminToast('✅ تمت الإضافة بنجاح');
+  loadSiteItems(sectionKey);
+};
+
+window.editSiteItem = async function(id) {
+  var result = await supabaseClient.from('site_items').select('*').eq('id', id).single();
+  if (result.error || !result.data) { adminToast('❌ لم يتم العثور على العنصر', 'error'); return; }
+  var item = result.data;
+  var title = prompt('العنوان:', item.title_ar);
+  if (title === null) return;
+  var description = prompt('الوصف:', item.description_ar || '');
+  if (description === null) return;
+  var sortOrder = parseInt(prompt('الترتيب:', item.sort_order)) || item.sort_order;
+
+  var result2 = await supabaseClient.from('site_items').update({
+    title_ar: title, description_ar: description, sort_order: sortOrder
+  }).eq('id', id);
+
+  if (result2.error) { adminToast('❌ خطأ: ' + result2.error.message, 'error'); return; }
+  adminToast('✅ تم التعديل بنجاح');
+  loadSiteItems(item.section_key);
+};
+
+window.deleteSiteItem = async function(id, sectionKey) {
+  if (!confirm('هل أنت متأكد من حذف هذا العنصر؟')) return;
+  var result = await supabaseClient.from('site_items').delete().eq('id', id);
+  if (result.error) { adminToast('❌ خطأ: ' + result.error.message, 'error'); return; }
+  adminToast('✅ تم الحذف بنجاح');
+  loadSiteItems(sectionKey);
+};
+
+/* ============================================================
+   📑 مدير التبويبات النهائي
+   ============================================================ */
+var _finalShowTab = window.showTab;
 window.showTab = function(tabName) {
-    if (origShowTabDynamic) origShowTabDynamic(tabName);
-    if (tabName === 'site_stats') loadSiteStats();
-    if (tabName === 'site_about') loadSiteAbout();
-    if (tabName === 'site_testimonials') loadSiteTestimonials();
-    if (tabName === 'site_projects') loadSiteProjects();
-    if (tabName === 'site_blog') loadSiteBlog();
-    if (tabName === 'site_certifications') loadSiteCertifications();
-    if (tabName === 'site_contact') loadSiteContact();
+  if (_finalShowTab) _finalShowTab(tabName);
+  if (tabName === 'hero_stats') loadSiteItems('hero_stats');
+  if (tabName === 'about') loadSiteItems('about');
+  if (tabName === 'testimonials') loadSiteItems('testimonials');
+  if (tabName === 'projects') loadSiteItems('projects');
+  if (tabName === 'blog') loadSiteItems('blog');
+  if (tabName === 'certifications') loadSiteItems('certifications');
+  if (tabName === 'contact') loadSiteItems('contact');
 };
