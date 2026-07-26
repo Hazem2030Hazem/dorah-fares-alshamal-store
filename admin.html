@@ -161,6 +161,78 @@
             </div>
         </div>
         
+               <!-- 🏢 بيانات الشركة -->
+        <div class="tab-content" id="company_infoTab">
+            <div class="table-container">
+                <div class="table-header"><h3>🏢 بيانات الشركة الرسمية</h3><button class="btn-add" onclick="saveCompanyInfo()">💾 حفظ</button></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px">
+                    <div>
+                        <h4 style="color:#10B981;margin-bottom:15px">📋 معلومات أساسية</h4>
+                        <div class="form-group"><label>اسم الشركة الرسمي</label><input type="text" id="ci_name" placeholder="شركة درة فارس الشمال"></div>
+                        <div class="form-group"><label>📋 السجل التجاري</label><input type="text" id="ci_cr" placeholder="رقم السجل التجاري"></div>
+                        <div class="form-group"><label>🧾 الرقم الضريبي</label><input type="text" id="ci_vat" placeholder="310XXXXXXXXX"></div>
+                        <div class="form-group"><label>🏦 IBAN</label><input type="text" id="ci_iban" placeholder="SA03XXXXXXXXXXXXXX"></div>
+                        <div class="form-group"><label>🏦 اسم البنك</label><input type="text" id="ci_bank" placeholder="بنك الرياض"></div>
+                    </div>
+                    <div>
+                        <h4 style="color:#10B981;margin-bottom:15px">📞 التواصل الرسمي</h4>
+                        <div class="form-group"><label>📱 الجوال الرسمي</label><input type="text" id="ci_phone" placeholder="9665XXXXXXXX"></div>
+                        <div class="form-group"><label>📞 هاتف أرضي</label><input type="text" id="ci_landline" placeholder="014XXXXXXX"></div>
+                        <div class="form-group"><label>✉️ البريد الإلكتروني</label><input type="email" id="ci_email" placeholder="info@alshamal-df.com"></div>
+                        <div class="form-group"><label>🌐 الموقع الإلكتروني</label><input type="text" id="ci_website" placeholder="alshamal-df.com"></div>
+                        <div class="form-group"><label>📍 العنوان الرسمي</label><textarea id="ci_address" rows="2" placeholder="المملكة العربية السعودية"></textarea></div>
+                        <div class="form-group"><label>🖼️ شعار الشركة (URL)</label><input type="text" id="ci_logo" placeholder="https://alshamal-df.com/logo.png"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 📋 التوثيق الحكومي -->
+        <div class="tab-content" id="gov_docsTab">
+            <div class="table-container">
+                <div class="table-header"><h3>📋 التوثيق الحكومي والتراخيص</h3><button class="btn-add" onclick="saveGovDocs()">💾 حفظ</button></div>
+                <div style="padding:20px">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+                        <div class="form-group"><label>🏛️ رخصة البلدية (رقم)</label><input type="text" id="gd_baladia" placeholder="رقم الرخصة"></div>
+                        <div class="form-group"><label>📅 تاريخ انتهاء البلدية</label><input type="date" id="gd_baladia_exp"></div>
+                        <div class="form-group"><label>💰 شهادة الزكاة (رقم)</label><input type="text" id="gd_zakat" placeholder="رقم الشهادة"></div>
+                        <div class="form-group"><label>📅 تاريخ انتهاء الزكاة</label><input type="date" id="gd_zakat_exp"></div>
+                        <div class="form-group"><label>🧾 شهادة ضريبة القيمة المضافة</label><input type="text" id="gd_vat_cert" placeholder="رقم الشهادة"></div>
+                        <div class="form-group"><label>👥 شهادة السعودة</label><input type="text" id="gd_saudization" placeholder="رقم الشهادة"></div>
+                        <div class="form-group"><label>🏥 شهادة التأمينات</label><input type="text" id="gd_insurance" placeholder="رقم الشهادة"></div>
+                        <div class="form-group"><label>🔥 رخصة الدفاع المدني</label><input type="text" id="gd_civil_defense" placeholder="رقم الرخصة"></div>
+                        <div class="form-group"><label>📜 شهادة الأيزو ISO</label><input type="text" id="gd_iso" placeholder="رقم الشهادة"></div>
+                        <div class="form-group"><label>🤝 وكالة HP</label><input type="text" id="gd_hp" placeholder="رقم الوكالة"></div>
+                        <div class="form-group"><label>🦓 وكالة Zebra</label><input type="text" id="gd_zebra" placeholder="رقم الوكالة"></div>
+                        <div class="form-group"><label>🍯 وكالة Honeywell</label><input type="text" id="gd_honeywell" placeholder="رقم الوكالة"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🧾 الفوترة الإلكترونية -->
+        <div class="tab-content" id="einvoiceTab">
+            <div class="table-container">
+                <div class="table-header"><h3>🧾 إعدادات الفوترة الإلكترونية والربط المحاسبي</h3><button class="btn-add" onclick="saveEInvoice()">💾 حفظ</button></div>
+                <div style="padding:20px">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+                        <div>
+                            <h4 style="color:#A78BFA;margin-bottom:15px">🔗 الربط مع أفاق</h4>
+                            <div class="form-group"><label>🔑 API Key (أفاق)</label><input type="text" id="ei_afaq_key" placeholder="مفتاح API من أفاق"></div>
+                            <div class="form-group"><label>🌐 Endpoint URL</label><input type="text" id="ei_afaq_url" placeholder="https://api.afaq.sa/v1/invoices"></div>
+                            <div class="form-group"><label><input type="checkbox" id="ei_afaq_active"> ✅ تفعيل الربط التلقائي مع أفاق</label></div>
+                        </div>
+                        <div>
+                            <h4 style="color:#A78BFA;margin-bottom:15px">🧾 إعدادات الفاتورة الإلكترونية</h4>
+                            <div class="form-group"><label>📋 رقم التسجيل في هيئة الزكاة</label><input type="text" id="ei_zatca_id" placeholder="رقم التسجيل"></div>
+                            <div class="form-group"><label>🔐 شهادة التوقيع الإلكتروني (مسار)</label><input type="text" id="ei_cert_path" placeholder="/certs/signature.pfx"></div>
+                            <div class="form-group"><label>📱 QR Code على الفاتورة</label><select id="ei_qr"><option value="yes">✅ نعم</option><option value="no">❌ لا</option></select></div>
+                            <div class="form-group"><label>📤 إرسال تلقائي لهيئة الزكاة</label><select id="ei_zatca_auto"><option value="no">❌ يدوي</option><option value="yes">✅ تلقائي</option></select></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="tab-content" id="settingsTab">
             <div class="settings-section"><h4>🏢 معلومات الشركة</h4>
                 <div class="form-group"><label>اسم الشركة</label><input type="text" id="companyName" value="شركة درة فارس الشمال"></div>
