@@ -1940,7 +1940,6 @@ window.saveEInvoice = async function() {
         zatca_auto: document.getElementById('ei_zatca_auto')?.value || 'no'
     };
     
-    localStorage.setItem('doraEInvoice', JSON.stringify(data));
     
     try {
         await supabaseClient.from('einvoice_settings').upsert([{ id: 1, data: data, updated_at: new Date().toISOString() }], { onConflict: 'id' });
