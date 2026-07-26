@@ -209,7 +209,7 @@ var total = subtotal + tax - discount;
     // حفظ الطلب
     var orderPayload = {
         customer_name: name, customer_phone: phone, customer_email: email,
-        items: cart, subtotal: subtotal, tax: tax, total: total,
+        items: cart, subtotal: subtotal, tax: tax, total: finalTotal,
         status: 'new', payment_method: selectedPayment.name,
         address: JSON.stringify({ city: city, address: address, delivery: deliveryMethod })
     };
@@ -220,7 +220,7 @@ var total = subtotal + tax - discount;
     var invoiceNumber = 'INV-' + Date.now();
     var invoiceResult = await supabaseClient.from('invoices').insert([{
         invoice_number: invoiceNumber, customer_name: name, customer_email: email,
-        customer_phone: phone, items: cart, subtotal: subtotal, tax: tax, total: total, status: 'issued'
+        customer_phone: phone, items: cart, subtotal: subtotal, tax: tax, total: finalTotal, status: 'issued'
     }]).select('*').single();
     var invoiceId = invoiceResult.data ? invoiceResult.data.id : null;
     
