@@ -711,12 +711,16 @@ function requireAuth(action) {
         window.location.href = 'account.html?mode=login&next=' + encodeURIComponent(window.location.href);
     }, 1500);
 }
-function checkout() {
+async function checkout() {
+    var isLoggedIn = await checkAuth();
+    if (!isLoggedIn) {
+        requireAuth('تشتري منتجات');
+        return;
+    }
     if (cart.length === 0) {
         showToast('السلة فارغة! أضف منتجات أولاً', 'warning');
         return;
     }
-    // توجيه لصفحة الدفع الجديدة
     window.location.href = 'checkout.html';
 }
 function toggleTheme() {
