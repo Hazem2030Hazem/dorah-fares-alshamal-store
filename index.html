@@ -2749,4 +2749,173 @@ function waOpen(type) {
     window.open('https://wa.me/966545358773?text=' + encodeURIComponent(msg), '_blank');
 }
 </script>
+<!-- ============================================================
+     📢 DORA MARKETING SUITE - أدوات التسويق المتكاملة
+     ============================================================ -->
+
+<!-- 1️⃣ POPUP: خصم 10% لأول طلب -->
+<div class="marketing-popup-overlay" id="welcomePopup" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:99999;align-items:center;justify-content:center">
+  <div style="background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);border:2px solid rgba(59,130,246,0.5);border-radius:24px;padding:40px 30px;max-width:450px;width:90%;text-align:center;position:relative;animation:popIn 0.5s ease">
+    <button onclick="closeWelcomePopup()" style="position:absolute;top:15px;left:15px;background:rgba(255,255,255,0.1);border:none;color:white;width:35px;height:35px;border-radius:50%;cursor:pointer;font-size:18px">✕</button>
+    <div style="font-size:60px;margin-bottom:15px">🎉</div>
+    <h3 style="color:white;font-size:24px;margin:0 0 10px">خصم 10% على أول طلب!</h3>
+    <p style="color:rgba(255,255,255,0.7);margin:0 0 20px;font-size:15px">استخدم كود <strong style="color:#60A5FA;font-size:22px;display:block;margin:10px 0">WELCOME</strong> عند إتمام الشراء</p>
+    <button onclick="copyCoupon('WELCOME');closeWelcomePopup()" style="background:linear-gradient(135deg,#3B82F6,#2563EB);color:white;border:none;padding:14px 30px;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;width:100%;transition:all 0.3s">📋 نسخ الكود والبدء بالتسوق</button>
+    <p style="color:rgba(255,255,255,0.4);font-size:12px;margin-top:15px">العرض ساري لمدة 24 ساعة</p>
+  </div>
+</div>
+
+<style>
+@keyframes popIn { from { transform:scale(0.5);opacity:0 } to { transform:scale(1);opacity:1 } }
+</style>
+
+<script>
+function showWelcomePopup() {
+  if (localStorage.getItem('doraWelcomeShown')) return;
+  setTimeout(function() {
+    document.getElementById('welcomePopup').style.display = 'flex';
+    localStorage.setItem('doraWelcomeShown', 'true');
+  }, 3000);
+}
+function closeWelcomePopup() {
+  document.getElementById('welcomePopup').style.display = 'none';
+}
+function copyCoupon(code) {
+  navigator.clipboard.writeText(code).then(function() {
+    if (typeof showToast === 'function') showToast('✅ تم نسخ الكود: ' + code);
+  });
+}
+document.addEventListener('DOMContentLoaded', showWelcomePopup);
+</script>
+
+<!-- 2️⃣ COUNTDOWN TIMER للعرض الترحيبي -->
+<div id="countdownBar" style="display:none;background:linear-gradient(135deg,#DC2626,#991B1B);color:white;text-align:center;padding:12px;font-size:14px;font-weight:bold;position:sticky;top:0;z-index:9999">
+  <span>🔥 عرض خاص - خصم 10% مع كود WELCOME | ⏰ ينتهي خلال: </span>
+  <span id="countdownTimer" style="font-size:18px;background:rgba(0,0,0,0.3);padding:4px 12px;border-radius:8px;margin:0 8px">24:00:00</span>
+  <button onclick="document.getElementById('countdownBar').style.display='none'" style="background:rgba(255,255,255,0.2);border:none;color:white;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:12px;margin-right:10px">✕</button>
+</div>
+
+<script>
+function startCountdown() {
+  var endTime = localStorage.getItem('doraOfferEnd');
+  if (!endTime) {
+    endTime = new Date().getTime() + 24 * 60 * 60 * 1000;
+    localStorage.setItem('doraOfferEnd', endTime);
+  }
+  
+  document.getElementById('countdownBar').style.display = 'block';
+  
+  var timer = setInterval(function() {
+    var now = new Date().getTime();
+    var distance = endTime - now;
+    
+    if (distance < 0) {
+      clearInterval(timer);
+      document.getElementById('countdownBar').style.display = 'none';
+      localStorage.removeItem('doraOfferEnd');
+      return;
+    }
+    
+    var h = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
+    var m = Math.floor((distance % (1000*60*60)) / (1000*60));
+    var s = Math.floor((distance % (1000*60)) / 1000);
+    
+    document.getElementById('countdownTimer').textContent = 
+      String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  }, 1000);
+}
+document.addEventListener('DOMContentLoaded', startCountdown);
+</script>
+
+<!-- 3️⃣ SOCIAL PROOF: إشعارات "عميل اشترى الآن" -->
+<div id="socialProofToast" style="display:none;position:fixed;bottom:100px;right:20px;background:rgba(15,12,41,0.95);backdrop-filter:blur(15px);border:1px solid rgba(16,185,129,0.5);border-radius:16px;padding:15px 20px;z-index:9998;color:white;box-shadow:0 10px 40px rgba(0,0,0,0.5);animation:slideInRight 0.5s ease;max-width:320px">
+  <div style="display:flex;align-items:center;gap:12px">
+    <div style="width:45px;height:45px;border-radius:50%;background:linear-gradient(135deg,#10B981,#059669);display:flex;align-items:center;justify-content:center;font-size:22px">✅</div>
+    <div>
+      <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.9)" id="socialProofText"></p>
+      <small style="color:#10B981;font-size:11px" id="socialProofTime"></small>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes slideInRight { from { transform:translateX(100%);opacity:0 } to { transform:translateX(0);opacity:1 } }
+</style>
+
+<script>
+var socialProofMessages = [
+  'اشترى للتو طابعة HP LaserJet Pro',
+  'طلب عرض سعر لنقاط البيع',
+  'اشترى كيبورد ميكانيكي Keychron K2',
+  'حجز خدمة تركيب كاميرات مراقبة',
+  'اشترى SSD Samsung 980 NVMe 1TB',
+  'طلب خدمة صيانة شبكات',
+  'اشترى رام Kingston DDR4 16GB',
+  'حجز استشارة تقنية مجانية'
+];
+
+function showSocialProof() {
+  var toast = document.getElementById('socialProofToast');
+  var text = document.getElementById('socialProofText');
+  var time = document.getElementById('socialProofTime');
+  
+  var msg = socialProofMessages[Math.floor(Math.random() * socialProofMessages.length)];
+  text.textContent = '👤 ' + msg;
+  time.textContent = 'منذ ' + Math.floor(Math.random() * 30 + 1) + ' دقيقة';
+  
+  toast.style.display = 'block';
+  toast.style.animation = 'none';
+  toast.offsetHeight;
+  toast.style.animation = 'slideInRight 0.5s ease';
+  
+  setTimeout(function() {
+    toast.style.display = 'none';
+  }, 4000);
+}
+
+setInterval(function() {
+  showSocialProof();
+}, 15000 + Math.random() * 30000);
+
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(showSocialProof, 5000);
+});
+</script>
+
+<!-- 4️⃣ STICKY HEADER مع العرض -->
+<script>
+window.addEventListener('scroll', function() {
+  var header = document.getElementById('header');
+  var countdown = document.getElementById('countdownBar');
+  
+  if (window.pageYOffset > 200) {
+    if (header) header.style.boxShadow = '0 4px 30px rgba(0,0,0,0.3)';
+  } else {
+    if (header) header.style.boxShadow = 'none';
+  }
+});
+</script>
+
+<!-- 5️⃣ كوبون ترحيبي تلقائي في السلة -->
+<script>
+var originalUpdateCartUI = updateCartUI;
+updateCartUI = function() {
+  originalUpdateCartUI();
+  
+  var couponSection = document.getElementById('couponSection');
+  if (couponSection && cart.length > 0 && !activeCoupon) {
+    var hasShown = localStorage.getItem('doraAutoCoupon');
+    if (!hasShown) {
+      setTimeout(function() {
+        if (typeof showToast === 'function') {
+          showToast('🎉 استخدم كود WELCOME للحصول على خصم 15%!', 'success');
+        }
+        localStorage.setItem('doraAutoCoupon', 'true');
+      }, 2000);
+    }
+  }
+};
+</script>
+
+<!-- ========== END MARKETING SUITE ========== -->
 </body></html>
