@@ -1895,7 +1895,6 @@ window.saveCompanyInfo = async function() {
         logo: document.getElementById('ci_logo')?.value || ''
     };
     
-    localStorage.setItem('doraCompanyInfo', JSON.stringify(data));
     
     try {
         await supabaseClient.from('company_info').upsert([{ id: 1, data: data, updated_at: new Date().toISOString() }], { onConflict: 'id' });
