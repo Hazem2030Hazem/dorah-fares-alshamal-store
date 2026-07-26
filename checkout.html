@@ -14,7 +14,6 @@
         .checkout-header h1 { font-size: 32px; font-weight: 900; margin-bottom: 10px; color: #fff; }
         .checkout-header p { color: rgba(255,255,255,0.7); }
         
-        /* Progress */
         .progress-bar { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 40px; }
         .step { display: flex; align-items: center; gap: 8px; }
         .step-num { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; background: #E5E7EB; color: #9CA3AF; transition: 0.3s; }
@@ -24,30 +23,25 @@
         .step-line { width: 60px; height: 2px; background: #E5E7EB; margin: 0 10px; transition: 0.3s; }
         .step-line.active { background: #10B981; }
         
-        /* Cards */
         .checkout-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 25px; margin-bottom: 20px; backdrop-filter: blur(10px); }
         .checkout-card h3 { font-size: 20px; font-weight: 800; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; color: #fff; }
         
-        /* Form */
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 6px; font-weight: 600; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff; font-family: inherit; font-size: 14px; }
         .form-group input:focus, .form-group select:focus { outline: none; border-color: #10B981; }
         
-        /* Payment */
         .payment-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .payment-option { padding: 15px; border-radius: 14px; background: rgba(255,255,255,0.03); border: 2px solid rgba(255,255,255,0.1); text-align: center; cursor: pointer; transition: 0.3s; }
         .payment-option:hover, .payment-option.selected { border-color: #10B981; background: rgba(16,185,129,0.1); }
         .payment-option .icon { font-size: 28px; display: block; margin-bottom: 6px; }
         .payment-option .name { font-weight: 700; font-size: 13px; }
         
-        /* Delivery */
         .delivery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .delivery-option { padding: 20px; border-radius: 14px; background: rgba(255,255,255,0.03); border: 2px solid rgba(255,255,255,0.1); text-align: center; cursor: pointer; transition: 0.3s; }
         .delivery-option:hover, .delivery-option.selected { border-color: #10B981; background: rgba(16,185,129,0.1); }
         
-        /* Summary */
         .cart-item { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .cart-item img { width: 50px; height: 50px; border-radius: 10px; object-fit: cover; }
         .cart-item-info { flex: 1; }
@@ -58,13 +52,22 @@
         .total-row { display: flex; justify-content: space-between; padding: 10px 0; font-size: 14px; color: rgba(255,255,255,0.7); }
         .total-row.final { border-top: 2px solid rgba(255,255,255,0.1); margin-top: 10px; padding-top: 15px; font-size: 20px; font-weight: 900; color: #10B981; }
         
-        /* Button */
         .btn-submit { width: 100%; padding: 16px; background: linear-gradient(135deg, #10B981, #059669); color: #fff; border: none; border-radius: 14px; font-size: 18px; font-weight: 800; cursor: pointer; transition: 0.3s; font-family: inherit; }
         .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(16,185,129,0.3); }
         .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
         
         .empty-cart { text-align: center; padding: 80px 20px; }
         .empty-cart .icon { font-size: 80px; margin-bottom: 20px; }
+        
+        /* 🛍️ Cross-sell & Upsell */
+        .upsell-section { margin-top: 20px; padding: 20px; background: rgba(59,130,246,0.05); border-radius: 16px; border: 1px solid rgba(59,130,246,0.2); }
+        .upsell-section h4 { font-size: 16px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; color: #60A5FA; }
+        .upsell-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .upsell-item { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 12px; text-align: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; }
+        .upsell-item:hover { border-color: #3B82F6; background: rgba(59,130,246,0.1); }
+        .upsell-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; margin-bottom: 8px; }
+        .upsell-item .price { color: #10B981; font-weight: 800; font-size: 14px; }
+        .upsell-item .btn-add { margin-top: 8px; padding: 6px 14px; background: #3B82F6; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 700; }
         
         @media (max-width: 768px) {
             .form-row, .payment-grid, .delivery-grid { grid-template-columns: 1fr; }
@@ -81,7 +84,6 @@
         <p>أكمل بياناتك لتأكيد الطلب</p>
     </div>
 
-    <!-- Progress Bar -->
     <div class="progress-bar">
         <div class="step"><div class="step-num active" id="step1Num">1</div><span class="step-label active" id="step1Label">السلة</span></div>
         <div class="step-line" id="line1"></div>
@@ -90,7 +92,6 @@
         <div class="step"><div class="step-num" id="step3Num">3</div><span class="step-label" id="step3Label">الدفع</span></div>
     </div>
 
-    <!-- Content -->
     <div id="checkoutContent">
         <div class="empty-cart">
             <div class="icon">🛒</div>
@@ -107,6 +108,12 @@
 var cart = JSON.parse(localStorage.getItem('doraCart') || '[]');
 var deliveryMethod = 'delivery';
 var selectedPayment = null;
+var activeCoupon = null;
+var COUPONS = {
+    'DORA10': { discount: 0.10, label: 'خصم 10%' },
+    'DORA20': { discount: 0.20, label: 'خصم 20%' },
+    'WELCOME': { discount: 0.15, label: 'خصم ترحيبي 15%' }
+};
 
 function renderCheckout() {
     var container = document.getElementById('checkoutContent');
@@ -115,27 +122,33 @@ function renderCheckout() {
     var subtotal = cart.reduce(function(s, i) { return s + (i.price * i.qty); }, 0);
     var tax = Math.round(subtotal * 0.15);
     var discount = activeCoupon ? Math.round(subtotal * activeCoupon.discount) : 0;
-var finalTotal = subtotal + tax - discount;
-    var discount = activeCoupon ? Math.round(subtotal * activeCoupon.discount) : 0;
-var finalTotal = total - discount;
+    var finalTotal = subtotal + tax - discount;
+    
     container.innerHTML = `
         <div class="checkout-card">
             <h3>📦 ملخص الطلب</h3>
             ${cart.map(function(item) {
-                return '<div class="cart-item"><img src="' + (item.image || 'https://via.placeholder.com/50') + '" onerror="this.style.display=\'none\'"><div class="cart-item-info"><h4>' + item.name + '</h4><span>الكمية: ' + item.qty + ' | ' + item.price.toLocaleString() + ' ر.س</span></div><div class="cart-item-price">' + (item.price * item.qty).toLocaleString() + ' ر.س</div></div>';
+                return '<div class="cart-item"><img src="' + (item.image || 'https://via.placeholder.com/50') + '" onerror="this.style.display=\\'none\\'"><div class="cart-item-info"><h4>' + item.name + '</h4><span>الكمية: ' + item.qty + ' | ' + item.price.toLocaleString() + ' ر.س</span></div><div class="cart-item-price">' + (item.price * item.qty).toLocaleString() + ' ر.س</div></div>';
             }).join('')}
             <div class="total-row"><span>المجموع الفرعي</span><span>${subtotal.toLocaleString()} ر.س</span></div>
             <div class="total-row"><span>الضريبة (15%)</span><span>${tax.toLocaleString()} ر.س</span></div>
-            `<div class="total-row final"><span>المجموع الكلي</span><span>${finalTotal.toLocaleString()} ر.س</span></div>`
-${discount > 0 ? '<div class="total-row" style="color:#10B981"><span>الخصم (' + activeCoupon.label + ')</span><span>-' + discount.toLocaleString() + ' ر.س</span></div>' : ''}
-        `<div class="checkout-card">
-    <h3>🏷️ كود خصم</h3>
-    <div style="display:flex;gap:10px">
-        <input type="text" id="couponCode" placeholder="أدخل كود الخصم" style="flex:1;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:#fff;font-family:inherit">
-        <button onclick="applyCoupon()" style="padding:12px 20px;background:#10B981;color:#fff;border:none;border-radius:12px;cursor:pointer;font-weight:700;font-family:inherit">تطبيق</button>
-    </div>
-    <div id="couponMsg" style="margin-top:8px;font-size:13px;font-weight:700"></div>
-</div>`
+            ${discount > 0 ? '<div class="total-row" style="color:#10B981"><span>الخصم (' + activeCoupon.label + ')</span><span>-' + discount.toLocaleString() + ' ر.س</span></div>' : ''}
+            <div class="total-row final"><span>المجموع الكلي</span><span>${finalTotal.toLocaleString()} ر.س</span></div>
+        </div>
+        
+        <!-- 🛍️ Cross-sell: منتجات مقترحة -->
+        <div class="upsell-section">
+            <h4>🎯 قد تحتاج أيضاً</h4>
+            <div class="upsell-grid" id="upsellGrid">⏳ جاري التحميل...</div>
+        </div>
+        
+        <div class="checkout-card">
+            <h3>🏷️ كود خصم</h3>
+            <div style="display:flex;gap:10px">
+                <input type="text" id="couponCode" placeholder="أدخل كود الخصم" style="flex:1;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:#fff;font-family:inherit">
+                <button onclick="applyCouponCode()" style="padding:12px 20px;background:#10B981;color:#fff;border:none;border-radius:12px;cursor:pointer;font-weight:700;font-family:inherit">تطبيق</button>
+            </div>
+            <div id="couponMsg" style="margin-top:8px;font-size:13px;font-weight:700"></div>
         </div>
         
         <div class="checkout-card">
@@ -168,6 +181,7 @@ ${discount > 0 ? '<div class="total-row" style="color:#10B981"><span>الخصم 
     `;
     
     loadPaymentMethods();
+    loadUpsellProducts();
 }
 
 function selectDelivery(method, el) {
@@ -192,56 +206,32 @@ function selectPayment(id, name, el) {
     el.classList.add('selected');
 }
 
-async function placeOrder() {
-    var name = document.getElementById('custName').value.trim();
-    var phone = document.getElementById('custPhone').value.trim();
-    if (!name || !phone) { alert('❌ الاسم والجوال مطلوبين'); return; }
-    if (!selectedPayment) { alert('❌ اختر طريقة الدفع'); return; }
+// 🛍️ Cross-sell: منتجات مقترحة
+function loadUpsellProducts() {
+    var grid = document.getElementById('upsellGrid');
+    var cartCategories = cart.map(function(item) {
+        var p = productsData.find(function(x) { return x.id === item.id; });
+        return p ? p.category : null;
+    }).filter(Boolean);
     
-    var email = document.getElementById('custEmail').value.trim();
-    var city = document.getElementById('custCity').value.trim();
-    var address = document.getElementById('custAddress').value.trim();
-    var subtotal = cart.reduce(function(s, i) { return s + (i.price * i.qty); }, 0);
-    var tax = Math.round(subtotal * 0.15);
-    var discount = activeCoupon ? Math.round(subtotal * activeCoupon.discount) : 0;
-var total = subtotal + tax - discount;
+    var related = productsData.filter(function(p) {
+        return cartCategories.indexOf(p.category) !== -1 && !cart.find(function(c) { return c.id === p.id; }) && p.stock > 0;
+    }).slice(0, 3);
     
-    // حفظ الطلب
-    var orderPayload = {
-        customer_name: name, customer_phone: phone, customer_email: email,
-        items: cart, subtotal: subtotal, tax: tax, total: finalTotal,
-        status: 'new', payment_method: selectedPayment.name,
-        address: JSON.stringify({ city: city, address: address, delivery: deliveryMethod })
-    };
-    var orderResult = await supabaseClient.from('store_orders').insert([orderPayload]).select('*').single();
-    var orderId = orderResult.data ? orderResult.data.id : null;
+    if (!related.length) { grid.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.5)">لا توجد اقتراحات حالياً</p>'; return; }
     
-    // إنشاء فاتورة
-    var invoiceNumber = 'INV-' + Date.now();
-    var invoiceResult = await supabaseClient.from('invoices').insert([{
-        invoice_number: invoiceNumber, customer_name: name, customer_email: email,
-        customer_phone: phone, items: cart, subtotal: subtotal, tax: tax, total: finalTotal, status: 'issued'
-    }]).select('*').single();
-    var invoiceId = invoiceResult.data ? invoiceResult.data.id : null;
-    
-    // رسالة واتساب
-    var msg = '*طلب جديد*\n\n*العميل:* ' + name + '\n*الجوال:* ' + phone + '\n*الدفع:* ' + selectedPayment.name + '\n'*الإجمالي:* ' + finalTotal.toLocaleString() + ' ر.س'
-    if (invoiceId) msg += '\n\n🧾 الفاتورة: https://alshamal-df.com/invoice.html?id=' + invoiceId;
-    window.open('https://wa.me/966545358773?text=' + encodeURIComponent(msg), '_blank');
-    
-    localStorage.removeItem('doraCart');
-   var orderNumber = orderResult.data ? orderResult.data.id : '';
-window.location.href = 'thankyou.html?order=' + orderNumber + '&invoice=' + (invoiceId || '');
+    grid.innerHTML = related.map(function(p) {
+        return '<div class="upsell-item"><img src="' + p.image + '" alt="' + p.name + '"><div style="font-size:12px;margin:4px 0">' + p.name.substring(0, 25) + '...</div><div class="price">' + p.price.toLocaleString() + ' ر.س</div><button class="btn-add" onclick="addToCartDirect(' + p.id + ', \'' + p.name + '\', ' + p.price + ', \'' + p.image + '\')">🛒 أضف</button></div>';
+    }).join('');
 }
-// ===== كود الخصم =====
-var activeCoupon = null;
-var COUPONS = {
-    'DORA10': { discount: 0.10, label: 'خصم 10%' },
-    'DORA20': { discount: 0.20, label: 'خصم 20%' },
-    'WELCOME': { discount: 0.15, label: 'خصم ترحيبي 15%' }
-};
 
-function applyCoupon() {
+function addToCartDirect(id, name, price, image) {
+    cart.push({ id: id, name: name, price: price, qty: 1, image: image });
+    localStorage.setItem('doraCart', JSON.stringify(cart));
+    renderCheckout();
+}
+
+function applyCouponCode() {
     var code = document.getElementById('couponCode').value.trim().toUpperCase();
     var coupon = COUPONS[code];
     if (coupon) {
@@ -255,6 +245,47 @@ function applyCoupon() {
     }
 }
 
+async function placeOrder() {
+    var name = document.getElementById('custName').value.trim();
+    var phone = document.getElementById('custPhone').value.trim();
+    if (!name || !phone) { alert('❌ الاسم والجوال مطلوبين'); return; }
+    if (!selectedPayment) { alert('❌ اختر طريقة الدفع'); return; }
+    
+    var email = document.getElementById('custEmail').value.trim();
+    var city = document.getElementById('custCity').value.trim();
+    var address = document.getElementById('custAddress').value.trim();
+    var subtotal = cart.reduce(function(s, i) { return s + (i.price * i.qty); }, 0);
+    var tax = Math.round(subtotal * 0.15);
+    var discount = activeCoupon ? Math.round(subtotal * activeCoupon.discount) : 0;
+    var finalTotal = subtotal + tax - discount;
+    
+    var orderPayload = {
+        customer_name: name, customer_phone: phone, customer_email: email,
+        items: cart, subtotal: subtotal, tax: tax, total: finalTotal,
+        status: 'new', payment_method: selectedPayment.name,
+        address: JSON.stringify({ city: city, address: address, delivery: deliveryMethod })
+    };
+    var orderResult = await supabaseClient.from('store_orders').insert([orderPayload]).select('*').single();
+    var orderId = orderResult.data ? orderResult.data.id : null;
+    
+    var invoiceNumber = 'INV-' + Date.now();
+    var invoiceResult = await supabaseClient.from('invoices').insert([{
+        invoice_number: invoiceNumber, customer_name: name, customer_email: email,
+        customer_phone: phone, items: cart, subtotal: subtotal, tax: tax, total: finalTotal, status: 'issued'
+    }]).select('*').single();
+    var invoiceId = invoiceResult.data ? invoiceResult.data.id : null;
+    
+    var msg = '*طلب جديد*\n\n*العميل:* ' + name + '\n*الجوال:* ' + phone + '\n*الدفع:* ' + selectedPayment.name + '\n*الإجمالي:* ' + finalTotal.toLocaleString() + ' ر.س';
+    if (invoiceId) msg += '\n\n🧾 الفاتورة: https://alshamal-df.com/invoice.html?id=' + invoiceId;
+    window.open('https://wa.me/966545358773?text=' + encodeURIComponent(msg), '_blank');
+    
+    localStorage.removeItem('doraCart');
+    var orderNumber = orderResult.data ? orderResult.data.id : '';
+    window.location.href = 'thankyou.html?order=' + orderNumber + '&invoice=' + (invoiceId || '');
+}
+
+// Initialize
+if (cart.length > 0) renderCheckout();
 </script>
 </body>
 </html>
