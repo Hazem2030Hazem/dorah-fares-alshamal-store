@@ -282,6 +282,37 @@ function applyCouponCode() {
     }
 }
 
+    // 💳 دوال الدفع السريع
+function payWithSTC(amount) {
+    selectedPayment = { id: 'stc', name: 'STC Pay' };
+    var msg = '💰 للدفع عبر STC Pay:\n\nحول المبلغ ' + amount.toLocaleString() + ' ر.س إلى:\n\n📱 STC Pay: 0568717449\n\nبعد التحويل، ارفع الإيصال في حسابك';
+    window.open('https://wa.me/966545358773?text=' + encodeURIComponent(msg), '_blank');
+    showToast('✅ تم اختيار STC Pay - تواصل واتساب للتحويل');
+}
+
+function payWithApple() {
+    if (window.ApplePaySession && ApplePaySession.canMakePayments()) {
+        selectedPayment = { id: 'apple', name: 'Apple Pay' };
+        showToast('🍎 Apple Pay جاهز - أكمل الطلب');
+    } else {
+        showToast('⚠️ Apple Pay غير متاح على هذا الجهاز', 'warning');
+    }
+}
+
+function payWithMada(amount) {
+    selectedPayment = { id: 'mada', name: 'مدى أثير' };
+    var msg = '💳 للدفع عبر مدى:\n\nالمبلغ: ' + amount.toLocaleString() + ' ر.س\n\nرقم الحساب: SA0380000000608010167519\n\nبنك الرياض - شركة درة فارس الشمال';
+    window.open('https://wa.me/966545358773?text=' + encodeURIComponent(msg), '_blank');
+    showToast('✅ تم اختيار مدى - بيانات الحساب في واتساب');
+}
+
+function payWithTamara(amount) {
+    selectedPayment = { id: 'tamara', name: 'تمارا - تقسيط' };
+    var installment = Math.round(amount / 4);
+    var msg = '🧡 للتقسيط عبر تمارا:\n\nالمبلغ: ' + amount.toLocaleString() + ' ر.س\n4 أقساط: ' + installment.toLocaleString() + ' ر.س\n\nللتواصل واتساب لتفعيل التقسيط';
+    window.open('https://wa.me/966545358773?text=' + encodeURIComponent(msg), '_blank');
+    showToast('✅ تم اختيار تمارا - 4 أقساط بدون فوائد');
+}
 async function placeOrder() {
     var name = document.getElementById('custName').value.trim();
     var phone = document.getElementById('custPhone').value.trim();
