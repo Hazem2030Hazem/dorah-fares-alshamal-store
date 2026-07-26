@@ -1950,7 +1950,7 @@ window.saveEInvoice = async function() {
 
 // ---------- تحميل البيانات عند فتح التبويبات ----------
 var origShowTabFinal = window.showTab;
-window.showTab = function(tabName) {
+window.showTab = async function(tabName) {
     if (origShowTabFinal) origShowTabFinal(tabName);
     
     // تحميل بيانات الشركة
