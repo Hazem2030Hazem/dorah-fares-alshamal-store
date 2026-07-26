@@ -2012,6 +2012,10 @@ window.showTab = function(tabName) {
 };
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(checkLowStock, 3000);
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(checkLowStock, 3000);
+});
+
 // ============================================================
 // 🌐 إدارة المحتوى الديناميكي للموقع - 7 تبويبات
 // ============================================================
@@ -2264,4 +2268,3 @@ window.showTab = function(tabName) {
     if (tabName === 'site_certifications') loadSiteCertifications();
     if (tabName === 'site_contact') loadSiteContact();
 };
-});
