@@ -750,8 +750,13 @@ function initTheme() {
     }
   }
 }
-function requestQuote(productId, event) {
+async function requestQuote(productId, event) {
  if (event) event.stopPropagation();
+ var isLoggedIn = await checkAuth();
+ if (!isLoggedIn) {
+     requireAuth('تطلب عرض سعر');
+     return;
+ }
  const p = productsData.find(x => x.id === productId);
  if (!p) return;
 
