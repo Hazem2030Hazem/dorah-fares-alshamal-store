@@ -758,8 +758,8 @@ function renderOrdersTab(){
           <strong>${money(order.total)}</strong>
           <span>${esc(paymentStatusLabels[order.payment_status] || order.payment_status)}</span>
         </div>
-        <div class="account-order-actions" style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="btn-view" onclick="trackOrder('${order.id}')" style="background:linear-gradient(135deg, #3B82F6, #2563EB); color:white; border:none; padding:8px 16px; border-radius:8px; cursor:pointer; font-weight:bold;">
+        <div class="account-order-actions" style="margin:12px 0; display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn-view" onclick="trackOrder('${order.id}')" style="background:linear-gradient(135deg, #3B82F6, #2563EB); color:white; border:none; padding:10px 20px; border-radius:10px; cursor:pointer; font-weight:bold; font-size:14px;">
             📦 تتبع الطلب
           </button>
         </div>
@@ -772,7 +772,6 @@ function renderOrdersTab(){
       </div>
     `;
   }).join('') : '<div class="account-empty">📦 لا توجد طلبات في حسابك بعد.</div>';
-  
   return `<div class="account-card"><h3>📦 طلباتي</h3><div class="account-list orders">${list}</div></div>`;
 }
 
