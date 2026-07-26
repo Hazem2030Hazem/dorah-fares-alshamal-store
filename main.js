@@ -1519,6 +1519,11 @@ function getDeviceId() { let deviceId = localStorage.getItem('doraDeviceId'); if
 
 async function toggleWishlist(productId, event) {
   if (event) event.stopPropagation();
+  var isLoggedIn = await checkAuth();
+  if (!isLoggedIn) {
+      requireAuth('تضيف للمفضلة');
+      return;
+  }
   const index = wishlistItems.indexOf(productId);
   if (index > -1) {
     wishlistItems.splice(index, 1);
