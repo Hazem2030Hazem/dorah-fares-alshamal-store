@@ -240,6 +240,61 @@
                 </div>
             </div>
         </div>
+               <!-- 📊 تبويب الإحصائيات -->
+        <div class="tab-content" id="site_statsTab">
+            <div class="table-container">
+                <div class="table-header"><h3>📊 إدارة إحصائيات الموقع</h3><button class="btn-add" onclick="addSiteStat()">➕ إضافة</button></div>
+                <div class="table-responsive"><table><thead><tr><th>#</th><th>الأيقونة</th><th>الرقم</th><th>العنوان</th><th>اللون</th><th>الترتيب</th><th>الإجراءات</th></tr></thead><tbody id="siteStatsTable"><tr><td colspan="7" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody></table></div>
+            </div>
+        </div>
+
+        <!-- 🌟 تبويب الرؤية والقيم -->
+        <div class="tab-content" id="site_aboutTab">
+            <div class="table-container">
+                <div class="table-header"><h3>🌟 إدارة الرؤية والرسالة والقيم</h3></div>
+                <div class="table-responsive"><table><thead><tr><th>#</th><th>النوع</th><th>العنوان</th><th>المحتوى</th><th>اللون</th><th>الإجراءات</th></tr></thead><tbody id="siteAboutTable"><tr><td colspan="6" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody></table></div>
+            </div>
+        </div>
+
+        <!-- 💬 تبويب آراء الشركات -->
+        <div class="tab-content" id="site_testimonialsTab">
+            <div class="table-container">
+                <div class="table-header"><h3>💬 إدارة آراء الشركات</h3><button class="btn-add" onclick="addTestimonial()">➕ إضافة</button></div>
+                <div class="table-responsive"><table><thead><tr><th>#</th><th>الشركة</th><th>المقيم</th><th>التقييم</th><th>المنتج</th><th>نشط</th><th>الإجراءات</th></tr></thead><tbody id="siteTestimonialsTable"><tr><td colspan="7" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody></table></div>
+            </div>
+        </div>
+
+        <!-- 📦 تبويب المشاريع -->
+        <div class="tab-content" id="site_projectsTab">
+            <div class="table-container">
+                <div class="table-header"><h3>📦 إدارة المشاريع المنفذة</h3><button class="btn-add" onclick="addProject()">➕ إضافة</button></div>
+                <div class="table-responsive"><table><thead><tr><th>#</th><th>العنوان</th><th>العميل</th><th>الوصف</th><th>اللون</th><th>نشط</th><th>الإجراءات</th></tr></thead><tbody id="siteProjectsTable"><tr><td colspan="7" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody></table></div>
+            </div>
+        </div>
+
+        <!-- 📝 تبويب المقالات -->
+        <div class="tab-content" id="site_blogTab">
+            <div class="table-container">
+                <div class="table-header"><h3>📝 إدارة المقالات</h3><button class="btn-add" onclick="addBlogPost()">➕ إضافة</button></div>
+                <div class="table-responsive"><table><thead><tr><th>#</th><th>العنوان</th><th>التاريخ</th><th>القراءة</th><th>الرابط</th><th>نشط</th><th>الإجراءات</th></tr></thead><tbody id="siteBlogTable"><tr><td colspan="7" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody></table></div>
+            </div>
+        </div>
+
+        <!-- 📜 تبويب الشهادات -->
+        <div class="tab-content" id="site_certificationsTab">
+            <div class="table-container">
+                <div class="table-header"><h3>📜 إدارة الشهادات والاعتمادات</h3><button class="btn-add" onclick="addCertification()">➕ إضافة</button></div>
+                <div class="table-responsive"><table><thead><tr><th>#</th><th>العنوان</th><th>الشارة</th><th>الوصف</th><th>اللون</th><th>نشط</th><th>الإجراءات</th></tr></thead><tbody id="siteCertificationsTable"><tr><td colspan="7" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody></table></div>
+            </div>
+        </div>
+
+        <!-- 📞 تبويب التواصل -->
+        <div class="tab-content" id="site_contactTab">
+            <div class="table-container">
+                <div class="table-header"><h3>📞 إدارة معلومات التواصل</h3><button class="btn-add" onclick="addContactInfo()">➕ إضافة</button></div>
+                <div class="table-responsive"><table><thead><tr><th>#</th><th>النوع</th><th>العنوان</th><th>القيمة</th><th>الرابط</th><th>نشط</th><th>الإجراءات</th></tr></thead><tbody id="siteContactTable"><tr><td colspan="7" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody></table></div>
+            </div>
+        </div>
         <div class="tab-content" id="settingsTab">
             <div class="settings-section"><h4>🏢 معلومات الشركة</h4>
                 <div class="form-group"><label>اسم الشركة</label><input type="text" id="companyName" value="شركة درة فارس الشمال"></div>
