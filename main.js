@@ -2222,4 +2222,148 @@ updateCartUI = function() {
     style.textContent = '.save-badge{animation:pulse 2s infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.7}}.available-coupons span:hover{background:rgba(245,158,11,0.4)!important;transform:scale(1.05)}';
     document.head.appendChild(style);
 })();
-})();
+// ============================================================
+// 🤖 DORA SMART CHATBOT - شات بوت ذكي بالعربي
+// ============================================================
+
+var doraChatbot = {
+    isOpen: false,
+    messages: [],
+    knowledgeBase: {
+        'السلام': 'وعليكم السلام! 👋 كيف أقدر أساعدك؟',
+        'مرحبا': 'أهلاً وسهلاً! 🌟 كيف أقدر أخدمك؟',
+        'شحن': '🚚 نوفر شحن لجميع مدن المملكة. الشحن مجاني للطلبات فوق 300 ريال. مدة التوصيل 2-5 أيام عمل.',
+        'توصيل': '🚚 نوصل لجميع مناطق المملكة عبر ناقل وأرامكس وسمسا.',
+        'ضمان': '🛡️ جميع المنتجات عليها ضمان سنة كاملة ضد عيوب التصنيع.',
+        'سعر': '💰 أسعارنا تنافسية جداً! تقدر تتصفح المنتجات من [المنتجات](/products.html) وتشوف الأسعار.',
+        'خصم': '🎟️ عندنا كوبونات خصم! استخدم كود WELCOME لخصم 15% على أول طلب.',
+        'كوبون': '🎟️ الكوبونات المتاحة: WELCOME (15%) - DORA10 (10%) - DORA20 (20%)',
+        'دفع': '💳 نقبل تحويل بنكي، STC Pay، مدى، أبل باي، وتمارا للتقسيط.',
+        'تمارا': '🧡 تمارا يتيح لك التقسيط على 4 دفعات بدون فوائد!',
+        'واتساب': '💬 تقدر تتواصل معانا مباشرة على واتساب: 0545358773',
+        'اتصال': '📞 تقدر تتصل بنا على: 0568717449',
+        'منتجات': '🛍️ عندنا طابعات، كمبيوتر، رامات، هاردات، بروجكتور، إكسسوارات، أحبار، ومواد غذائية. [شوف المنتجات](/products.html)',
+        'خدمات': '🔧 نقدم خدمات: طباعة، كاميرات مراقبة، نقاط بيع، شبكات، باركود، وصيانة.',
+        'طابعة': '🖨️ عندنا طابعات HP و Canon و Epson و Brother بأفضل الأسعار.',
+        'كمبيوتر': '💻 عندنا أجهزة Dell و Lenovo و HP لابتوب ومكتبي.',
+        'طلب': '📦 تقدر تطلب من الموقع مباشرة - أضف اللي عايزه للسلة واتبع الخطوات.',
+        'حساب': '👤 تقدر تسجل حساب من [هنا](/account.html) عشان تتابع طلباتك وتوفر عناوينك.',
+        'تتبع': '📍 تقدر تتابع حالة طلبك من [حسابك](/account.html) في تبويب طلباتي.',
+        'استرجاع': '🔄 نقبل استرجاع المنتجات خلال 14 يوم من تاريخ الاستلام.',
+        'شكرا': 'العفو! 🌹 أي خدمة تانية؟',
+        'باي': 'مع السلامة! 👋 يومك سعيد.',
+        'افتح': 'أمرك! 📋 إيه اللي أقدر أساعدك فيه؟',
+        'عرض سعر': '📋 تقدر تطلب عرض سعر مخصص من [واتساب](https://wa.me/966545358773) أو من أي صفحة منتج.'
+    },
+    
+    getResponse: function(msg) {
+        msg = msg.toLowerCase().trim();
+        
+        // البحث في قاعدة المعرفة
+        for (var key in this.knowledgeBase) {
+            if (msg.indexOf(key) !== -1) {
+                return this.knowledgeBase[key];
+            }
+        }
+        
+        // ردود عامة
+        var generalReplies = [
+            '🤔 معلش، ممكن توضح أكثر؟',
+            '📝 أنا لسه بتعلم! تقدر تسأل عن: الأسعار، الشحن، الضمان، المنتجات، الدفع، أو تكتب "مساعدة".',
+            '💡 جرب تسأل عن: شحن، ضمان، سعر، خصم، دفع، تمارا، منتجات، خدمات، تتبع، استرجاع.',
+            '👋 أقدر أساعدك في حاجة تانية؟'
+        ];
+        
+        return generalReplies[Math.floor(Math.random() * generalReplies.length)];
+    },
+    
+    show: function() {
+        if (!document.getElementById('doraChatWidget')) this.create();
+        document.getElementById('doraChatWidget').style.display = 'block';
+        this.isOpen = true;
+    },
+    
+    hide: function() {
+        document.getElementById('doraChatWidget').style.display = 'none';
+        this.isOpen = false;
+    },
+    
+    toggle: function() {
+        if (this.isOpen) { this.hide(); } else { this.show(); }
+    },
+    
+    send: function() {
+        var input = document.getElementById('doraChatInput');
+        var msg = input.value.trim();
+        if (!msg) return;
+        
+        this.addMessage('أنت', msg, 'user');
+        input.value = '';
+        
+        var reply = this.getResponse(msg);
+        var self = this;
+        setTimeout(function() {
+            self.addMessage('درة فارس', reply, 'bot');
+        }, 500 + Math.random() * 500);
+    },
+    
+    addMessage: function(sender, text, type) {
+        var container = document.getElementById('doraChatMessages');
+        var div = document.createElement('div');
+        div.className = 'dora-chat-msg ' + type;
+        div.innerHTML = '<strong>' + sender + ':</strong> ' + text;
+        container.appendChild(div);
+        container.scrollTop = container.scrollHeight;
+    },
+    
+    create: function() {
+        var html = `
+        <div id="doraChatWidget" style="display:none;position:fixed;bottom:100px;left:25px;z-index:99999;width:350px;max-width:90vw;background:rgba(15,12,41,0.98);border:1px solid rgba(59,130,246,0.5);border-radius:20px;overflow:hidden;box-shadow:0 15px 50px rgba(0,0,0,0.5);direction:rtl">
+            <div style="background:linear-gradient(135deg,#3B82F6,#2563EB);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;color:white;font-weight:800">
+                <span>🤖 درة فارس - مساعد ذكي</span>
+                <button onclick="doraChatbot.hide()" style="background:none;border:none;color:white;font-size:20px;cursor:pointer">✕</button>
+            </div>
+            <div id="doraChatMessages" style="height:300px;overflow-y:auto;padding:15px">
+                <div class="dora-chat-msg bot"><strong>درة فارس:</strong> 👋 أهلاً وسهلاً! أنا المساعد الذكي لشركة درة فارس الشمال. أقدر أساعدك في:</div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">
+                    <button onclick="doraChatbot.quickAsk('شحن')" style="background:rgba(59,130,246,0.2);color:#60A5FA;border:none;padding:5px 12px;border-radius:15px;cursor:pointer;font-size:11px">🚚 شحن</button>
+                    <button onclick="doraChatbot.quickAsk('ضمان')" style="background:rgba(59,130,246,0.2);color:#60A5FA;border:none;padding:5px 12px;border-radius:15px;cursor:pointer;font-size:11px">🛡️ ضمان</button>
+                    <button onclick="doraChatbot.quickAsk('خصم')" style="background:rgba(59,130,246,0.2);color:#60A5FA;border:none;padding:5px 12px;border-radius:15px;cursor:pointer;font-size:11px">🎟️ خصم</button>
+                    <button onclick="doraChatbot.quickAsk('دفع')" style="background:rgba(59,130,246,0.2);color:#60A5FA;border:none;padding:5px 12px;border-radius:15px;cursor:pointer;font-size:11px">💳 دفع</button>
+                    <button onclick="doraChatbot.quickAsk('منتجات')" style="background:rgba(59,130,246,0.2);color:#60A5FA;border:none;padding:5px 12px;border-radius:15px;cursor:pointer;font-size:11px">🛍️ منتجات</button>
+                </div>
+            </div>
+            <div style="display:flex;padding:10px 15px;border-top:1px solid rgba(255,255,255,0.1);gap:8px">
+                <input id="doraChatInput" type="text" placeholder="اكتب سؤالك هنا..." onkeydown="if(event.key==='Enter')doraChatbot.send()" style="flex:1;padding:10px 15px;border-radius:25px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:white;font-family:inherit;font-size:13px">
+                <button onclick="doraChatbot.send()" style="background:#3B82F6;color:white;border:none;padding:10px 18px;border-radius:25px;cursor:pointer;font-weight:700">➤</button>
+            </div>
+            <div style="text-align:center;padding:8px;font-size:10px;color:rgba(255,255,255,0.3)">اكتب "تحويل" للتحدث مع خدمة العملاء</div>
+        </div>
+        
+        <style>
+            .dora-chat-msg { padding:8px 12px; margin:5px 0; border-radius:12px; font-size:13px; line-height:1.6; max-width:90%; word-wrap:break-word; }
+            .dora-chat-msg.user { background:rgba(59,130,246,0.2); margin-right:auto; margin-left:0; text-align:right; }
+            .dora-chat-msg.bot { background:rgba(255,255,255,0.05); margin-left:auto; margin-right:0; text-align:right; }
+            .dora-chat-msg a { color:#60A5FA; }
+        </style>
+        `;
+        
+        document.body.insertAdjacentHTML('beforeend', html);
+    },
+    
+    quickAsk: function(topic) {
+        document.getElementById('doraChatInput').value = topic;
+        this.send();
+    }
+};
+
+// أيقونة الشات
+document.addEventListener('DOMContentLoaded', function() {
+    var bubble = document.createElement('div');
+    bubble.style.cssText = 'position:fixed;bottom:100px;left:25px;z-index:99998;width:55px;height:55px;background:linear-gradient(135deg,#3B82F6,#2563EB);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 30px rgba(59,130,246,0.5);animation:pulse 2s infinite;transition:0.3s';
+    bubble.innerHTML = '<span style="font-size:26px">🤖</span>';
+    bubble.onclick = function() { doraChatbot.toggle(); };
+    bubble.onmouseenter = function() { this.style.transform = 'scale(1.1)'; };
+    bubble.onmouseleave = function() { this.style.transform = 'scale(1)'; };
+    document.body.appendChild(bubble);
+});
