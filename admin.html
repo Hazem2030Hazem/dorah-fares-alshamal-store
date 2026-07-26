@@ -204,7 +204,41 @@
         </form>
     </div>
 </div>
+<!-- Shipping Settings Modal -->
+<div class="modal" id="shippingModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>⚙️ إعدادات الشحن</h3>
+            <button class="btn-close" onclick="closeShippingModal()">✕</button>
+        </div>
+        <form onsubmit="return saveShippingSettings(event)">
+            <div class="form-group"><label>🔑 API Key</label><input type="text" id="shippingApiKey"></div>
+            <div class="form-group"><label>📦 رقم الحساب</label><input type="text" id="shippingAccountNumber"></div>
+            <div class="form-group"><label>🌐 الرابط الأساسي</label><input type="text" id="shippingBaseUrl" value="https://api.spl.sa"></div>
+            <div class="form-group"><label><input type="checkbox" id="shippingEnabled"> ✅ تفعيل الشحن</label></div>
+            <button type="submit" class="btn-save">💾 حفظ</button>
+        </form>
+    </div>
+</div>
 
+<!-- Shipping Rate Modal -->
+<div class="modal" id="shippingRateModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="shippingRateModalTitle">➕ إضافة سعر شحن</h3>
+            <button class="btn-close" onclick="closeShippingRateModal()">✕</button>
+        </div>
+        <form onsubmit="return saveShippingRate(event)">
+            <input type="hidden" id="shippingRateId">
+            <div class="form-group"><label>📤 من مدينة</label><input type="text" id="srFromCity" required></div>
+            <div class="form-group"><label>📥 إلى مدينة</label><input type="text" id="srToCity" required></div>
+            <div class="form-group"><label>⚖️ الوزن (كجم)</label><input type="number" id="srWeight" value="1" step="0.5"></div>
+            <div class="form-group"><label>💰 السعر (ر.س)</label><input type="number" id="srPrice" value="0"></div>
+            <div class="form-group"><label>📅 المدة (أيام)</label><input type="number" id="srDays" value="2"></div>
+            <button type="submit" class="btn-save">💾 حفظ</button>
+        </form>
+    </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2?v=2"></script>
 <script>
 const SUPABASE_URL = 'https://kcbmvxuzjlaooknwhqqb.supabase.co';
