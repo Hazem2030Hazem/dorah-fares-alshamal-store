@@ -1,10 +1,23 @@
 User-agent: *
 Allow: /
 
-# Sitemap location
-Sitemap: https://alshamal-df.com/sitemap.xml
+# منع فهرسة الملفات الحساسة
+Disallow: /server.js
+Disallow: /package.json
+Disallow: /.gitignore
+Disallow: /.htaccess
+Disallow: /admin.html
+Disallow: /account-system.js
+Disallow: /admin-v2.js
+Disallow: /admin-v2.css
+Disallow: /dora-forms.js
+Disallow: /google-site-verification.html
 
-# Allow all search engines to crawl the site
-# Disallow any private directories if needed
-# Disallow: /private/
-# Disallow: /admin/
+# منع فهرسة صفحات الشكر والمؤقتة
+Disallow: /thankyou.html
+
+# Sitemap
+Sitemap: https://www.alshamal-df.com/sitemap.xml
+
+# Crawl-delay (اختياري - للتخفيف على السيرفر)
+Crawl-delay: 10
