@@ -758,6 +758,11 @@ function renderOrdersTab(){
           <strong>${money(order.total)}</strong>
           <span>${esc(paymentStatusLabels[order.payment_status] || order.payment_status)}</span>
         </div>
+        <div class="account-order-actions" style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn-view" onclick="trackOrder('${order.id}')" style="background:linear-gradient(135deg, #3B82F6, #2563EB); color:white; border:none; padding:8px 16px; border-radius:8px; cursor:pointer; font-weight:bold;">
+            📦 تتبع الطلب
+          </button>
+        </div>
         <div class="account-receipt-box">
           ${order.receipt_path ? `<span class="account-badge success">✅ تم رفع إيصال الدفع</span><button type="button" class="account-upload-btn" onclick="doraViewReceipt('${esc(order.receipt_path)}')">👁️ عرض الإيصال</button>` : `<span>لم يتم رفع إيصال الدفع بعد</span>`}
           <label class="account-upload-btn">🧾 رفع إيصال
@@ -767,8 +772,8 @@ function renderOrdersTab(){
       </div>
     `;
   }).join('') : '<div class="account-empty">📦 لا توجد طلبات في حسابك بعد.</div>';
+  
   return `<div class="account-card"><h3>📦 طلباتي</h3><div class="account-list orders">${list}</div></div>`;
-   '<button class="btn-view" onclick="trackOrder(\'' + order.id + '\')">📦 تتبع الطلب</button>'
 }
 
 window.doraUploadReceipt = async function(orderId, input){
