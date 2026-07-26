@@ -1674,3 +1674,109 @@ function viewInvoice(id) {
 function exportInvoices() {
     exportJson(invoices, 'dora-invoices');
 }
+// ============================================================
+// 📢 DORA MARKETING ADMIN - إحصائيات تسويقية للوحة الإدارة
+// ============================================================
+
+// ---------- 1. تحديث إحصائيات التسويق ----------
+window.updateMarketingStats = async function() {
+    // عدد مرات استخدام الكوبونات
+    var couponUsage = JSON.parse(localStorage.getItem('doraCouponUsage') || '{"WELCOME":0,"DORA10":0,"DORA20":0}');
+    var totalCouponUsage = 0;
+    for (var key in couponUsage) {
+        totalCouponUsage += couponUsage[key] || 0;
+    }
+    
+    var usageEl = document.getElementById('totalCouponUsage');
+    if (usageEl) usageEl.textContent = totalCouponUsage;
+    
+    // إجمالي الخصومات الممنوحة
+    var coupons = {
+        'WELCOME': 0.15, 'DORA10': 0.10, 'DORA20': 0.20
+    };
+    var totalDiscount = 0;
+    try {
+        var ordersResult = await supabaseClient.from('store_orders').select('total, subtotal');
+        var orders = ordersResult.data || [];
+        orders.forEach(function(order) {
+            if (order.subtotal && order.total) {
+                var diff = order.subtotal - order.total;
+                if (diff > 0) totalDiscount += diff;
+            }
+        });
+    } catch(e) {}
+    
+    var discountEl = document.getElementById('totalDiscountGiven');
+    if (discountEl) discountEl.textContent = Math.round(totalDiscount).toLocaleString() + ' ر.س';
+    
+    // معدل التحويل التقريبي
+    try {
+        var allOrdersResult = await supabaseClient.from('store_orders').select('id', { count: 'exact', head: true });
+        var allOrders = allOrdersResult.count || 0;
+        var popupShown = localStorage.getItem('doraWelcomeShown') ? 1 : 0;
+        var rate = allOrders > 0 ? Math.round((allOrders / Math.max(allOrders + popupShown, 1)) * 100) : 0;
+        
+        var rateEl = document.getElementById('conversionRate');
+        if (rateEl) rateEl.textContent = rate + '%';
+    } catch(e) {}
+};
+
+// ---------- 2. تحميل إحصائيات التسويق مع التبويب ----------
+var origShowTabMarketing = window.showTab;
+window.showTab = function(tabName) {
+    if (origShowTabMarketing) origShowTabMarketing(tabName);
+    
+    // تحديث الإحصائيات عند فتح تبويب التسويق
+    if (tabName === 'marketing') {
+        setTimeout(updateMarketingStats, 500);
+    }
+    
+    // التبويبات التانية
+    if (tabName === 'pages' && typeof loadSitePages === 'function') loadSitePages();
+    if (tabName === 'services_content' && typeof loadServicePagesContent === 'function') loadServicePagesContent();
+    if (tabName === 'bank_accounts' && typeof loadBankAccounts === 'function') loadBankAccounts();
+    if (tabName === 'files' && typeof loadSiteFiles === 'function') loadSiteFiles();
+    if (tabName === 'partners' && typeof loadPartnersAdmin === 'function') loadPartnersAdmin();
+    if (tabName === 'invoices' && typeof loadInvoices === 'function') loadInvoices();
+    if (tabName === 'shipping' && typeof loadShippingRates === 'function') loadShippingRates();
+    if (tabName === 'content' && typeof loadSiteContent === 'function') loadSiteContent();
+    if (tabName === 'payment_methods' && typeof loadPaymentMethodsAdmin === 'function') loadPaymentMethodsAdmin();
+};
+
+// ---------- 3. تحديث الإحصائيات مع تحميل البيانات ----------
+var origUpdateStats = window.updateStats;
+window.updateStats = async function() {
+    if (origUpdateStats) await origUpdateStats();
+    // تحديث إحصائيات التسويق كمان
+    setTimeout(updateMarketingStats, 1000);
+};
+
+// ---------- 4. إضافة إحصائيات التسويق للوحة الرئيسية ----------
+var origShowDashboard = window.showDashboard;
+window.showDashboard = function() {
+    if (origShowDashboard) origShowDashboard();
+    // إضافة كاردات التسويق بعد تحميل الداشبورد
+    setTimeout(function() {
+        var statsRow = document.querySelector('.dashboard .container > div[style*="grid-template-columns"]');
+        if (statsRow && !document.getElementById('marketingStatsCard')) {
+            var marketingCard = document.createElement('div');
+            marketingCard.id = 'marketingStatsCard';
+            marketingCard.className = 'stat-card';
+            marketingCard.style.cssText = 'border-color:rgba(245,158,11,0.5);background:rgba(245,158,11,0.05)';
+            marketingCard.innerHTML = '<span class="num" id="totalCouponUsageStat" style="color:#F59E0B">0</span><span class="label" style="color:#F59E0B">🎟️ استخدام الكوبونات</span>';
+            statsRow.appendChild(marketingCard);
+            updateMarketingStats();
+            
+            // تحديث رقم الكوبونات في الكارد
+            setInterval(function() {
+                var usage = JSON.parse(localStorage.getItem('doraCouponUsage') || '{"WELCOME":0,"DORA10":0,"DORA20":0}');
+                var total = 0;
+                for (var k in usage) total += usage[k] || 0;
+                var el = document.getElementById('totalCouponUsageStat');
+                if (el) el.textContent = total;
+                var el2 = document.getElementById('totalCouponUsage');
+                if (el2) el2.textContent = total;
+            }, 5000);
+        }
+    }, 1500);
+};
