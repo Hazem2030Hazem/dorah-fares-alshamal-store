@@ -114,7 +114,8 @@ function renderCheckout() {
     
     var subtotal = cart.reduce(function(s, i) { return s + (i.price * i.qty); }, 0);
     var tax = Math.round(subtotal * 0.15);
-    var total = subtotal + tax;
+    var discount = activeCoupon ? Math.round(subtotal * activeCoupon.discount) : 0;
+var finalTotal = subtotal + tax - discount;
     var discount = activeCoupon ? Math.round(subtotal * activeCoupon.discount) : 0;
 var finalTotal = total - discount;
     container.innerHTML = `
