@@ -2549,3 +2549,4 @@ document.addEventListener('DOMContentLoaded', function() {
     bubble.onmouseleave = function() { this.style.transform = 'scale(1)'; };
     document.body.appendChild(bubble);
 });
+})();
