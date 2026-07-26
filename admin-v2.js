@@ -1629,5 +1629,3 @@ async function deleteShippingRate(id) {
     adminToast('✅ تم الحذف');
     loadShippingRates();
 }
-
-})();
