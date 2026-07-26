@@ -2363,52 +2363,67 @@ function init() {
  </div>
 </section>
 
-<section class="projects" id="blog" style="background:transparent;">
+<!-- ===== أحدث المقالات ===== -->
+<section id="blog" style="background:transparent;padding:80px 0">
  <div class="container">
   <div class="section-header">
    <h3>أحدث المقالات</h3>
    <p>نصائح تقنية وآخر الأخبار من عالم التقنية</p>
   </div>
-  <div class="projects-grid">
-   <div class="project-card" style="cursor:pointer" onclick="showToast('📖 المقال قريباً - أفضل طابعة للشركات الصغيرة والمتوسطة')">
-    <div class="project-img" style="font-size:24px;font-weight:800;color:var(--primary)">
-     🖨️<br><span style="font-size:14px">أفضل طابعة للشركات</span>
+  <div class="why-grid" style="grid-template-columns:repeat(3,1fr)">
+   
+   <!-- مقال 1 -->
+   <div class="why-card" style="cursor:pointer" onclick="window.open('https://alshamal-df.com/blog/best-printer','_blank')">
+    <div class="why-icon">
+     <svg class="neon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 6 2 18 2 18 9"></polyline>
+      <path d="M6 12H4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2"></path>
+      <rect x="6" y="14" width="12" height="4"></rect>
+     </svg>
     </div>
-    <div class="project-body">
-     <h4>أفضل طابعة للشركات الصغيرة والمتوسطة</h4>
-     <p>دليلك الشامل لاختيار الطابعة المناسبة لعملك. نستعرض أفضل الخيارات من HP وCanon وEpson.</p>
-     <div class="project-meta">
-      <span>📅 يناير 2025</span>
-      <span>⏱️ 5 دقائق</span>
-     </div>
-    </div>
-   </div>
-   <div class="project-card" style="cursor:pointer" onclick="showToast('📖 المقال قريباً - الفرق بين Zebra وHoneywell')">
-    <div class="project-img" style="font-size:24px;font-weight:800;color:var(--primary)">
-     📊<br><span style="font-size:14px">Zebra vs Honeywell</span>
-    </div>
-    <div class="project-body">
-     <h4>الفرق بين Zebra وHoneywell في نقاط البيع</h4>
-     <p>مقارنة شاملة بين أشهر علامتين تجاريتين في عالم نقاط البيع والباركود. أيها أفضل لعملك؟</p>
-     <div class="project-meta">
-      <span>📅 ديسمبر 2024</span>
-      <span>⏱️ 7 دقائق</span>
-     </div>
+    <h4>أفضل طابعة للشركات الصغيرة والمتوسطة</h4>
+    <p>دليلك الشامل لاختيار الطابعة المناسبة لعملك. نستعرض أفضل الخيارات من HP وCanon وEpson.</p>
+    <div style="margin-top:12px;display:flex;gap:15px;font-size:12px;color:rgba(255,255,255,0.5)">
+     <span>📅 يناير 2025</span>
+     <span>⏱️ 5 دقائق</span>
     </div>
    </div>
-   <div class="project-card" style="cursor:pointer" onclick="showToast('📖 المقال قريباً - كيفية اختيار نظام POS')">
-    <div class="project-img" style="font-size:24px;font-weight:800;color:var(--primary)">
-     💳<br><span style="font-size:14px">اختيار نظام POS</span>
+
+   <!-- مقال 2 -->
+   <div class="why-card" style="cursor:pointer" onclick="window.open('https://alshamal-df.com/blog/zebra-vs-honeywell','_blank')">
+    <div class="why-icon">
+     <svg class="neon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+      <line x1="8" y1="21" x2="16" y2="21"></line>
+      <line x1="12" y1="17" x2="12" y2="21"></line>
+     </svg>
     </div>
-    <div class="project-body">
-     <h4>كيفية اختيار نظام POS المناسب لمطعمك</h4>
-     <p>نصائح مهمة لاختيار نظام نقاط البيع المثالي. من السرعة إلى التكامل مع التطبيقات.</p>
-     <div class="project-meta">
-      <span>📅 نوفمبر 2024</span>
-      <span>⏱️ 6 دقائق</span>
-     </div>
+    <h4>الفرق بين Zebra وHoneywell في نقاط البيع</h4>
+    <p>مقارنة شاملة بين أشهر علامتين تجاريتين في عالم نقاط البيع والباركود. أيها أفضل لعملك؟</p>
+    <div style="margin-top:12px;display:flex;gap:15px;font-size:12px;color:rgba(255,255,255,0.5)">
+     <span>📅 ديسمبر 2024</span>
+     <span>⏱️ 7 دقائق</span>
     </div>
    </div>
+
+   <!-- مقال 3 -->
+   <div class="why-card" style="cursor:pointer" onclick="window.open('https://alshamal-df.com/blog/choose-pos','_blank')">
+    <div class="why-icon">
+     <svg class="neon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="16" y1="13" x2="8" y2="13"></line>
+      <line x1="16" y1="17" x2="8" y2="17"></line>
+     </svg>
+    </div>
+    <h4>كيفية اختيار نظام POS المناسب لمطعمك</h4>
+    <p>نصائح مهمة لاختيار نظام نقاط البيع المثالي. من السرعة إلى التكامل مع التطبيقات.</p>
+    <div style="margin-top:12px;display:flex;gap:15px;font-size:12px;color:rgba(255,255,255,0.5)">
+     <span>📅 نوفمبر 2024</span>
+     <span>⏱️ 6 دقائق</span>
+    </div>
+   </div>
+
   </div>
  </div>
 </section>
