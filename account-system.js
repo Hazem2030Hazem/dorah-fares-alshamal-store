@@ -1384,5 +1384,63 @@ function boot(){
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
 else boot();
+/* ============================================================
+   📦 تتبع الطلب
+   ============================================================ */
+window.trackOrder = function(orderId) {
+  const order = state.orders.find(o => o.id === orderId || o.order_number === orderId);
+  if (!order) {
+    notify('❌ الطلب غير موجود', 'error');
+    return;
+  }
 
+  const steps = [
+    { key: 'new', label: '🆕 تم استلام الطلب' },
+    { key: 'review', label: '👀 قيد المراجعة' },
+    { key: 'processing', label: '⚙️ قيد التجهيز' },
+    { key: 'shipped', label: '🚚 تم الشحن' },
+    { key: 'delivered', label: '✅ تم التسليم' },
+    { key: 'completed', label: '🎉 مكتمل' },
+    { key: 'cancelled', label: '❌ ملغي' }
+  ];
+  
+  const currentStepIndex = steps.findIndex(s => s.key === order.status);
+  const items = Array.isArray(order.items) ? order.items : [];
+
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
+  overlay.onclick = function(e) { if(e.target === overlay) overlay.remove(); };
+  
+  overlay.innerHTML = `
+    <div style="background:linear-gradient(135deg, #0f0c29, #302b63);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:30px;max-width:500px;width:100%;max-height:85vh;overflow-y:auto;color:white;" onclick="event.stopPropagation()">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <h2 style="margin:0;">📦 تتبع الطلب</h2>
+        <button onclick="this.closest('[style*=fixed]').remove()" style="background:rgba(255,255,255,0.1);border:none;color:white;padding:8px 12px;border-radius:8px;cursor:pointer;">✕</button>
+      </div>
+      <div style="background:rgba(59,130,246,0.15);padding:15px;border-radius:12px;margin-bottom:20px;">
+        <p style="margin:5px 0;"><strong>رقم الطلب:</strong> ${esc(order.order_number || orderId)}</p>
+        <p style="margin:5px 0;"><strong>التاريخ:</strong> ${dateAr(order.created_at)}</p>
+        <p style="margin:5px 0;"><strong>المجموع:</strong> ${money(order.total)}</p>
+      </div>
+      ${items.length ? `<div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:8px;margin-bottom:20px;">${items.map((item, i) => `<p style="margin:4px 0;font-size:13px;">${i+1}. ${esc(item.name)} × ${item.qty||1}</p>`).join('')}</div>` : ''}
+      <div style="position:relative;padding-right:25px;">
+        <div style="position:absolute;right:19px;top:0;bottom:0;width:2px;background:rgba(255,255,255,0.2);"></div>
+        ${steps.map((step, index) => {
+          const isActive = index === currentStepIndex;
+          const isDone = currentStepIndex > index;
+          const isCancelled = order.status === 'cancelled' && index === steps.length - 1;
+          return `
+            <div style="display:flex;align-items:center;gap:10px;padding:10px;margin-bottom:5px;border-radius:8px;${isActive ? 'background:rgba(59,130,246,0.2);' : ''}${isDone ? 'opacity:0.6;' : ''}">
+              <span style="font-size:20px;">${isCancelled ? '❌' : isActive ? '📍' : isDone ? '✅' : '⭕'}</span>
+              <span style="${isActive ? 'font-weight:bold;color:#60A5FA;' : 'color:rgba(255,255,255,0.7);'}">${step.label}</span>
+            </div>
+          `;
+        }).join('')}
+      </div>
+      <button onclick="this.closest('[style*=fixed]').remove()" style="width:100%;margin-top:20px;padding:12px;background:#3B82F6;color:white;border:none;border-radius:10px;cursor:pointer;font-weight:bold;">👍 حسناً</button>
+    </div>
+  `;
+  
+  document.body.appendChild(overlay);
+};
 })();
