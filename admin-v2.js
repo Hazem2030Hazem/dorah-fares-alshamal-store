@@ -559,7 +559,7 @@ function readSettingsForm(){
     socialInstagram: document.getElementById('socialInstagram')?.value.trim() || '',
     socialFacebook: document.getElementById('socialFacebook')?.value.trim() || '',
     socialLinkedin: document.getElementById('socialLinkedin')?.value.trim() || '',
-    whatsappMessage: document.getElementById('whatsappMessage')?.value.trim() || defaultSiteSettings.whatsappMessage
+    whatsappMessage: document.getElementById('whatsappMessage')?.value.trim() || defaultSiteSettings.whatsappMessage,
          commercialReg: document.getElementById('commercialReg')?.value.trim() || '',
     taxNumber: document.getElementById('taxNumber')?.value.trim() || ''
   };
