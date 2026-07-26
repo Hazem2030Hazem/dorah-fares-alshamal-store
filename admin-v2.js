@@ -577,7 +577,9 @@ function fillSettingsForm(settings){
     socialInstagram: merged.socialInstagram,
     socialFacebook: merged.socialFacebook,
     socialLinkedin: merged.socialLinkedin,
-    whatsappMessage: merged.whatsappMessage
+    whatsappMessage: merged.whatsappMessage,
+         commercialReg: merged.commercialReg,
+    taxNumber: merged.taxNumber
   };
   Object.entries(fields).forEach(([id, value]) => {
     const input = document.getElementById(id);
