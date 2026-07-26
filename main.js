@@ -1594,7 +1594,7 @@ function updateWishlistUI() {
 
 async function loadWishlistFromSupabase() {
   try {
-    const { data, error } = await supabaseClient.from('wishlist').select('product_id').eq('user_id', 'anonymous_' + getDeviceId());
+    const { data, error } = await supabaseClient.from('wishlist').select('product_id');
     if (!error && data) { wishlistItems = data.map(item => item.product_id); localStorage.setItem('doraWishlistItems', JSON.stringify(wishlistItems)); updateWishlistUI(); }
   } catch (e) { updateWishlistUI(); }
 }
