@@ -225,7 +225,7 @@ var total = subtotal + tax - discount;
     var invoiceId = invoiceResult.data ? invoiceResult.data.id : null;
     
     // رسالة واتساب
-    var msg = '*طلب جديد*\n\n*العميل:* ' + name + '\n*الجوال:* ' + phone + '\n*الدفع:* ' + selectedPayment.name + '\n*الإجمالي:* ' + total.toLocaleString() + ' ر.س';
+    var msg = '*طلب جديد*\n\n*العميل:* ' + name + '\n*الجوال:* ' + phone + '\n*الدفع:* ' + selectedPayment.name + '\n'*الإجمالي:* ' + finalTotal.toLocaleString() + ' ر.س'
     if (invoiceId) msg += '\n\n🧾 الفاتورة: https://alshamal-df.com/invoice.html?id=' + invoiceId;
     window.open('https://wa.me/966545358773?text=' + encodeURIComponent(msg), '_blank');
     
