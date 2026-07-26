@@ -627,16 +627,36 @@ window.saveSettings = async function(){
 /* ============================================================
    إحصائيات وتصدير
    ============================================================ */
-window.updateStats = function(){
-  const productsCount = Array.isArray(products) ? products.length : 0;
-  const totalProducts = document.getElementById('totalProducts');
-  const totalOrders = document.getElementById('totalOrders');
-  const totalReviews = document.getElementById('totalReviews');
-  const totalMessages = document.getElementById('totalMessages');
-  if (totalProducts) totalProducts.textContent = productsCount;
-  if (totalOrders) totalOrders.textContent = adminState.orders.filter(o => o.status === 'new').length;
-  if (totalReviews) totalReviews.textContent = adminState.reviews.length;
-  if (totalMessages) totalMessages.textContent = adminState.messages.filter(m => m.status === 'new').length;
+window.updateStats = async function(){
+  // المنتجات
+  var productsCount = 0;
+  var productsEl = document.getElementById('totalProducts');
+  if (productsEl) {
+    var productsResult = await supabaseClient.from('store_products').select('*', { count: 'exact', head: true });
+    productsCount = productsResult.count || 0;
+    productsEl.textContent = productsCount;
+  }
+  
+  // الطلبات الجديدة
+  var ordersEl = document.getElementById('totalOrders');
+  if (ordersEl) {
+    var ordersResult = await supabaseClient.from('store_orders').select('*', { count: 'exact', head: true }).eq('status', 'new');
+    ordersEl.textContent = ordersResult.count || 0;
+  }
+  
+  // التقييمات
+  var reviewsEl = document.getElementById('totalReviews');
+  if (reviewsEl) {
+    var reviewsResult = await supabaseClient.from('reviews').select('*', { count: 'exact', head: true });
+    reviewsEl.textContent = reviewsResult.count || 0;
+  }
+  
+  // الرسائل الجديدة
+  var messagesEl = document.getElementById('totalMessages');
+  if (messagesEl) {
+    var messagesResult = await supabaseClient.from('contact_messages').select('*', { count: 'exact', head: true }).eq('status', 'new');
+    messagesEl.textContent = messagesResult.count || 0;
+  }
 };
 
 function exportJson(data, prefix){
