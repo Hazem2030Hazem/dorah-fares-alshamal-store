@@ -202,7 +202,8 @@ async function placeOrder() {
     var address = document.getElementById('custAddress').value.trim();
     var subtotal = cart.reduce(function(s, i) { return s + (i.price * i.qty); }, 0);
     var tax = Math.round(subtotal * 0.15);
-    var total = subtotal + tax;
+    var discount = activeCoupon ? Math.round(subtotal * activeCoupon.discount) : 0;
+var total = subtotal + tax - discount;
     
     // حفظ الطلب
     var orderPayload = {
