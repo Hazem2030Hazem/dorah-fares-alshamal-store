@@ -1920,7 +1920,6 @@ window.saveGovDocs = async function() {
         honeywell: document.getElementById('gd_honeywell')?.value || ''
     };
     
-    localStorage.setItem('doraGovDocs', JSON.stringify(data));
     
     try {
         await supabaseClient.from('gov_docs').upsert([{ id: 1, data: data, updated_at: new Date().toISOString() }], { onConflict: 'id' });
