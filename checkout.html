@@ -230,8 +230,8 @@ var total = subtotal + tax - discount;
     window.open('https://wa.me/966545358773?text=' + encodeURIComponent(msg), '_blank');
     
     localStorage.removeItem('doraCart');
-    alert('✅ تم تقديم الطلب بنجاح!');
-    window.location.href = 'index.html';
+   var orderNumber = orderResult.data ? orderResult.data.id : '';
+window.location.href = 'thankyou.html?order=' + orderNumber + '&invoice=' + (invoiceId || '');
 }
 // ===== كود الخصم =====
 var activeCoupon = null;
