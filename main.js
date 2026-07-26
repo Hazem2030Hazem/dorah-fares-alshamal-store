@@ -542,9 +542,14 @@ function closeCompareModal(e) {
  document.body.style.overflow = '';
 }
 
-function addToCart(productId) {
- const product = productsData.find(p => p.id === productId);
- if (!product || product.stock <= 0) {
+async function addToCart(productId) {
+    var isLoggedIn = await checkAuth();
+    if (!isLoggedIn) {
+        requireAuth('تضيف منتجات للسلة');
+        return;
+    }
+    const product = productsData.find(p => p.id === productId);
+    if (!product || product.stock <= 0) {
   showToast('❌ عذراً، هذا المنتج غير متوفر حالياً', 'error');
   return;
  }
