@@ -1148,7 +1148,12 @@ function scrollToSection(sectionId) {
     if (section) { section.scrollIntoView({ behavior: 'smooth' }); }
 }
 
-function openSiteRatingModal() {
+async function openSiteRatingModal() {
+    var isLoggedIn = await checkAuth();
+    if (!isLoggedIn) {
+        requireAuth('تضيف تقييم');
+        return;
+    }
     document.getElementById('siteRatingModal').classList.add('show');
     document.body.style.overflow = 'hidden';
     setRating(5);
