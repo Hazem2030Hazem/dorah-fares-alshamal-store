@@ -1624,3 +1624,26 @@ async function deleteShippingRate(id) {
     adminToast('✅ تم الحذف');
     loadShippingRates();
 }
+// ===== إدارة الفواتير =====
+async function loadInvoices() {
+    var tbody = document.getElementById('invoicesTable');
+    if (!tbody) return;
+    var result = await supabaseClient.from('invoices').select('*').order('created_at', { ascending: false });
+    var invoices = result.data || [];
+    if (invoices.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">🧾 لا توجد فواتير</td></tr>';
+        return;
+    }
+    tbody.innerHTML = invoices.map(function(inv, i) {
+        return '<tr><td>' + (i+1) + '</td><td><strong>' + inv.invoice_number + '</strong></td><td>' + (inv.customer_name || '—') + '</td><td>' + Number(inv.total || 0).toLocaleString() + ' ر.س</td><td>' + (inv.status === 'issued' ? '✅ صادرة' : '⏳ معلقة') + '</td><td>' + new Date(inv.created_at).toLocaleDateString('ar-SA') + '</td>' +
+        '<td><button class="btn-view" onclick="viewInvoice(\'' + inv.id + '\')">👁️ عرض</button></td></tr>';
+    }).join('');
+}
+
+function viewInvoice(id) {
+    window.open('invoice.html?id=' + id, '_blank');
+}
+
+function exportInvoices() {
+    exportJson(invoices, 'dora-invoices');
+}
