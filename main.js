@@ -1,4 +1,18 @@
 // توجيه لينكات المنتجات للصفحات الجديدة المستقلة
+// ============================================================
+// 📊 Google Analytics 4 - تحميل تلقائي في كل الصفحات
+// ============================================================
+(function() {
+    var gaScript = document.createElement('script');
+    gaScript.async = true;
+    gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-5J1QD56BN0';
+    document.head.appendChild(gaScript);
+    
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-5J1QD56BN0');
+})();
 document.addEventListener('DOMContentLoaded', function(){
   var map = {'printers':'products-printers.html','computers':'products-computers.html','ram':'products-ram.html','hard-drives':'products-hard-drives.html','accessories':'products-accessories.html'};
   document.querySelectorAll('a[href*="products.html"]').forEach(function(a){
