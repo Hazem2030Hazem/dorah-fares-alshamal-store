@@ -692,7 +692,20 @@ function removeCoupon() {
  updateCartUI();
  showToast('تم إلغاء كود الخصم', 'warning');
 }
+// ===== التحقق من تسجيل الدخول =====
+async function checkAuth() {
+    var result = await supabaseClient.auth.getSession();
+    return result.data.session ? true : false;
+}
 
+function requireAuth(action) {
+    if (typeof showToast === 'function') {
+        showToast('🔐 سجل دخول عشان تقدر ' + action, 'warning');
+    }
+    setTimeout(function() {
+        window.location.href = 'account.html?mode=login&next=' + encodeURIComponent(window.location.href);
+    }, 1500);
+}
 function checkout() {
     if (cart.length === 0) {
         showToast('السلة فارغة! أضف منتجات أولاً', 'warning');
