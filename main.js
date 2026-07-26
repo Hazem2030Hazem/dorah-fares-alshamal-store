@@ -1571,11 +1571,11 @@ async function toggleWishlist(productId, event) {
   if (index > -1) {
     wishlistItems.splice(index, 1);
     showToast('💔 تمت الإزالة من المفضلة', 'warning');
-    try { await supabaseClient.from('wishlist').delete().eq('product_id', productId).eq('user_id', 'anonymous_' + getDeviceId()); } catch (e) {}
+   try { await supabaseClient.from('wishlist').delete().eq('product_id', productId); } catch (e) {}
   } else {
     wishlistItems.push(productId);
     showToast('❤️ تمت الإضافة للمفضلة');
-    try { await supabaseClient.from('wishlist').insert([{ product_id: productId, user_id: 'anonymous_' + getDeviceId(), created_at: new Date().toISOString() }]); } catch (e) {}
+   try { await supabaseClient.from('wishlist').insert([{ product_id: productId, created_at: new Date().toISOString() }]); } catch (e) {}
   }
   localStorage.setItem('doraWishlistItems', JSON.stringify(wishlistItems));
   updateWishlistUI();
