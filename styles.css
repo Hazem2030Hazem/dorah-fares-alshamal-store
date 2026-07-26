@@ -4227,3 +4227,34 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
   .wa-chat-widget { bottom: 80px; right: 10px; }
   .wa-chat-box { width: 280px; }
 }
+/* ===== تأثيرات أزرار قسم المنتجات ===== */
+
+/* أزرار الفلتر */
+.filter-tab {
+    transition: all 0.3s ease !important;
+}
+.filter-tab:hover {
+    background: rgba(59,130,246,0.15) !important;
+    color: #60A5FA !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 25px rgba(59,130,246,0.2) !important;
+}
+
+/* قائمة الفرز */
+.sort-select {
+    transition: all 0.3s ease !important;
+}
+.sort-select:hover {
+    border-color: #60A5FA !important;
+    box-shadow: 0 0 20px rgba(59,130,246,0.15) !important;
+}
+
+/* أزرار عرض الشبكة/القائمة */
+.view-btn {
+    transition: all 0.3s ease !important;
+}
+.view-btn:hover {
+    background: rgba(59,130,246,0.2) !important;
+    color: #60A5FA !important;
+    transform: rotate(90deg) !important;
+}
