@@ -10,7 +10,6 @@
     <title>لوحة الإدارة | شركة درة فارس الشمال</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="admin-v2.css">
-<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="fbe13262-4414-4ead-b11c-8be25ec1a317" type="text/javascript" async></script>
 </head>
 <body>
 
@@ -29,7 +28,7 @@
                 <input type="password" id="password" placeholder="أدخل كلمة المرور" required>
             </div>
             <button type="submit" class="btn-login" style="width:100%;padding:16px;background:linear-gradient(135deg,#EF4444,#DC2626);color:white;border:none;border-radius:12px;font-size:18px;font-weight:700;cursor:pointer">دخول إلى لوحة التحكم</button>
-            <div class="error-msg" id="errorMsg" style="color:#EF4444;font-size:14px;text-align:center;margin-top:15px;display:none">❌ بيانات الدخول غير صحيحة أو الحساب لا يملك صلاحية الإدارة</div>
+            <div class="error-msg" id="errorMsg" style="color:#EF4444;font-size:14px;text-align:center;margin-top:15px;display:none">❌ بيانات الدخول غير صحيحة</div>
         </form>
     </div>
 </section>
@@ -69,6 +68,7 @@
             <button class="tab-btn" onclick="showTab('payment_methods')">💳 طرق الدفع</button>
             <button class="tab-btn" onclick="showTab('shipping')">🚚 الشحن</button>
             <button class="tab-btn" onclick="showTab('invoices')">🧾 الفواتير</button>
+            <button class="tab-btn" onclick="showTab('marketing')" style="background:rgba(245,158,11,0.2);color:#F59E0B;border-color:rgba(245,158,11,0.5)">📢 التسويق</button>
         </div>
 
         <!-- Tab Contents -->
@@ -84,71 +84,86 @@
         <div class="tab-content" id="services_contentTab"><div class="table-container"><div class="table-header"><h3>🛠️ محتوى الخدمات</h3><button class="btn-add" onclick="loadServicePagesContent()">🔄 تحديث</button></div><div id="servicePagesList" style="padding:20px"><div class="admin-empty">⏳ جاري التحميل...</div></div></div></div>
         <div class="tab-content" id="bank_accountsTab"><div class="table-container"><div class="table-header"><h3>🏦 الحسابات البنكية</h3><button class="btn-add" onclick="addBankAccount()">➕ إضافة</button></div><div id="bankAccountsList" style="padding:20px"><div class="admin-empty">⏳ جاري التحميل...</div></div></div></div>
         <div class="tab-content" id="filesTab"><div class="table-container"><div class="table-header"><h3>📁 الملفات والمستندات</h3><button class="btn-add" onclick="addNewFile()">➕ رفع</button></div><div id="siteFilesList" style="padding:20px"><div class="admin-empty">⏳ جاري التحميل...</div></div></div></div>
-        <div class="tab-content" id="partnersTab">
+        <div class="tab-content" id="partnersTab"><div class="table-container"><div class="table-header"><h3>🤝 إدارة الشركاء والعملاء</h3><button class="btn-add" onclick="openPartnerModal()">➕ إضافة شريك</button></div><div class="table-responsive"><table><thead><tr><th>#</th><th>الصورة</th><th>الاسم</th><th>التصنيف</th><th>الإجراءات</th></tr></thead><tbody id="partnersTable"><tr><td colspan="5" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody></table></div></div></div>
+        <div class="tab-content" id="payment_methodsTab"><div class="table-container"><div class="table-header"><h3>💳 إدارة طرق الدفع</h3><button class="btn-add" onclick="openPaymentMethodModal()">➕ إضافة طريقة</button></div><div class="table-responsive"><table><thead><tr><th>#</th><th>الأيقونة</th><th>الاسم</th><th>الوصف</th><th>الحالة</th><th>الإجراءات</th></tr></thead><tbody id="paymentMethodsTable"><tr><td colspan="6" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody></table></div></div></div>
+        <div class="tab-content" id="shippingTab"><div class="table-container"><div class="table-header"><h3>🚚 إدارة الشحن</h3><div style="display:flex;gap:10px"><button class="btn-add" onclick="openShippingModal()">⚙️ إعدادات</button><button class="btn-add" onclick="openShippingRateModal()">➕ إضافة سعر</button></div></div><div class="table-responsive"><table><thead><tr><th>#</th><th>من مدينة</th><th>إلى مدينة</th><th>الوزن</th><th>السعر</th><th>المدة</th><th>إجراءات</th></tr></thead><tbody id="shippingRatesTable"><tr><td colspan="7" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody></table></div></div></div>
+        <div class="tab-content" id="invoicesTab"><div class="table-container"><div class="table-header"><h3>🧾 الفواتير</h3><button class="btn-add" onclick="exportInvoices()">📥 تصدير</button></div><div class="table-responsive"><table><thead><tr><th>#</th><th>رقم الفاتورة</th><th>العميل</th><th>الإجمالي</th><th>الحالة</th><th>التاريخ</th><th>الإجراءات</th></tr></thead><tbody id="invoicesTable"><tr><td colspan="7" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody></table></div></div></div>
+        
+        <!-- 📢 تبويب التسويق الجديد -->
+        <div class="tab-content" id="marketingTab">
             <div class="table-container">
-                <div class="table-header">
-                    <h3>🤝 إدارة الشركاء والعملاء</h3>
-                    <button class="btn-add" onclick="openPartnerModal()">➕ إضافة شريك</button>
+                <div class="table-header"><h3>📢 إدارة العروض والكوبونات</h3></div>
+                
+                <!-- الكوبونات الحالية -->
+                <div style="margin-bottom:30px">
+                    <h4 style="color:#F59E0B;margin-bottom:15px">🎟️ الكوبونات النشطة</h4>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px" id="couponsList">
+                        <div class="coupon-card" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:16px;padding:20px;text-align:center">
+                            <div style="font-size:32px;margin-bottom:10px">🎟️</div>
+                            <h4 style="color:#F59E0B;font-size:24px;margin:0">WELCOME</h4>
+                            <p style="color:rgba(255,255,255,0.7)">خصم ترحيبي 15%</p>
+                            <span style="background:rgba(16,185,129,0.2);color:#10B981;padding:4px 12px;border-radius:20px;font-size:12px">✅ نشط</span>
+                        </div>
+                        <div class="coupon-card" style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);border-radius:16px;padding:20px;text-align:center">
+                            <div style="font-size:32px;margin-bottom:10px">🎟️</div>
+                            <h4 style="color:#60A5FA;font-size:24px;margin:0">DORA10</h4>
+                            <p style="color:rgba(255,255,255,0.7)">خصم 10%</p>
+                            <span style="background:rgba(16,185,129,0.2);color:#10B981;padding:4px 12px;border-radius:20px;font-size:12px">✅ نشط</span>
+                        </div>
+                        <div class="coupon-card" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);border-radius:16px;padding:20px;text-align:center">
+                            <div style="font-size:32px;margin-bottom:10px">🎟️</div>
+                            <h4 style="color:#A78BFA;font-size:24px;margin:0">DORA20</h4>
+                            <p style="color:rgba(255,255,255,0.7)">خصم 20%</p>
+                            <span style="background:rgba(16,185,129,0.2);color:#10B981;padding:4px 12px;border-radius:20px;font-size:12px">✅ نشط</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="table-responsive">
-                    <table>
-                        <thead><tr><th>#</th><th>الصورة</th><th>الاسم</th><th>التصنيف</th><th>الإجراءات</th></tr></thead>
-                        <tbody id="partnersTable"><tr><td colspan="5" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody>
-                    </table>
+                
+                <!-- إحصائيات التسويق -->
+                <div style="margin-bottom:30px">
+                    <h4 style="color:#F59E0B;margin-bottom:15px">📊 إحصائيات التسويق</h4>
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:15px">
+                        <div style="background:rgba(255,255,255,0.03);border-radius:12px;padding:20px;text-align:center">
+                            <div style="font-size:28px;color:#10B981;font-weight:900" id="totalCouponUsage">0</div>
+                            <div style="color:rgba(255,255,255,0.6);font-size:13px">مرات استخدام الكوبونات</div>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.03);border-radius:12px;padding:20px;text-align:center">
+                            <div style="font-size:28px;color:#60A5FA;font-weight:900" id="totalDiscountGiven">0 ر.س</div>
+                            <div style="color:rgba(255,255,255,0.6);font-size:13px">إجمالي الخصومات</div>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.03);border-radius:12px;padding:20px;text-align:center">
+                            <div style="font-size:28px;color:#F59E0B;font-weight:900" id="conversionRate">0%</div>
+                            <div style="color:rgba(255,255,255,0.6);font-size:13px">معدل التحويل</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- إعدادات الـ Popup -->
+                <div style="margin-bottom:30px">
+                    <h4 style="color:#F59E0B;margin-bottom:15px">🪟 إعدادات النافذة المنبثقة</h4>
+                    <div style="display:flex;gap:10px;align-items:center">
+                        <button onclick="resetWelcomePopup()" style="padding:10px 20px;background:#EF4444;color:white;border:none;border-radius:10px;cursor:pointer;font-weight:700">🔄 إعادة تفعيل Popup الترحيبي</button>
+                        <span style="color:rgba(255,255,255,0.5);font-size:12px">سيظهر الـ Popup للزوار الجدد مرة أخرى</span>
+                    </div>
+                </div>
+                
+                <!-- إعدادات الـ Countdown -->
+                <div>
+                    <h4 style="color:#F59E0B;margin-bottom:15px">⏰ إعدادات العداد التنازلي</h4>
+                    <div style="display:flex;gap:10px;align-items:center">
+                        <button onclick="resetCountdown()" style="padding:10px 20px;background:#10B981;color:white;border:none;border-radius:10px;cursor:pointer;font-weight:700">🔄 إعادة تشغيل العداد (24 ساعة)</button>
+                        <span style="color:rgba(255,255,255,0.5);font-size:12px">سيعيد العداد للبدء من 24 ساعة</span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="tab-content" id="payment_methodsTab">
-            <div class="table-container">
-                <div class="table-header">
-                    <h3>💳 إدارة طرق الدفع</h3>
-                    <button class="btn-add" onclick="openPaymentMethodModal()">➕ إضافة طريقة</button>
-                </div>
-                <div class="table-responsive">
-                    <table>
-                        <thead><tr><th>#</th><th>الأيقونة</th><th>الاسم</th><th>الوصف</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
-                        <tbody id="paymentMethodsTable"><tr><td colspan="6" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="tab-content" id="shippingTab">
-    <div class="table-container">
-        <div class="table-header">
-            <h3>🚚 إدارة الشحن</h3>
-            <div style="display:flex;gap:10px">
-                <button class="btn-add" onclick="openShippingModal()">⚙️ إعدادات</button>
-                <button class="btn-add" onclick="openShippingRateModal()">➕ إضافة سعر</button>
-            </div>
-        </div>
-        <div class="table-responsive">
-            <table>
-                <thead><tr><th>#</th><th>من مدينة</th><th>إلى مدينة</th><th>الوزن</th><th>السعر</th><th>المدة</th><th>إجراءات</th></tr></thead>
-                <tbody id="shippingRatesTable"><tr><td colspan="7" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody>
-            </table>
-        </div>
-    </div>
-</div>
-        <div class="tab-content" id="invoicesTab">
-    <div class="table-container">
-        <div class="table-header">
-            <h3>🧾 الفواتير</h3>
-            <button class="btn-add" onclick="exportInvoices()">📥 تصدير</button>
-        </div>
-        <div class="table-responsive">
-            <table>
-                <thead><tr><th>#</th><th>رقم الفاتورة</th><th>العميل</th><th>الإجمالي</th><th>الحالة</th><th>التاريخ</th><th>الإجراءات</th></tr></thead>
-                <tbody id="invoicesTable"><tr><td colspan="7" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody>
-            </table>
-        </div>
-    </div>
-</div>
+        
         <div class="tab-content" id="settingsTab">
             <div class="settings-section"><h4>🏢 معلومات الشركة</h4>
                 <div class="form-group"><label>اسم الشركة</label><input type="text" id="companyName" value="شركة درة فارس الشمال"></div>
                 <div class="form-group"><label>العنوان</label><input type="text" id="companyAddress" value="تبوك، المملكة العربية السعودية"></div>
-            <div class="form-group"><label>📋 السجل التجاري</label><input type="text" id="commercialReg" placeholder="رقم السجل التجاري"></div>
-<div class="form-group"><label>🧾 الرقم الضريبي</label><input type="text" id="taxNumber" placeholder="الرقم الضريبي"></div>
+                <div class="form-group"><label>📋 السجل التجاري</label><input type="text" id="commercialReg" placeholder="رقم السجل التجاري"></div>
+                <div class="form-group"><label>🧾 الرقم الضريبي</label><input type="text" id="taxNumber" placeholder="الرقم الضريبي"></div>
             </div>
             <div class="settings-section"><h4>📞 أرقام التواصل</h4>
                 <div class="form-group"><label>الهاتف الأول</label><input type="text" id="companyPhone1" value="966568717449"></div>
@@ -170,42 +185,27 @@
 </section>
 
 <!-- Modals -->
-<!-- Partner Modal -->
 <div class="modal" id="partnerModal">
     <div class="modal-content">
-        <div class="modal-header">
-            <h3 id="partnerModalTitle">➕ إضافة شريك</h3>
-            <button class="btn-close" onclick="closePartnerModal()">✕</button>
-        </div>
+        <div class="modal-header"><h3 id="partnerModalTitle">➕ إضافة شريك</h3><button class="btn-close" onclick="closePartnerModal()">✕</button></div>
         <form id="partnerForm" onsubmit="return savePartner(event)">
             <input type="hidden" id="partnerId">
-            <div class="form-group"><label>🏢 اسم الشريك</label><input type="text" id="partnerName" required placeholder="مثال: شركة التقنية"></div>
-            <div class="form-group"><label>📂 التصنيف</label>
-                <select id="partnerCategory">
-                    <option value="شريك">🤝 شريك</option><option value="عميل">👤 عميل</option>
-                    <option value="مورد">📦 مورد</option><option value="موزع">🚚 موزع</option>
-                </select>
-            </div>
-            <div class="form-group"><label>🖼️ رابط الصورة</label><input type="text" id="partnerImage" placeholder="https://example.com/logo.png">
-                <small style="color:rgba(255,255,255,0.5)">اتركه فارغاً إذا لم تتوفر صورة</small>
-            </div>
+            <div class="form-group"><label>🏢 اسم الشريك</label><input type="text" id="partnerName" required></div>
+            <div class="form-group"><label>📂 التصنيف</label><select id="partnerCategory"><option value="شريك">🤝 شريك</option><option value="عميل">👤 عميل</option><option value="مورد">📦 مورد</option><option value="موزع">🚚 موزع</option></select></div>
+            <div class="form-group"><label>🖼️ رابط الصورة</label><input type="text" id="partnerImage" placeholder="https://example.com/logo.png"></div>
             <button type="submit" class="btn-save">💾 حفظ الشريك</button>
         </form>
     </div>
 </div>
 
-<!-- Payment Method Modal -->
 <div class="modal" id="paymentMethodModal">
     <div class="modal-content">
-        <div class="modal-header">
-            <h3 id="paymentMethodModalTitle">➕ إضافة طريقة دفع</h3>
-            <button class="btn-close" onclick="closePaymentMethodModal()">✕</button>
-        </div>
+        <div class="modal-header"><h3 id="paymentMethodModalTitle">➕ إضافة طريقة دفع</h3><button class="btn-close" onclick="closePaymentMethodModal()">✕</button></div>
         <form id="paymentMethodForm" onsubmit="return savePaymentMethod(event)">
             <input type="hidden" id="paymentMethodId">
-            <div class="form-group"><label>🏷️ الاسم</label><input type="text" id="paymentMethodName" required placeholder="مثال: Visa"></div>
+            <div class="form-group"><label>🏷️ الاسم</label><input type="text" id="paymentMethodName" required></div>
             <div class="form-group"><label>🎨 الأيقونة</label><input type="text" id="paymentMethodIcon" placeholder="💳"></div>
-            <div class="form-group"><label>📝 الوصف</label><input type="text" id="paymentMethodDesc" placeholder="مثال: الدفع ببطاقة Visa"></div>
+            <div class="form-group"><label>📝 الوصف</label><input type="text" id="paymentMethodDesc"></div>
             <div class="form-group"><label>🔢 الترتيب</label><input type="number" id="paymentMethodOrder" value="1" min="1"></div>
             <div class="form-group"><label><input type="checkbox" id="paymentMethodActive" checked> ✅ نشط</label></div>
             <button type="submit" class="btn-save">💾 حفظ</button>
@@ -213,38 +213,24 @@
     </div>
 </div>
 
-<!-- Product Modal -->
 <div class="modal" id="productModal">
     <div class="modal-content">
-        <div class="modal-header">
-            <h3 id="modalTitle">➕ إضافة منتج</h3>
-            <button class="btn-close" onclick="closeModal()">✕</button>
-        </div>
+        <div class="modal-header"><h3 id="modalTitle">➕ إضافة منتج</h3><button class="btn-close" onclick="closeModal()">✕</button></div>
         <form id="productForm" onsubmit="return saveProduct(event)">
             <input type="hidden" id="productId">
-            <div class="form-group"><label>📷 رابط الصورة</label><input type="text" id="productImage" placeholder="https://example.com/image.jpg"></div>
+            <div class="form-group"><label>📷 رابط الصورة</label><input type="text" id="productImage"></div>
             <div class="form-group"><label>🏷️ اسم المنتج</label><input type="text" id="productName" required></div>
             <div class="form-group"><label>📝 وصف المنتج</label><textarea id="productDesc" rows="3"></textarea></div>
             <div class="form-group"><label>💰 السعر (ريال)</label><input type="number" id="productPrice" required></div>
-            <div class="form-group"><label>📂 التصنيف</label>
-                <select id="productCategory">
-                    <option value="printers">طابعات</option><option value="computers">كمبيوتر</option>
-                    <option value="ram">رامات</option><option value="storage">هاردات</option>
-                    <option value="cables">وصلات</option><option value="projectors">بروجكتور</option>
-                    <option value="accessories">إكسسوارات</option><option value="ink">أحبار</option><option value="food">مواد غذائية</option>
-                </select>
-            </div>
+            <div class="form-group"><label>📂 التصنيف</label><select id="productCategory"><option value="printers">طابعات</option><option value="computers">كمبيوتر</option><option value="ram">رامات</option><option value="storage">هاردات</option><option value="cables">وصلات</option><option value="projectors">بروجكتور</option><option value="accessories">إكسسوارات</option><option value="ink">أحبار</option><option value="food">مواد غذائية</option></select></div>
             <button type="submit" class="btn-save">💾 حفظ المنتج</button>
         </form>
     </div>
 </div>
-<!-- Shipping Settings Modal -->
+
 <div class="modal" id="shippingModal">
     <div class="modal-content">
-        <div class="modal-header">
-            <h3>⚙️ إعدادات الشحن</h3>
-            <button class="btn-close" onclick="closeShippingModal()">✕</button>
-        </div>
+        <div class="modal-header"><h3>⚙️ إعدادات الشحن</h3><button class="btn-close" onclick="closeShippingModal()">✕</button></div>
         <form onsubmit="return saveShippingSettings(event)">
             <div class="form-group"><label>🔑 API Key</label><input type="text" id="shippingApiKey"></div>
             <div class="form-group"><label>📦 رقم الحساب</label><input type="text" id="shippingAccountNumber"></div>
@@ -255,13 +241,9 @@
     </div>
 </div>
 
-<!-- Shipping Rate Modal -->
 <div class="modal" id="shippingRateModal">
     <div class="modal-content">
-        <div class="modal-header">
-            <h3 id="shippingRateModalTitle">➕ إضافة سعر شحن</h3>
-            <button class="btn-close" onclick="closeShippingRateModal()">✕</button>
-        </div>
+        <div class="modal-header"><h3 id="shippingRateModalTitle">➕ إضافة سعر شحن</h3><button class="btn-close" onclick="closeShippingRateModal()">✕</button></div>
         <form onsubmit="return saveShippingRate(event)">
             <input type="hidden" id="shippingRateId">
             <div class="form-group"><label>📤 من مدينة</label><input type="text" id="srFromCity" required></div>
@@ -273,54 +255,23 @@
         </form>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2?v=2"></script>
-<script>
-const SUPABASE_URL = 'https://kcbmvxuzjlaooknwhqqb.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjYm12eHV6amxhb29rbndocXFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NzkyMjAsImV4cCI6MjA5OTU1NTIyMH0.ayDpkfCKL90GcUKjbHQs7OvS5sxF1VSraWg58NHJ7ek';
-window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-console.log('✅ Supabase ready');
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL = 'https://kcbmvxuzjlaooknwhqqb.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjYm12eHV6amxhb29rbndocXFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NzkyMjAsImV4cCI6MjA5OTU1NTIyMH0.ayDpkfCKL90GcUKjbHQs7OvS5sxF1VSraWg58NHJ7ek';
 window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-console.log('✅ Supabase ready');
-</script>
- <!-- Shipping Settings Modal -->
-<div class="modal" id="shippingModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>⚙️ إعدادات الشحن</h3>
-            <button class="btn-close" onclick="closeShippingModal()">✕</button>
-        </div>
-        <form onsubmit="return saveShippingSettings(event)">
-            <div class="form-group"><label>🔑 API Key</label><input type="text" id="shippingApiKey"></div>
-            <div class="form-group"><label>📦 رقم الحساب</label><input type="text" id="shippingAccountNumber"></div>
-            <div class="form-group"><label>🌐 الرابط الأساسي</label><input type="text" id="shippingBaseUrl" value="https://api.spl.sa"></div>
-            <div class="form-group"><label><input type="checkbox" id="shippingEnabled"> ✅ تفعيل الشحن</label></div>
-            <button type="submit" class="btn-save">💾 حفظ</button>
-        </form>
-    </div>
-</div>
 
-<!-- Shipping Rate Modal -->
-<div class="modal" id="shippingRateModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 id="shippingRateModalTitle">➕ إضافة سعر شحن</h3>
-            <button class="btn-close" onclick="closeShippingRateModal()">✕</button>
-        </div>
-        <form onsubmit="return saveShippingRate(event)">
-            <input type="hidden" id="shippingRateId">
-            <div class="form-group"><label>📤 من مدينة</label><input type="text" id="srFromCity" required></div>
-            <div class="form-group"><label>📥 إلى مدينة</label><input type="text" id="srToCity" required></div>
-            <div class="form-group"><label>⚖️ الوزن (كجم)</label><input type="number" id="srWeight" value="1" step="0.5"></div>
-            <div class="form-group"><label>💰 السعر (ر.س)</label><input type="number" id="srPrice" value="0"></div>
-            <div class="form-group"><label>📅 المدة (أيام)</label><input type="number" id="srDays" value="2"></div>
-            <button type="submit" class="btn-save">💾 حفظ</button>
-        </form>
-    </div>
-</div>   
+// 📢 وظائف التسويق للوحة الإدارة
+function resetWelcomePopup() {
+    localStorage.removeItem('doraWelcomeShown');
+    alert('✅ تم إعادة تفعيل الـ Popup الترحيبي! سيظهر للزوار الجدد.');
+}
+function resetCountdown() {
+    localStorage.removeItem('doraOfferEnd');
+    alert('✅ تم إعادة تشغيل العداد التنازلي! 24 ساعة جديدة.');
+}
+</script>
 <script src="admin-v2.js"></script>
 </body>
 </html>
