@@ -2081,4 +2081,107 @@ document.addEventListener('DOMContentLoaded', function() {
   // Inject sections after a small delay to ensure products section exists
   setTimeout(injectRecommendationSections, 500);
 });
+// ============================================================
+// 📢 DORA MARKETING ENHANCEMENTS - تحسينات تسويقية
+// ============================================================
+
+// ---------- 1. تتبع استخدام الكوبونات ----------
+var couponUsage = JSON.parse(localStorage.getItem('doraCouponUsage') || '{"WELCOME":0,"DORA10":0,"DORA20":0}');
+
+var originalApplyCoupon = applyCoupon;
+applyCoupon = function() {
+    var code = (document.getElementById('couponInput') || document.getElementById('couponInputAdmin')).value.trim().toUpperCase();
+    originalApplyCoupon();
+    if (COUPONS[code] && activeCoupon) {
+        couponUsage[code] = (couponUsage[code] || 0) + 1;
+        localStorage.setItem('doraCouponUsage', JSON.stringify(couponUsage));
+        try {
+            supabaseClient.from('coupon_usage').insert([{
+                coupon_code: code,
+                discount_percent: COUPONS[code].discount * 100,
+                used_at: new Date().toISOString()
+            }]).then(function(){});
+        } catch(e) {}
+    }
+};
+
+// ---------- 2. كوبونات موسمية إضافية ----------
+var SEASONAL_COUPONS = {
+    'EID2025': { discount: 0.25, label: 'خصم العيد 25%', validUntil: '2025-07-15' },
+    'RAMADAN': { discount: 0.20, label: 'خصم رمضان 20%', validUntil: '2025-04-15' },
+    'BACK2SCHOOL': { discount: 0.15, label: 'خصم العودة للمدارس 15%', validUntil: '2025-09-15' },
+    'NATIONAL': { discount: 0.30, label: 'خصم اليوم الوطني 30%', validUntil: '2025-09-23' }
+};
+
+// دمج الكوبونات الموسمية مع الأساسية
+for (var key in SEASONAL_COUPONS) {
+    if (SEASONAL_COUPONS.hasOwnProperty(key)) {
+        var sc = SEASONAL_COUPONS[key];
+        var today = new Date().toISOString().split('T')[0];
+        if (sc.validUntil >= today) {
+            COUPONS[key] = { discount: sc.discount, label: sc.label };
+        }
+    }
+}
+
+// ---------- 3. عرض سعر مخفض تلقائي في بطاقة المنتج ----------
+var originalRenderProducts = renderProducts;
+renderProducts = function(filter) {
+    originalRenderProducts(filter);
+    
+    // إضافة شارة "وفر" للمنتجات اللي عليها خصم
+    setTimeout(function() {
+        document.querySelectorAll('.prod-card').forEach(function(card) {
+            var priceEl = card.querySelector('.prod-price');
+            var oldPriceEl = card.querySelector('.old-price');
+            if (oldPriceEl && !card.querySelector('.save-badge')) {
+                var saveBadge = document.createElement('span');
+                saveBadge.className = 'save-badge';
+                saveBadge.style.cssText = 'background:#10B981;color:white;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;display:inline-block;margin-right:6px;animation:pulse 2s infinite';
+                saveBadge.textContent = '💰 وفر';
+                priceEl.parentNode.insertBefore(saveBadge, priceEl);
+            }
+        });
+    }, 100);
+};
+
+// ---------- 4. عرض الكوبونات المتاحة في صفحة المنتجات ----------
+function showAvailableCoupons() {
+    var container = document.getElementById('couponSection');
+    if (!container || container.querySelector('.available-coupons')) return;
+    
+    var activeCoupons = [];
+    for (var key in COUPONS) {
+        if (COUPONS.hasOwnProperty(key)) {
+            activeCoupons.push({ code: key, label: COUPONS[key].label });
+        }
+    }
+    
+    if (activeCoupons.length > 0) {
+        var html = '<div class="available-coupons" style="margin-top:10px;padding:10px;background:rgba(245,158,11,0.1);border-radius:10px;border:1px dashed rgba(245,158,11,0.3)">';
+        html += '<p style="font-size:11px;color:#F59E0B;margin-bottom:8px">🎟️ كوبونات متاحة:</p>';
+        html += '<div style="display:flex;flex-wrap:wrap;gap:6px">';
+        activeCoupons.forEach(function(c) {
+            html += '<span onclick="navigator.clipboard.writeText(\'' + c.code + '\');showToast(\'✅ تم نسخ: ' + c.code + '\')" style="cursor:pointer;background:rgba(245,158,11,0.2);color:#F59E0B;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700" title="اضغط للنسخ">' + c.code + ' (' + c.label + ')</span>';
+        });
+        html += '</div></div>';
+        container.insertAdjacentHTML('beforeend', html);
+    }
+}
+
+// استدعاء عند تحميل السلة
+var originalUpdateCartUI = updateCartUI;
+updateCartUI = function() {
+    originalUpdateCartUI();
+    setTimeout(showAvailableCoupons, 300);
+};
+
+// ---------- 5. إضافة CSS للشارات التسويقية ----------
+(function() {
+    if (document.getElementById('dora-marketing-enhancements')) return;
+    var style = document.createElement('style');
+    style.id = 'dora-marketing-enhancements';
+    style.textContent = '.save-badge{animation:pulse 2s infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.7}}.available-coupons span:hover{background:rgba(245,158,11,0.4)!important;transform:scale(1.05)}';
+    document.head.appendChild(style);
+})();
 })();
