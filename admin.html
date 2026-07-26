@@ -111,6 +111,23 @@
                 </div>
             </div>
         </div>
+        <div class="tab-content" id="shippingTab">
+    <div class="table-container">
+        <div class="table-header">
+            <h3>🚚 إدارة الشحن</h3>
+            <div style="display:flex;gap:10px">
+                <button class="btn-add" onclick="openShippingModal()">⚙️ إعدادات</button>
+                <button class="btn-add" onclick="openShippingRateModal()">➕ إضافة سعر</button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table>
+                <thead><tr><th>#</th><th>من مدينة</th><th>إلى مدينة</th><th>الوزن</th><th>السعر</th><th>المدة</th><th>إجراءات</th></tr></thead>
+                <tbody id="shippingRatesTable"><tr><td colspan="7" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody>
+            </table>
+        </div>
+    </div>
+</div>
         <div class="tab-content" id="settingsTab">
             <div class="settings-section"><h4>🏢 معلومات الشركة</h4>
                 <div class="form-group"><label>اسم الشركة</label><input type="text" id="companyName" value="شركة درة فارس الشمال"></div>
