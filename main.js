@@ -1793,4 +1793,292 @@ async function loadCompanyTestimonials() {
         var msg = 'مرحباً شركة درة فارس الشمال،\n\n' + type + '\n\nالاسم: \nالجوال: \nالتفاصيل: ';
         window.open('https://wa.me/966545358773?text=' + encodeURIComponent(msg), '_blank');
     };
+// ============================================================
+// 🤖 نظام التوصيات الذكية - Dora Smart Recommendations
+// ============================================================
+
+// ---------- 1. Recently Viewed - المنتجات اللي شافها العميل ----------
+let recentlyViewed = JSON.parse(localStorage.getItem('doraRecentlyViewed')) || [];
+const MAX_RECENT = 8;
+
+function addToRecentlyViewed(productId) {
+  recentlyViewed = recentlyViewed.filter(id => id !== productId);
+  recentlyViewed.unshift(productId);
+  if (recentlyViewed.length > MAX_RECENT) recentlyViewed.pop();
+  localStorage.setItem('doraRecentlyViewed', JSON.stringify(recentlyViewed));
+}
+
+// استدعاء عند فتح مودال المنتج
+const originalOpenProductModal = openProductModal;
+openProductModal = function(productId) {
+  addToRecentlyViewed(productId);
+  originalOpenProductModal(productId);
+};
+
+// استدعاء عند Quick View
+const originalOpenQuickView = openQuickView;
+openQuickView = function(productId) {
+  addToRecentlyViewed(productId);
+  originalOpenQuickView(productId);
+};
+
+// ---------- 2. Render Recently Viewed Section ----------
+function renderRecentlyViewed() {
+  const container = document.getElementById('recentlyViewedGrid');
+  if (!container) return;
+  
+  const validIds = recentlyViewed.filter(id => productsData.find(p => p.id === id));
+  if (validIds.length === 0) {
+    document.getElementById('recentlyViewedSection').style.display = 'none';
+    return;
+  }
+  
+  document.getElementById('recentlyViewedSection').style.display = 'block';
+  
+  const products = validIds.map(id => productsData.find(p => p.id === id)).filter(Boolean);
+  
+  container.innerHTML = products.map(p => {
+    const stars = '★'.repeat(Math.floor(p.rating || 0)) + '☆'.repeat(5 - Math.floor(p.rating || 0));
+    const hasDiscount = p.oldPrice && p.oldPrice > p.price;
+    return `
+      <div class="prod-card" data-id="${p.id}" onclick="openProductModal(${p.id})" style="cursor:pointer">
+        <div class="prod-img" style="height:180px">
+          ${p.badge ? `<div class="prod-badge">${p.badge}</div>` : ''}
+          ${hasDiscount && !p.badge ? `<div class="prod-badge discount">خصم</div>` : ''}
+          <img src="${p.image}" alt="${sanitizeInput(p.name)}" loading="lazy" style="height:100%;width:100%;object-fit:cover" onerror="this.style.display='none';this.parentElement.innerHTML+='<div style=font-size:50px>📦</div>'">
+        </div>
+        <div class="prod-body" style="padding:12px">
+          <span class="prod-tag" style="font-size:11px">${catLabels[p.category]}</span>
+          <h4 class="prod-name" style="font-size:13px;margin:5px 0">${sanitizeInput(p.name)}</h4>
+          <div style="display:flex;align-items:center;gap:5px;margin:5px 0">
+            <span style="color:#FFD700;font-size:12px">${stars}</span>
+            <span style="font-size:11px;color:#6B7280">${p.rating || 0}</span>
+          </div>
+          <div class="prod-price" style="font-size:16px">
+            ${hasDiscount ? `<span class="old-price" style="font-size:12px">${formatPrice(p.oldPrice)}</span> ` : ''}
+            ${formatPrice(p.price)}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ---------- 3. Frequently Bought Together (بسيط - نفس الفئة) ----------
+function getFrequentlyBoughtTogether(productId) {
+  const product = productsData.find(p => p.id === productId);
+  if (!product) return [];
+  
+  // نجيب منتجات من نفس الفئة مع تقييم عالي
+  return productsData
+    .filter(p => p.category === product.category && p.id !== productId && p.stock > 0)
+    .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+    .slice(0, 3);
+}
+
+// ---------- 4. أفضل المنتجات مبيعاً (حسب التقييم والمخزون) ----------
+function getBestSellers(limit = 8) {
+  return productsData
+    .filter(p => p.stock > 0)
+    .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+    .slice(0, limit);
+}
+
+// ---------- 5. منتجات مشابهة (محسنة) ----------
+function getSimilarProducts(productId, limit = 4) {
+  const product = productsData.find(p => p.id === productId);
+  if (!product) return [];
+  
+  // الأول: نفس الفئة
+  const sameCategory = productsData.filter(p => p.category === product.category && p.id !== productId && p.stock > 0);
+  
+  // الثاني: فئات تانية مكملة
+  const complementary = {
+    'printers': ['ink', 'cables'],
+    'computers': ['ram', 'storage', 'accessories'],
+    'ram': ['computers', 'storage'],
+    'storage': ['computers', 'ram', 'cables'],
+    'projectors': ['cables', 'accessories'],
+    'accessories': ['computers', 'cables'],
+    'ink': ['printers'],
+    'cables': ['projectors', 'computers', 'printers'],
+    'food': ['food']
+  };
+  
+  let results = [...sameCategory];
+  
+  if (complementary[product.category]) {
+    const compProducts = productsData.filter(p => 
+      complementary[product.category].includes(p.category) && 
+      p.id !== productId && 
+      p.stock > 0
+    );
+    results = [...results, ...compProducts];
+  }
+  
+  return results.slice(0, limit);
+}
+
+// ---------- 6. تحديث مودال المنتج (إضافة Frequently Bought Together) ----------
+const originalOpenProductModalV2 = openProductModal;
+openProductModal = function(productId) {
+  originalOpenProductModalV2(productId);
+  
+  // إضافة Frequently Bought Together بعد فتح المودال
+  setTimeout(() => {
+    const info = document.querySelector('#productModal .modal-info');
+    const relatedSection = document.getElementById('relatedProducts');
+    
+    if (info && !info.querySelector('.fbt-section')) {
+      const fbtProducts = getFrequentlyBoughtTogether(productId);
+      
+      if (fbtProducts.length > 0) {
+        const fbtHTML = `
+          <div class="fbt-section" style="margin-top:20px;padding:20px;background:rgba(59,130,246,0.05);border-radius:16px;border:1px solid rgba(59,130,246,0.2)">
+            <h4 style="margin:0 0 15px 0;font-size:16px;display:flex;align-items:center;gap:8px">
+              🎯 يشتري العملاء معاً غالباً
+            </h4>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px">
+              ${fbtProducts.map(p => `
+                <div onclick="openProductModal(${p.id})" style="cursor:pointer;background:white;border-radius:12px;padding:12px;text-align:center;border:1px solid rgba(0,0,0,0.1);transition:all 0.3s ease" onmouseenter="this.style.borderColor='#3B82F6';this.style.boxShadow='0 4px 12px rgba(59,130,246,0.2)'" onmouseleave="this.style.borderColor='rgba(0,0,0,0.1)';this.style.boxShadow='none'">
+                  <img src="${p.image}" alt="${sanitizeInput(p.name)}" style="width:80px;height:80px;object-fit:cover;border-radius:8px;margin-bottom:8px" loading="lazy">
+                  <div style="font-size:12px;font-weight:bold;margin-bottom:4px;color:#1F2937">${sanitizeInput(p.name.substring(0, 25))}...</div>
+                  <div style="font-size:14px;color:#3B82F6;font-weight:bold">${formatPrice(p.price)}</div>
+                  ${p.rating ? `<div style="font-size:11px;color:#F59E0B">${'★'.repeat(Math.floor(p.rating))} ${p.rating}</div>` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+        
+        // Insert before related products
+        if (relatedSection) {
+          relatedSection.insertAdjacentHTML('beforebegin', fbtHTML);
+        } else {
+          info.insertAdjacentHTML('beforeend', fbtHTML);
+        }
+      }
+    }
+  }, 300);
+};
+
+// ---------- 7. إضافة الأقسام الجديدة للصفحة الرئيسية ----------
+function injectRecommendationSections() {
+  if (document.getElementById('recentlyViewedSection')) return;
+  
+  const productsSection = document.getElementById('products');
+  if (!productsSection) return;
+  
+  // Recently Viewed Section
+  const recentlyHTML = `
+    <section id="recentlyViewedSection" class="recommendation-section" style="display:none;padding:60px 0;background:rgba(59,130,246,0.02)">
+      <div class="container">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px">
+          <h2 style="font-size:28px;display:flex;align-items:center;gap:10px">👁️ شاهدتها مؤخراً</h2>
+          <button onclick="localStorage.removeItem('doraRecentlyViewed');recentlyViewed=[];renderRecentlyViewed();" style="background:none;border:1px solid rgba(0,0,0,0.2);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px">🗑️ مسح السجل</button>
+        </div>
+        <div id="recentlyViewedGrid" class="prod-grid" style="grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));gap:20px"></div>
+      </div>
+    </section>
+    
+    <!-- Best Sellers Section -->
+    <section id="bestSellersSection" class="recommendation-section" style="padding:60px 0">
+      <div class="container">
+        <h2 style="font-size:28px;display:flex;align-items:center;gap:10px;margin-bottom:30px">🔥 الأكثر مبيعاً</h2>
+        <div id="bestSellersGrid" class="prod-grid" style="grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));gap:20px"></div>
+      </div>
+    </section>
+  `;
+  
+  productsSection.insertAdjacentHTML('beforebegin', recentlyHTML);
+  
+  // Render
+  renderRecentlyViewed();
+  renderBestSellers();
+}
+
+// ---------- 8. Render Best Sellers ----------
+function renderBestSellers() {
+  const grid = document.getElementById('bestSellersGrid');
+  if (!grid) return;
+  
+  const bestSellers = getBestSellers(8);
+  
+  grid.innerHTML = bestSellers.map((p, index) => {
+    const stars = '★'.repeat(Math.floor(p.rating || 0)) + '☆'.repeat(5 - Math.floor(p.rating || 0));
+    const hasDiscount = p.oldPrice && p.oldPrice > p.price;
+    const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
+    
+    return `
+      <div class="prod-card best-seller-card" data-id="${p.id}" onclick="openProductModal(${p.id})" style="cursor:pointer;position:relative">
+        ${medal ? `<div style="position:absolute;top:10px;left:10px;font-size:30px;z-index:10">${medal}</div>` : ''}
+        <div class="prod-img" style="height:180px">
+          <img src="${p.image}" alt="${sanitizeInput(p.name)}" loading="lazy" style="height:100%;width:100%;object-fit:cover" onerror="this.style.display='none';this.parentElement.innerHTML+='<div style=font-size:50px>📦</div>'">
+        </div>
+        <div class="prod-body" style="padding:12px">
+          <span class="prod-tag" style="font-size:11px">${catLabels[p.category]}</span>
+          <h4 class="prod-name" style="font-size:13px;margin:5px 0">${sanitizeInput(p.name)}</h4>
+          <div style="display:flex;align-items:center;gap:5px;margin:5px 0">
+            <span style="color:#FFD700;font-size:12px">${stars}</span>
+            <span style="font-size:11px;color:#6B7280">${p.rating || 0} (${p.reviews ? p.reviews.length : 0})</span>
+          </div>
+          <div class="prod-price" style="font-size:16px">
+            ${hasDiscount ? `<span class="old-price" style="font-size:12px">${formatPrice(p.oldPrice)}</span> ` : ''}
+            ${formatPrice(p.price)}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ---------- 9. إضافة CSS الديناميكي ----------
+function injectRecommendationStyles() {
+  if (document.getElementById('dora-recommendation-styles')) return;
+  
+  const styles = `
+    <style id="dora-recommendation-styles">
+      .recommendation-section {
+        direction: rtl;
+      }
+      
+      .best-seller-card {
+        transition: all 0.3s ease;
+      }
+      
+      .best-seller-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px rgba(59,130,246,0.2);
+        border-color: rgba(59,130,246,0.5);
+      }
+      
+      .fbt-section {
+        animation: fadeInUp 0.4s ease;
+      }
+      
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      @media (max-width: 768px) {
+        #recentlyViewedGrid,
+        #bestSellersGrid {
+          grid-template-columns: repeat(2, 1fr) !important;
+          gap: 12px !important;
+        }
+      }
+    </style>
+  `;
+  
+  document.head.insertAdjacentHTML('beforeend', styles);
+}
+
+// ---------- 10. Initialize All ----------
+document.addEventListener('DOMContentLoaded', function() {
+  injectRecommendationStyles();
+  
+  // Inject sections after a small delay to ensure products section exists
+  setTimeout(injectRecommendationSections, 500);
+});
 })();
