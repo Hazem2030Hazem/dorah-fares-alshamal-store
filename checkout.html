@@ -115,7 +115,8 @@ function renderCheckout() {
     var subtotal = cart.reduce(function(s, i) { return s + (i.price * i.qty); }, 0);
     var tax = Math.round(subtotal * 0.15);
     var total = subtotal + tax;
-    
+    var discount = activeCoupon ? Math.round(subtotal * activeCoupon.discount) : 0;
+var finalTotal = total - discount;
     container.innerHTML = `
         <div class="checkout-card">
             <h3>📦 ملخص الطلب</h3>
@@ -124,7 +125,8 @@ function renderCheckout() {
             }).join('')}
             <div class="total-row"><span>المجموع الفرعي</span><span>${subtotal.toLocaleString()} ر.س</span></div>
             <div class="total-row"><span>الضريبة (15%)</span><span>${tax.toLocaleString()} ر.س</span></div>
-            <div class="total-row final"><span>المجموع الكلي</span><span>${total.toLocaleString()} ر.س</span></div>
+            `<div class="total-row final"><span>المجموع الكلي</span><span>${finalTotal.toLocaleString()} ر.س</span></div>`
+${discount > 0 ? '<div class="total-row" style="color:#10B981"><span>الخصم (' + activeCoupon.label + ')</span><span>-' + discount.toLocaleString() + ' ر.س</span></div>' : ''}
         `<div class="checkout-card">
     <h3>🏷️ كود خصم</h3>
     <div style="display:flex;gap:10px">
