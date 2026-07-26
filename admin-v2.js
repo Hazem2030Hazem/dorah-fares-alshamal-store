@@ -2406,7 +2406,4 @@ window.showTab = function(tabName) {
   if (tabName === 'blog') loadSiteItems('blog');
   if (tabName === 'certifications') loadSiteItems('certifications');
   if (tabName === 'contact') loadSiteItems('contact');
-   })
-  );
-});
-
+ };
