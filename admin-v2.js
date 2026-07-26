@@ -1955,7 +1955,11 @@ window.showTab = function(tabName) {
     
     // تحميل بيانات الشركة
     if (tabName === 'company_info') {
-        var ci = JSON.parse(localStorage.getItem('doraCompanyInfo') || '{}');
+                var ci = {};
+        try {
+            var result = await supabaseClient.from('company_info').select('data').eq('id', 1).maybeSingle();
+            if (result.data?.data) ci = result.data.data;
+        } catch(e) {}
         if (ci.name) document.getElementById('ci_name').value = ci.name;
         if (ci.cr) document.getElementById('ci_cr').value = ci.cr;
         if (ci.vat) document.getElementById('ci_vat').value = ci.vat;
