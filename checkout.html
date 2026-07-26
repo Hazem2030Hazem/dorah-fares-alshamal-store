@@ -1,518 +1,228 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="dark">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إتمام الشراء | شركة درة فارس الشمال</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <style>
-        .checkout-container {
-            max-width: 900px;
-            margin: 120px auto 60px;
-            padding: 0 20px;
-        }
-        .checkout-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .checkout-header h1 {
-            font-size: 36px;
-            font-weight: 900;
-            color: #fff;
-            margin-bottom: 10px;
-        }
-        .checkout-header p {
-            color: rgba(255,255,255,0.7);
-            font-size: 16px;
-        }
-        .checkout-steps {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-        .checkout-step {
-            padding: 10px 20px;
-            border-radius: 12px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.5);
-            font-size: 14px;
-            font-weight: 700;
-        }
-        .checkout-step.active {
-            background: linear-gradient(135deg, #1E88E5, #1565C0);
-            color: #fff;
-            border-color: transparent;
-            box-shadow: 0 8px 25px rgba(30,136,229,0.3);
-        }
-        .checkout-step.done {
-            background: rgba(16,185,129,0.2);
-            color: #10B981;
-            border-color: rgba(16,185,129,0.3);
-        }
-        .checkout-card {
-            background: rgba(15,12,41,0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 24px;
-            padding: 30px;
-            margin-bottom: 20px;
-        }
-        .checkout-card h3 {
-            color: #fff;
-            font-size: 22px;
-            font-weight: 800;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .checkout-card h3 .step-num {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #1E88E5, #1565C0);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            color: #fff;
-        }
-        .cart-summary-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .cart-summary-item img {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            object-fit: cover;
-        }
-        .cart-summary-info {
-            flex: 1;
-        }
-        .cart-summary-info h4 {
-            color: #fff;
-            font-size: 16px;
-            margin-bottom: 4px;
-        }
-        .cart-summary-info span {
-            color: rgba(255,255,255,0.6);
-            font-size: 13px;
-        }
-        .cart-summary-price {
-            color: #10B981;
-            font-weight: 800;
-            font-size: 18px;
-        }
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            color: rgba(255,255,255,0.8);
-            font-size: 15px;
-        }
-        .total-row.final {
-            border-top: 2px solid rgba(255,255,255,0.1);
-            margin-top: 10px;
-            padding-top: 15px;
-            font-size: 20px;
-            font-weight: 900;
-            color: #10B981;
-        }
-        .delivery-options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        .delivery-option {
-            padding: 20px;
-            border-radius: 16px;
-            background: rgba(255,255,255,0.03);
-            border: 2px solid rgba(255,255,255,0.1);
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-        }
-        .delivery-option:hover, .delivery-option.selected {
-            border-color: #1E88E5;
-            background: rgba(30,136,229,0.1);
-            box-shadow: 0 0 25px rgba(30,136,229,0.2);
-        }
-        .delivery-option .icon {
-            font-size: 40px;
-            margin-bottom: 10px;
-        }
-        .delivery-option h4 {
-            color: #fff;
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-        .delivery-option p {
-            color: rgba(255,255,255,0.5);
-            font-size: 13px;
-        }
-        .payment-methods-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-        .payment-method-option {
-            padding: 15px;
-            border-radius: 14px;
-            background: rgba(255,255,255,0.03);
-            border: 2px solid rgba(255,255,255,0.1);
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-        }
-        .payment-method-option:hover, .payment-method-option.selected {
-            border-color: #1E88E5;
-            background: rgba(30,136,229,0.1);
-        }
-        .payment-method-option .icon {
-            font-size: 30px;
-            display: block;
-            margin-bottom: 8px;
-        }
-        .payment-method-option .name {
-            color: #fff;
-            font-weight: 700;
-            font-size: 14px;
-        }
-        .payment-method-option .desc {
-            color: rgba(255,255,255,0.5);
-            font-size: 11px;
-            margin-top: 4px;
-        }
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            color: rgba(255,255,255,0.8);
-            font-size: 13px;
-            margin-bottom: 6px;
-            font-weight: 700;
-        }
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            padding: 14px 16px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.15);
-            background: rgba(255,255,255,0.05);
-            color: #fff;
-            font-size: 15px;
-            font-family: inherit;
-            transition: all 0.3s;
-        }
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-            outline: none;
-            border-color: #1E88E5;
-            box-shadow: 0 0 20px rgba(30,136,229,0.15);
-        }
-        .btn-place-order {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, #10B981, #059669);
-            color: #fff;
-            border: none;
-            border-radius: 16px;
-            font-size: 20px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: inherit;
-        }
-        .btn-place-order:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(16,185,129,0.4);
-        }
-        .btn-place-order:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .empty-cart {
-            text-align: center;
-            padding: 60px 20px;
-        }
-        .empty-cart .icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-        }
-        .empty-cart h2 {
-            color: #fff;
-            margin-bottom: 10px;
-        }
-        .empty-cart p {
-            color: rgba(255,255,255,0.6);
-            margin-bottom: 30px;
-        }
-        @media(max-width: 768px) {
-            .delivery-options, .payment-methods-grid, .form-row {
-                grid-template-columns: 1fr;
-            }
-            .checkout-header h1 { font-size: 28px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #0f0c29, #1a1a2e, #16213e); color: #fff; min-height: 100vh; }
+        .checkout-container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        .checkout-header { text-align: center; margin-bottom: 30px; }
+        .checkout-header h1 { font-size: 32px; font-weight: 900; margin-bottom: 10px; color: #fff; }
+        .checkout-header p { color: rgba(255,255,255,0.7); }
+        
+        /* Progress */
+        .progress-bar { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 40px; }
+        .step { display: flex; align-items: center; gap: 8px; }
+        .step-num { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; background: #E5E7EB; color: #9CA3AF; transition: 0.3s; }
+        .step-num.active { background: #10B981; color: #fff; }
+        .step-label { font-weight: 700; font-size: 13px; color: #9CA3AF; }
+        .step-label.active { color: #10B981; }
+        .step-line { width: 60px; height: 2px; background: #E5E7EB; margin: 0 10px; transition: 0.3s; }
+        .step-line.active { background: #10B981; }
+        
+        /* Cards */
+        .checkout-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 25px; margin-bottom: 20px; backdrop-filter: blur(10px); }
+        .checkout-card h3 { font-size: 20px; font-weight: 800; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; color: #fff; }
+        
+        /* Form */
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 6px; font-weight: 600; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff; font-family: inherit; font-size: 14px; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: #10B981; }
+        
+        /* Payment */
+        .payment-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .payment-option { padding: 15px; border-radius: 14px; background: rgba(255,255,255,0.03); border: 2px solid rgba(255,255,255,0.1); text-align: center; cursor: pointer; transition: 0.3s; }
+        .payment-option:hover, .payment-option.selected { border-color: #10B981; background: rgba(16,185,129,0.1); }
+        .payment-option .icon { font-size: 28px; display: block; margin-bottom: 6px; }
+        .payment-option .name { font-weight: 700; font-size: 13px; }
+        
+        /* Delivery */
+        .delivery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .delivery-option { padding: 20px; border-radius: 14px; background: rgba(255,255,255,0.03); border: 2px solid rgba(255,255,255,0.1); text-align: center; cursor: pointer; transition: 0.3s; }
+        .delivery-option:hover, .delivery-option.selected { border-color: #10B981; background: rgba(16,185,129,0.1); }
+        
+        /* Summary */
+        .cart-item { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .cart-item img { width: 50px; height: 50px; border-radius: 10px; object-fit: cover; }
+        .cart-item-info { flex: 1; }
+        .cart-item-info h4 { font-size: 14px; margin-bottom: 2px; }
+        .cart-item-info span { font-size: 12px; color: rgba(255,255,255,0.5); }
+        .cart-item-price { font-weight: 800; color: #10B981; }
+        
+        .total-row { display: flex; justify-content: space-between; padding: 10px 0; font-size: 14px; color: rgba(255,255,255,0.7); }
+        .total-row.final { border-top: 2px solid rgba(255,255,255,0.1); margin-top: 10px; padding-top: 15px; font-size: 20px; font-weight: 900; color: #10B981; }
+        
+        /* Button */
+        .btn-submit { width: 100%; padding: 16px; background: linear-gradient(135deg, #10B981, #059669); color: #fff; border: none; border-radius: 14px; font-size: 18px; font-weight: 800; cursor: pointer; transition: 0.3s; font-family: inherit; }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(16,185,129,0.3); }
+        .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .empty-cart { text-align: center; padding: 80px 20px; }
+        .empty-cart .icon { font-size: 80px; margin-bottom: 20px; }
+        
+        @media (max-width: 768px) {
+            .form-row, .payment-grid, .delivery-grid { grid-template-columns: 1fr; }
+            .progress-bar { font-size: 12px; }
+            .step-line { width: 30px; }
         }
     </style>
-<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="fbe13262-4414-4ead-b11c-8be25ec1a317" type="text/javascript" async></script>
 </head>
 <body>
 
-    <header class="header" id="header">
-        <div class="header-inner">
-            <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer">
-                <span style="font-size:30px">🛒</span>
-                <div class="logo-text">
-                    <h1 style="font-size:18px">درة فارس الشمال</h1>
-                    <span>إتمام الشراء</span>
-                </div>
-            </div>
-            <button onclick="window.location.href='index.html'" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.2);padding:10px 20px;border-radius:12px;cursor:pointer;font-family:inherit;font-weight:700">⬅️ العودة للمتجر</button>
-        </div>
-    </header>
-
-    <div class="checkout-container">
-        <div class="checkout-header">
-            <h1>🛒 إتمام الشراء</h1>
-            <p>أكمل بياناتك لتأكيد الطلب</p>
-        </div>
-
-        <div class="checkout-steps">
-            <span class="checkout-step active" id="step1">1️⃣ ملخص الطلب</span>
-            <span class="checkout-step" id="step2">2️⃣ طريقة الاستلام</span>
-            <span class="checkout-step" id="step3">3️⃣ طريقة الدفع</span>
-            <span class="checkout-step" id="step4">4️⃣ تأكيد الطلب</span>
-        </div>
-
-        <div id="checkoutContent">
-            <div class="empty-cart">
-                <div class="icon">🛒</div>
-                <h2>السلة فارغة</h2>
-                <p>أضف منتجات إلى السلة أولاً</p>
-                <a href="index.html#products" class="btn-primary" style="display:inline-block;padding:14px 30px;background:linear-gradient(135deg,#1E88E5,#1565C0);color:#fff;border-radius:12px;text-decoration:none;font-weight:700">🛍️ تصفح المنتجات</a>
-            </div>
-        </div>
+<div class="checkout-container">
+    <div class="checkout-header">
+        <h1>🛒 إتمام الشراء</h1>
+        <p>أكمل بياناتك لتأكيد الطلب</p>
     </div>
 
-    <div class="toast" id="toast">
-        <div class="toast-icon" id="toastIcon">✅</div>
-        <div class="toast-text" id="toastMsg">تم</div>
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+        <div class="step"><div class="step-num active" id="step1Num">1</div><span class="step-label active" id="step1Label">السلة</span></div>
+        <div class="step-line" id="line1"></div>
+        <div class="step"><div class="step-num" id="step2Num">2</div><span class="step-label" id="step2Label">البيانات</span></div>
+        <div class="step-line" id="line2"></div>
+        <div class="step"><div class="step-num" id="step3Num">3</div><span class="step-label" id="step3Label">الدفع</span></div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="main.js"></script>
-    <script>
-        // حالة الطلب
-        var deliveryMethod = 'delivery';
-        var selectedPayment = null;
+    <!-- Content -->
+    <div id="checkoutContent">
+        <div class="empty-cart">
+            <div class="icon">🛒</div>
+            <h2>السلة فارغة</h2>
+            <p>أضف منتجات إلى السلة أولاً</p>
+            <a href="index.html" style="color:#10B981;font-weight:700;text-decoration:none">🛍️ تصفح المنتجات</a>
+        </div>
+    </div>
+</div>
 
-        function showToast(msg, type) {
-            var toast = document.getElementById('toast');
-            var icon = document.getElementById('toastIcon');
-            var text = document.getElementById('toastMsg');
-            text.textContent = msg;
-            icon.textContent = type === 'error' ? '❌' : type === 'warning' ? '⚠️' : '✅';
-            toast.classList.add('show');
-            setTimeout(function() { toast.classList.remove('show'); }, 3000);
-        }
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="main.js"></script>
+<script>
+var cart = JSON.parse(localStorage.getItem('doraCart') || '[]');
+var deliveryMethod = 'delivery';
+var selectedPayment = null;
 
-        function renderCheckout() {
-            var cart = JSON.parse(localStorage.getItem('doraCart') || '[]');
-            var container = document.getElementById('checkoutContent');
-            
-            if (!cart || cart.length === 0) {
-                container.innerHTML = '<div class="empty-cart"><div class="icon">🛒</div><h2>السلة فارغة</h2><p>أضف منتجات إلى السلة أولاً</p><a href="index.html#products" class="btn-primary" style="display:inline-block;padding:14px 30px;background:linear-gradient(135deg,#1E88E5,#1565C0);color:#fff;border-radius:12px;text-decoration:none;font-weight:700">🛍️ تصفح المنتجات</a></div>';
-                return;
-            }
+function renderCheckout() {
+    var container = document.getElementById('checkoutContent');
+    if (!cart.length) return;
+    
+    var subtotal = cart.reduce(function(s, i) { return s + (i.price * i.qty); }, 0);
+    var tax = Math.round(subtotal * 0.15);
+    var total = subtotal + tax;
+    
+    container.innerHTML = `
+        <div class="checkout-card">
+            <h3>📦 ملخص الطلب</h3>
+            ${cart.map(function(item) {
+                return '<div class="cart-item"><img src="' + (item.image || 'https://via.placeholder.com/50') + '" onerror="this.style.display=\'none\'"><div class="cart-item-info"><h4>' + item.name + '</h4><span>الكمية: ' + item.qty + ' | ' + item.price.toLocaleString() + ' ر.س</span></div><div class="cart-item-price">' + (item.price * item.qty).toLocaleString() + ' ر.س</div></div>';
+            }).join('')}
+            <div class="total-row"><span>المجموع الفرعي</span><span>${subtotal.toLocaleString()} ر.س</span></div>
+            <div class="total-row"><span>الضريبة (15%)</span><span>${tax.toLocaleString()} ر.س</span></div>
+            <div class="total-row final"><span>المجموع الكلي</span><span>${total.toLocaleString()} ر.س</span></div>
+        </div>
+        
+        <div class="checkout-card">
+            <h3>👤 بياناتك</h3>
+            <div class="form-row">
+                <div class="form-group"><label>الاسم الكامل *</label><input type="text" id="custName" required></div>
+                <div class="form-group"><label>رقم الجوال *</label><input type="tel" id="custPhone" required></div>
+            </div>
+            <div class="form-group"><label>البريد الإلكتروني</label><input type="email" id="custEmail"></div>
+            <div class="form-row">
+                <div class="form-group"><label>المدينة</label><input type="text" id="custCity"></div>
+                <div class="form-group"><label>العنوان</label><input type="text" id="custAddress"></div>
+            </div>
+        </div>
+        
+        <div class="checkout-card">
+            <h3>🚚 طريقة الاستلام</h3>
+            <div class="delivery-grid">
+                <div class="delivery-option selected" onclick="selectDelivery('delivery', this)">🚚 توصيل للمنزل</div>
+                <div class="delivery-option" onclick="selectDelivery('pickup', this)">🏬 استلام من المتجر</div>
+            </div>
+        </div>
+        
+        <div class="checkout-card">
+            <h3>💳 طريقة الدفع</h3>
+            <div class="payment-grid" id="paymentMethodsGrid">⏳ جاري تحميل طرق الدفع...</div>
+        </div>
+        
+        <button class="btn-submit" onclick="placeOrder()">📨 تأكيد الطلب</button>
+    `;
+    
+    loadPaymentMethods();
+}
 
-            var subtotal = cart.reduce(function(sum, item) { return sum + (item.price * item.qty); }, 0);
-            var tax = Math.round(subtotal * 0.15);
-            var total = subtotal + tax;
+function selectDelivery(method, el) {
+    deliveryMethod = method;
+    document.querySelectorAll('.delivery-option').forEach(function(o) { o.classList.remove('selected'); });
+    el.classList.add('selected');
+}
 
-            container.innerHTML = 
-                '<div class="checkout-card">' +
-                    '<h3><span class="step-num">1</span> ملخص الطلب</h3>' +
-                    cart.map(function(item) {
-                        return '<div class="cart-summary-item">' +
-                            '<img src="' + (item.image || 'https://via.placeholder.com/60') + '" alt="" onerror="this.style.display=\'none\'">' +
-                            '<div class="cart-summary-info">' +
-                                '<h4>' + item.name + '</h4>' +
-                                '<span>الكمية: ' + item.qty + ' | السعر: ' + item.price.toLocaleString() + ' ر.س</span>' +
-                            '</div>' +
-                            '<div class="cart-summary-price">' + (item.price * item.qty).toLocaleString() + ' ر.س</div>' +
-                        '</div>';
-                    }).join('') +
-                    '<div class="total-row"><span>المجموع الفرعي</span><span>' + subtotal.toLocaleString() + ' ر.س</span></div>' +
-                    '<div class="total-row"><span>الضريبة (15%)</span><span>' + tax.toLocaleString() + ' ر.س</span></div>' +
-                    '<div class="total-row final"><span>المجموع الكلي</span><span>' + total.toLocaleString() + ' ر.س</span></div>' +
-                '</div>' +
+async function loadPaymentMethods() {
+    var grid = document.getElementById('paymentMethodsGrid');
+    var result = await supabaseClient.from('payment_methods').select('*').eq('is_active', true).order('sort_order');
+    var methods = result.data || [];
+    if (!methods.length) { grid.innerHTML = '<div style="text-align:center;padding:20px;grid-column:1/-1">💳 لا توجد طرق دفع</div>'; return; }
+    grid.innerHTML = methods.map(function(m) {
+        return '<div class="payment-option" onclick="selectPayment(\'' + m.id + '\',\'' + m.name + '\', this)"><span class="icon">' + (m.icon || '💳') + '</span><span class="name">' + m.name + '</span></div>';
+    }).join('');
+}
 
-                '<div class="checkout-card">' +
-                    '<h3><span class="step-num">2</span> طريقة الاستلام</h3>' +
-                    '<div class="delivery-options">' +
-                        '<div class="delivery-option selected" onclick="selectDelivery(\'delivery\', this)">' +
-                            '<div class="icon">🚚</div>' +
-                            '<h4>توصيل للمنزل</h4>' +
-                            '<p>سيتم توصيل الطلب إلى عنوانك</p>' +
-                        '</div>' +
-                        '<div class="delivery-option" onclick="selectDelivery(\'pickup\', this)">' +
-                            '<div class="icon">🏬</div>' +
-                            '<h4>استلام من المتجر</h4>' +
-                            '<p>استلم طلبك من أقرب فرع</p>' +
-                        '</div>' +
-                    '</div>' +
-                '</div>' +
+function selectPayment(id, name, el) {
+    selectedPayment = { id: id, name: name };
+    document.querySelectorAll('.payment-option').forEach(function(o) { o.classList.remove('selected'); });
+    el.classList.add('selected');
+}
 
-                '<div class="checkout-card">' +
-                    '<h3><span class="step-num">3</span> طريقة الدفع</h3>' +
-                    '<div class="payment-methods-grid" id="paymentMethodsGrid">' +
-                        '<div style="text-align:center;color:rgba(255,255,255,0.5);padding:20px;grid-column:1/-1">⏳ جاري تحميل طرق الدفع...</div>' +
-                    '</div>' +
-                '</div>' +
+async function placeOrder() {
+    var name = document.getElementById('custName').value.trim();
+    var phone = document.getElementById('custPhone').value.trim();
+    if (!name || !phone) { alert('❌ الاسم والجوال مطلوبين'); return; }
+    if (!selectedPayment) { alert('❌ اختر طريقة الدفع'); return; }
+    
+    var email = document.getElementById('custEmail').value.trim();
+    var city = document.getElementById('custCity').value.trim();
+    var address = document.getElementById('custAddress').value.trim();
+    var subtotal = cart.reduce(function(s, i) { return s + (i.price * i.qty); }, 0);
+    var tax = Math.round(subtotal * 0.15);
+    var total = subtotal + tax;
+    
+    // حفظ الطلب
+    var orderPayload = {
+        customer_name: name, customer_phone: phone, customer_email: email,
+        items: cart, subtotal: subtotal, tax: tax, total: total,
+        status: 'new', payment_method: selectedPayment.name,
+        address: JSON.stringify({ city: city, address: address, delivery: deliveryMethod })
+    };
+    var orderResult = await supabaseClient.from('store_orders').insert([orderPayload]).select('*').single();
+    var orderId = orderResult.data ? orderResult.data.id : null;
+    
+    // إنشاء فاتورة
+    var invoiceNumber = 'INV-' + Date.now();
+    var invoiceResult = await supabaseClient.from('invoices').insert([{
+        invoice_number: invoiceNumber, customer_name: name, customer_email: email,
+        customer_phone: phone, items: cart, subtotal: subtotal, tax: tax, total: total, status: 'issued'
+    }]).select('*').single();
+    var invoiceId = invoiceResult.data ? invoiceResult.data.id : null;
+    
+    // رسالة واتساب
+    var msg = '*طلب جديد*\n\n*العميل:* ' + name + '\n*الجوال:* ' + phone + '\n*الدفع:* ' + selectedPayment.name + '\n*الإجمالي:* ' + total.toLocaleString() + ' ر.س';
+    if (invoiceId) msg += '\n\n🧾 الفاتورة: https://alshamal-df.com/invoice.html?id=' + invoiceId;
+    window.open('https://wa.me/966545358773?text=' + encodeURIComponent(msg), '_blank');
+    
+    localStorage.removeItem('doraCart');
+    alert('✅ تم تقديم الطلب بنجاح!');
+    window.location.href = 'index.html';
+}
 
-                '<div class="checkout-card">' +
-                    '<h3><span class="step-num">4</span> بياناتك</h3>' +
-                    '<div class="form-row">' +
-                        '<div class="form-group"><label>👤 الاسم الكامل</label><input type="text" id="custName" placeholder="محمد أحمد" required></div>' +
-                        '<div class="form-group"><label>📱 رقم الجوال</label><input type="tel" id="custPhone" placeholder="05xxxxxxxx" required></div>' +
-                    '</div>' +
-                    '<div class="form-group"><label>✉️ البريد الإلكتروني</label><input type="email" id="custEmail" placeholder="example@email.com"></div>' +
-                    '<div class="form-group" id="addressField"><label>📍 العنوان الكامل</label><textarea id="custAddress" rows="2" placeholder="المدينة - الحي - الشارع - رقم المبنى"></textarea></div>' +
-                    '<div class="form-group"><label>📝 ملاحظات (اختياري)</label><textarea id="custNotes" rows="2" placeholder="أي ملاحظات إضافية..."></textarea></div>' +
-                    '<button class="btn-place-order" onclick="placeOrder()">📨 تأكيد الطلب</button>' +
-                '</div>';
-        }
-
-        function selectDelivery(method, el) {
-            deliveryMethod = method;
-            document.querySelectorAll('.delivery-option').forEach(function(opt) { opt.classList.remove('selected'); });
-            el.classList.add('selected');
-            document.getElementById('addressField').style.display = method === 'delivery' ? 'block' : 'none';
-        }
-
-        function selectPayment(id, name, el) {
-            selectedPayment = { id: id, name: name };
-            document.querySelectorAll('.payment-method-option').forEach(function(opt) { opt.classList.remove('selected'); });
-            el.classList.add('selected');
-        }
-
-        async function loadPaymentMethods() {
-            var grid = document.getElementById('paymentMethodsGrid');
-            if (!grid) return;
-            
-            try {
-                var result = await supabaseClient.from('payment_methods').select('*').eq('is_active', true).order('sort_order');
-                var methods = result.data || [];
-                
-                if (methods.length === 0) {
-                    grid.innerHTML = '<div style="text-align:center;color:rgba(255,255,255,0.5);padding:20px;grid-column:1/-1">💳 لا توجد طرق دفع متاحة</div>';
-                    return;
-                }
-
-                grid.innerHTML = methods.map(function(m) {
-                    return '<div class="payment-method-option" onclick="selectPayment(' + m.id + ', \'' + m.name + '\', this)">' +
-                        '<span class="icon">' + (m.icon || '💳') + '</span>' +
-                        '<span class="name">' + m.name + '</span>' +
-                        (m.description ? '<span class="desc">' + m.description + '</span>' : '') +
-                        '</div>';
-                }).join('');
-            } catch(e) {
-                grid.innerHTML = '<div style="text-align:center;color:#EF4444;padding:20px;grid-column:1/-1">⚠️ تعذر تحميل طرق الدفع</div>';
-            }
-        }
-
-        function placeOrder() {
-            var cart = JSON.parse(localStorage.getItem('doraCart') || '[]');
-            if (!cart || cart.length === 0) {
-                showToast('❌ السلة فارغة', 'error');
-                return;
-            }
-
-            var name = document.getElementById('custName').value.trim();
-            var phone = document.getElementById('custPhone').value.trim();
-            var email = document.getElementById('custEmail').value.trim();
-            var address = document.getElementById('custAddress') ? document.getElementById('custAddress').value.trim() : '';
-            var notes = document.getElementById('custNotes').value.trim();
-
-            if (!name || !phone) {
-                showToast('❌ الرجاء إدخال الاسم ورقم الجوال', 'error');
-                return;
-            }
-
-            if (!selectedPayment) {
-                showToast('❌ الرجاء اختيار طريقة الدفع', 'error');
-                return;
-            }
-
-            var subtotal = cart.reduce(function(sum, item) { return sum + (item.price * item.qty); }, 0);
-            var tax = Math.round(subtotal * 0.15);
-            var total = subtotal + tax;
-
-            var msg = '*طلب جديد من درة فارس الشمال*\n\n';
-            msg += '*العميل:* ' + name + '\n';
-            msg += '*الجوال:* ' + phone + '\n';
-            if (email) msg += '*البريد:* ' + email + '\n';
-            msg += '*الاستلام:* ' + (deliveryMethod === 'delivery' ? '🚚 توصيل' : '🏬 استلام من المتجر') + '\n';
-            if (address) msg += '*العنوان:* ' + address + '\n';
-            msg += '*الدفع:* ' + selectedPayment.name + '\n';
-            if (notes) msg += '*ملاحظات:* ' + notes + '\n';
-            msg += '\n*المنتجات:*\n';
-            
-            cart.forEach(function(item, i) {
-                msg += (i+1) + '. ' + item.name + ' × ' + item.qty + ' = ' + (item.price * item.qty).toLocaleString() + ' ر.س\n';
-            });
-            
-            msg += '\n*الإجمالي:* ' + total.toLocaleString() + ' ر.س (شامل الضريبة)';
-
-            // فتح واتساب
-           // إنشاء الفاتورة
-var invoiceNumber = 'INV-' + Date.now();
-var invoicePayload = {
-    invoice_number: invoiceNumber,
-    order_id: null,
-    user_id: null,
-    customer_name: name,
-    customer_email: email,
-    customer_phone: phone,
-    items: cart,
-    subtotal: subtotal,
-    tax: tax,
-    total: total,
-    status: 'issued'
-};
-
-var invoiceResult = await supabaseClient.from('invoices').insert([invoicePayload]).select('*').single();
-var invoiceId = invoiceResult.data ? invoiceResult.data.id : null;
-            var invoiceLink = invoiceId ? '\n\n🧾 الفاتورة: https://alshamal-df.com/invoice.html?id=' + invoiceId : '';
-var msg = '*طلب جديد*\n\n*العميل:* ' + name + '\n...' + invoiceLink;
-            window.open('https://wa.me/966568717449?text=' + encodeURIComponent(msg), '_blank');
-
-            // تفريغ السلة
-            localStorage.removeItem('doraCart');
-            showToast('✅ تم إرسال الطلب! سيتم التواصل معك قريباً');
-            
-            setTimeout(function() {
-                window.location.href = 'index.html';
-            }, 2000);
-        }
-
-        // تشغيل الصفحة
-        renderCheckout();
-        loadPaymentMethods();
-    </script>
-
+renderCheckout();
+</script>
 </body>
 </html>
