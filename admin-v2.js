@@ -1531,5 +1531,3 @@ document.addEventListener('DOMContentLoaded', function() {
         listenForNewServices();
     }, 2000);
 });
-
-})();
