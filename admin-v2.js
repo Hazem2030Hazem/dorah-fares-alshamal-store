@@ -1531,12 +1531,6 @@ document.addEventListener('DOMContentLoaded', function() {
         listenForNewServices();
     }, 2000);
 });
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(function() {
-        listenForNewOrders();
-        listenForNewServices();
-    }, 2000);
-});
 
 // ===== إدارة الشحن =====
 async function loadShippingSettings() {
