@@ -1875,6 +1875,132 @@ window.showTab = function(tabName) {
     }
 };
 
+// ============================================================
+// 🏢📋🧾 التبويبات الجديدة: بيانات الشركة + التوثيق + الفوترة
+// ============================================================
+
+// ---------- 🏢 حفظ بيانات الشركة ----------
+window.saveCompanyInfo = async function() {
+    var data = {
+        name: document.getElementById('ci_name')?.value || '',
+        cr: document.getElementById('ci_cr')?.value || '',
+        vat: document.getElementById('ci_vat')?.value || '',
+        iban: document.getElementById('ci_iban')?.value || '',
+        bank: document.getElementById('ci_bank')?.value || '',
+        phone: document.getElementById('ci_phone')?.value || '',
+        landline: document.getElementById('ci_landline')?.value || '',
+        email: document.getElementById('ci_email')?.value || '',
+        website: document.getElementById('ci_website')?.value || '',
+        address: document.getElementById('ci_address')?.value || '',
+        logo: document.getElementById('ci_logo')?.value || ''
+    };
+    
+    localStorage.setItem('doraCompanyInfo', JSON.stringify(data));
+    
+    try {
+        await supabaseClient.from('company_info').upsert([{ id: 1, data: data, updated_at: new Date().toISOString() }], { onConflict: 'id' });
+    } catch(e) {}
+    
+    adminToast('✅ تم حفظ بيانات الشركة بنجاح');
+};
+
+// ---------- 📋 حفظ التوثيق الحكومي ----------
+window.saveGovDocs = async function() {
+    var data = {
+        baladia: document.getElementById('gd_baladia')?.value || '',
+        baladia_exp: document.getElementById('gd_baladia_exp')?.value || '',
+        zakat: document.getElementById('gd_zakat')?.value || '',
+        zakat_exp: document.getElementById('gd_zakat_exp')?.value || '',
+        vat_cert: document.getElementById('gd_vat_cert')?.value || '',
+        saudization: document.getElementById('gd_saudization')?.value || '',
+        insurance: document.getElementById('gd_insurance')?.value || '',
+        civil_defense: document.getElementById('gd_civil_defense')?.value || '',
+        iso: document.getElementById('gd_iso')?.value || '',
+        hp: document.getElementById('gd_hp')?.value || '',
+        zebra: document.getElementById('gd_zebra')?.value || '',
+        honeywell: document.getElementById('gd_honeywell')?.value || ''
+    };
+    
+    localStorage.setItem('doraGovDocs', JSON.stringify(data));
+    
+    try {
+        await supabaseClient.from('gov_docs').upsert([{ id: 1, data: data, updated_at: new Date().toISOString() }], { onConflict: 'id' });
+    } catch(e) {}
+    
+    adminToast('✅ تم حفظ التوثيق الحكومي بنجاح');
+};
+
+// ---------- 🧾 حفظ إعدادات الفوترة الإلكترونية ----------
+window.saveEInvoice = async function() {
+    var data = {
+        afaq_key: document.getElementById('ei_afaq_key')?.value || '',
+        afaq_url: document.getElementById('ei_afaq_url')?.value || '',
+        afaq_active: document.getElementById('ei_afaq_active')?.checked || false,
+        zatca_id: document.getElementById('ei_zatca_id')?.value || '',
+        cert_path: document.getElementById('ei_cert_path')?.value || '',
+        qr: document.getElementById('ei_qr')?.value || 'yes',
+        zatca_auto: document.getElementById('ei_zatca_auto')?.value || 'no'
+    };
+    
+    localStorage.setItem('doraEInvoice', JSON.stringify(data));
+    
+    try {
+        await supabaseClient.from('einvoice_settings').upsert([{ id: 1, data: data, updated_at: new Date().toISOString() }], { onConflict: 'id' });
+    } catch(e) {}
+    
+    adminToast('✅ تم حفظ إعدادات الفوترة الإلكترونية بنجاح');
+};
+
+// ---------- تحميل البيانات عند فتح التبويبات ----------
+var origShowTabFinal = window.showTab;
+window.showTab = function(tabName) {
+    if (origShowTabFinal) origShowTabFinal(tabName);
+    
+    // تحميل بيانات الشركة
+    if (tabName === 'company_info') {
+        var ci = JSON.parse(localStorage.getItem('doraCompanyInfo') || '{}');
+        if (ci.name) document.getElementById('ci_name').value = ci.name;
+        if (ci.cr) document.getElementById('ci_cr').value = ci.cr;
+        if (ci.vat) document.getElementById('ci_vat').value = ci.vat;
+        if (ci.iban) document.getElementById('ci_iban').value = ci.iban;
+        if (ci.bank) document.getElementById('ci_bank').value = ci.bank;
+        if (ci.phone) document.getElementById('ci_phone').value = ci.phone;
+        if (ci.landline) document.getElementById('ci_landline').value = ci.landline;
+        if (ci.email) document.getElementById('ci_email').value = ci.email;
+        if (ci.website) document.getElementById('ci_website').value = ci.website;
+        if (ci.address) document.getElementById('ci_address').value = ci.address;
+        if (ci.logo) document.getElementById('ci_logo').value = ci.logo;
+    }
+    
+    // تحميل التوثيق الحكومي
+    if (tabName === 'gov_docs') {
+        var gd = JSON.parse(localStorage.getItem('doraGovDocs') || '{}');
+        if (gd.baladia) document.getElementById('gd_baladia').value = gd.baladia;
+        if (gd.baladia_exp) document.getElementById('gd_baladia_exp').value = gd.baladia_exp;
+        if (gd.zakat) document.getElementById('gd_zakat').value = gd.zakat;
+        if (gd.zakat_exp) document.getElementById('gd_zakat_exp').value = gd.zakat_exp;
+        if (gd.vat_cert) document.getElementById('gd_vat_cert').value = gd.vat_cert;
+        if (gd.saudization) document.getElementById('gd_saudization').value = gd.saudization;
+        if (gd.insurance) document.getElementById('gd_insurance').value = gd.insurance;
+        if (gd.civil_defense) document.getElementById('gd_civil_defense').value = gd.civil_defense;
+        if (gd.iso) document.getElementById('gd_iso').value = gd.iso;
+        if (gd.hp) document.getElementById('gd_hp').value = gd.hp;
+        if (gd.zebra) document.getElementById('gd_zebra').value = gd.zebra;
+        if (gd.honeywell) document.getElementById('gd_honeywell').value = gd.honeywell;
+    }
+    
+    // تحميل إعدادات الفوترة
+    if (tabName === 'einvoice') {
+        var ei = JSON.parse(localStorage.getItem('doraEInvoice') || '{}');
+        if (ei.afaq_key) document.getElementById('ei_afaq_key').value = ei.afaq_key;
+        if (ei.afaq_url) document.getElementById('ei_afaq_url').value = ei.afaq_url;
+        if (ei.afaq_active) document.getElementById('ei_afaq_active').checked = ei.afaq_active;
+        if (ei.zatca_id) document.getElementById('ei_zatca_id').value = ei.zatca_id;
+        if (ei.cert_path) document.getElementById('ei_cert_path').value = ei.cert_path;
+        if (ei.qr) document.getElementById('ei_qr').value = ei.qr;
+        if (ei.zatca_auto) document.getElementById('ei_zatca_auto').value = ei.zatca_auto;
+    }
+};
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(checkLowStock, 3000);
 });
