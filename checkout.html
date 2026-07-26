@@ -478,6 +478,24 @@
             msg += '\n*الإجمالي:* ' + total.toLocaleString() + ' ر.س (شامل الضريبة)';
 
             // فتح واتساب
+           // إنشاء الفاتورة
+var invoiceNumber = 'INV-' + Date.now();
+var invoicePayload = {
+    invoice_number: invoiceNumber,
+    order_id: null,
+    user_id: null,
+    customer_name: name,
+    customer_email: email,
+    customer_phone: phone,
+    items: cart,
+    subtotal: subtotal,
+    tax: tax,
+    total: total,
+    status: 'issued'
+};
+
+var invoiceResult = await supabaseClient.from('invoices').insert([invoicePayload]).select('*').single();
+var invoiceId = invoiceResult.data ? invoiceResult.data.id : null;
             window.open('https://wa.me/966568717449?text=' + encodeURIComponent(msg), '_blank');
 
             // تفريغ السلة
