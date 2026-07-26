@@ -125,6 +125,14 @@ function renderCheckout() {
             <div class="total-row"><span>المجموع الفرعي</span><span>${subtotal.toLocaleString()} ر.س</span></div>
             <div class="total-row"><span>الضريبة (15%)</span><span>${tax.toLocaleString()} ر.س</span></div>
             <div class="total-row final"><span>المجموع الكلي</span><span>${total.toLocaleString()} ر.س</span></div>
+        `<div class="checkout-card">
+    <h3>🏷️ كود خصم</h3>
+    <div style="display:flex;gap:10px">
+        <input type="text" id="couponCode" placeholder="أدخل كود الخصم" style="flex:1;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:#fff;font-family:inherit">
+        <button onclick="applyCoupon()" style="padding:12px 20px;background:#10B981;color:#fff;border:none;border-radius:12px;cursor:pointer;font-weight:700;font-family:inherit">تطبيق</button>
+    </div>
+    <div id="couponMsg" style="margin-top:8px;font-size:13px;font-weight:700"></div>
+</div>`
         </div>
         
         <div class="checkout-card">
@@ -242,7 +250,7 @@ function applyCoupon() {
         document.getElementById('couponMsg').style.color = '#EF4444';
     }
 }
-renderCheckout();
+
 </script>
 </body>
 </html>
