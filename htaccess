@@ -1,3 +1,9 @@
+# منع الوصول لـ package.json
+<Files "package.json">
+    Order allow,deny
+    Deny from all
+</Files>
+
 # حماية الملفات الحساسة
 <FilesMatch "\.(env|git|sql|md|log)$">
     Order allow,deny
