@@ -1531,3 +1531,103 @@ document.addEventListener('DOMContentLoaded', function() {
         listenForNewServices();
     }, 2000);
 });
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        listenForNewOrders();
+        listenForNewServices();
+    }, 2000);
+});
+
+// ===== إدارة الشحن =====
+async function loadShippingSettings() {
+    var result = await supabaseClient.from('shipping_settings').select('*').single();
+    if (result.data) {
+        document.getElementById('shippingApiKey').value = result.data.api_key || '';
+        document.getElementById('shippingAccountNumber').value = result.data.account_number || '';
+        document.getElementById('shippingBaseUrl').value = result.data.base_url || 'https://api.spl.sa';
+        document.getElementById('shippingEnabled').checked = result.data.enabled || false;
+    }
+}
+
+function openShippingModal() {
+    document.getElementById('shippingModal').style.display = 'flex';
+    loadShippingSettings();
+}
+
+function closeShippingModal() {
+    document.getElementById('shippingModal').style.display = 'none';
+}
+
+async function saveShippingSettings(event) {
+    event.preventDefault();
+    var payload = {
+        api_key: document.getElementById('shippingApiKey').value.trim(),
+        account_number: document.getElementById('shippingAccountNumber').value.trim(),
+        base_url: document.getElementById('shippingBaseUrl').value.trim(),
+        enabled: document.getElementById('shippingEnabled').checked,
+        provider: 'spl'
+    };
+    await supabaseClient.from('shipping_settings').upsert([payload]);
+    closeShippingModal();
+    adminToast('✅ تم حفظ إعدادات الشحن');
+    return false;
+}
+
+async function loadShippingRates() {
+    var tbody = document.getElementById('shippingRatesTable');
+    if (!tbody) return;
+    var result = await supabaseClient.from('shipping_rates').select('*').order('created_at', { ascending: false });
+    var rates = result.data || [];
+    if (rates.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">🚚 لا توجد أسعار شحن</td></tr>';
+        return;
+    }
+    tbody.innerHTML = rates.map(function(r, i) {
+        return '<tr><td>' + (i+1) + '</td><td>' + r.from_city + '</td><td>' + r.to_city + '</td><td>' + r.weight_kg + '</td><td>' + r.price_sar + ' ر.س</td><td>' + r.estimated_days + ' أيام</td>' +
+        '<td><button class="btn-edit" onclick="editShippingRate(\'' + r.id + '\',\'' + r.from_city + '\',\'' + r.to_city + '\',' + r.weight_kg + ',' + r.price_sar + ',' + r.estimated_days + ')">✏️</button>' +
+        '<button class="btn-delete" onclick="deleteShippingRate(\'' + r.id + '\')">🗑️</button></td></tr>';
+    }).join('');
+}
+
+function openShippingRateModal(id, from, to, weight, price, days) {
+    document.getElementById('shippingRateId').value = id || '';
+    document.getElementById('srFromCity').value = from || '';
+    document.getElementById('srToCity').value = to || '';
+    document.getElementById('srWeight').value = weight || 1;
+    document.getElementById('srPrice').value = price || 0;
+    document.getElementById('srDays').value = days || 2;
+    document.getElementById('shippingRateModalTitle').textContent = id ? '✏️ تعديل سعر' : '➕ إضافة سعر';
+    document.getElementById('shippingRateModal').style.display = 'flex';
+}
+
+function closeShippingRateModal() { document.getElementById('shippingRateModal').style.display = 'none'; }
+
+function editShippingRate(id, from, to, weight, price, days) { openShippingRateModal(id, from, to, weight, price, days); }
+
+async function saveShippingRate(event) {
+    event.preventDefault();
+    var id = document.getElementById('shippingRateId').value;
+    var payload = {
+        from_city: document.getElementById('srFromCity').value.trim(),
+        to_city: document.getElementById('srToCity').value.trim(),
+        weight_kg: parseFloat(document.getElementById('srWeight').value),
+        price_sar: parseInt(document.getElementById('srPrice').value),
+        estimated_days: parseInt(document.getElementById('srDays').value),
+        provider: 'spl'
+    };
+    if (id) { await supabaseClient.from('shipping_rates').update(payload).eq('id', id); }
+    else { await supabaseClient.from('shipping_rates').insert([payload]); }
+    closeShippingRateModal();
+    adminToast('✅ تم حفظ سعر الشحن');
+    loadShippingRates();
+    return false;
+}
+
+async function deleteShippingRate(id) {
+    if (!confirm('حذف سعر الشحن؟')) return;
+    await supabaseClient.from('shipping_rates').delete().eq('id', id);
+    adminToast('✅ تم الحذف');
+    loadShippingRates();
+}
+
+})();
