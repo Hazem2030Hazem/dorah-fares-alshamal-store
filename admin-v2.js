@@ -543,8 +543,8 @@ const defaultSiteSettings = {
   socialInstagram: 'https://instagram.com/dorafares',
   socialFacebook: 'https://facebook.com/dorafares',
   socialLinkedin: 'https://linkedin.com/company/dorafares',
-  whatsappMessage: 'مرحباً شركة درة فارس الشمال، أرغب في الاستفسار عن منتجاتكم'
-     commercialReg: '',
+  whatsappMessage: 'مرحباً شركة درة فارس الشمال، أرغب في الاستفسار عن منتجاتكم',
+  commercialReg: '',
   taxNumber: ''
 };
 
