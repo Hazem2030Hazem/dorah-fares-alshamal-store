@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تم الطلب بنجاح | شركة درة فارس الشمال</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #0f0c29, #1a1a2e); color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; }
+        .thankyou-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 50px 30px; max-width: 500px; width: 90%; backdrop-filter: blur(10px); }
+        .thankyou-icon { font-size: 80px; margin-bottom: 20px; animation: bounce 1s infinite; }
+        @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        .thankyou-card h1 { font-size: 28px; font-weight: 900; margin-bottom: 10px; color: #10B981; }
+        .thankyou-card p { color: rgba(255,255,255,0.7); font-size: 16px; margin-bottom: 20px; line-height: 1.8; }
+        .thankyou-card .order-number { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); padding: 15px; border-radius: 12px; font-size: 18px; font-weight: 800; color: #10B981; margin-bottom: 20px; }
+        .thankyou-card .btn { display: inline-block; padding: 14px 30px; border-radius: 12px; font-weight: 700; text-decoration: none; margin: 5px; transition: 0.3s; }
+        .btn-primary { background: linear-gradient(135deg, #10B981, #059669); color: #fff; }
+        .btn-secondary { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+        .btn:hover { transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <div class="thankyou-card">
+        <div class="thankyou-icon">🎉</div>
+        <h1>تم الطلب بنجاح!</h1>
+        <p>شكراً لثقتك في شركة درة فارس الشمال. سيتم التواصل معك قريباً.</p>
+        <div class="order-number" id="orderNumber">رقم الطلب: ...</div>
+        <p id="invoiceLink" style="margin-bottom:20px"></p>
+        <a href="index.html" class="btn btn-primary">🏠 العودة للرئيسية</a>
+        <a href="account.html" class="btn btn-secondary">👤 حسابي</a>
+    </div>
+
+    <script>
+        var params = new URLSearchParams(window.location.search);
+        var orderId = params.get('order');
+        var invoiceId = params.get('invoice');
+        
+        if (orderId) {
+            document.getElementById('orderNumber').textContent = 'رقم الطلب: ' + orderId;
+        }
+        if (invoiceId) {
+            document.getElementById('invoiceLink').innerHTML = '<a href="invoice.html?id=' + invoiceId + '" class="btn btn-secondary">🧾 عرض الفاتورة</a>';
+        }
+    </script>
+</body>
+</html>
