@@ -380,5 +380,146 @@ function init() {
 
     
   <script src="main.js"></script>
+<!-- ============================================================
+     📢 عروض مخصصة للعميل في صفحة حسابي
+     ============================================================ -->
+<style>
+    .account-offer-banner {
+        background: linear-gradient(135deg, #F59E0B, #EF4444);
+        color: white;
+        padding: 20px 25px;
+        border-radius: 16px;
+        margin: 0 0 30px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 15px;
+        animation: slideDown 0.5s ease;
+        box-shadow: 0 8px 30px rgba(245,158,11,0.3);
+    }
+    .account-offer-banner h3 { margin: 0; font-size: 18px; color: white; }
+    .account-offer-banner p { margin: 5px 0 0; font-size: 13px; opacity: 0.9; }
+    .account-offer-banner .offer-code {
+        background: rgba(255,255,255,0.25);
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-weight: 900;
+        font-size: 20px;
+        letter-spacing: 3px;
+        cursor: pointer;
+        transition: 0.3s;
+        border: 2px dashed rgba(255,255,255,0.5);
+    }
+    .account-offer-banner .offer-code:hover {
+        background: rgba(255,255,255,0.4);
+        transform: scale(1.05);
+    }
+    .account-coupon-history {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 16px;
+        padding: 20px;
+        margin-top: 20px;
+    }
+    .account-coupon-history h4 {
+        color: #F59E0B;
+        margin: 0 0 15px;
+        font-size: 16px;
+    }
+    .coupon-used-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        font-size: 13px;
+    }
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div id="accountMarketingBanner" style="display:none;">
+    <div class="account-offer-banner">
+        <div>
+            <h3>🎉 عرض حصري لك!</h3>
+            <p>خصم إضافي على مشترياتك القادمة</p>
+        </div>
+        <div class="offer-code" onclick="copyToClipboard('WELCOME');showToast('✅ تم نسخ الكود: WELCOME')" title="اضغط للنسخ">
+            WELCOME
+        </div>
+    </div>
+    
+    <div class="account-coupon-history">
+        <h4>🎟️ سجل الكوبونات المستخدمة</h4>
+        <div id="couponHistoryList">
+            <p style="color:rgba(255,255,255,0.4);font-size:13px">لم تستخدم أي كوبونات بعد</p>
+        </div>
+    </div>
+</div>
+
+<script>
+// إظهار البانر التسويقي بعد تحميل الحساب
+var accountObserver = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (document.getElementById('accountApp') && 
+            !document.getElementById('accountApp').querySelector('.account-loading')) {
+            
+            var banner = document.getElementById('accountMarketingBanner');
+            if (banner && banner.style.display === 'none') {
+                banner.style.display = 'block';
+                
+                // إدراج البانر قبل محتوى الحساب
+                var accountApp = document.getElementById('accountApp');
+                var firstChild = accountApp.firstChild;
+                if (firstChild && !firstChild.id) {
+                    accountApp.insertBefore(banner, firstChild);
+                }
+                
+                // تحميل سجل الكوبونات
+                loadCouponHistory();
+                accountObserver.disconnect();
+            }
+        }
+    });
+});
+
+accountObserver.observe(document.getElementById('accountApp'), {
+    childList: true,
+    subtree: true
+});
+
+// تحميل سجل الكوبونات
+function loadCouponHistory() {
+    var couponUsage = JSON.parse(localStorage.getItem('doraCouponUsage') || '{}');
+    var list = document.getElementById('couponHistoryList');
+    
+    var used = [];
+    for (var code in couponUsage) {
+        if (couponUsage[code] > 0) {
+            used.push({ code: code, count: couponUsage[code] });
+        }
+    }
+    
+    if (used.length === 0) {
+        list.innerHTML = '<p style="color:rgba(255,255,255,0.4);font-size:13px">لم تستخدم أي كوبونات بعد</p>';
+        return;
+    }
+    
+    list.innerHTML = used.map(function(c) {
+        var label = c.code === 'WELCOME' ? 'خصم ترحيبي 15%' : 
+                    c.code === 'DORA10' ? 'خصم 10%' : 
+                    c.code === 'DORA20' ? 'خصم 20%' : c.code;
+        return '<div class="coupon-used-item"><span>🎟️ <strong>' + c.code + '</strong> - ' + label + '</span><span style="color:#10B981">استخدم ' + c.count + ' مرات</span></div>';
+    }).join('');
+}
+
+// نسخ للنص
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {});
+}
+</script>
 </body>
 </html>
