@@ -1975,7 +1975,11 @@ window.showTab = function(tabName) {
     
     // تحميل التوثيق الحكومي
     if (tabName === 'gov_docs') {
-        var gd = JSON.parse(localStorage.getItem('doraGovDocs') || '{}');
+                var gd = {};
+        try {
+            var result = await supabaseClient.from('gov_docs').select('data').eq('id', 1).maybeSingle();
+            if (result.data?.data) gd = result.data.data;
+        } catch(e) {}
         if (gd.baladia) document.getElementById('gd_baladia').value = gd.baladia;
         if (gd.baladia_exp) document.getElementById('gd_baladia_exp').value = gd.baladia_exp;
         if (gd.zakat) document.getElementById('gd_zakat').value = gd.zakat;
