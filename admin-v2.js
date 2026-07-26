@@ -1779,3 +1779,102 @@ window.showDashboard = function() {
             }, 5000);
         }
     }, 1500);
+};
+// ============================================================
+// 📦 إدارة المخزون واللوجستيات
+// ============================================================
+
+// ---------- 1. فحص المخزون المنخفض ----------
+window.checkLowStock = async function() {
+    try {
+        var result = await supabaseClient.from('store_products').select('*').lte('stock', 5).gt('stock', 0);
+        var lowStock = result.data || [];
+        if (lowStock.length > 0) {
+            var notifEl = document.createElement('div');
+            notifEl.style.cssText = 'position:fixed;top:20px;right:20px;background:#EF4444;color:white;padding:15px 20px;border-radius:12px;z-index:99999;max-width:350px;font-size:13px;box-shadow:0 10px 40px rgba(239,68,68,0.4)';
+            notifEl.innerHTML = '<strong>⚠️ مخزون منخفض!</strong><br>' + lowStock.length + ' منتجات تحتاج إعادة تخزين<br><small>اضغط للإغلاق</small>';
+            notifEl.onclick = function() { notifEl.remove(); };
+            document.body.appendChild(notifEl);
+            setTimeout(function() { notifEl.remove(); }, 8000);
+        }
+    } catch(e) {}
+};
+
+// ---------- 2. تصدير تقرير المخزون ----------
+window.exportInventory = async function() {
+    var result = await supabaseClient.from('store_products').select('*').order('category');
+    var products = result.data || [];
+    var csv = 'الاسم,التصنيف,السعر,المخزون,الحالة\n';
+    products.forEach(function(p) {
+        var status = p.stock <= 0 ? 'نفذ' : p.stock <= 5 ? 'منخفض' : 'متوفر';
+        csv += '"' + p.name + '","' + (catLabels[p.category] || p.category) + '","' + p.price + '","' + (p.stock || 0) + '","' + status + '"\n';
+    });
+    var blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'تقرير-المخزون-' + new Date().toISOString().split('T')[0] + '.csv';
+    a.click();
+    adminToast('✅ تم تصدير تقرير المخزون');
+};
+
+// ---------- 3. تحديث سريع للمخزون ----------
+window.quickUpdateStock = async function(productId, newStock) {
+    var stock = parseInt(newStock);
+    if (isNaN(stock) || stock < 0) { adminToast('❌ قيمة غير صالحة', 'error'); return; }
+    await supabaseClient.from('store_products').update({ stock: stock, updated_at: new Date().toISOString() }).eq('id', productId);
+    adminToast('✅ تم تحديث المخزون إلى ' + stock + ' قطعة');
+    loadProducts();
+};
+
+// ---------- 4. إضافة عمود المخزون ----------
+var origLoadProducts = window.loadProducts;
+window.loadProducts = async function() {
+    await origLoadProducts();
+    var tbody = document.getElementById('productsTable');
+    if (!tbody) return;
+    var result = await supabaseClient.from('store_products').select('*').order('id');
+    var products = result.data || [];
+    if (!products.length) return;
+    var thead = document.querySelector('#productsTab table thead tr');
+    if (thead && !document.getElementById('stockHeader')) {
+        var th = document.createElement('th');
+        th.id = 'stockHeader';
+        th.textContent = '📦 المخزون';
+        thead.insertBefore(th, thead.querySelector('th:last-child'));
+    }
+    var rows = tbody.querySelectorAll('tr');
+    rows.forEach(function(row, i) {
+        if (i < products.length && !row.querySelector('.stock-cell')) {
+            var p = products[i];
+            var td = document.createElement('td');
+            td.className = 'stock-cell';
+            var color = p.stock <= 0 ? '#EF4444' : p.stock <= 5 ? '#F59E0B' : '#10B981';
+            td.innerHTML = '<span style="color:' + color + ';font-weight:700">' + (p.stock || 0) + '</span> <input type="number" value="' + (p.stock || 0) + '" style="width:60px;padding:4px;border-radius:6px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:white;font-size:12px" onchange="quickUpdateStock(' + p.id + ', this.value)">';
+            row.insertBefore(td, row.querySelector('td:last-child'));
+        }
+    });
+    setTimeout(checkLowStock, 1000);
+};
+
+// ---------- 5. زر تصدير المخزون ----------
+var origShowTabInventory = window.showTab;
+window.showTab = function(tabName) {
+    if (origShowTabInventory) origShowTabInventory(tabName);
+    if (tabName === 'products') {
+        setTimeout(function() {
+            var header = document.querySelector('#productsTab .table-header');
+            if (header && !document.getElementById('exportInventoryBtn')) {
+                var btn = document.createElement('button');
+                btn.id = 'exportInventoryBtn';
+                btn.className = 'btn-add';
+                btn.textContent = '📦 تصدير المخزون';
+                btn.onclick = exportInventory;
+                header.appendChild(btn);
+            }
+        }, 800);
+    }
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(checkLowStock, 3000);
+});
