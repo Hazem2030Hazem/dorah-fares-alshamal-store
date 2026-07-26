@@ -2012,8 +2012,6 @@ window.showTab = function(tabName) {
 };
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(checkLowStock, 3000);
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(checkLowStock, 3000);
 });
 
 // ============================================================
