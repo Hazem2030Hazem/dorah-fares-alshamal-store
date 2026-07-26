@@ -221,7 +221,27 @@ async function placeOrder() {
     alert('✅ تم تقديم الطلب بنجاح!');
     window.location.href = 'index.html';
 }
+// ===== كود الخصم =====
+var activeCoupon = null;
+var COUPONS = {
+    'DORA10': { discount: 0.10, label: 'خصم 10%' },
+    'DORA20': { discount: 0.20, label: 'خصم 20%' },
+    'WELCOME': { discount: 0.15, label: 'خصم ترحيبي 15%' }
+};
 
+function applyCoupon() {
+    var code = document.getElementById('couponCode').value.trim().toUpperCase();
+    var coupon = COUPONS[code];
+    if (coupon) {
+        activeCoupon = coupon;
+        document.getElementById('couponMsg').innerHTML = '✅ ' + coupon.label + ' مُطبق';
+        document.getElementById('couponMsg').style.color = '#10B981';
+        renderCheckout();
+    } else {
+        document.getElementById('couponMsg').innerHTML = '❌ كود خصم غير صحيح';
+        document.getElementById('couponMsg').style.color = '#EF4444';
+    }
+}
 renderCheckout();
 </script>
 </body>
