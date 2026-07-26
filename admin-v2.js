@@ -1512,7 +1512,6 @@ function listenForNewOrders() {
             showToast('🔔 طلب جديد!', 'success');
         })
         .subscribe();
-}
 
 function listenForNewServices() {
     supabaseClient
