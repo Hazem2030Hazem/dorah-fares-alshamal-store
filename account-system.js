@@ -768,6 +768,7 @@ function renderOrdersTab(){
     `;
   }).join('') : '<div class="account-empty">📦 لا توجد طلبات في حسابك بعد.</div>';
   return `<div class="account-card"><h3>📦 طلباتي</h3><div class="account-list orders">${list}</div></div>`;
+   '<button class="btn-view" onclick="trackOrder(\'' + order.id + '\')">📦 تتبع الطلب</button>'
 }
 
 window.doraUploadReceipt = async function(orderId, input){
