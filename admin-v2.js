@@ -980,6 +980,7 @@ window.showTab = function(tabName){
   if (tabName === 'bank_accounts') loadBankAccounts();
   if (tabName === 'files') loadSiteFiles();
    if (tabName === 'partners') loadPartnersAdmin();
+   if (tabName === 'invoices') loadInvoices();
    if (tabName === 'shipping') loadShippingRates();
   if (tabName === 'content') loadSiteContent();
 };
