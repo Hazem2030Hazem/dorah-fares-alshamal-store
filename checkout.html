@@ -192,6 +192,28 @@ function renderCheckout() {
             <div class="payment-grid" id="paymentMethodsGrid">⏳ جاري تحميل طرق الدفع...</div>
         </div>
         
+              <!-- 💳 بوابات الدفع السريعة -->
+        <div class="quick-pay-section">
+            <h4>⚡ دفع سريع</h4>
+            <div class="quick-pay-grid">
+                <button class="quick-pay-btn stc" onclick="payWithSTC(${finalTotal})">
+                    <span class="quick-pay-icon">💜</span>
+                    STC Pay
+                </button>
+                <button class="quick-pay-btn apple" onclick="payWithApple(${finalTotal})">
+                    <span class="quick-pay-icon">🍎</span>
+                    Apple Pay
+                </button>
+                <button class="quick-pay-btn mada" onclick="payWithMada(${finalTotal})">
+                    <span class="quick-pay-icon">💚</span>
+                    مدى أثير
+                </button>
+                <button class="quick-pay-btn tamara" onclick="payWithTamara(${finalTotal})">
+                    <span class="quick-pay-icon">🧡</span>
+                    تمارا
+                </button>
+            </div>
+        </div>
         <button class="btn-submit" onclick="placeOrder()">📨 تأكيد الطلب</button>
     `;
     
