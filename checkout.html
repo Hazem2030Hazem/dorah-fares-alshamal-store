@@ -496,6 +496,8 @@ var invoicePayload = {
 
 var invoiceResult = await supabaseClient.from('invoices').insert([invoicePayload]).select('*').single();
 var invoiceId = invoiceResult.data ? invoiceResult.data.id : null;
+            var invoiceLink = invoiceId ? '\n\n🧾 الفاتورة: https://alshamal-df.com/invoice.html?id=' + invoiceId : '';
+var msg = '*طلب جديد*\n\n*العميل:* ' + name + '\n...' + invoiceLink;
             window.open('https://wa.me/966568717449?text=' + encodeURIComponent(msg), '_blank');
 
             // تفريغ السلة
