@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فاتورة | شركة درة فارس الشمال</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: #f5f5f5; padding: 20px; direction: rtl; }
+        .invoice-container { max-width: 800px; margin: 0 auto; background: #fff; border-radius: 16px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .invoice-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 30px; border-bottom: 2px solid #1E88E5; padding-bottom: 20px; }
+        .invoice-header h1 { font-size: 28px; color: #1E88E5; }
+        .invoice-header .company-info { text-align: left; font-size: 14px; color: #666; }
+        .invoice-details { display: flex; justify-content: space-between; margin-bottom: 30px; }
+        .invoice-details div { font-size: 14px; color: #555; line-height: 2; }
+        .invoice-details strong { color: #333; }
+        .invoice-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        .invoice-table th { background: #1E88E5; color: #fff; padding: 12px; text-align: right; }
+        .invoice-table td { padding: 12px; border-bottom: 1px solid #eee; }
+        .invoice-table .text-left { text-align: left; }
+        .invoice-total { text-align: left; font-size: 18px; margin-top: 20px; }
+        .invoice-total strong { color: #1E88E5; font-size: 24px; }
+        .invoice-footer { margin-top: 40px; border-top: 2px solid #1E88E5; padding-top: 20px; text-align: center; color: #666; font-size: 13px; }
+        .invoice-status { display: inline-block; padding: 8px 20px; border-radius: 20px; font-weight: 700; font-size: 14px; margin-bottom: 20px; }
+        .invoice-status.issued { background: #DCFCE7; color: #15803D; }
+        .no-invoice { text-align: center; padding: 80px 20px; color: #999; }
+        @media print { body { background: #fff; } .invoice-container { box-shadow: none; } }
+    </style>
+</head>
+<body>
+    <div id="invoiceContent">
+        <div class="no-invoice">⏳ جاري تحميل الفاتورة...</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://kcbmvxuzjlaooknwhqqb.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjYm12eHV6amxhb29rbndocXFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NzkyMjAsImV4cCI6MjA5OTU1NTIyMH0.ayDpkfCKL90GcUKjbHQs7OvS5sxF1VSraWg58NHJ7ek';
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function loadInvoice() {
+            var params = new URLSearchParams(window.location.search);
+            var invoiceId = params.get('id');
+            var container = document.getElementById('invoiceContent');
+
+            if (!invoiceId) {
+                container.innerHTML = '<div class="no-invoice">❌ رقم الفاتورة غير موجود</div>';
+                return;
+            }
+
+            var result = await supabaseClient.from('invoices').select('*').eq('id', invoiceId).single();
+            var invoice = result.data;
+
+            if (!invoice) {
+                container.innerHTML = '<div class="no-invoice">❌ الفاتورة غير موجودة</div>';
+                return;
+            }
+
+            var items = Array.isArray(invoice.items) ? invoice.items : [];
+            var itemsHtml = items.map(function(item, i) {
+                return '<tr><td>' + (i+1) + '</td><td>' + item.name + '</td><td>' + item.qty + '</td><td>' + Number(item.price).toLocaleString() + ' ر.س</td><td class="text-left">' + (Number(item.price) * Number(item.qty)).toLocaleString() + ' ر.س</td></tr>';
+            }).join('');
+
+            container.innerHTML = `
+                <div class="invoice-container">
+                    <span class="invoice-status issued">✅ فاتورة رسمية</span>
+                    <div class="invoice-header">
+                        <div>
+                            <h1>🧾 فاتورة</h1>
+                            <p style="color:#666;margin-top:5px">رقم: ${invoice.invoice_number}</p>
+                        </div>
+                        <div class="company-info">
+                            <strong>شركة درة فارس الشمال</strong><br>
+                            الرياض، المملكة العربية السعودية<br>
+                            info@alshamal-df.com<br>
+                            +966 56 871 7449
+                        </div>
+                    </div>
+                    <div class="invoice-details">
+                        <div>
+                            <strong>العميل:</strong> ${invoice.customer_name || '—'}<br>
+                            <strong>الإيميل:</strong> ${invoice.customer_email || '—'}<br>
+                            <strong>الجوال:</strong> ${invoice.customer_phone || '—'}<br>
+                        </div>
+                        <div>
+                            <strong>التاريخ:</strong> ${new Date(invoice.created_at).toLocaleDateString('ar-SA')}<br>
+                            <strong>الحالة:</strong> مدفوعة<br>
+                        </div>
+                    </div>
+                    <table class="invoice-table">
+                        <thead><tr><th>#</th><th>المنتج</th><th>الكمية</th><th>السعر</th><th class="text-left">الإجمالي</th></tr></thead>
+                        <tbody>${itemsHtml}</tbody>
+                    </table>
+                    <div class="invoice-total">
+                        <p>المجموع الفرعي: <strong>${Number(invoice.subtotal || 0).toLocaleString()} ر.س</strong></p>
+                        <p>الضريبة (15%): <strong>${Number(invoice.tax || 0).toLocaleString()} ر.س</strong></p>
+                        <p style="font-size:22px;margin-top:10px">المجموع الكلي: <strong>${Number(invoice.total || 0).toLocaleString()} ر.س</strong></p>
+                    </div>
+                    <div class="invoice-footer">
+                        <p>شكراً لتعاملكم معنا | شركة درة فارس الشمال</p>
+                        <p>للتواصل: info@alshamal-df.com | +966 56 871 7449</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        loadInvoice();
+    </script>
+</body>
+</html>
