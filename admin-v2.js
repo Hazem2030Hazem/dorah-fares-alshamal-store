@@ -2012,4 +2012,256 @@ window.showTab = function(tabName) {
 };
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(checkLowStock, 3000);
+// ============================================================
+// 🌐 إدارة المحتوى الديناميكي للموقع - 7 تبويبات
+// ============================================================
+
+// ---------- 📊 الإحصائيات ----------
+window.loadSiteStats = async function() {
+    var tbody = document.getElementById('siteStatsTable');
+    if (!tbody) return;
+    var result = await supabaseClient.from('site_stats').select('*').order('sort_order');
+    var data = result.data || [];
+    if (!data.length) { tbody.innerHTML = '<tr><td colspan="7">لا توجد إحصائيات</td></tr>'; return; }
+    tbody.innerHTML = data.map(function(item, i) {
+        return '<tr><td>' + (i+1) + '</td><td>' + (item.icon_name||'') + '</td><td>' + (item.number||'') + '</td><td>' + (item.label||'') + '</td><td><span style="color:' + (item.color||'') + '">●</span></td><td>' + (item.sort_order||1) + '</td><td><button class="btn-edit" onclick="editSiteStat(' + item.id + ')">✏️</button> <button class="btn-delete" onclick="deleteSiteStat(' + item.id + ')">🗑️</button></td></tr>';
+    }).join('');
+};
+
+window.addSiteStat = function() {
+    var number = prompt('الرقم (مثلاً: +15):'); if (!number) return;
+    var label = prompt('العنوان (مثلاً: سنة خبرة):'); if (!label) return;
+    var color = prompt('اللون (مثلاً: #22D3EE):', '#22D3EE');
+    var icon = prompt('الأيقونة (مثلاً: trophy):', 'trophy');
+    supabaseClient.from('site_stats').insert([{number:number, label:label, color:color, icon_name:icon}]).then(function() { loadSiteStats(); adminToast('✅ تمت الإضافة'); });
+};
+
+window.editSiteStat = async function(id) {
+    var result = await supabaseClient.from('site_stats').select('*').eq('id', id).single();
+    if (!result.data) return;
+    var d = result.data;
+    var number = prompt('الرقم:', d.number); if (!number) return;
+    var label = prompt('العنوان:', d.label); if (!label) return;
+    var color = prompt('اللون:', d.color);
+    await supabaseClient.from('site_stats').update({number:number, label:label, color:color}).eq('id', id);
+    loadSiteStats(); adminToast('✅ تم التعديل');
+};
+
+window.deleteSiteStat = async function(id) {
+    if (!confirm('حذف هذه الإحصائية؟')) return;
+    await supabaseClient.from('site_stats').delete().eq('id', id);
+    loadSiteStats(); adminToast('✅ تم الحذف');
+};
+
+// ---------- 🌟 الرؤية والقيم ----------
+window.loadSiteAbout = async function() {
+    var tbody = document.getElementById('siteAboutTable');
+    if (!tbody) return;
+    var result = await supabaseClient.from('site_about').select('*').order('sort_order');
+    var data = result.data || [];
+    if (!data.length) { tbody.innerHTML = '<tr><td colspan="6">لا يوجد محتوى</td></tr>'; return; }
+    tbody.innerHTML = data.map(function(item, i) {
+        var typeLabel = item.section_type === 'vision' ? 'رؤية' : item.section_type === 'mission' ? 'رسالة' : 'قيم';
+        return '<tr><td>' + (i+1) + '</td><td>' + typeLabel + '</td><td>' + (item.title||'') + '</td><td>' + ((item.content||'').substring(0,50) + '...') + '</td><td><span style="color:' + (item.icon_color||'') + '">●</span></td><td><button class="btn-edit" onclick="editSiteAbout(' + item.id + ')">✏️</button></td></tr>';
+    }).join('');
+};
+
+window.editSiteAbout = async function(id) {
+    var result = await supabaseClient.from('site_about').select('*').eq('id', id).single();
+    if (!result.data) return;
+    var d = result.data;
+    var title = prompt('العنوان:', d.title); if (!title) return;
+    var content = prompt('المحتوى:', d.content); if (!content) return;
+    await supabaseClient.from('site_about').update({title:title, content:content}).eq('id', id);
+    loadSiteAbout(); adminToast('✅ تم التعديل');
+};
+
+// ---------- 💬 آراء الشركات ----------
+window.loadSiteTestimonials = async function() {
+    var tbody = document.getElementById('siteTestimonialsTable');
+    if (!tbody) return;
+    var result = await supabaseClient.from('testimonials').select('*').order('id');
+    var data = result.data || [];
+    if (!data.length) { tbody.innerHTML = '<tr><td colspan="7">لا توجد آراء</td></tr>'; return; }
+    tbody.innerHTML = data.map(function(item, i) {
+        return '<tr><td>' + (i+1) + '</td><td>' + (item.company_name||'') + '</td><td>' + (item.reviewer_name||'') + '</td><td>' + '⭐'.repeat(item.rating||5) + '</td><td>' + (item.product_name||'') + '</td><td>' + (item.is_active?'✅':'❌') + '</td><td><button class="btn-edit" onclick="editTestimonial(' + item.id + ')">✏️</button> <button class="btn-delete" onclick="deleteTestimonial(' + item.id + ')">🗑️</button></td></tr>';
+    }).join('');
+};
+
+window.addTestimonial = function() {
+    var company = prompt('اسم الشركة:'); if (!company) return;
+    var reviewer = prompt('اسم المقيم:'); if (!reviewer) return;
+    var content = prompt('نص التقييم:'); if (!content) return;
+    supabaseClient.from('testimonials').insert([{company_name:company, reviewer_name:reviewer, content:content, rating:5, is_active:true}]).then(function() { loadSiteTestimonials(); adminToast('✅ تمت الإضافة'); });
+};
+
+window.editTestimonial = async function(id) {
+    var result = await supabaseClient.from('testimonials').select('*').eq('id', id).single();
+    if (!result.data) return;
+    var d = result.data;
+    var content = prompt('نص التقييم:', d.content); if (!content) return;
+    await supabaseClient.from('testimonials').update({content:content}).eq('id', id);
+    loadSiteTestimonials(); adminToast('✅ تم التعديل');
+};
+
+window.deleteTestimonial = async function(id) {
+    if (!confirm('حذف هذا التقييم؟')) return;
+    await supabaseClient.from('testimonials').delete().eq('id', id);
+    loadSiteTestimonials(); adminToast('✅ تم الحذف');
+};
+
+// ---------- 📦 المشاريع ----------
+window.loadSiteProjects = async function() {
+    var tbody = document.getElementById('siteProjectsTable');
+    if (!tbody) return;
+    var result = await supabaseClient.from('projects').select('*').order('sort_order');
+    var data = result.data || [];
+    if (!data.length) { tbody.innerHTML = '<tr><td colspan="7">لا توجد مشاريع</td></tr>'; return; }
+    tbody.innerHTML = data.map(function(item, i) {
+        return '<tr><td>' + (i+1) + '</td><td>' + (item.title||'') + '</td><td>' + (item.client_name||'') + '</td><td>' + ((item.description||'').substring(0,40) + '...') + '</td><td><span style="color:' + (item.icon_color||'') + '">●</span></td><td>' + (item.is_active?'✅':'❌') + '</td><td><button class="btn-edit" onclick="editProject(' + item.id + ')">✏️</button> <button class="btn-delete" onclick="deleteProject(' + item.id + ')">🗑️</button></td></tr>';
+    }).join('');
+};
+
+window.addProject = function() {
+    var title = prompt('عنوان المشروع:'); if (!title) return;
+    var client = prompt('اسم العميل:'); if (!client) return;
+    var desc = prompt('الوصف:'); if (!desc) return;
+    supabaseClient.from('projects').insert([{title:title, client_name:client, description:desc, is_active:true}]).then(function() { loadSiteProjects(); adminToast('✅ تمت الإضافة'); });
+};
+
+window.editProject = async function(id) {
+    var result = await supabaseClient.from('projects').select('*').eq('id', id).single();
+    if (!result.data) return;
+    var d = result.data;
+    var title = prompt('العنوان:', d.title); if (!title) return;
+    var client = prompt('العميل:', d.client_name); if (!client) return;
+    await supabaseClient.from('projects').update({title:title, client_name:client}).eq('id', id);
+    loadSiteProjects(); adminToast('✅ تم التعديل');
+};
+
+window.deleteProject = async function(id) {
+    if (!confirm('حذف هذا المشروع؟')) return;
+    await supabaseClient.from('projects').delete().eq('id', id);
+    loadSiteProjects(); adminToast('✅ تم الحذف');
+};
+
+// ---------- 📝 المقالات ----------
+window.loadSiteBlog = async function() {
+    var tbody = document.getElementById('siteBlogTable');
+    if (!tbody) return;
+    var result = await supabaseClient.from('blog_posts').select('*').order('sort_order');
+    var data = result.data || [];
+    if (!data.length) { tbody.innerHTML = '<tr><td colspan="7">لا توجد مقالات</td></tr>'; return; }
+    tbody.innerHTML = data.map(function(item, i) {
+        return '<tr><td>' + (i+1) + '</td><td>' + (item.title||'') + '</td><td>' + (item.publish_date||'') + '</td><td>' + (item.read_time||'') + '</td><td><a href="' + (item.link_url||'#') + '" target="_blank">🔗</a></td><td>' + (item.is_active?'✅':'❌') + '</td><td><button class="btn-edit" onclick="editBlogPost(' + item.id + ')">✏️</button> <button class="btn-delete" onclick="deleteBlogPost(' + item.id + ')">🗑️</button></td></tr>';
+    }).join('');
+};
+
+window.addBlogPost = function() {
+    var title = prompt('عنوان المقال:'); if (!title) return;
+    var date = prompt('التاريخ (مثلاً: يناير 2025):'); if (!date) return;
+    var time = prompt('وقت القراءة (مثلاً: 5 دقائق):'); if (!time) return;
+    var link = prompt('الرابط:'); if (!link) return;
+    supabaseClient.from('blog_posts').insert([{title:title, publish_date:date, read_time:time, link_url:link, is_active:true}]).then(function() { loadSiteBlog(); adminToast('✅ تمت الإضافة'); });
+};
+
+window.editBlogPost = async function(id) {
+    var result = await supabaseClient.from('blog_posts').select('*').eq('id', id).single();
+    if (!result.data) return;
+    var d = result.data;
+    var title = prompt('العنوان:', d.title); if (!title) return;
+    var date = prompt('التاريخ:', d.publish_date); if (!date) return;
+    await supabaseClient.from('blog_posts').update({title:title, publish_date:date}).eq('id', id);
+    loadSiteBlog(); adminToast('✅ تم التعديل');
+};
+
+window.deleteBlogPost = async function(id) {
+    if (!confirm('حذف هذا المقال؟')) return;
+    await supabaseClient.from('blog_posts').delete().eq('id', id);
+    loadSiteBlog(); adminToast('✅ تم الحذف');
+};
+
+// ---------- 📜 الشهادات ----------
+window.loadSiteCertifications = async function() {
+    var tbody = document.getElementById('siteCertificationsTable');
+    if (!tbody) return;
+    var result = await supabaseClient.from('certifications').select('*').order('sort_order');
+    var data = result.data || [];
+    if (!data.length) { tbody.innerHTML = '<tr><td colspan="7">لا توجد شهادات</td></tr>'; return; }
+    tbody.innerHTML = data.map(function(item, i) {
+        return '<tr><td>' + (i+1) + '</td><td>' + (item.title||'') + '</td><td>' + (item.badge_text||'') + '</td><td>' + ((item.description||'').substring(0,40) + '...') + '</td><td><span style="color:' + (item.icon_color||'') + '">●</span></td><td>' + (item.is_active?'✅':'❌') + '</td><td><button class="btn-edit" onclick="editCertification(' + item.id + ')">✏️</button> <button class="btn-delete" onclick="deleteCertification(' + item.id + ')">🗑️</button></td></tr>';
+    }).join('');
+};
+
+window.addCertification = function() {
+    var title = prompt('عنوان الشهادة:'); if (!title) return;
+    var badge = prompt('الشارة (مثلاً: معتمد):'); if (!badge) return;
+    var desc = prompt('الوصف:'); if (!desc) return;
+    supabaseClient.from('certifications').insert([{title:title, badge_text:badge, description:desc, is_active:true}]).then(function() { loadSiteCertifications(); adminToast('✅ تمت الإضافة'); });
+};
+
+window.editCertification = async function(id) {
+    var result = await supabaseClient.from('certifications').select('*').eq('id', id).single();
+    if (!result.data) return;
+    var d = result.data;
+    var title = prompt('العنوان:', d.title); if (!title) return;
+    var badge = prompt('الشارة:', d.badge_text); if (!badge) return;
+    await supabaseClient.from('certifications').update({title:title, badge_text:badge}).eq('id', id);
+    loadSiteCertifications(); adminToast('✅ تم التعديل');
+};
+
+window.deleteCertification = async function(id) {
+    if (!confirm('حذف هذه الشهادة؟')) return;
+    await supabaseClient.from('certifications').delete().eq('id', id);
+    loadSiteCertifications(); adminToast('✅ تم الحذف');
+};
+
+// ---------- 📞 التواصل ----------
+window.loadSiteContact = async function() {
+    var tbody = document.getElementById('siteContactTable');
+    if (!tbody) return;
+    var result = await supabaseClient.from('contact_info').select('*').order('sort_order');
+    var data = result.data || [];
+    if (!data.length) { tbody.innerHTML = '<tr><td colspan="7">لا توجد بيانات</td></tr>'; return; }
+    tbody.innerHTML = data.map(function(item, i) {
+        return '<tr><td>' + (i+1) + '</td><td>' + (item.type||'') + '</td><td>' + (item.label||'') + '</td><td>' + (item.value||'') + '</td><td><a href="' + (item.link_url||'#') + '" target="_blank">🔗</a></td><td>' + (item.is_active?'✅':'❌') + '</td><td><button class="btn-edit" onclick="editContactInfo(' + item.id + ')">✏️</button> <button class="btn-delete" onclick="deleteContactInfo(' + item.id + ')">🗑️</button></td></tr>';
+    }).join('');
+};
+
+window.addContactInfo = function() {
+    var type = prompt('النوع (phone/whatsapp/email/location):', 'phone'); if (!type) return;
+    var label = prompt('العنوان (مثلاً: اتصل بنا):'); if (!label) return;
+    var value = prompt('القيمة (مثلاً: +966 56 871 7449):'); if (!value) return;
+    var link = prompt('الرابط (مثلاً: tel:+966...):'); if (!link) return;
+    supabaseClient.from('contact_info').insert([{type:type, label:label, value:value, link_url:link, is_active:true}]).then(function() { loadSiteContact(); adminToast('✅ تمت الإضافة'); });
+};
+
+window.editContactInfo = async function(id) {
+    var result = await supabaseClient.from('contact_info').select('*').eq('id', id).single();
+    if (!result.data) return;
+    var d = result.data;
+    var label = prompt('العنوان:', d.label); if (!label) return;
+    var value = prompt('القيمة:', d.value); if (!value) return;
+    await supabaseClient.from('contact_info').update({label:label, value:value}).eq('id', id);
+    loadSiteContact(); adminToast('✅ تم التعديل');
+};
+
+window.deleteContactInfo = async function(id) {
+    if (!confirm('حذف جهة الاتصال؟')) return;
+    await supabaseClient.from('contact_info').delete().eq('id', id);
+    loadSiteContact(); adminToast('✅ تم الحذف');
+};
+
+// ---------- ربط التبويبات مع showTab ----------
+var origShowTabDynamic = window.showTab;
+window.showTab = function(tabName) {
+    if (origShowTabDynamic) origShowTabDynamic(tabName);
+    if (tabName === 'site_stats') loadSiteStats();
+    if (tabName === 'site_about') loadSiteAbout();
+    if (tabName === 'site_testimonials') loadSiteTestimonials();
+    if (tabName === 'site_projects') loadSiteProjects();
+    if (tabName === 'site_blog') loadSiteBlog();
+    if (tabName === 'site_certifications') loadSiteCertifications();
+    if (tabName === 'site_contact') loadSiteContact();
+};
 });
