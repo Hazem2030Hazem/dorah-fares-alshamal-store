@@ -44,6 +44,8 @@ var doraChatbot = {
         
                try {
             var self = this;
+                   try {
+            var self = this;
             var userMsg = msg;
             var response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=AQ.Ab8RN6LDJxeKokRpmkaIFvS8V0tPa1eflqQx1ghmJkdF5ZX4Cg', {
                 method: 'POST',
@@ -58,11 +60,16 @@ var doraChatbot = {
                     generationConfig: { temperature: 0.7, maxOutputTokens: 300 }
                 })
             });
-                    generationConfig: { temperature: 0.7, maxOutputTokens: 300 }
-                })
-            });
             
             var data = await response.json();
+            var reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            
+            if (reply) {
+                this.conversationHistory.push({ role: 'user', parts: [{ text: msg }] });
+                this.conversationHistory.push({ role: 'model', parts: [{ text: reply }] });
+                return reply;
+            }
+        } catch(e) {}
             var reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
             
             if (reply) {
