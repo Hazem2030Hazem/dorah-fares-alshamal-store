@@ -58,7 +58,8 @@ var doraChatbot = {
             var reply = data.reply;
             
             if (reply) return reply;
-            });
+            try {
+        });
             
             var data = await response.json();
             var reply = data.reply;
