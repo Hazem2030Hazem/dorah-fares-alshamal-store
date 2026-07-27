@@ -42,17 +42,22 @@ var doraChatbot = {
             if (msg === key || msg.indexOf(key) === 0) return quickReplies[key];
         }
         
-        try {
-            var response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=AQ.Ab8RN6LDJxeKokRpmkaIFvS8V0tPa1eflqQx1ghmJkdF5ZX4Cg',
+               try {
+            var self = this;
+            var userMsg = msg;
+            var response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=AQ.Ab8RN6LDJxeKokRpmkaIFvS8V0tPa1eflqQx1ghmJkdF5ZX4Cg', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     contents: [
-                        { role: 'user', parts: [{ text: this.getSystemPrompt() }] },
+                        { role: 'user', parts: [{ text: self.getSystemPrompt() }] },
                         { role: 'model', parts: [{ text: 'فهمت. أنا مساعد درة فارس الذكي. هجاوب بالعربي.' }] }
-                    ].concat(this.conversationHistory.slice(-6)).concat([
-                        { role: 'user', parts: [{ text: msg }] }
+                    ].concat(self.conversationHistory.slice(-6)).concat([
+                        { role: 'user', parts: [{ text: userMsg }] }
                     ]),
+                    generationConfig: { temperature: 0.7, maxOutputTokens: 300 }
+                })
+            });
                     generationConfig: { temperature: 0.7, maxOutputTokens: 300 }
                 })
             });
