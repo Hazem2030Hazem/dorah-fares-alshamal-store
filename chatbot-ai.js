@@ -43,7 +43,8 @@ var doraChatbot = {
         }
         
         try {
-                       var fullMessage = this.getSystemPrompt() + '\n\nسؤال العميل: ' + msg;
+                              try {
+            var fullMessage = this.getSystemPrompt() + '\n\nسؤال العميل: ' + msg;
             
             var response = await fetch('https://kcbmvxuzjlaooknwhqqb.supabase.co/functions/v1/chat', {
                 method: 'POST',
@@ -58,8 +59,9 @@ var doraChatbot = {
             var reply = data.reply;
             
             if (reply) return reply;
-            try {
-        });
+        } catch(e) {
+            console.log('AI fallback:', e);
+        }
             
             var data = await response.json();
             var reply = data.reply;
