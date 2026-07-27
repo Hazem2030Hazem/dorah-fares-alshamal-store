@@ -1,5 +1,5 @@
 // ============================================================
-// 🤖 DORA SMART CHATBOT - Gemini AI
+// 🤖 DORA SMART CHATBOT - OpenAI via Supabase Edge Function
 // ============================================================
 
 var doraChatbot = {
@@ -42,41 +42,22 @@ var doraChatbot = {
             if (msg === key || msg.indexOf(key) === 0) return quickReplies[key];
         }
         
-               try {
-            var self = this;
-                   try {
-            var self = this;
-            var userMsg = msg;
-var response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=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', {
+        try {
+            var fullMessage = this.getSystemPrompt() + '\n\nسؤال العميل: ' + msg;
+            
+            var response = await fetch('https://kcbmvxuzjlaooknwhqqb.supabase.co/functions/v1/chat', {
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [
-                        { role: 'user', parts: [{ text: self.getSystemPrompt() }] },
-                        { role: 'model', parts: [{ text: 'فهمت. أنا مساعد درة فارس الذكي. هجاوب بالعربي.' }] }
-                    ].concat(self.conversationHistory.slice(-6)).concat([
-                        { role: 'user', parts: [{ text: userMsg }] }
-                    ]),
-                    generationConfig: { temperature: 0.7, maxOutputTokens: 300 }
-                })
+                body: JSON.stringify({ message: fullMessage })
             });
             
             var data = await response.json();
-            var reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            var reply = data.reply;
             
-            if (reply) {
-                this.conversationHistory.push({ role: 'user', parts: [{ text: msg }] });
-                this.conversationHistory.push({ role: 'model', parts: [{ text: reply }] });
-                return reply;
-            }
-        } catch(e) {}
-            var reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
-            
-            if (reply) {
-                this.conversationHistory.push({ role: 'user', parts: [{ text: msg }] });
-                this.conversationHistory.push({ role: 'model', parts: [{ text: reply }] });
-                return reply;
-            }
-        } catch(e) {}
+            if (reply) return reply;
+        } catch(e) {
+            console.log('AI fallback:', e);
+        }
         
         var fallbackReplies = [
             '🤔 أقدر أساعدك في: الأسعار، الشحن، الضمان، المنتجات، الدفع، الكوبونات.',
