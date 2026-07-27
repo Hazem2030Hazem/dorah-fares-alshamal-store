@@ -2762,11 +2762,24 @@ document.addEventListener('DOMContentLoaded', function() {
 // تأكيد ظهور أيقونة الشات
 (function(){
   if (document.getElementById('doraChatBubble')) return;
+  var wrapper = document.createElement('div');
+  wrapper.id = 'doraChatBubbleWrapper';
+  wrapper.style.cssText = 'position:fixed;bottom:30px;left:30px;z-index:99998;display:flex;align-items:flex-end;gap:12px';
+  
+  var greeting = document.createElement('div');
+  greeting.id = 'doraChatGreeting';
+  greeting.innerHTML = '👋 أهلاً! أنا هنا لخدمتك';
+  greeting.style.cssText = 'background:white;color:#1E293B;padding:12px 18px;border-radius:20px 20px 4px 20px;font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,0.15);white-space:nowrap;font-family:Tajawal,sans-serif';
+  
   var bubble = document.createElement('div');
   bubble.id = 'doraChatBubble';
-  bubble.style.cssText = 'position:fixed;bottom:30px;left:30px;z-index:99998;width:58px;height:58px;background:linear-gradient(135deg,#3B82F6,#8B5CF6);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 25px rgba(59,130,246,0.4);transition:0.3s';
-  bubble.innerHTML = '<span style="font-size:28px">💬</span>';
-  bubble.onclick = function() { if (typeof doraChatbot !== 'undefined') doraChatbot.toggle(); };
-  document.body.appendChild(bubble);
-})();
+  bubble.style.cssText = 'width:70px;height:70px;cursor:pointer;filter:drop-shadow(0 8px 24px rgba(99,102,241,0.5));transition:0.3s';
+  bubble.innerHTML = '<svg width="70" height="70" viewBox="0 0 80 88" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="40" y1="2" x2="40" y2="14" stroke="#6366F1" stroke-width="3" stroke-linecap="round"/><circle cx="40" cy="0" r="5" fill="#8B5CF6"><animate attributeName="cy" values="0;2;0" dur="2s" repeatCount="indefinite"/></circle><rect x="14" y="14" width="52" height="52" rx="16" fill="url(#bg)"><animate attributeName="rx" values="16;18;16" dur="4s" repeatCount="indefinite"/></rect><rect x="24" y="44" width="32" height="16" rx="6" fill="#1E293B" opacity="0.3"/><text x="40" y="55" text-anchor="middle" fill="white" font-size="8" font-family="monospace"><animate attributeName="opacity" values="0.9;0.3;0.9" dur="1.2s" repeatCount="indefinite"/>⚡</text><ellipse cx="30" cy="34" rx="7" ry="7" fill="#1E293B"><animate attributeName="ry" values="7;0.5;7" dur="4s" repeatCount="indefinite" begin="1s"/></ellipse><ellipse cx="50" cy="34" rx="7" ry="7" fill="#1E293B"><animate attributeName="ry" values="7;0.5;7" dur="4s" repeatCount="indefinite" begin="1s"/></ellipse><circle cx="32" cy="32" r="2.5" fill="white"><animate attributeName="cy" values="32;33;32" dur="4s" repeatCount="indefinite" begin="1s"/></circle><circle cx="52" cy="32" r="2.5" fill="white"><animate attributeName="cy" values="32;33;32" dur="4s" repeatCount="indefinite" begin="1s"/></circle><path d="M28 48 Q40 56 52 48" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round" fill="none"><animate attributeName="d" values="M28 48 Q40 56 52 48;M28 48 Q40 60 52 48;M28 48 Q40 56 52 48" dur="4s" repeatCount="indefinite" begin="1s"/></path><g transform="translate(66, 30)"><rect x="0" y="0" width="12" height="28" rx="6" fill="url(#bg)"><animateTransform attributeName="transform" type="rotate" values="0 6 0;-30 6 0;0 6 0;20 6 0;0 6 0" dur="1.2s" repeatCount="indefinite" begin="0.3s"/></rect><circle cx="6" cy="28" r="7" fill="#6366F1"><animateTransform attributeName="transform" type="rotate" values="0 6 28;-30 6 28;0 6 28;20 6 28;0 6 28" dur="1.2s" repeatCount="indefinite" begin="0.3s"/></circle></g><g transform="translate(2, 30)"><rect x="0" y="0" width="12" height="28" rx="6" fill="url(#bg)"/><circle cx="6" cy="28" r="7" fill="#6366F1"/></g><rect x="22" y="66" width="14" height="18" rx="7" fill="url(#bg)"/><rect x="44" y="66" width="14" height="18" rx="7" fill="url(#bg)"/><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6366F1"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs></svg>';
+  
+  bubble.onclick = function() { if (typeof doraChatbot !== 'undefined') doraChatbot.toggle(); greeting.style.display = 'none'; };
+  
+  wrapper.appendChild(greeting);
+  wrapper.appendChild(bubble);
+  document.body.appendChild(wrapper);
+  setTimeout(function() { greeting.style.display = 'none'; }, 5000);
 })();
