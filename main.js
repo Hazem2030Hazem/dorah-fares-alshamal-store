@@ -2595,22 +2595,93 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
     document.head.appendChild(style);
     
-    // الأيقونة
+   // أيقونة روبوت مودرن - حر الحركة بدون خلفية - مع حركة ترحيبية
+document.addEventListener('DOMContentLoaded', function() {
+    var wrapper = document.createElement('div');
+    wrapper.id = 'doraChatBubbleWrapper';
+    wrapper.style.cssText = 'position:fixed;bottom:30px;left:30px;z-index:99998;display:flex;align-items:flex-end;gap:12px';
+    
+    // فقاعة الرسالة الترحيبية
+    var greeting = document.createElement('div');
+    greeting.id = 'doraChatGreeting';
+    greeting.innerHTML = '👋 أهلاً! أنا هنا لخدمتك';
+    greeting.style.cssText = 'background:white;color:#1E293B;padding:12px 18px;border-radius:20px 20px 4px 20px;font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,0.15);white-space:nowrap;font-family:Tajawal,sans-serif;animation:greetingIn 0.5s ease, greetingOut 0.5s ease 5s forwards';
+    
+    // الروبوت SVG - 70px بدون خلفية
     var bubble = document.createElement('div');
     bubble.id = 'doraChatBubble';
-    bubble.style.cssText = 'width:60px;height:60px;background:linear-gradient(135deg,#3B82F6,#8B5CF6);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 25px rgba(59,130,246,0.5);transition:0.3s;position:relative;font-size:28px';
-    bubble.innerHTML = '<span style="font-size:32px">🤖</span>';
+    bubble.style.cssText = 'width:70px;height:70px;cursor:pointer;filter:drop-shadow(0 8px 24px rgba(99,102,241,0.5));transition:0.3s;position:relative';
     
-    // نقطة الإشعار
-    var dot = document.createElement('div');
-    dot.className = 'robot-notification';
-    dot.style.cssText = 'position:absolute;top:4px;right:4px;width:14px;height:14px;background:#EF4444;border-radius:50%;border:2px solid white';
-    bubble.appendChild(dot);
+    bubble.innerHTML = '<svg width="70" height="70" viewBox="0 0 80 88" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+        '<!-- antenna -->' +
+        '<line x1="40" y1="2" x2="40" y2="14" stroke="#6366F1" stroke-width="3" stroke-linecap="round"/>' +
+        '<circle cx="40" cy="0" r="5" fill="#8B5CF6">' +
+          '<animate attributeName="cy" values="0;2;0" dur="2s" repeatCount="indefinite"/>' +
+        '</circle>' +
+        '<!-- الجسم -->' +
+        '<rect x="14" y="14" width="52" height="52" rx="16" fill="url(#botGradient)"/>' +
+        '<!-- شاشة الصدر -->' +
+        '<rect x="24" y="44" width="32" height="16" rx="6" fill="#1E293B" opacity="0.3"/>' +
+        '<text x="40" y="55" text-anchor="middle" fill="white" font-size="8" font-family="monospace" opacity="0.9">' +
+          '<animate attributeName="opacity" values="0.9;0.4;0.9" dur="1.5s" repeatCount="indefinite"/>' +
+          '⚡' +
+        '</text>' +
+        '<!-- العيون -->' +
+        '<circle cx="30" cy="34" r="7" fill="#1E293B"/>' +
+        '<circle cx="50" cy="34" r="7" fill="#1E293B"/>' +
+        '<circle cx="32" cy="32" r="2.5" fill="white"/>' +
+        '<circle cx="52" cy="32" r="2.5" fill="white"/>' +
+        '<!-- الابتسامة -->' +
+        '<path d="M28 48 Q40 56 52 48" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round" fill="none"/>' +
+        '<!-- الذراع اليمين - بتحرك ترحيب -->' +
+        '<g transform="translate(66, 30)">' +
+          '<rect x="0" y="0" width="12" height="28" rx="6" fill="url(#botGradient)">' +
+            '<animateTransform attributeName="transform" type="rotate" values="0 6 0;-30 6 0;0 6 0;15 6 0;0 6 0" dur="1.5s" repeatCount="indefinite" begin="0.5s"/>' +
+          '</rect>' +
+          '<!-- الإيد -->' +
+          '<circle cx="6" cy="28" r="7" fill="#6366F1">' +
+            '<animateTransform attributeName="transform" type="rotate" values="0 6 28;-30 6 28;0 6 28;15 6 28;0 6 28" dur="1.5s" repeatCount="indefinite" begin="0.5s"/>' +
+          '</circle>' +
+        '</g>' +
+        '<!-- الذراع الشمال - ساكنة -->' +
+        '<g transform="translate(2, 30)">' +
+          '<rect x="0" y="0" width="12" height="28" rx="6" fill="url(#botGradient)"/>' +
+          '<circle cx="6" cy="28" r="7" fill="#6366F1"/>' +
+        '</g>' +
+        '<!-- الرجلين -->' +
+        '<rect x="22" y="66" width="14" height="18" rx="7" fill="url(#botGradient)"/>' +
+        '<rect x="44" y="66" width="14" height="18" rx="7" fill="url(#botGradient)"/>' +
+        '<!-- gradient -->' +
+        '<defs>' +
+          '<linearGradient id="botGradient" x1="0" y1="0" x2="1" y2="1">' +
+            '<stop offset="0%" stop-color="#6366F1"/>' +
+            '<stop offset="100%" stop-color="#8B5CF6"/>' +
+          '</linearGradient>' +
+        '</defs>' +
+    '</svg>';
+    
+    // أنيميشن CSS
+    var style = document.createElement('style');
+    style.textContent = `
+        @keyframes greetingIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes greetingOut { from { opacity:1; } to { opacity:0; transform:translateY(-10px); } }
+        @keyframes botFloat { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-6px); } }
+        #doraChatBubble { animation: botFloat 3s ease-in-out infinite; }
+        #doraChatBubble:hover { filter:drop-shadow(0 12px 30px rgba(99,102,241,0.7)); }
+    `;
+    document.head.appendChild(style);
     
     bubble.onclick = function() { 
         if (typeof doraChatbot !== 'undefined') doraChatbot.toggle(); 
         greeting.style.display = 'none';
     };
+    
+    wrapper.appendChild(greeting);
+    wrapper.appendChild(bubble);
+    document.body.appendChild(wrapper);
+    
+    setTimeout(function() { greeting.style.display = 'none'; }, 5000);
+});
     
     bubble.onmouseenter = function() { 
         this.style.transform = 'scale(1.1)'; 
