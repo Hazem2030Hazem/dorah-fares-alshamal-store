@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة الإدارة | شركة درة فارس الشمال</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="admin-v2.css">
     <style>
         :root {
             --sidebar-width: 260px;
@@ -26,188 +25,230 @@
             font-family: 'Tajawal', 'Cairo', sans-serif;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
+        html, body { overflow-x: hidden; width: 100%; }
+        body { background: var(--bg); color: var(--text); }
         
-        /* SIDEBAR */
+        /* LOGIN PAGE */
+        .login-page {
+            display: flex; align-items: center; justify-content: center; min-height: 100vh;
+            background: linear-gradient(135deg, #0c1929 0%, #152238 40%, #1a2a4a 70%, #0f1b33 100%);
+            position: relative; overflow: hidden;
+        }
+        .login-page::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(ellipse at 30% 50%, rgba(201,168,76,0.06) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 50%, rgba(59,130,246,0.04) 0%, transparent 60%);
+        }
+        .login-box {
+            background: rgba(15,17,25,0.9); border: 1px solid var(--border); border-radius: 20px;
+            padding: 48px 40px; width: 420px; max-width: 90vw; position: relative; z-index: 1;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+        }
+        .login-box h2 { text-align: center; color: var(--accent); margin-bottom: 4px; font-size: 28px; font-weight: 900; }
+        .login-box .subtitle { text-align: center; color: var(--text-muted); margin-bottom: 32px; font-size: 13px; }
+        .login-box label { display: block; margin-bottom: 6px; color: var(--text-muted); font-size: 13px; }
+        .login-box input {
+            width: 100%; padding: 14px 16px; border-radius: 10px; border: 1px solid var(--border);
+            background: rgba(255,255,255,0.03); color: white; font-family: inherit; font-size: 14px;
+            margin-bottom: 20px; transition: 0.3s;
+        }
+        .login-box input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px rgba(201,168,76,0.1); }
+        .login-box button {
+            width: 100%; padding: 16px; background: linear-gradient(135deg, var(--accent), #b8942e);
+            color: var(--primary); border: none; border-radius: 12px; font-size: 16px; font-weight: 700;
+            cursor: pointer; font-family: inherit; transition: 0.3s;
+        }
+        .login-box button:hover { transform: translateY(-1px); box-shadow: 0 10px 30px rgba(201,168,76,0.3); }
+        .login-error { color: var(--danger); text-align: center; margin-top: 12px; display: none; font-size: 13px; }
+        
+        /* DASHBOARD LAYOUT */
+        .dashboard-layout { display: none; }
+        .dashboard-layout.active { display: flex; }
+        
+        /* SIDEBAR - LEFT */
         .sidebar {
-            width: var(--sidebar-width);
-            background: var(--primary);
-            position: fixed; top: 0; right: 0; bottom: 0;
-            border-left: 1px solid var(--border);
-            z-index: 1000; overflow-y: auto;
-            background-image: url('admin-bg.png.jpg');
-            background-size: cover; background-position: center;
+            width: var(--sidebar-width); background: var(--primary);
+            position: fixed; top: 0; left: 0; bottom: 0; z-index: 1000; overflow-y: auto;
+            border-right: 1px solid var(--border);
             display: flex; flex-direction: column;
         }
-        .sidebar::before {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(180deg, rgba(15,17,25,0.85) 0%, rgba(26,31,54,0.92) 100%);
-        }
+        .sidebar-bg { position: absolute; inset: 0; background-image: url('admin-bg.png.jpg'); background-size: cover; background-position: center; opacity: 0.12; }
         .sidebar-content { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; }
         .sidebar-logo { padding: 24px 20px; text-align: center; border-bottom: 1px solid var(--border); }
-        .sidebar-logo h2 { color: var(--accent); font-size: 22px; font-weight: 900; }
-        .sidebar-logo p { color: var(--text-muted); font-size: 11px; margin-top: 4px; }
-        .sidebar-nav { flex: 1; padding: 12px 0; }
-        .sidebar-nav .nav-section { padding: 12px 20px 6px; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); font-weight: 700; }
-        .sidebar-nav a { display: flex; align-items: center; gap: 12px; padding: 11px 20px; color: var(--text-muted); text-decoration: none; font-size: 14px; transition: 0.2s; cursor: pointer; border-right: 3px solid transparent; margin: 2px 0; }
-        .sidebar-nav a:hover, .sidebar-nav a.active { color: white; background: rgba(201,168,76,0.08); border-right-color: var(--accent); }
-        .sidebar-nav a svg { width: 20px; height: 20px; flex-shrink: 0; }
+        .sidebar-logo h2 { color: var(--accent); font-size: 20px; font-weight: 900; }
+        .sidebar-logo p { color: var(--text-muted); font-size: 10px; margin-top: 2px; }
+        .sidebar-nav { flex: 1; padding: 8px 0; }
+        .sidebar-nav .nav-section { padding: 16px 20px 8px; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); font-weight: 700; opacity: 0.8; }
+        .sidebar-nav a {
+            display: flex; align-items: center; gap: 10px; padding: 10px 20px; color: var(--text-muted);
+            text-decoration: none; font-size: 13px; transition: 0.2s; cursor: pointer;
+            border-left: 3px solid transparent; margin: 1px 0;
+        }
+        .sidebar-nav a:hover, .sidebar-nav a.active { color: white; background: rgba(201,168,76,0.06); border-left-color: var(--accent); }
+        .sidebar-nav a svg { width: 18px; height: 18px; flex-shrink: 0; }
         .sidebar-footer { padding: 16px 20px; border-top: 1px solid var(--border); }
-        .sidebar-footer button { width: 100%; padding: 10px; background: rgba(239,68,68,0.15); color: var(--danger); border: 1px solid rgba(239,68,68,0.3); border-radius: 8px; cursor: pointer; font-weight: 600; font-family: inherit; }
+        .sidebar-footer button {
+            width: 100%; padding: 10px; background: rgba(239,68,68,0.1); color: var(--danger);
+            border: 1px solid rgba(239,68,68,0.2); border-radius: 8px; cursor: pointer; font-weight: 600; font-family: inherit;
+        }
         
         /* HEADER */
         .header {
-            position: fixed; top: 0; left: 0; right: var(--sidebar-width); height: var(--header-height);
+            position: fixed; top: 0; left: var(--sidebar-width); right: 0; height: var(--header-height);
             background: var(--primary); border-bottom: 1px solid var(--border); z-index: 999;
             display: flex; align-items: center; justify-content: space-between; padding: 0 30px;
         }
-        .header-left { display: flex; align-items: center; gap: 20px; }
         .header-breadcrumb { color: var(--text-muted); font-size: 13px; }
-        .header-breadcrumb span { color: var(--accent); }
-        .header-right { display: flex; align-items: center; gap: 20px; }
-        .header-notif { width: 42px; height: 42px; background: var(--card); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; border: 1px solid var(--border); }
-        .header-notif .badge { position: absolute; top: -4px; left: -4px; background: var(--danger); color: white; font-size: 10px; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
-        .header-user { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-        .header-user .avatar { width: 38px; height: 38px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; color: var(--primary); }
-        .header-user .name { font-size: 14px; font-weight: 600; }
+        .header-breadcrumb span { color: var(--accent); font-weight: 600; }
+        .header-right { display: flex; align-items: center; gap: 16px; }
+        .header-notif {
+            width: 40px; height: 40px; background: var(--card); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; border: 1px solid var(--border);
+        }
+        .header-notif .badge {
+            position: absolute; top: -4px; right: -4px; background: var(--danger); color: white;
+            font-size: 9px; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700;
+        }
+        .header-user { display: flex; align-items: center; gap: 8px; }
+        .header-user .avatar { width: 36px; height: 36px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; color: var(--primary); }
+        .header-user .name { font-size: 13px; font-weight: 600; }
         
-        /* MAIN */
+        /* MAIN CONTENT */
         .main {
-            margin-right: var(--sidebar-width); margin-top: var(--header-height);
-            flex: 1; padding: 30px; min-height: calc(100vh - var(--header-height));
+            margin-left: var(--sidebar-width); margin-top: var(--header-height);
+            padding: 30px; min-height: calc(100vh - var(--header-height));
         }
         
         /* STATS */
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
-        .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; display: flex; align-items: center; gap: 16px; transition: 0.3s; }
-        .stat-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-        .stat-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
-        .stat-icon.blue { background: rgba(59,130,246,0.15); color: #60a5fa; }
-        .stat-icon.green { background: rgba(16,185,129,0.15); color: #34d399; }
-        .stat-icon.orange { background: rgba(245,158,11,0.15); color: #fbbf24; }
-        .stat-icon.purple { background: rgba(139,92,246,0.15); color: #a78bfa; }
-        .stat-info .stat-num { font-size: 28px; font-weight: 900; color: white; }
-        .stat-info .stat-label { font-size: 13px; color: var(--text-muted); }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+        .stat-card {
+            background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+            padding: 20px; display: flex; align-items: center; gap: 14px; transition: 0.3s;
+        }
+        .stat-card:hover { border-color: var(--accent); }
+        .stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+        .stat-icon.blue { background: rgba(59,130,246,0.12); color: #60a5fa; }
+        .stat-icon.green { background: rgba(16,185,129,0.12); color: #34d399; }
+        .stat-icon.orange { background: rgba(245,158,11,0.12); color: #fbbf24; }
+        .stat-icon.purple { background: rgba(139,92,246,0.12); color: #a78bfa; }
+        .stat-num { font-size: 26px; font-weight: 900; color: white; }
+        .stat-label { font-size: 12px; color: var(--text-muted); }
         
-        /* CONTENT */
-        .content-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
-        .content-card h3 { font-size: 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        /* CONTENT CARD */
+        .content-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+        .content-card h3 { font-size: 17px; margin-bottom: 16px; }
         
-        /* TAB CONTENT */
+        /* TABS */
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         
-        /* LOGIN */
-        .login-section { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: var(--bg); background-image: url('admin-bg.png.jpg'); background-size: cover; background-position: center; }
-        .login-box { background: rgba(15,17,25,0.95); border: 1px solid var(--border); border-radius: 20px; padding: 40px; width: 420px; max-width: 90vw; }
-        .login-box h2 { text-align: center; color: var(--accent); margin-bottom: 8px; }
+        /* TABLES */
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px 14px; text-align: right; border-bottom: 1px solid var(--border); font-size: 13px; }
+        th { color: var(--text-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; }
         
+        /* BUTTONS */
+        .btn-add { background: var(--accent); color: var(--primary); border: none; padding: 8px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: inherit; font-size: 13px; }
+        
+        /* RESPONSIVE */
         @media (max-width: 768px) {
-            .sidebar { transform: translateX(100%); }
-            .header { right: 0; }
-            .main { margin-right: 0; }
+            .sidebar { transform: translateX(-100%); }
+            .header { left: 0; }
+            .main { margin-left: 0; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<section class="login-section" id="loginSection">
+<!-- LOGIN PAGE -->
+<div class="login-page" id="loginPage">
     <div class="login-box">
         <h2>درة فارس الشمال</h2>
-        <p style="color:var(--text-muted);text-align:center;margin-bottom:24px">لوحة الإدارة</p>
+        <p class="subtitle">لوحة الإدارة</p>
         <form onsubmit="return handleLogin(event)">
-            <div style="margin-bottom:16px"><label style="display:block;margin-bottom:6px;color:var(--text-muted)">البريد الإلكتروني</label><input type="email" id="username" placeholder="admin@example.com" required style="width:100%;padding:12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:white;font-family:inherit"></div>
-            <div style="margin-bottom:20px"><label style="display:block;margin-bottom:6px;color:var(--text-muted)">كلمة المرور</label><input type="password" id="password" placeholder="أدخل كلمة المرور" required style="width:100%;padding:12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:white;font-family:inherit"></div>
-            <button type="submit" style="width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),#a88a2e);color:var(--primary);border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit">دخول</button>
-            <div id="errorMsg" style="color:var(--danger);text-align:center;margin-top:12px;display:none">❌ بيانات الدخول غير صحيحة</div>
+            <label>البريد الإلكتروني</label>
+            <input type="email" id="username" placeholder="admin@example.com" required>
+            <label>كلمة المرور</label>
+            <input type="password" id="password" placeholder="أدخل كلمة المرور" required>
+            <button type="submit">دخول إلى لوحة التحكم</button>
+            <div class="login-error" id="errorMsg">❌ بيانات الدخول غير صحيحة</div>
         </form>
     </div>
-</section>
+</div>
 
-<!-- SIDEBAR -->
-<aside class="sidebar" id="sidebar">
-    <div class="sidebar-content">
-        <div class="sidebar-logo"><h2>درة فارس</h2><p>لوحة الإدارة</p></div>
-        <nav class="sidebar-nav">
-            <div class="nav-section">الرئيسية</div>
-            <a onclick="showTab('products')" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg> المنتجات</a>
-            <a onclick="showTab('orders')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg> الطلبات</a>
-            <a onclick="showTab('customers')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/></svg> العملاء</a>
-            <div class="nav-section">الإدارة</div>
-            <a onclick="showTab('services')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg> الخدمات</a>
-            <a onclick="showTab('receipts')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/></svg> المدفوعات</a>
-            <a onclick="showTab('reviews')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> التقييمات</a>
-            <a onclick="showTab('messages')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg> الرسائل</a>
-            <a onclick="showTab('invoices')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg> الفواتير</a>
-            <div class="nav-section">المحتوى</div>
-            <a onclick="showTab('hero_stats')">📊 الإحصائيات</a>
-            <a onclick="showTab('about')">🌟 عن الشركة</a>
-            <a onclick="showTab('projects')">📦 المشاريع</a>
-            <a onclick="showTab('blog')">📝 المقالات</a>
-            <a onclick="showTab('certifications')">📜 الشهادات</a>
-            <a onclick="showTab('contact')">📞 التواصل</a>
-            <div class="nav-section">الإعدادات</div>
-            <a onclick="showTab('settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg> الإعدادات</a>
-        </nav>
-        <div class="sidebar-footer"><button onclick="logout()">🚪 تسجيل الخروج</button></div>
-    </div>
-</aside>
-
-<!-- HEADER -->
-<header class="header">
-    <div class="header-left"><div class="header-breadcrumb">الرئيسية / <span id="pageTitle">المنتجات</span></div></div>
-    <div class="header-right">
-        <div class="header-notif" onclick="showTab('messages')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span class="badge" id="notifBadge">0</span></div>
-        <div class="header-user"><div class="avatar">م</div><div class="name">مدير النظام</div></div>
-    </div>
-</header>
-
-<!-- MAIN -->
-<main class="main">
-    <!-- Stats -->
-    <div class="stats-grid">
-        <div class="stat-card"><div class="stat-icon blue">📦</div><div class="stat-info"><div class="stat-num" id="totalProducts">0</div><div class="stat-label">إجمالي المنتجات</div></div></div>
-        <div class="stat-card"><div class="stat-icon green">🛒</div><div class="stat-info"><div class="stat-num" id="totalOrders">0</div><div class="stat-label">الطلبات الجديدة</div></div></div>
-        <div class="stat-card"><div class="stat-icon orange">⭐</div><div class="stat-info"><div class="stat-num" id="totalReviews">0</div><div class="stat-label">التقييمات</div></div></div>
-        <div class="stat-card"><div class="stat-icon purple">📨</div><div class="stat-info"><div class="stat-num" id="totalMessages">0</div><div class="stat-label">الرسائل الجديدة</div></div></div>
-    </div>
+<!-- DASHBOARD -->
+<div class="dashboard-layout" id="dashboardLayout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-bg"></div>
+        <div class="sidebar-content">
+            <div class="sidebar-logo"><h2>درة فارس</h2><p>لوحة الإدارة</p></div>
+            <nav class="sidebar-nav">
+                <div class="nav-section">الرئيسية</div>
+                <a onclick="showTab('products')" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg> المنتجات</a>
+                <a onclick="showTab('orders')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg> الطلبات</a>
+                <a onclick="showTab('customers')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/></svg> العملاء</a>
+                <div class="nav-section">الإدارة</div>
+                <a onclick="showTab('services')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg> الخدمات</a>
+                <a onclick="showTab('receipts')">🧾 المدفوعات</a>
+                <a onclick="showTab('reviews')">⭐ التقييمات</a>
+                <a onclick="showTab('messages')">📨 الرسائل</a>
+                <a onclick="showTab('invoices')">🧾 الفواتير</a>
+                <div class="nav-section">المحتوى</div>
+                <a onclick="showTab('hero_stats')">📊 الإحصائيات</a>
+                <a onclick="showTab('about')">🌟 عن الشركة</a>
+                <a onclick="showTab('projects')">📦 المشاريع</a>
+                <a onclick="showTab('blog')">📝 المقالات</a>
+                <a onclick="showTab('certifications')">📜 الشهادات</a>
+                <a onclick="showTab('contact')">📞 التواصل</a>
+                <div class="nav-section">الإعدادات</div>
+                <a onclick="showTab('settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg> الإعدادات</a>
+            </nav>
+            <div class="sidebar-footer"><button onclick="logout()">🚪 تسجيل الخروج</button></div>
+        </div>
+    </aside>
     
-    <!-- Content -->
-    <div class="content-card">
-        <!-- Products Tab -->
-        <div class="tab-content active" id="productsTab"><div class="table-container"><div class="table-header"><h3>📦 المنتجات</h3><button class="btn-add" onclick="openModal()" style="background:var(--accent);color:var(--primary);border:none;padding:10px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-family:inherit">➕ إضافة</button></div><div class="table-responsive"><table><thead><tr><th>#</th><th>الصورة</th><th>الاسم</th><th>الوصف</th><th>السعر</th><th>التصنيف</th><th>الإجراءات</th></tr></thead><tbody id="productsTable"></tbody></table></div></div></div>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-breadcrumb">الرئيسية / <span id="pageTitle">المنتجات</span></div>
+        <div class="header-right">
+            <div class="header-notif" onclick="showTab('messages')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span class="badge" id="notifBadge">0</span></div>
+            <div class="header-user"><div class="avatar">م</div><div class="name">مدير النظام</div></div>
+        </div>
+    </header>
+    
+    <!-- MAIN -->
+    <main class="main">
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-icon blue">📦</div><div><div class="stat-num" id="totalProducts">0</div><div class="stat-label">إجمالي المنتجات</div></div></div>
+            <div class="stat-card"><div class="stat-icon green">🛒</div><div><div class="stat-num" id="totalOrders">0</div><div class="stat-label">الطلبات الجديدة</div></div></div>
+            <div class="stat-card"><div class="stat-icon orange">⭐</div><div><div class="stat-num" id="totalReviews">0</div><div class="stat-label">التقييمات</div></div></div>
+            <div class="stat-card"><div class="stat-icon purple">📨</div><div><div class="stat-num" id="totalMessages">0</div><div class="stat-label">الرسائل الجديدة</div></div></div>
+        </div>
         
-        <div class="tab-content" id="ordersTab"><div id="ordersList"></div></div>
-        <div class="tab-content" id="reviewsTab"><div id="reviewsList"></div></div>
-        <div class="tab-content" id="servicesTab"><div id="servicesList"></div></div>
-        <div class="tab-content" id="customersTab"><div id="customersList"></div></div>
-        <div class="tab-content" id="receiptsTab"><div id="receiptsList"></div></div>
-        <div class="tab-content" id="messagesTab"><div id="messagesList"></div></div>
-        <div class="tab-content" id="contentTab"><div id="siteContentList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-        <div class="tab-content" id="pagesTab"><div id="sitePagesList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-        <div class="tab-content" id="services_contentTab"><div id="servicePagesList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-        <div class="tab-content" id="bank_accountsTab"><div id="bankAccountsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-        <div class="tab-content" id="filesTab"><div id="siteFilesList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-        <div class="tab-content" id="partnersTab"><div id="partnersTable">⏳ جاري التحميل...</div></div>
-        <div class="tab-content" id="payment_methodsTab"><div id="paymentMethodsTable">⏳ جاري التحميل...</div></div>
-        <div class="tab-content" id="shippingTab"><div id="shippingRatesTable">⏳ جاري التحميل...</div></div>
-        <div class="tab-content" id="invoicesTab"><div id="invoicesTable">⏳ جاري التحميل...</div></div>
-        <div class="tab-content" id="marketingTab"><div class="admin-empty">📢 التسويق</div></div>
-        <div class="tab-content" id="company_infoTab"><div class="admin-empty">🏢 بيانات الشركة</div></div>
-        <div class="tab-content" id="gov_docsTab"><div class="admin-empty">📋 التوثيق الحكومي</div></div>
-        <div class="tab-content" id="einvoiceTab"><div class="admin-empty">🧾 فوترة إلكترونية</div></div>
-        <div class="tab-content" id="hero_statsTab"><div id="hero_statsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-        <div class="tab-content" id="aboutTab"><div id="aboutList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-        <div class="tab-content" id="testimonialsTab"><div id="testimonialsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-        <div class="tab-content" id="projectsTab"><div id="projectsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-        <div class="tab-content" id="blogTab"><div id="blogList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-        <div class="tab-content" id="certificationsTab"><div id="certificationsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-        <div class="tab-content" id="contactTab"><div id="contactList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-        <div class="tab-content" id="settingsTab"><div class="admin-empty">⚙️ الإعدادات</div></div>
-    </div>
-</main>
+        <div class="content-card">
+            <div class="tab-content active" id="productsTab">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3>📦 المنتجات</h3><button class="btn-add" onclick="openModal()">➕ إضافة</button></div>
+                <table><thead><tr><th>#</th><th>الصورة</th><th>الاسم</th><th>الوصف</th><th>السعر</th><th>التصنيف</th><th>الإجراءات</th></tr></thead><tbody id="productsTable"></tbody></table>
+            </div>
+            <div class="tab-content" id="ordersTab"><div id="ordersList"></div></div>
+            <div class="tab-content" id="reviewsTab"><div id="reviewsList"></div></div>
+            <div class="tab-content" id="servicesTab"><div id="servicesList"></div></div>
+            <div class="tab-content" id="customersTab"><div id="customersList"></div></div>
+            <div class="tab-content" id="receiptsTab"><div id="receiptsList"></div></div>
+            <div class="tab-content" id="messagesTab"><div id="messagesList"></div></div>
+            <div class="tab-content" id="invoicesTab"><div id="invoicesTable">⏳ جاري التحميل...</div></div>
+            <div class="tab-content" id="hero_statsTab"><div id="hero_statsList">⏳ جاري التحميل...</div></div>
+            <div class="tab-content" id="aboutTab"><div id="aboutList">⏳ جاري التحميل...</div></div>
+            <div class="tab-content" id="projectsTab"><div id="projectsList">⏳ جاري التحميل...</div></div>
+            <div class="tab-content" id="blogTab"><div id="blogList">⏳ جاري التحميل...</div></div>
+            <div class="tab-content" id="certificationsTab"><div id="certificationsList">⏳ جاري التحميل...</div></div>
+            <div class="tab-content" id="contactTab"><div id="contactList">⏳ جاري التحميل...</div></div>
+            <div class="tab-content" id="settingsTab"><div>⚙️ الإعدادات</div></div>
+        </div>
+    </main>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
