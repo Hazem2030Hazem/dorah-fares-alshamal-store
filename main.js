@@ -2509,7 +2509,7 @@ var doraChatbot = {
     
     var bubble = document.createElement('div');
     bubble.id = 'doraChatBubble';
-    bubble.style.cssText = 'width:70px;height:70px;cursor:pointer;filter:drop-shadow(0 8px 24px rgba(99,102,241,0.5));transition:0.3s';
+   bubble.style.cssText = 'width:70px;height:70px;cursor:pointer;filter:drop-shadow(0 6px 20px rgba(99,102,241,0.4));transition:0.3s';
    bubble.innerHTML = '<svg width="70" height="70" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect x="40" y="50" width="120" height="100" rx="20" fill="#6366F1"/><rect x="20" y="40" width="30" height="15" rx="7" fill="#6366F1"/><rect x="150" y="40" width="30" height="15" rx="7" fill="#6366F1"/><circle cx="200" cy="20" r="15" fill="#8B5CF6"><animate attributeName="cy" values="20;24;20" dur="2s" repeatCount="indefinite"/></circle><circle cx="80" cy="90" r="12" fill="white"/><circle cx="120" cy="90" r="12" fill="white"/><circle cx="84" cy="87" r="4" fill="#1E293B"/><circle cx="124" cy="87" r="4" fill="#1E293B"/><path d="M80 120 Q100 140 120 120" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/><rect x="60" y="150" width="30" height="25" rx="8" fill="#6366F1"/><rect x="110" y="150" width="30" height="25" rx="8" fill="#6366F1"/></svg>';
     bubble.onclick = function() { if (typeof doraChatbot !== 'undefined') doraChatbot.toggle(); greeting.style.display = 'none'; };
     
