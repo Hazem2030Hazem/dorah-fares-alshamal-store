@@ -45,7 +45,14 @@ var doraChatbot = {
         try {
             var fullMessage = this.getSystemPrompt() + '\n\nسؤال العميل: ' + msg;
             
-            var response = await fetch('https://kcbmvxuzjlaooknwhqqb.supabase.co/functions/v1/chat', {
+           var response = await fetch('https://kcbmvxuzjlaooknwhqqb.supabase.co/functions/v1/chat', {
+    method: 'POST',
+    headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjYm12eHV6amxhb29rbndocXFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NzkyMjAsImV4cCI6MjA5OTU1NTIyMH0.ayDpkfCKL90GcUKjbHQs7OvS5sxF1VSraWg58NHJ7ek'
+    },
+    body: JSON.stringify({ message: fullMessage })
+});
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ message: fullMessage })
