@@ -1,5 +1,5 @@
 // ============================================================
-// 🤖 DORA SMART CHATBOT - OpenAI via Supabase Edge Function
+// 🤖 DORA SMART CHATBOT - Gemini AI
 // ============================================================
 
 var doraChatbot = {
@@ -43,7 +43,6 @@ var doraChatbot = {
         }
         
         try {
-                                 try {
             var fullMessage = this.getSystemPrompt() + '\n\nسؤال العميل: ' + msg;
             
             var response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=AQ.Ab8RN6IRcpbeYXSHI6G4-ZEKQZWTR3BSYBykJzgajrBXvfJcaA', {
