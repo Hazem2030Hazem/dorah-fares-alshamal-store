@@ -2516,4 +2516,3 @@ var doraChatbot = {
     document.body.appendChild(wrapper);
     setTimeout(function() { greeting.style.display = 'none'; }, 5000);
 })();
-})();
