@@ -2424,7 +2424,7 @@ create: function() {
                     <div style="color:rgba(255,255,255,0.8);font-size:11px;display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;background:#10B981;border-radius:50%;display:inline-block"></span> متصل</div>
                 </div>
             </div>
-            <button onclick="document.getElementById('doraChatWidget').style.display='none';doraChatbot.isOpen=false;var b=document.getElementById('doraChatBubble');if(b)b.style.display='block'" style="background:rgba(255,255,255,0.15);border:none;color:white;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:16px;transition:0.2s;position:relative;z-index:1;display:flex;align-items:center;justify-content:center">✕</button>
+            <button onclick="document.getElementById('doraChatWidget').style.display='none';doraChatbot.isOpen=false;var b=document.getElementById('doraChatBubble');if(b)b.style.display='flex'" style="background:rgba(255,255,255,0.15);border:none;color:white;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:16px;transition:0.2s;position:relative;z-index:1;display:flex;align-items:center;justify-content:center">✕</button>
         </div>
         
         <!-- Messages -->
