@@ -2408,39 +2408,87 @@ document.addEventListener('DOMContentLoaded', function() {
 // 🤖 DORA SMART CHATBOT - شات بوت ذكي بالعربي
 // ============================================================
 
+// ============================================================
+// 🤖 DORA SMART CHATBOT - Gemini AI
+// ============================================================
+
 var doraChatbot = {
     isOpen: false,
     messages: [],
-    knowledgeBase: {
-        'السلام': 'وعليكم السلام! 👋 كيف أقدر أساعدك؟',
-        'مرحبا': 'أهلاً وسهلاً! 🌟 كيف أقدر أخدمك؟',
-        'شحن': '🚚 نوفر شحن لجميع مدن المملكة. الشحن مجاني للطلبات فوق 300 ريال.',
-        'توصيل': '🚚 نوصل لجميع مناطق المملكة عبر ناقل وأرامكس وسمسا.',
-        'ضمان': '🛡️ جميع المنتجات عليها ضمان سنة كاملة ضد عيوب التصنيع.',
-        'خصم': '🎟️ عندنا كوبونات خصم! استخدم كود WELCOME لخصم 15% على أول طلب.',
-        'كوبون': '🎟️ الكوبونات: WELCOME (15%) - DORA10 (10%) - DORA20 (20%)',
-        'دفع': '💳 نقبل تحويل بنكي، STC Pay، مدى، أبل باي، وتمارا للتقسيط.',
-        'تمارا': '🧡 تمارا يتيح لك التقسيط على 4 دفعات بدون فوائد!',
-        'واتساب': '💬 تقدر تتواصل معانا على واتساب: 0545358773',
-        'اتصال': '📞 تقدر تتصل بنا على: 0568717449',
-        'منتجات': '🛍️ عندنا طابعات، كمبيوتر، رامات، هاردات، بروجكتور، إكسسوارات، أحبار، ومواد غذائية.',
-        'خدمات': '🔧 نقدم خدمات: طباعة، كاميرات مراقبة، نقاط بيع، شبكات، باركود، وصيانة.',
-        'طلب': '📦 تقدر تطلب من الموقع مباشرة - أضف اللي عايزه للسلة واتبع الخطوات.',
-        'حساب': '👤 تقدر تسجل حساب عشان تتابع طلباتك وتوفر عناوينك.',
-        'تتبع': '📍 تقدر تتابع حالة طلبك من حسابك في تبويب طلباتي.',
-        'استرجاع': '🔄 نقبل استرجاع المنتجات خلال 14 يوم من تاريخ الاستلام.',
-        'شكرا': 'العفو! 🌹 أي خدمة تانية؟',
-        'باي': 'مع السلامة! 👋 يومك سعيد.',
-        'عرض سعر': '📋 تقدر تطلب عرض سعر مخصص من واتساب أو من أي صفحة منتج.'
+    conversationHistory: [],
+    
+    getSystemPrompt: function() {
+        var pageTitle = document.title || 'الموقع';
+        var pageUrl = window.location.href;
+        var isProduct = pageUrl.includes('product');
+        var isCart = pageUrl.includes('cart') || pageUrl.includes('checkout');
+        var isHome = pageUrl === window.location.origin + '/' || pageUrl.includes('index');
+        
+        var context = 'أنت مساعد ذكي لشركة درة فارس الشمال - شركة سعودية متخصصة في بيع وتوريد: الطابعات، الكمبيوتر، الرامات، الهاردات، البروجكتور، الإكسسوارات، الأحبار، والمواد الغذائية.\n\n';
+        context += 'معلومات الشركة:\n- الهاتف: 0568717449\n- واتساب: 0545358773\n- الشحن لجميع مدن المملكة\n- شحن مجاني للطلبات فوق 300 ريال\n- ضمان سنة على جميع المنتجات\n- نقبل: تحويل بنكي، STC Pay، مدى، أبل باي، تمارا للتقسيط\n\n';
+        context += 'الكوبونات: WELCOME (خصم 15%)، DORA10 (خصم 10%)، DORA20 (خصم 20%)\n\n';
+        context += 'العميل حالياً في صفحة: ' + pageTitle + '\n';
+        
+        if (isHome) context += 'العميل في الصفحة الرئيسية. ساعده في استكشاف المنتجات والخدمات.\n';
+        if (isProduct) context += 'العميل بيتفرج على منتج. قدم له معلومات مفيدة عن المنتج واسأله لو عايز يعرف حاجة معينة.\n';
+        if (isCart) context += 'العميل في صفحة السلة أو الدفع. ساعده في إتمام الطلب وذكره بالكوبونات.\n';
+        
+        context += '\nجاوب بالعربي. خلي إجاباتك مختصرة ومفيدة. استخدم إيموجي بسيط. لو سأل عن حاجة مش متأكد منها، قول له يتواصل مع خدمة العملاء.';
+        
+        return context;
     },
     
-    getResponse: function(msg) {
+    getResponse: async function(msg) {
         msg = msg.toLowerCase().trim();
-        for (var key in this.knowledgeBase) {
-            if (msg.indexOf(key) !== -1) return this.knowledgeBase[key];
+        
+        // الكلمات المفتاحية السريعة (غير متصلة بالإنترنت)
+        var quickReplies = {
+            'السلام': 'وعليكم السلام! 👋 كيف أقدر أساعدك؟',
+            'مرحبا': 'أهلاً وسهلاً! 🌟 أقدر أساعدك في أي استفسار عن منتجاتنا وخدماتنا.',
+            'شكرا': 'العفو! 🌹 أي خدمة تانية؟',
+            'باي': 'مع السلامة! 👋 يومك سعيد.'
+        };
+        
+        for (var key in quickReplies) {
+            if (msg === key || msg.indexOf(key) === 0) return quickReplies[key];
         }
-        var replies = ['🤔 ممكن توضح أكثر؟', '📝 تقدر تسأل عن: الأسعار، الشحن، الضمان، المنتجات، الدفع.', '👋 أقدر أساعدك في حاجة تانية؟'];
-        return replies[Math.floor(Math.random() * replies.length)];
+        
+        // Gemini AI
+        try {
+            var response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyAb8RN6LDJxeKokRpmkaIFvS8V0tPa1eflqQx1ghmJkdF5ZX4Cg', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [
+                        { role: 'user', parts: [{ text: this.getSystemPrompt() }] },
+                        { role: 'model', parts: [{ text: 'فهمت. أنا مساعد درة فارس الذكي. هجاوب بالعربي.' }] }
+                    ].concat(this.conversationHistory.slice(-6)).concat([
+                        { role: 'user', parts: [{ text: msg }] }
+                    ]),
+                    generationConfig: { temperature: 0.7, maxOutputTokens: 300 }
+                })
+            });
+            
+            var data = await response.json();
+            var reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            
+            if (reply) {
+                this.conversationHistory.push({ role: 'user', parts: [{ text: msg }] });
+                this.conversationHistory.push({ role: 'model', parts: [{ text: reply }] });
+                return reply;
+            }
+        } catch(e) {
+            console.log('Gemini fallback:', e);
+        }
+        
+        // ردود احتياطية
+        var fallbackReplies = [
+            '🤔 أقدر أساعدك في: الأسعار، الشحن، الضمان، المنتجات، الدفع، الكوبونات.',
+            '📝 جرب تسأل عن: شحن، ضمان، سعر، خصم، دفع، تمارا، منتجات، خدمات.',
+            '💡 محتاج مساعدة في إيه بالضبط؟',
+            '👋 أنا هنا لخدمتك! اسألني أي حاجة عن منتجاتنا وخدماتنا.'
+        ];
+        return fallbackReplies[Math.floor(Math.random() * fallbackReplies.length)];
     },
     
     show: function() {
@@ -2454,23 +2502,35 @@ var doraChatbot = {
     hide: function() {
         document.getElementById('doraChatWidget').style.display = 'none';
         this.isOpen = false;
-        var btn = document.getElementById('doraChatBubble');
-        if (btn) btn.style.display = 'flex';
     },
     
     toggle: function() {
         this.isOpen ? this.hide() : this.show();
     },
     
-    send: function() {
+    send: async function() {
         var input = document.getElementById('doraChatInput');
         var msg = input.value.trim();
         if (!msg) return;
+        
         this.addMessage('أنت', msg, 'user');
         input.value = '';
-        var reply = this.getResponse(msg);
-        var self = this;
-        setTimeout(function() { self.addMessage('درة فارس', reply, 'bot'); }, 500 + Math.random() * 500);
+        input.disabled = true;
+        
+        // إظهار typing indicator
+        var typingDiv = document.createElement('div');
+        typingDiv.className = 'dora-chat-msg bot typing';
+        typingDiv.innerHTML = '<em>⏳ جاري الكتابة...</em>';
+        document.getElementById('doraChatMessages').appendChild(typingDiv);
+        
+        var reply = await this.getResponse(msg);
+        
+        // إزالة typing indicator
+        if (typingDiv.parentNode) typingDiv.parentNode.removeChild(typingDiv);
+        
+        this.addMessage('درة فارس', reply, 'bot');
+        input.disabled = false;
+        input.focus();
     },
     
     addMessage: function(sender, text, type) {
@@ -2488,11 +2548,13 @@ var doraChatbot = {
     },
 
     create: function() {
-        var html = '<div id="doraChatWidget" style="display:none;position:fixed;bottom:30px;left:30px;z-index:99999;width:380px;max-width:90vw;background:#FFFFFF;border-radius:24px;overflow:hidden;box-shadow:0 25px 80px rgba(0,0,0,0.2);direction:rtl;font-family:Tajawal,Cairo,sans-serif"><div style="background:linear-gradient(135deg,#6366F1,#8B5CF6);padding:20px 22px;display:flex;justify-content:space-between;align-items:center;position:relative;overflow:hidden"><div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:rgba(255,255,255,0.1);border-radius:50%"></div><div style="display:flex;align-items:center;gap:14px;position:relative;z-index:1"><div style="width:48px;height:48px;display:flex;align-items:center;justify-content:center"><img src="robot.png" alt="Robot" style="width:48px;height:48px" onerror="this.style.display=\'none\';this.parentElement.innerHTML=\'<span style=font-size:32px>🤖</span>\'"></div><div><div style="color:white;font-weight:700;font-size:16px">درة فارس</div><div style="color:rgba(255,255,255,0.8);font-size:11px;display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;background:#10B981;border-radius:50%;display:inline-block"></span> متصل</div></div></div><button onclick="document.getElementById(\'doraChatWidget\').style.display=\'none\';doraChatbot.isOpen=false;var b=document.getElementById(\'doraChatBubble\');if(b)b.style.display=\'flex\'" style="background:rgba(255,255,255,0.15);border:none;color:white;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">✕</button></div><div id="doraChatMessages" style="height:320px;overflow-y:auto;padding:20px;background:#F8FAFC"><div class="dora-chat-msg bot" style="display:flex;align-items:start;gap:10px;background:white;border:1px solid #E8ECF1;padding:14px;border-radius:16px 16px 16px 4px"><div style="width:36px;height:36px;background:linear-gradient(135deg,#6366F1,#8B5CF6);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-size:18px">💬</span></div><div><div style="color:#94A3B8;font-size:11px;margin-bottom:4px">درة فارس</div><div style="color:#1E293B;font-size:13px;line-height:1.6">👋 أهلاً وسهلاً! أنا المساعد الذكي لشركة درة فارس الشمال. أقدر أساعدك في:</div></div></div><div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding:0 4px"><button onclick="doraChatbot.quickAsk(\'شحن\')" style="display:flex;align-items:center;gap:6px;background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;padding:10px 16px;border-radius:25px;cursor:pointer;font-size:12px;font-weight:500;transition:0.2s;font-family:inherit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg> الشحن</button><button onclick="doraChatbot.quickAsk(\'ضمان\')" style="display:flex;align-items:center;gap:6px;background:#F0FDF4;color:#16A34A;border:1px solid #BBF7D0;padding:10px 16px;border-radius:25px;cursor:pointer;font-size:12px;font-weight:500;transition:0.2s;font-family:inherit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> الضمان</button><button onclick="doraChatbot.quickAsk(\'خصم\')" style="display:flex;align-items:center;gap:6px;background:#FFF7ED;color:#EA580C;border:1px solid #FED7AA;padding:10px 16px;border-radius:25px;cursor:pointer;font-size:12px;font-weight:500;transition:0.2s;font-family:inherit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="8.5" r="1.5"></circle><circle cx="15.5" cy="15.5" r="1.5"></circle><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"></path><path d="M9 15l6-6"></path></svg> خصومات</button><button onclick="doraChatbot.quickAsk(\'دفع\')" style="display:flex;align-items:center;gap:6px;background:#F5F3FF;color:#7C3AED;border:1px solid #DDD6FE;padding:10px 16px;border-radius:25px;cursor:pointer;font-size:12px;font-weight:500;transition:0.2s;font-family:inherit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg> الدفع</button></div></div><div style="display:flex;padding:16px 18px;background:white;border-top:1px solid #E8ECF1;gap:10px;align-items:center"><input id="doraChatInput" type="text" placeholder="اكتب سؤالك هنا..." onkeydown="if(event.key===\'Enter\')doraChatbot.send()" style="flex:1;padding:14px 18px;border-radius:30px;border:2px solid #E8ECF1;background:#F8FAFC;color:#1E293B;font-family:inherit;font-size:13px;outline:none;transition:0.2s" onfocus="this.style.borderColor=\'#6366F1\';this.style.background=\'white\'" onblur="this.style.borderColor=\'#E8ECF1\';this.style.background=\'#F8FAFC\'"><button onclick="doraChatbot.send()" style="background:linear-gradient(135deg,#6366F1,#8B5CF6);color:white;border:none;width:46px;height:46px;border-radius:50%;cursor:pointer;font-weight:700;transition:0.2s;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 15px rgba(99,102,241,0.4)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button></div><div style="text-align:center;padding:10px;font-size:10px;color:#94A3B8;background:#F8FAFC;border-top:1px solid #E8ECF1">⚡ اكتب "تحويل" للتحدث مع خدمة العملاء</div></div><style>.dora-chat-msg{padding:12px 16px;margin:6px 0;border-radius:16px;font-size:13px;line-height:1.7;max-width:92%;word-wrap:break-word}.dora-chat-msg.user{background:linear-gradient(135deg,#EFF6FF,#DBEAFE);margin-right:auto;margin-left:0;color:#1E40AF;text-align:right;border-bottom-left-radius:4px}.dora-chat-msg.bot{background:white;margin-left:auto;margin-right:0;text-align:right;border:1px solid #E8ECF1;border-bottom-right-radius:4px}#doraChatMessages::-webkit-scrollbar{width:4px}#doraChatMessages::-webkit-scrollbar-track{background:transparent}#doraChatMessages::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:10px}</style>';
+        var html = '<div id="doraChatWidget" style="display:none;position:fixed;bottom:30px;left:30px;z-index:99999;width:380px;max-width:90vw;background:#FFFFFF;border-radius:24px;overflow:hidden;box-shadow:0 25px 80px rgba(0,0,0,0.2);direction:rtl;font-family:Tajawal,Cairo,sans-serif"><div style="background:linear-gradient(135deg,#6366F1,#8B5CF6);padding:20px 22px;display:flex;justify-content:space-between;align-items:center;position:relative;overflow:hidden"><div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:rgba(255,255,255,0.1);border-radius:50%"></div><div style="display:flex;align-items:center;gap:14px;position:relative;z-index:1"><div style="width:48px;height:48px;display:flex;align-items:center;justify-content:center"><img src="robot.png" alt="Robot" style="width:48px;height:48px" onerror="this.style.display=\'none\';this.parentElement.innerHTML=\'<span style=font-size:32px>🤖</span>\'"></div><div><div style="color:white;font-weight:700;font-size:16px">درة فارس</div><div style="color:rgba(255,255,255,0.8);font-size:11px;display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;background:#10B981;border-radius:50%;display:inline-block"></span> متصل ✨ AI</div></div></div><button onclick="document.getElementById(\'doraChatWidget\').style.display=\'none\';doraChatbot.isOpen=false;var b=document.getElementById(\'doraChatBubble\');if(b)b.style.display=\'flex\'" style="background:rgba(255,255,255,0.15);border:none;color:white;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">✕</button></div><div id="doraChatMessages" style="height:320px;overflow-y:auto;padding:20px;background:#F8FAFC"><div class="dora-chat-msg bot" style="display:flex;align-items:start;gap:10px;background:white;border:1px solid #E8ECF1;padding:14px;border-radius:16px 16px 16px 4px"><div style="width:36px;height:36px;background:linear-gradient(135deg,#6366F1,#8B5CF6);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-size:18px">💬</span></div><div><div style="color:#94A3B8;font-size:11px;margin-bottom:4px">درة فارس ✨ AI</div><div style="color:#1E293B;font-size:13px;line-height:1.6">👋 أهلاً وسهلاً! أنا المساعد الذكي لشركة درة فارس الشمال. أقدر أساعدك في:</div></div></div><div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding:0 4px"><button onclick="doraChatbot.quickAsk(\'شحن\')" style="display:flex;align-items:center;gap:6px;background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;padding:10px 16px;border-radius:25px;cursor:pointer;font-size:12px;font-weight:500;font-family:inherit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg> الشحن</button><button onclick="doraChatbot.quickAsk(\'ضمان\')" style="display:flex;align-items:center;gap:6px;background:#F0FDF4;color:#16A34A;border:1px solid #BBF7D0;padding:10px 16px;border-radius:25px;cursor:pointer;font-size:12px;font-weight:500;font-family:inherit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> الضمان</button><button onclick="doraChatbot.quickAsk(\'خصم\')" style="display:flex;align-items:center;gap:6px;background:#FFF7ED;color:#EA580C;border:1px solid #FED7AA;padding:10px 16px;border-radius:25px;cursor:pointer;font-size:12px;font-weight:500;font-family:inherit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8.5" cy="8.5" r="1.5"></circle><circle cx="15.5" cy="15.5" r="1.5"></circle><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"></path><path d="M9 15l6-6"></path></svg> خصومات</button><button onclick="doraChatbot.quickAsk(\'دفع\')" style="display:flex;align-items:center;gap:6px;background:#F5F3FF;color:#7C3AED;border:1px solid #DDD6FE;padding:10px 16px;border-radius:25px;cursor:pointer;font-size:12px;font-weight:500;font-family:inherit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg> الدفع</button></div></div><div style="display:flex;padding:16px 18px;background:white;border-top:1px solid #E8ECF1;gap:10px;align-items:center"><input id="doraChatInput" type="text" placeholder="اسألني أي حاجة..." onkeydown="if(event.key===\'Enter\')doraChatbot.send()" style="flex:1;padding:14px 18px;border-radius:30px;border:2px solid #E8ECF1;background:#F8FAFC;color:#1E293B;font-family:inherit;font-size:13px;outline:none"><button onclick="doraChatbot.send()" style="background:linear-gradient(135deg,#6366F1,#8B5CF6);color:white;border:none;width:46px;height:46px;border-radius:50%;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 15px rgba(99,102,241,0.4)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button></div><div style="text-align:center;padding:10px;font-size:10px;color:#94A3B8;background:#F8FAFC;border-top:1px solid #E8ECF1">⚡ مدعوم بالذكاء الاصطناعي | درة فارس الشمال</div></div><style>.dora-chat-msg{padding:12px 16px;margin:6px 0;border-radius:16px;font-size:13px;line-height:1.7;max-width:92%;word-wrap:break-word}.dora-chat-msg.user{background:#EFF6FF;color:#1E40AF;margin-right:auto;text-align:right;border-bottom-left-radius:4px}.dora-chat-msg.bot{background:white;border:1px solid #E8ECF1;margin-left:auto;text-align:right;border-bottom-right-radius:4px}.dora-chat-msg.typing{opacity:0.6;background:#F1F5F9}#doraChatMessages::-webkit-scrollbar{width:4px}#doraChatMessages::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:10px}</style>';
         document.body.insertAdjacentHTML('beforeend', html);
     }
 };
+
 window.doraChatbot = doraChatbot;
+
 // أيقونة الروبوت
 (function(){
     if (document.getElementById('doraChatBubble')) return;
@@ -2501,7 +2563,7 @@ window.doraChatbot = doraChatbot;
     wrapper.style.cssText = 'position:fixed;bottom:30px;left:30px;z-index:99998;display:flex;align-items:flex-end;gap:12px';
     
     var greeting = document.createElement('div');
-    greeting.innerHTML = '👋 أهلاً! أنا هنا لخدمتك';
+    greeting.innerHTML = '👋 أهلاً! اسألني أي حاجة';
     greeting.style.cssText = 'background:white;color:#1E293B;padding:12px 18px;border-radius:20px 20px 4px 20px;font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,0.15);white-space:nowrap;font-family:Tajawal,sans-serif';
     
     var bubble = document.createElement('div');
@@ -2509,12 +2571,13 @@ window.doraChatbot = doraChatbot;
     bubble.style.cssText = 'width:75px;height:75px;cursor:pointer;transition:0.3s;filter:drop-shadow(0 6px 20px rgba(99,102,241,0.4))';
     bubble.innerHTML = '<img src="robot.png" alt="Robot" style="width:75px;height:75px">';
     
-    bubble.onclick = function() { if (typeof doraChatbot !== 'undefined') doraChatbot.toggle(); greeting.style.display = 'none'; };
+    bubble.onclick = function() { doraChatbot.toggle(); greeting.style.display = 'none'; };
     
     wrapper.appendChild(greeting);
     wrapper.appendChild(bubble);
     document.body.appendChild(wrapper);
     setTimeout(function() { greeting.style.display = 'none'; }, 5000);
-setInterval(function(){var b=document.getElementById('doraChatBubble');var w=document.getElementById('doraChatWidget');if(b&&w&&w.style.display==='none'&&b.style.display==='none'){b.style.display='flex';}},1000);
 })();
+
+setInterval(function(){var b=document.getElementById('doraChatBubble');var w=document.getElementById('doraChatWidget');if(b&&w&&w.style.display==='none'&&b.style.display==='none'){b.style.display='flex';}},1000);
 })();
