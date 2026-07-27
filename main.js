@@ -2743,23 +2743,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() { greeting.style.display = 'none'; }, 5000);
 });
     
-    bubble.onmouseenter = function() { 
-        this.style.transform = 'scale(1.1)'; 
-        this.style.boxShadow = '0 12px 35px rgba(59,130,246,0.6)'; 
-    };
-    bubble.onmouseleave = function() { 
-        this.style.transform = 'scale(1)'; 
-        this.style.boxShadow = '0 8px 25px rgba(59,130,246,0.5)'; 
-    };
-    
-    wrapper.appendChild(greeting);
-    wrapper.appendChild(bubble);
-    document.body.appendChild(wrapper);
-    
-    // إخفاء الرسالة بعد 5 ثواني
-    setTimeout(function() { greeting.style.display = 'none'; }, 5000);
-});
-// تأكيد ظهور أيقونة الشات
+   // تأكيد ظهور أيقونة الشات
 (function(){
   if (document.getElementById('doraChatBubble')) return;
   var wrapper = document.createElement('div');
