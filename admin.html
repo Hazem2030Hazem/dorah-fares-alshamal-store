@@ -1,469 +1,219 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="dark">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="لوحة إدارة شركة درة فارس الشمال">
-    <meta name="theme-color" content="#EF4444">
-    <link rel="manifest" href="manifest.json?v=3.0">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20fill%3D%27%2523EF4444%27%20rx%3D%2715%27%20width%3D%27100%27%20height%3D%27100%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27white%27%3E%F0%9F%94%90%3C%2Ftext%3E%3C%2Fsvg%3E">
     <title>لوحة الإدارة | شركة درة فارس الشمال</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="admin-v2.css">
+    <style>
+        :root {
+            --sidebar-width: 260px;
+            --header-height: 70px;
+            --primary: #1a1f36;
+            --secondary: #2d3348;
+            --accent: #c9a84c;
+            --accent-light: #f0e6c8;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --bg: #0f1119;
+            --card: #1a1f2e;
+            --border: #2a2f45;
+            font-family: 'Tajawal', 'Cairo', sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
+        
+        /* SIDEBAR */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--primary);
+            position: fixed; top: 0; right: 0; bottom: 0;
+            border-left: 1px solid var(--border);
+            z-index: 1000; overflow-y: auto;
+            background-image: url('admin-bg.png.jpg');
+            background-size: cover; background-position: center;
+            display: flex; flex-direction: column;
+        }
+        .sidebar::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(180deg, rgba(15,17,25,0.85) 0%, rgba(26,31,54,0.92) 100%);
+        }
+        .sidebar-content { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; }
+        .sidebar-logo { padding: 24px 20px; text-align: center; border-bottom: 1px solid var(--border); }
+        .sidebar-logo h2 { color: var(--accent); font-size: 22px; font-weight: 900; }
+        .sidebar-logo p { color: var(--text-muted); font-size: 11px; margin-top: 4px; }
+        .sidebar-nav { flex: 1; padding: 12px 0; }
+        .sidebar-nav .nav-section { padding: 12px 20px 6px; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); font-weight: 700; }
+        .sidebar-nav a { display: flex; align-items: center; gap: 12px; padding: 11px 20px; color: var(--text-muted); text-decoration: none; font-size: 14px; transition: 0.2s; cursor: pointer; border-right: 3px solid transparent; margin: 2px 0; }
+        .sidebar-nav a:hover, .sidebar-nav a.active { color: white; background: rgba(201,168,76,0.08); border-right-color: var(--accent); }
+        .sidebar-nav a svg { width: 20px; height: 20px; flex-shrink: 0; }
+        .sidebar-footer { padding: 16px 20px; border-top: 1px solid var(--border); }
+        .sidebar-footer button { width: 100%; padding: 10px; background: rgba(239,68,68,0.15); color: var(--danger); border: 1px solid rgba(239,68,68,0.3); border-radius: 8px; cursor: pointer; font-weight: 600; font-family: inherit; }
+        
+        /* HEADER */
+        .header {
+            position: fixed; top: 0; left: 0; right: var(--sidebar-width); height: var(--header-height);
+            background: var(--primary); border-bottom: 1px solid var(--border); z-index: 999;
+            display: flex; align-items: center; justify-content: space-between; padding: 0 30px;
+        }
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        .header-breadcrumb { color: var(--text-muted); font-size: 13px; }
+        .header-breadcrumb span { color: var(--accent); }
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        .header-notif { width: 42px; height: 42px; background: var(--card); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; border: 1px solid var(--border); }
+        .header-notif .badge { position: absolute; top: -4px; left: -4px; background: var(--danger); color: white; font-size: 10px; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        .header-user { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .header-user .avatar { width: 38px; height: 38px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; color: var(--primary); }
+        .header-user .name { font-size: 14px; font-weight: 600; }
+        
+        /* MAIN */
+        .main {
+            margin-right: var(--sidebar-width); margin-top: var(--header-height);
+            flex: 1; padding: 30px; min-height: calc(100vh - var(--header-height));
+        }
+        
+        /* STATS */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; display: flex; align-items: center; gap: 16px; transition: 0.3s; }
+        .stat-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+        .stat-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .stat-icon.blue { background: rgba(59,130,246,0.15); color: #60a5fa; }
+        .stat-icon.green { background: rgba(16,185,129,0.15); color: #34d399; }
+        .stat-icon.orange { background: rgba(245,158,11,0.15); color: #fbbf24; }
+        .stat-icon.purple { background: rgba(139,92,246,0.15); color: #a78bfa; }
+        .stat-info .stat-num { font-size: 28px; font-weight: 900; color: white; }
+        .stat-info .stat-label { font-size: 13px; color: var(--text-muted); }
+        
+        /* CONTENT */
+        .content-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+        .content-card h3 { font-size: 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        
+        /* TAB CONTENT */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        /* LOGIN */
+        .login-section { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: var(--bg); background-image: url('admin-bg.png.jpg'); background-size: cover; background-position: center; }
+        .login-box { background: rgba(15,17,25,0.95); border: 1px solid var(--border); border-radius: 20px; padding: 40px; width: 420px; max-width: 90vw; }
+        .login-box h2 { text-align: center; color: var(--accent); margin-bottom: 8px; }
+        
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(100%); }
+            .header { right: 0; }
+            .main { margin-right: 0; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
 </head>
 <body>
 
-<!-- Login -->
+<!-- LOGIN -->
 <section class="login-section" id="loginSection">
     <div class="login-box">
-        <h2>🔐 <span>لوحة</span> الإدارة</h2>
-        <p style="color:rgba(255,255,255,0.7);text-align:center;margin-bottom:20px">إدارة الطلبات والخدمات والعملاء والمدفوعات والتقييمات من مكان واحد</p>
-        <form id="loginForm" onsubmit="return handleLogin(event)">
-            <div class="form-group">
-                <label>📧 بريد الأدمن</label>
-                <input type="email" id="username" placeholder="admin@example.com" required>
-            </div>
-            <div class="form-group">
-                <label>🔒 كلمة المرور</label>
-                <input type="password" id="password" placeholder="أدخل كلمة المرور" required>
-            </div>
-            <button type="submit" class="btn-login" style="width:100%;padding:16px;background:linear-gradient(135deg,#EF4444,#DC2626);color:white;border:none;border-radius:12px;font-size:18px;font-weight:700;cursor:pointer">دخول إلى لوحة التحكم</button>
-            <div class="error-msg" id="errorMsg" style="color:#EF4444;font-size:14px;text-align:center;margin-top:15px;display:none">❌ بيانات الدخول غير صحيحة</div>
+        <h2>درة فارس الشمال</h2>
+        <p style="color:var(--text-muted);text-align:center;margin-bottom:24px">لوحة الإدارة</p>
+        <form onsubmit="return handleLogin(event)">
+            <div style="margin-bottom:16px"><label style="display:block;margin-bottom:6px;color:var(--text-muted)">البريد الإلكتروني</label><input type="email" id="username" placeholder="admin@example.com" required style="width:100%;padding:12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:white;font-family:inherit"></div>
+            <div style="margin-bottom:20px"><label style="display:block;margin-bottom:6px;color:var(--text-muted)">كلمة المرور</label><input type="password" id="password" placeholder="أدخل كلمة المرور" required style="width:100%;padding:12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:white;font-family:inherit"></div>
+            <button type="submit" style="width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),#a88a2e);color:var(--primary);border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit">دخول</button>
+            <div id="errorMsg" style="color:var(--danger);text-align:center;margin-top:12px;display:none">❌ بيانات الدخول غير صحيحة</div>
         </form>
     </div>
 </section>
 
-<!-- Dashboard -->
-<section class="dashboard" id="dashboard" style="display:none;padding:100px 25px 50px;min-height:100vh">
-    <div class="container">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:40px">
-            <h1 style="font-size:36px;font-weight:900;color:#fff">⚡ لوحة التحكم</h1>
-            <button onclick="logout()" style="padding:10px 25px;background:rgba(239,68,68,0.2);color:#EF4444;border:1px solid rgba(239,68,68,0.5);border-radius:12px;cursor:pointer;font-weight:600">🚪 تسجيل الخروج</button>
-        </div>
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-content">
+        <div class="sidebar-logo"><h2>درة فارس</h2><p>لوحة الإدارة</p></div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">الرئيسية</div>
+            <a onclick="showTab('products')" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg> المنتجات</a>
+            <a onclick="showTab('orders')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg> الطلبات</a>
+            <a onclick="showTab('customers')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/></svg> العملاء</a>
+            <div class="nav-section">الإدارة</div>
+            <a onclick="showTab('services')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg> الخدمات</a>
+            <a onclick="showTab('receipts')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/></svg> المدفوعات</a>
+            <a onclick="showTab('reviews')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> التقييمات</a>
+            <a onclick="showTab('messages')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg> الرسائل</a>
+            <a onclick="showTab('invoices')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg> الفواتير</a>
+            <div class="nav-section">المحتوى</div>
+            <a onclick="showTab('hero_stats')">📊 الإحصائيات</a>
+            <a onclick="showTab('about')">🌟 عن الشركة</a>
+            <a onclick="showTab('projects')">📦 المشاريع</a>
+            <a onclick="showTab('blog')">📝 المقالات</a>
+            <a onclick="showTab('certifications')">📜 الشهادات</a>
+            <a onclick="showTab('contact')">📞 التواصل</a>
+            <div class="nav-section">الإعدادات</div>
+            <a onclick="showTab('settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg> الإعدادات</a>
+        </nav>
+        <div class="sidebar-footer"><button onclick="logout()">🚪 تسجيل الخروج</button></div>
+    </div>
+</aside>
 
-        <!-- Stats -->
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:40px">
-            <div class="stat-card"><span class="num" id="totalProducts">0</span><span class="label">إجمالي المنتجات</span></div>
-            <div class="stat-card"><span class="num" id="totalOrders">0</span><span class="label">الطلبات الجديدة</span></div>
-            <div class="stat-card"><span class="num" id="totalReviews">0</span><span class="label">التقييمات</span></div>
-            <div class="stat-card"><span class="num" id="totalMessages">0</span><span class="label">الرسائل الجديدة</span></div>
-        </div>
+<!-- HEADER -->
+<header class="header">
+    <div class="header-left"><div class="header-breadcrumb">الرئيسية / <span id="pageTitle">المنتجات</span></div></div>
+    <div class="header-right">
+        <div class="header-notif" onclick="showTab('messages')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span class="badge" id="notifBadge">0</span></div>
+        <div class="header-user"><div class="avatar">م</div><div class="name">مدير النظام</div></div>
+    </div>
+</header>
 
-        <!-- Tabs -->
-        <div style="display:flex;gap:10px;margin-bottom:30px;flex-wrap:wrap" id="adminTabs">
-            <button class="tab-btn active" onclick="showTab('products')">📦 المنتجات</button>
-            <button class="tab-btn" onclick="showTab('orders')">🛒 الطلبات</button>
-            <button class="tab-btn" onclick="showTab('reviews')">⭐ التقييمات</button>
-            <button class="tab-btn" onclick="showTab('services')">🔧 الخدمات</button>
-            <button class="tab-btn" onclick="showTab('customers')">👥 العملاء</button>
-            <button class="tab-btn" onclick="showTab('receipts')">🧾 المدفوعات</button>
-            <button class="tab-btn" onclick="showTab('messages')">📨 الرسائل</button>
-            <button class="tab-btn" onclick="showTab('content')">📝 المحتوى</button>
-            <button class="tab-btn" onclick="showTab('pages')">📄 الصفحات</button>
-            <button class="tab-btn" onclick="showTab('services_content')">🛠️ محتوى الخدمات</button>
-            <button class="tab-btn" onclick="showTab('bank_accounts')">🏦 الحسابات</button>
-            <button class="tab-btn" onclick="showTab('files')">📁 الملفات</button>
-            <button class="tab-btn" onclick="showTab('settings')">⚙️ الإعدادات</button>
-            <button class="tab-btn" onclick="showTab('partners')">🤝 الشركاء</button>
-            <button class="tab-btn" onclick="showTab('payment_methods')">💳 طرق الدفع</button>
-            <button class="tab-btn" onclick="showTab('shipping')">🚚 الشحن</button>
-            <button class="tab-btn" onclick="showTab('invoices')">🧾 الفواتير</button>
-            <button class="tab-btn" onclick="showTab('marketing')" style="background:rgba(245,158,11,0.2);color:#F59E0B;border-color:rgba(245,158,11,0.5)">📢 التسويق</button>
-                   <button class="tab-btn" onclick="showTab('company_info')" style="background:rgba(16,185,129,0.2);color:#10B981;border-color:rgba(16,185,129,0.5)">🏢 بيانات الشركة</button>
-            <button class="tab-btn" onclick="showTab('gov_docs')" style="background:rgba(59,130,246,0.2);color:#60A5FA;border-color:rgba(59,130,246,0.5)">📋 التوثيق الحكومي</button>
-            <button class="tab-btn" onclick="showTab('einvoice')" style="background:rgba(139,92,246,0.2);color:#A78BFA;border-color:rgba(139,92,246,0.5)">🧾 فوترة إلكترونية</button>
-                   <button class="tab-btn" onclick="showTab('site_stats')" style="background:rgba(34,211,238,0.2);color:#22D3EE;border-color:rgba(34,211,238,0.5)">📊 الإحصائيات</button>
-            <button class="tab-btn" onclick="showTab('site_about')" style="background:rgba(59,99,158,0.2);color:#3B639E;border-color:rgba(59,99,158,0.5)">🌟 الرؤية والقيم</button>
-            <button class="tab-btn" onclick="showTab('site_testimonials')" style="background:rgba(245,158,11,0.2);color:#F59E0B;border-color:rgba(245,158,11,0.5)">💬 آراء الشركات</button>
-            <button class="tab-btn" onclick="showTab('site_projects')" style="background:rgba(16,185,129,0.2);color:#10B981;border-color:rgba(16,185,129,0.5)">📦 المشاريع</button>
-            <button class="tab-btn" onclick="showTab('site_blog')" style="background:rgba(59,130,246,0.2);color:#60A5FA;border-color:rgba(59,130,246,0.5)">📝 المقالات</button>
-            <button class="tab-btn" onclick="showTab('site_certifications')" style="background:rgba(16,185,129,0.2);color:#10B981;border-color:rgba(16,185,129,0.5)">📜 الشهادات</button>
-            <button class="tab-btn" onclick="showTab('site_contact')" style="background:rgba(59,130,246,0.2);color:#60A5FA;border-color:rgba(59,130,246,0.5)">📞 التواصل</button>
-                   <button class="tab-btn" onclick="showTab('hero_stats')" style="background:rgba(34,211,238,0.2);color:#22D3EE;border-color:rgba(34,211,238,0.5)">📊 إحصائيات جديدة</button>
-            <button class="tab-btn" onclick="showTab('about')" style="background:rgba(59,99,158,0.2);color:#3B639E;border-color:rgba(59,99,158,0.5)">🌟 عن الشركة</button>
-            <button class="tab-btn" onclick="showTab('testimonials')" style="background:rgba(245,158,11,0.2);color:#F59E0B;border-color:rgba(245,158,11,0.5)">💬 آراء العملاء</button>
-            <button class="tab-btn" onclick="showTab('projects')" style="background:rgba(16,185,129,0.2);color:#10B981;border-color:rgba(16,185,129,0.5)">📦 المشاريع</button>
-            <button class="tab-btn" onclick="showTab('blog')" style="background:rgba(59,130,246,0.2);color:#60A5FA;border-color:rgba(59,130,246,0.5)">📝 المقالات</button>
-            <button class="tab-btn" onclick="showTab('certifications')" style="background:rgba(16,185,129,0.2);color:#10B981;border-color:rgba(16,185,129,0.5)">📜 الشهادات</button>
-            <button class="tab-btn" onclick="showTab('contact')" style="background:rgba(59,130,246,0.2);color:#60A5FA;border-color:rgba(59,130,246,0.5)">📞 التواصل</button>
-        </div>
-
-        <!-- Tab Contents -->
-        <div class="tab-content active" id="productsTab"><div class="table-container"><div class="table-header"><h3>📦 المنتجات</h3><button class="btn-add" onclick="openModal()">➕ إضافة</button></div><div class="table-responsive"><table><thead><tr><th>#</th><th>الصورة</th><th>الاسم</th><th>الوصف</th><th>السعر</th><th>التصنيف</th><th>الإجراءات</th></tr></thead><tbody id="productsTable"></tbody></table></div></div></div>
+<!-- MAIN -->
+<main class="main">
+    <!-- Stats -->
+    <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon blue">📦</div><div class="stat-info"><div class="stat-num" id="totalProducts">0</div><div class="stat-label">إجمالي المنتجات</div></div></div>
+        <div class="stat-card"><div class="stat-icon green">🛒</div><div class="stat-info"><div class="stat-num" id="totalOrders">0</div><div class="stat-label">الطلبات الجديدة</div></div></div>
+        <div class="stat-card"><div class="stat-icon orange">⭐</div><div class="stat-info"><div class="stat-num" id="totalReviews">0</div><div class="stat-label">التقييمات</div></div></div>
+        <div class="stat-card"><div class="stat-icon purple">📨</div><div class="stat-info"><div class="stat-num" id="totalMessages">0</div><div class="stat-label">الرسائل الجديدة</div></div></div>
+    </div>
+    
+    <!-- Content -->
+    <div class="content-card">
+        <!-- Products Tab -->
+        <div class="tab-content active" id="productsTab"><div class="table-container"><div class="table-header"><h3>📦 المنتجات</h3><button class="btn-add" onclick="openModal()" style="background:var(--accent);color:var(--primary);border:none;padding:10px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-family:inherit">➕ إضافة</button></div><div class="table-responsive"><table><thead><tr><th>#</th><th>الصورة</th><th>الاسم</th><th>الوصف</th><th>السعر</th><th>التصنيف</th><th>الإجراءات</th></tr></thead><tbody id="productsTable"></tbody></table></div></div></div>
+        
         <div class="tab-content" id="ordersTab"><div id="ordersList"></div></div>
-        <div class="tab-content" id="reviewsTab"><div class="table-container"><div class="table-header"><h3>⭐ التقييمات</h3></div><div id="reviewsList"></div></div></div>
-        <div class="tab-content" id="servicesTab"><div class="table-container"><div class="table-header"><h3>🔧 طلبات الخدمات</h3></div><div id="servicesList"></div></div></div>
-        <div class="tab-content" id="customersTab"><div class="table-container"><div class="table-header"><h3>👥 العملاء</h3></div><div id="customersList"></div></div></div>
-        <div class="tab-content" id="receiptsTab"><div class="table-container"><div class="table-header"><h3>🧾 إيصالات الدفع</h3></div><div id="receiptsList"></div></div></div>
-        <div class="tab-content" id="messagesTab"><div class="table-container"><div class="table-header"><h3>📨 الرسائل</h3></div><div id="messagesList"></div></div></div>
-        <div class="tab-content" id="contentTab"><div class="table-container"><div class="table-header"><h3>📝 إدارة المحتوى</h3><button class="btn-add" onclick="loadSiteContent()">🔄 تحديث</button></div><div id="siteContentList" style="padding:20px"><div class="admin-empty">⏳ جاري التحميل...</div></div></div></div>
-        <div class="tab-content" id="pagesTab"><div class="table-container"><div class="table-header"><h3>📄 إدارة الصفحات</h3><button class="btn-add" onclick="loadSitePages()">🔄 تحديث</button></div><div id="sitePagesList" style="padding:20px"><div class="admin-empty">⏳ جاري التحميل...</div></div></div></div>
-        <div class="tab-content" id="services_contentTab"><div class="table-container"><div class="table-header"><h3>🛠️ محتوى الخدمات</h3><button class="btn-add" onclick="loadServicePagesContent()">🔄 تحديث</button></div><div id="servicePagesList" style="padding:20px"><div class="admin-empty">⏳ جاري التحميل...</div></div></div></div>
-        <div class="tab-content" id="bank_accountsTab"><div class="table-container"><div class="table-header"><h3>🏦 الحسابات البنكية</h3><button class="btn-add" onclick="addBankAccount()">➕ إضافة</button></div><div id="bankAccountsList" style="padding:20px"><div class="admin-empty">⏳ جاري التحميل...</div></div></div></div>
-        <div class="tab-content" id="filesTab"><div class="table-container"><div class="table-header"><h3>📁 الملفات والمستندات</h3><button class="btn-add" onclick="addNewFile()">➕ رفع</button></div><div id="siteFilesList" style="padding:20px"><div class="admin-empty">⏳ جاري التحميل...</div></div></div></div>
-        <div class="tab-content" id="partnersTab"><div class="table-container"><div class="table-header"><h3>🤝 إدارة الشركاء والعملاء</h3><button class="btn-add" onclick="openPartnerModal()">➕ إضافة شريك</button></div><div class="table-responsive"><table><thead><tr><th>#</th><th>الصورة</th><th>الاسم</th><th>التصنيف</th><th>الإجراءات</th></tr></thead><tbody id="partnersTable"><tr><td colspan="5" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody></table></div></div></div>
-        <div class="tab-content" id="payment_methodsTab"><div class="table-container"><div class="table-header"><h3>💳 إدارة طرق الدفع</h3><button class="btn-add" onclick="openPaymentMethodModal()">➕ إضافة طريقة</button></div><div class="table-responsive"><table><thead><tr><th>#</th><th>الأيقونة</th><th>الاسم</th><th>الوصف</th><th>الحالة</th><th>الإجراءات</th></tr></thead><tbody id="paymentMethodsTable"><tr><td colspan="6" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody></table></div></div></div>
-        <div class="tab-content" id="shippingTab"><div class="table-container"><div class="table-header"><h3>🚚 إدارة الشحن</h3><div style="display:flex;gap:10px"><button class="btn-add" onclick="openShippingModal()">⚙️ إعدادات</button><button class="btn-add" onclick="openShippingRateModal()">➕ إضافة سعر</button></div></div><div class="table-responsive"><table><thead><tr><th>#</th><th>من مدينة</th><th>إلى مدينة</th><th>الوزن</th><th>السعر</th><th>المدة</th><th>إجراءات</th></tr></thead><tbody id="shippingRatesTable"><tr><td colspan="7" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody></table></div></div></div>
-        <div class="tab-content" id="invoicesTab"><div class="table-container"><div class="table-header"><h3>🧾 الفواتير</h3><button class="btn-add" onclick="exportInvoices()">📥 تصدير</button></div><div class="table-responsive"><table><thead><tr><th>#</th><th>رقم الفاتورة</th><th>العميل</th><th>الإجمالي</th><th>الحالة</th><th>التاريخ</th><th>الإجراءات</th></tr></thead><tbody id="invoicesTable"><tr><td colspan="7" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody></table></div></div></div>
-        
-        <!-- 📢 تبويب التسويق الجديد -->
-        <div class="tab-content" id="marketingTab">
-            <div class="table-container">
-                <div class="table-header"><h3>📢 إدارة العروض والكوبونات</h3></div>
-                
-                <!-- الكوبونات الحالية -->
-                <div style="margin-bottom:30px">
-                    <h4 style="color:#F59E0B;margin-bottom:15px">🎟️ الكوبونات النشطة</h4>
-                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px" id="couponsList">
-                        <div class="coupon-card" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:16px;padding:20px;text-align:center">
-                            <div style="font-size:32px;margin-bottom:10px">🎟️</div>
-                            <h4 style="color:#F59E0B;font-size:24px;margin:0">WELCOME</h4>
-                            <p style="color:rgba(255,255,255,0.7)">خصم ترحيبي 15%</p>
-                            <span style="background:rgba(16,185,129,0.2);color:#10B981;padding:4px 12px;border-radius:20px;font-size:12px">✅ نشط</span>
-                        </div>
-                        <div class="coupon-card" style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);border-radius:16px;padding:20px;text-align:center">
-                            <div style="font-size:32px;margin-bottom:10px">🎟️</div>
-                            <h4 style="color:#60A5FA;font-size:24px;margin:0">DORA10</h4>
-                            <p style="color:rgba(255,255,255,0.7)">خصم 10%</p>
-                            <span style="background:rgba(16,185,129,0.2);color:#10B981;padding:4px 12px;border-radius:20px;font-size:12px">✅ نشط</span>
-                        </div>
-                        <div class="coupon-card" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);border-radius:16px;padding:20px;text-align:center">
-                            <div style="font-size:32px;margin-bottom:10px">🎟️</div>
-                            <h4 style="color:#A78BFA;font-size:24px;margin:0">DORA20</h4>
-                            <p style="color:rgba(255,255,255,0.7)">خصم 20%</p>
-                            <span style="background:rgba(16,185,129,0.2);color:#10B981;padding:4px 12px;border-radius:20px;font-size:12px">✅ نشط</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- إحصائيات التسويق -->
-                <div style="margin-bottom:30px">
-                    <h4 style="color:#F59E0B;margin-bottom:15px">📊 إحصائيات التسويق</h4>
-                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:15px">
-                        <div style="background:rgba(255,255,255,0.03);border-radius:12px;padding:20px;text-align:center">
-                            <div style="font-size:28px;color:#10B981;font-weight:900" id="totalCouponUsage">0</div>
-                            <div style="color:rgba(255,255,255,0.6);font-size:13px">مرات استخدام الكوبونات</div>
-                        </div>
-                        <div style="background:rgba(255,255,255,0.03);border-radius:12px;padding:20px;text-align:center">
-                            <div style="font-size:28px;color:#60A5FA;font-weight:900" id="totalDiscountGiven">0 ر.س</div>
-                            <div style="color:rgba(255,255,255,0.6);font-size:13px">إجمالي الخصومات</div>
-                        </div>
-                        <div style="background:rgba(255,255,255,0.03);border-radius:12px;padding:20px;text-align:center">
-                            <div style="font-size:28px;color:#F59E0B;font-weight:900" id="conversionRate">0%</div>
-                            <div style="color:rgba(255,255,255,0.6);font-size:13px">معدل التحويل</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- إعدادات الـ Popup -->
-                <div style="margin-bottom:30px">
-                    <h4 style="color:#F59E0B;margin-bottom:15px">🪟 إعدادات النافذة المنبثقة</h4>
-                    <div style="display:flex;gap:10px;align-items:center">
-                        <button onclick="resetWelcomePopup()" style="padding:10px 20px;background:#EF4444;color:white;border:none;border-radius:10px;cursor:pointer;font-weight:700">🔄 إعادة تفعيل Popup الترحيبي</button>
-                        <span style="color:rgba(255,255,255,0.5);font-size:12px">سيظهر الـ Popup للزوار الجدد مرة أخرى</span>
-                    </div>
-                </div>
-                
-                <!-- إعدادات الـ Countdown -->
-                <div>
-                    <h4 style="color:#F59E0B;margin-bottom:15px">⏰ إعدادات العداد التنازلي</h4>
-                    <div style="display:flex;gap:10px;align-items:center">
-                        <button onclick="resetCountdown()" style="padding:10px 20px;background:#10B981;color:white;border:none;border-radius:10px;cursor:pointer;font-weight:700">🔄 إعادة تشغيل العداد (24 ساعة)</button>
-                        <span style="color:rgba(255,255,255,0.5);font-size:12px">سيعيد العداد للبدء من 24 ساعة</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-               <!-- 🏢 بيانات الشركة -->
-        <div class="tab-content" id="company_infoTab">
-            <div class="table-container">
-                <div class="table-header"><h3>🏢 بيانات الشركة الرسمية</h3><button class="btn-add" onclick="saveCompanyInfo()">💾 حفظ</button></div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px">
-                    <div>
-                        <h4 style="color:#10B981;margin-bottom:15px">📋 معلومات أساسية</h4>
-                        <div class="form-group"><label>اسم الشركة الرسمي</label><input type="text" id="ci_name" placeholder="شركة درة فارس الشمال"></div>
-                        <div class="form-group"><label>📋 السجل التجاري</label><input type="text" id="ci_cr" placeholder="رقم السجل التجاري"></div>
-                        <div class="form-group"><label>🧾 الرقم الضريبي</label><input type="text" id="ci_vat" placeholder="310XXXXXXXXX"></div>
-                        <div class="form-group"><label>🏦 IBAN</label><input type="text" id="ci_iban" placeholder="SA03XXXXXXXXXXXXXX"></div>
-                        <div class="form-group"><label>🏦 اسم البنك</label><input type="text" id="ci_bank" placeholder="بنك الرياض"></div>
-                    </div>
-                    <div>
-                        <h4 style="color:#10B981;margin-bottom:15px">📞 التواصل الرسمي</h4>
-                        <div class="form-group"><label>📱 الجوال الرسمي</label><input type="text" id="ci_phone" placeholder="9665XXXXXXXX"></div>
-                        <div class="form-group"><label>📞 هاتف أرضي</label><input type="text" id="ci_landline" placeholder="014XXXXXXX"></div>
-                        <div class="form-group"><label>✉️ البريد الإلكتروني</label><input type="email" id="ci_email" placeholder="info@alshamal-df.com"></div>
-                        <div class="form-group"><label>🌐 الموقع الإلكتروني</label><input type="text" id="ci_website" placeholder="alshamal-df.com"></div>
-                        <div class="form-group"><label>📍 العنوان الرسمي</label><textarea id="ci_address" rows="2" placeholder="المملكة العربية السعودية"></textarea></div>
-                        <div class="form-group"><label>🖼️ شعار الشركة (URL)</label><input type="text" id="ci_logo" placeholder="https://alshamal-df.com/logo.png"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 📋 التوثيق الحكومي -->
-        <div class="tab-content" id="gov_docsTab">
-            <div class="table-container">
-                <div class="table-header"><h3>📋 التوثيق الحكومي والتراخيص</h3><button class="btn-add" onclick="saveGovDocs()">💾 حفظ</button></div>
-                <div style="padding:20px">
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
-                        <div class="form-group"><label>🏛️ رخصة البلدية (رقم)</label><input type="text" id="gd_baladia" placeholder="رقم الرخصة"></div>
-                        <div class="form-group"><label>📅 تاريخ انتهاء البلدية</label><input type="date" id="gd_baladia_exp"></div>
-                        <div class="form-group"><label>💰 شهادة الزكاة (رقم)</label><input type="text" id="gd_zakat" placeholder="رقم الشهادة"></div>
-                        <div class="form-group"><label>📅 تاريخ انتهاء الزكاة</label><input type="date" id="gd_zakat_exp"></div>
-                        <div class="form-group"><label>🧾 شهادة ضريبة القيمة المضافة</label><input type="text" id="gd_vat_cert" placeholder="رقم الشهادة"></div>
-                        <div class="form-group"><label>👥 شهادة السعودة</label><input type="text" id="gd_saudization" placeholder="رقم الشهادة"></div>
-                        <div class="form-group"><label>🏥 شهادة التأمينات</label><input type="text" id="gd_insurance" placeholder="رقم الشهادة"></div>
-                        <div class="form-group"><label>🔥 رخصة الدفاع المدني</label><input type="text" id="gd_civil_defense" placeholder="رقم الرخصة"></div>
-                        <div class="form-group"><label>📜 شهادة الأيزو ISO</label><input type="text" id="gd_iso" placeholder="رقم الشهادة"></div>
-                        <div class="form-group"><label>🤝 وكالة HP</label><input type="text" id="gd_hp" placeholder="رقم الوكالة"></div>
-                        <div class="form-group"><label>🦓 وكالة Zebra</label><input type="text" id="gd_zebra" placeholder="رقم الوكالة"></div>
-                        <div class="form-group"><label>🍯 وكالة Honeywell</label><input type="text" id="gd_honeywell" placeholder="رقم الوكالة"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 🧾 الفوترة الإلكترونية -->
-        <div class="tab-content" id="einvoiceTab">
-            <div class="table-container">
-                <div class="table-header"><h3>🧾 إعدادات الفوترة الإلكترونية والربط المحاسبي</h3><button class="btn-add" onclick="saveEInvoice()">💾 حفظ</button></div>
-                <div style="padding:20px">
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
-                        <div>
-                            <h4 style="color:#A78BFA;margin-bottom:15px">🔗 الربط مع أفاق</h4>
-                            <div class="form-group"><label>🔑 API Key (أفاق)</label><input type="text" id="ei_afaq_key" placeholder="مفتاح API من أفاق"></div>
-                            <div class="form-group"><label>🌐 Endpoint URL</label><input type="text" id="ei_afaq_url" placeholder="https://api.afaq.sa/v1/invoices"></div>
-                            <div class="form-group"><label><input type="checkbox" id="ei_afaq_active"> ✅ تفعيل الربط التلقائي مع أفاق</label></div>
-                        </div>
-                        <div>
-                            <h4 style="color:#A78BFA;margin-bottom:15px">🧾 إعدادات الفاتورة الإلكترونية</h4>
-                            <div class="form-group"><label>📋 رقم التسجيل في هيئة الزكاة</label><input type="text" id="ei_zatca_id" placeholder="رقم التسجيل"></div>
-                            <div class="form-group"><label>🔐 شهادة التوقيع الإلكتروني (مسار)</label><input type="text" id="ei_cert_path" placeholder="/certs/signature.pfx"></div>
-                            <div class="form-group"><label>📱 QR Code على الفاتورة</label><select id="ei_qr"><option value="yes">✅ نعم</option><option value="no">❌ لا</option></select></div>
-                            <div class="form-group"><label>📤 إرسال تلقائي لهيئة الزكاة</label><select id="ei_zatca_auto"><option value="no">❌ يدوي</option><option value="yes">✅ تلقائي</option></select></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-               <!-- 📊 تبويب الإحصائيات -->
-        <div class="tab-content" id="site_statsTab">
-            <div class="table-container">
-                <div class="table-header"><h3>📊 إدارة إحصائيات الموقع</h3><button class="btn-add" onclick="addSiteStat()">➕ إضافة</button></div>
-                <div class="table-responsive"><table><thead><tr><th>#</th><th>الأيقونة</th><th>الرقم</th><th>العنوان</th><th>اللون</th><th>الترتيب</th><th>الإجراءات</th></tr></thead><tbody id="siteStatsTable"><tr><td colspan="7" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody></table></div>
-            </div>
-        </div>
-
-        <!-- 🌟 تبويب الرؤية والقيم -->
-        <div class="tab-content" id="site_aboutTab">
-            <div class="table-container">
-                <div class="table-header"><h3>🌟 إدارة الرؤية والرسالة والقيم</h3></div>
-                <div class="table-responsive"><table><thead><tr><th>#</th><th>النوع</th><th>العنوان</th><th>المحتوى</th><th>اللون</th><th>الإجراءات</th></tr></thead><tbody id="siteAboutTable"><tr><td colspan="6" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody></table></div>
-            </div>
-        </div>
-
-        <!-- 💬 تبويب آراء الشركات -->
-        <div class="tab-content" id="site_testimonialsTab">
-            <div class="table-container">
-                <div class="table-header"><h3>💬 إدارة آراء الشركات</h3><button class="btn-add" onclick="addTestimonial()">➕ إضافة</button></div>
-                <div class="table-responsive"><table><thead><tr><th>#</th><th>الشركة</th><th>المقيم</th><th>التقييم</th><th>المنتج</th><th>نشط</th><th>الإجراءات</th></tr></thead><tbody id="siteTestimonialsTable"><tr><td colspan="7" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody></table></div>
-            </div>
-        </div>
-
-        <!-- 📦 تبويب المشاريع -->
-        <div class="tab-content" id="site_projectsTab">
-            <div class="table-container">
-                <div class="table-header"><h3>📦 إدارة المشاريع المنفذة</h3><button class="btn-add" onclick="addProject()">➕ إضافة</button></div>
-                <div class="table-responsive"><table><thead><tr><th>#</th><th>العنوان</th><th>العميل</th><th>الوصف</th><th>اللون</th><th>نشط</th><th>الإجراءات</th></tr></thead><tbody id="siteProjectsTable"><tr><td colspan="7" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody></table></div>
-            </div>
-        </div>
-
-        <!-- 📝 تبويب المقالات -->
-        <div class="tab-content" id="site_blogTab">
-            <div class="table-container">
-                <div class="table-header"><h3>📝 إدارة المقالات</h3><button class="btn-add" onclick="addBlogPost()">➕ إضافة</button></div>
-                <div class="table-responsive"><table><thead><tr><th>#</th><th>العنوان</th><th>التاريخ</th><th>القراءة</th><th>الرابط</th><th>نشط</th><th>الإجراءات</th></tr></thead><tbody id="siteBlogTable"><tr><td colspan="7" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody></table></div>
-            </div>
-        </div>
-
-        <!-- 📜 تبويب الشهادات -->
-        <div class="tab-content" id="site_certificationsTab">
-            <div class="table-container">
-                <div class="table-header"><h3>📜 إدارة الشهادات والاعتمادات</h3><button class="btn-add" onclick="addCertification()">➕ إضافة</button></div>
-                <div class="table-responsive"><table><thead><tr><th>#</th><th>العنوان</th><th>الشارة</th><th>الوصف</th><th>اللون</th><th>نشط</th><th>الإجراءات</th></tr></thead><tbody id="siteCertificationsTable"><tr><td colspan="7" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody></table></div>
-            </div>
-        </div>
-
-        <!-- 📞 تبويب التواصل -->
-        <div class="tab-content" id="site_contactTab">
-            <div class="table-container">
-                <div class="table-header"><h3>📞 إدارة معلومات التواصل</h3><button class="btn-add" onclick="addContactInfo()">➕ إضافة</button></div>
-                <div class="table-responsive"><table><thead><tr><th>#</th><th>النوع</th><th>العنوان</th><th>القيمة</th><th>الرابط</th><th>نشط</th><th>الإجراءات</th></tr></thead><tbody id="siteContactTable"><tr><td colspan="7" style="text-align:center">⏳ جاري التحميل...</td></tr></tbody></table></div>
-            </div>
-        </div>
-                <!-- 🌐 التبويبات الجديدة (قاعدة البيانات الموحدة) -->
-        <div class="tab-content" id="hero_statsTab">
-            <div class="table-container">
-                <div class="table-header"><h3>📊 إحصائيات الموقع</h3><button class="btn-add" onclick="addSiteItem('hero_stats')">➕ إضافة</button></div>
-                <div id="hero_statsList"><div class="admin-empty">⏳ جاري التحميل...</div></div>
-            </div>
-        </div>
-
-        <div class="tab-content" id="aboutTab">
-            <div class="table-container">
-                <div class="table-header"><h3>🌟 عن الشركة</h3><button class="btn-add" onclick="addSiteItem('about')">➕ إضافة</button></div>
-                <div id="aboutList"><div class="admin-empty">⏳ جاري التحميل...</div></div>
-            </div>
-        </div>
-
-        <div class="tab-content" id="testimonialsTab">
-            <div class="table-container">
-                <div class="table-header"><h3>💬 آراء العملاء</h3><button class="btn-add" onclick="addSiteItem('testimonials')">➕ إضافة</button></div>
-                <div id="testimonialsList"><div class="admin-empty">⏳ جاري التحميل...</div></div>
-            </div>
-        </div>
-
-        <div class="tab-content" id="projectsTab">
-            <div class="table-container">
-                <div class="table-header"><h3>📦 المشاريع</h3><button class="btn-add" onclick="addSiteItem('projects')">➕ إضافة</button></div>
-                <div id="projectsList"><div class="admin-empty">⏳ جاري التحميل...</div></div>
-            </div>
-        </div>
-
-        <div class="tab-content" id="blogTab">
-            <div class="table-container">
-                <div class="table-header"><h3>📝 المقالات</h3><button class="btn-add" onclick="addSiteItem('blog')">➕ إضافة</button></div>
-                <div id="blogList"><div class="admin-empty">⏳ جاري التحميل...</div></div>
-            </div>
-        </div>
-
-        <div class="tab-content" id="certificationsTab">
-            <div class="table-container">
-                <div class="table-header"><h3>📜 الشهادات</h3><button class="btn-add" onclick="addSiteItem('certifications')">➕ إضافة</button></div>
-                <div id="certificationsList"><div class="admin-empty">⏳ جاري التحميل...</div></div>
-            </div>
-        </div>
-
-        <div class="tab-content" id="contactTab">
-            <div class="table-container">
-                <div class="table-header"><h3>📞 التواصل</h3><button class="btn-add" onclick="addSiteItem('contact')">➕ إضافة</button></div>
-                <div id="contactList"><div class="admin-empty">⏳ جاري التحميل...</div></div>
-            </div>
-        </div>
-        <div class="tab-content" id="settingsTab">
-            <div class="settings-section"><h4>🏢 معلومات الشركة</h4>
-                <div class="form-group"><label>اسم الشركة</label><input type="text" id="companyName" value="شركة درة فارس الشمال"></div>
-                <div class="form-group"><label>العنوان</label><input type="text" id="companyAddress" value="تبوك، المملكة العربية السعودية"></div>
-                <div class="form-group"><label>📋 السجل التجاري</label><input type="text" id="commercialReg" placeholder="رقم السجل التجاري"></div>
-                <div class="form-group"><label>🧾 الرقم الضريبي</label><input type="text" id="taxNumber" placeholder="الرقم الضريبي"></div>
-            </div>
-            <div class="settings-section"><h4>📞 أرقام التواصل</h4>
-                <div class="form-group"><label>الهاتف الأول</label><input type="text" id="companyPhone1" value="966568717449"></div>
-                <div class="form-group"><label>الهاتف الثاني</label><input type="text" id="companyPhone2" value="966545358773"></div>
-                <div class="form-group"><label>البريد الإلكتروني</label><input type="email" id="companyEmail" value="info@alshamal-df.com"></div>
-            </div>
-            <div class="settings-section"><h4>🌐 روابط التواصل</h4>
-                <div class="form-group"><label>تويتر</label><input type="text" id="socialTwitter"></div>
-                <div class="form-group"><label>انستقرام</label><input type="text" id="socialInstagram"></div>
-                <div class="form-group"><label>فيسبوك</label><input type="text" id="socialFacebook"></div>
-                <div class="form-group"><label>لينكدإن</label><input type="text" id="socialLinkedin"></div>
-            </div>
-            <div class="settings-section"><h4>💬 رسالة واتساب</h4>
-                <div class="form-group"><label>نص الرسالة</label><textarea id="whatsappMessage" rows="3">مرحباً شركة درة فارس الشمال، أرغب في الاستفسار عن منتجاتكم</textarea></div>
-            </div>
-            <button class="btn-save" onclick="saveSettings()">💾 حفظ جميع الإعدادات</button>
-        </div>
+        <div class="tab-content" id="reviewsTab"><div id="reviewsList"></div></div>
+        <div class="tab-content" id="servicesTab"><div id="servicesList"></div></div>
+        <div class="tab-content" id="customersTab"><div id="customersList"></div></div>
+        <div class="tab-content" id="receiptsTab"><div id="receiptsList"></div></div>
+        <div class="tab-content" id="messagesTab"><div id="messagesList"></div></div>
+        <div class="tab-content" id="contentTab"><div id="siteContentList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+        <div class="tab-content" id="pagesTab"><div id="sitePagesList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+        <div class="tab-content" id="services_contentTab"><div id="servicePagesList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+        <div class="tab-content" id="bank_accountsTab"><div id="bankAccountsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+        <div class="tab-content" id="filesTab"><div id="siteFilesList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+        <div class="tab-content" id="partnersTab"><div id="partnersTable">⏳ جاري التحميل...</div></div>
+        <div class="tab-content" id="payment_methodsTab"><div id="paymentMethodsTable">⏳ جاري التحميل...</div></div>
+        <div class="tab-content" id="shippingTab"><div id="shippingRatesTable">⏳ جاري التحميل...</div></div>
+        <div class="tab-content" id="invoicesTab"><div id="invoicesTable">⏳ جاري التحميل...</div></div>
+        <div class="tab-content" id="marketingTab"><div class="admin-empty">📢 التسويق</div></div>
+        <div class="tab-content" id="company_infoTab"><div class="admin-empty">🏢 بيانات الشركة</div></div>
+        <div class="tab-content" id="gov_docsTab"><div class="admin-empty">📋 التوثيق الحكومي</div></div>
+        <div class="tab-content" id="einvoiceTab"><div class="admin-empty">🧾 فوترة إلكترونية</div></div>
+        <div class="tab-content" id="hero_statsTab"><div id="hero_statsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+        <div class="tab-content" id="aboutTab"><div id="aboutList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+        <div class="tab-content" id="testimonialsTab"><div id="testimonialsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+        <div class="tab-content" id="projectsTab"><div id="projectsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+        <div class="tab-content" id="blogTab"><div id="blogList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+        <div class="tab-content" id="certificationsTab"><div id="certificationsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+        <div class="tab-content" id="contactTab"><div id="contactList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+        <div class="tab-content" id="settingsTab"><div class="admin-empty">⚙️ الإعدادات</div></div>
     </div>
-</section>
-
-<!-- Modals -->
-<div class="modal" id="partnerModal">
-    <div class="modal-content">
-        <div class="modal-header"><h3 id="partnerModalTitle">➕ إضافة شريك</h3><button class="btn-close" onclick="closePartnerModal()">✕</button></div>
-        <form id="partnerForm" onsubmit="return savePartner(event)">
-            <input type="hidden" id="partnerId">
-            <div class="form-group"><label>🏢 اسم الشريك</label><input type="text" id="partnerName" required></div>
-            <div class="form-group"><label>📂 التصنيف</label><select id="partnerCategory"><option value="شريك">🤝 شريك</option><option value="عميل">👤 عميل</option><option value="مورد">📦 مورد</option><option value="موزع">🚚 موزع</option></select></div>
-            <div class="form-group"><label>🖼️ رابط الصورة</label><input type="text" id="partnerImage" placeholder="https://example.com/logo.png"></div>
-            <button type="submit" class="btn-save">💾 حفظ الشريك</button>
-        </form>
-    </div>
-</div>
-
-<div class="modal" id="paymentMethodModal">
-    <div class="modal-content">
-        <div class="modal-header"><h3 id="paymentMethodModalTitle">➕ إضافة طريقة دفع</h3><button class="btn-close" onclick="closePaymentMethodModal()">✕</button></div>
-        <form id="paymentMethodForm" onsubmit="return savePaymentMethod(event)">
-            <input type="hidden" id="paymentMethodId">
-            <div class="form-group"><label>🏷️ الاسم</label><input type="text" id="paymentMethodName" required></div>
-            <div class="form-group"><label>🎨 الأيقونة</label><input type="text" id="paymentMethodIcon" placeholder="💳"></div>
-            <div class="form-group"><label>📝 الوصف</label><input type="text" id="paymentMethodDesc"></div>
-            <div class="form-group"><label>🔢 الترتيب</label><input type="number" id="paymentMethodOrder" value="1" min="1"></div>
-            <div class="form-group"><label><input type="checkbox" id="paymentMethodActive" checked> ✅ نشط</label></div>
-            <button type="submit" class="btn-save">💾 حفظ</button>
-        </form>
-    </div>
-</div>
-
-<div class="modal" id="productModal">
-    <div class="modal-content">
-        <div class="modal-header"><h3 id="modalTitle">➕ إضافة منتج</h3><button class="btn-close" onclick="closeModal()">✕</button></div>
-        <form id="productForm" onsubmit="return saveProduct(event)">
-            <input type="hidden" id="productId">
-            <div class="form-group"><label>📷 رابط الصورة</label><input type="text" id="productImage"></div>
-            <div class="form-group"><label>🏷️ اسم المنتج</label><input type="text" id="productName" required></div>
-            <div class="form-group"><label>📝 وصف المنتج</label><textarea id="productDesc" rows="3"></textarea></div>
-            <div class="form-group"><label>💰 السعر (ريال)</label><input type="number" id="productPrice" required></div>
-            <div class="form-group"><label>📂 التصنيف</label><select id="productCategory"><option value="printers">طابعات</option><option value="computers">كمبيوتر</option><option value="ram">رامات</option><option value="storage">هاردات</option><option value="cables">وصلات</option><option value="projectors">بروجكتور</option><option value="accessories">إكسسوارات</option><option value="ink">أحبار</option><option value="food">مواد غذائية</option></select></div>
-            <button type="submit" class="btn-save">💾 حفظ المنتج</button>
-        </form>
-    </div>
-</div>
-
-<div class="modal" id="shippingModal">
-    <div class="modal-content">
-        <div class="modal-header"><h3>⚙️ إعدادات الشحن</h3><button class="btn-close" onclick="closeShippingModal()">✕</button></div>
-        <form onsubmit="return saveShippingSettings(event)">
-            <div class="form-group"><label>🔑 API Key</label><input type="text" id="shippingApiKey"></div>
-            <div class="form-group"><label>📦 رقم الحساب</label><input type="text" id="shippingAccountNumber"></div>
-            <div class="form-group"><label>🌐 الرابط الأساسي</label><input type="text" id="shippingBaseUrl" value="https://api.spl.sa"></div>
-            <div class="form-group"><label><input type="checkbox" id="shippingEnabled"> ✅ تفعيل الشحن</label></div>
-            <button type="submit" class="btn-save">💾 حفظ</button>
-        </form>
-    </div>
-</div>
-
-<div class="modal" id="shippingRateModal">
-    <div class="modal-content">
-        <div class="modal-header"><h3 id="shippingRateModalTitle">➕ إضافة سعر شحن</h3><button class="btn-close" onclick="closeShippingRateModal()">✕</button></div>
-        <form onsubmit="return saveShippingRate(event)">
-            <input type="hidden" id="shippingRateId">
-            <div class="form-group"><label>📤 من مدينة</label><input type="text" id="srFromCity" required></div>
-            <div class="form-group"><label>📥 إلى مدينة</label><input type="text" id="srToCity" required></div>
-            <div class="form-group"><label>⚖️ الوزن (كجم)</label><input type="number" id="srWeight" value="1" step="0.5"></div>
-            <div class="form-group"><label>💰 السعر (ر.س)</label><input type="number" id="srPrice" value="0"></div>
-            <div class="form-group"><label>📅 المدة (أيام)</label><input type="number" id="srDays" value="2"></div>
-            <button type="submit" class="btn-save">💾 حفظ</button>
-        </form>
-    </div>
-</div>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL = 'https://kcbmvxuzjlaooknwhqqb.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjYm12eHV6amxhb29rbndocXFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NzkyMjAsImV4cCI6MjA5OTU1NTIyMH0.ayDpkfCKL90GcUKjbHQs7OvS5sxF1VSraWg58NHJ7ek';
 window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// 📢 وظائف التسويق للوحة الإدارة
-function resetWelcomePopup() {
-    localStorage.removeItem('doraWelcomeShown');
-    alert('✅ تم إعادة تفعيل الـ Popup الترحيبي! سيظهر للزوار الجدد.');
-}
-function resetCountdown() {
-    localStorage.removeItem('doraOfferEnd');
-    alert('✅ تم إعادة تشغيل العداد التنازلي! 24 ساعة جديدة.');
-}
 </script>
 <script src="admin-v2.js"></script>
 <script src="chatbot-ai.js"></script>
