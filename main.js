@@ -2567,16 +2567,66 @@ var doraChatbot = {
     }
 };
 
-// أيقونة الشات - تصميم عصري
+// أيقونة روبوت متحركة مع رسالة ترحيبية
 document.addEventListener('DOMContentLoaded', function() {
+    // الحاوية الرئيسية
+    var wrapper = document.createElement('div');
+    wrapper.id = 'doraChatBubbleWrapper';
+    wrapper.style.cssText = 'position:fixed;bottom:30px;left:30px;z-index:99998;display:flex;align-items:flex-end;gap:12px';
+    
+    // فقاعة الرسالة الترحيبية
+    var greeting = document.createElement('div');
+    greeting.id = 'doraChatGreeting';
+    greeting.innerHTML = '👋 أهلاً! أنا هنا لخدمتك';
+    greeting.style.cssText = 'background:white;color:#1E293B;padding:12px 18px;border-radius:20px 20px 4px 20px;font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,0.1);white-space:nowrap;animation:fadeInRight 0.5s ease, fadeOut 0.5s ease 4s forwards;font-family:Tajawal,sans-serif;max-width:200px';
+    
+    // إضافة أنيميشن CSS
+    var style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeInRight { from { opacity:0; transform:translateX(-20px); } to { opacity:1; transform:translateX(0); } }
+        @keyframes fadeOut { from { opacity:1; } to { opacity:0; transform:translateY(-10px); } }
+        @keyframes robotWave { 0%,100% { transform:rotate(0deg); } 25% { transform:rotate(-15deg); } 50% { transform:rotate(10deg); } 75% { transform:rotate(-5deg); } }
+        @keyframes robotBounce { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-6px); } }
+        @keyframes notificationDot { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.5; transform:scale(1.3); } }
+        #doraChatBubble:hover { animation: robotBounce 0.6s ease infinite; }
+        #doraChatBubble:hover .robot-hand { animation: robotWave 0.8s ease infinite; }
+        .robot-hand { display:inline-block; transform-origin:bottom right; }
+        .robot-notification { animation: notificationDot 2s ease infinite; }
+    `;
+    document.head.appendChild(style);
+    
+    // الأيقونة
     var bubble = document.createElement('div');
     bubble.id = 'doraChatBubble';
-    bubble.style.cssText = 'position:fixed;bottom:30px;left:30px;z-index:99998;width:58px;height:58px;background:linear-gradient(135deg,#3B82F6,#8B5CF6);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 25px rgba(59,130,246,0.4);transition:0.3s';
-    bubble.innerHTML = '<span style="font-size:28px">💬</span>';
-    bubble.onclick = function() { doraChatbot.toggle(); };
-    bubble.onmouseenter = function() { this.style.transform = 'scale(1.08)'; this.style.boxShadow = '0 12px 35px rgba(59,130,246,0.5)'; };
-    bubble.onmouseleave = function() { this.style.transform = 'scale(1)'; this.style.boxShadow = '0 8px 25px rgba(59,130,246,0.4)'; };
-    document.body.appendChild(bubble);
+    bubble.style.cssText = 'width:60px;height:60px;background:linear-gradient(135deg,#3B82F6,#8B5CF6);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 25px rgba(59,130,246,0.5);transition:0.3s;position:relative;font-size:28px';
+    bubble.innerHTML = '<span style="font-size:32px">🤖</span>';
+    
+    // نقطة الإشعار
+    var dot = document.createElement('div');
+    dot.className = 'robot-notification';
+    dot.style.cssText = 'position:absolute;top:4px;right:4px;width:14px;height:14px;background:#EF4444;border-radius:50%;border:2px solid white';
+    bubble.appendChild(dot);
+    
+    bubble.onclick = function() { 
+        if (typeof doraChatbot !== 'undefined') doraChatbot.toggle(); 
+        greeting.style.display = 'none';
+    };
+    
+    bubble.onmouseenter = function() { 
+        this.style.transform = 'scale(1.1)'; 
+        this.style.boxShadow = '0 12px 35px rgba(59,130,246,0.6)'; 
+    };
+    bubble.onmouseleave = function() { 
+        this.style.transform = 'scale(1)'; 
+        this.style.boxShadow = '0 8px 25px rgba(59,130,246,0.5)'; 
+    };
+    
+    wrapper.appendChild(greeting);
+    wrapper.appendChild(bubble);
+    document.body.appendChild(wrapper);
+    
+    // إخفاء الرسالة بعد 5 ثواني
+    setTimeout(function() { greeting.style.display = 'none'; }, 5000);
 });
 // تأكيد ظهور أيقونة الشات
 (function(){
