@@ -2405,7 +2405,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 2000);
 });
 // ============================================================
-// 🤖 DORA SMART CHATBOT - شات بوت ذكي بالعربي (تصميم عصري)
+// 🤖 DORA SMART CHATBOT - شات بوت ذكي بالعربي
 // ============================================================
 
 var doraChatbot = {
@@ -2414,47 +2414,36 @@ var doraChatbot = {
     knowledgeBase: {
         'السلام': 'وعليكم السلام! 👋 كيف أقدر أساعدك؟',
         'مرحبا': 'أهلاً وسهلاً! 🌟 كيف أقدر أخدمك؟',
-        'شحن': '🚚 نوفر شحن لجميع مدن المملكة. الشحن مجاني للطلبات فوق 300 ريال. مدة التوصيل 2-5 أيام عمل.',
+        'شحن': '🚚 نوفر شحن لجميع مدن المملكة. الشحن مجاني للطلبات فوق 300 ريال.',
         'توصيل': '🚚 نوصل لجميع مناطق المملكة عبر ناقل وأرامكس وسمسا.',
         'ضمان': '🛡️ جميع المنتجات عليها ضمان سنة كاملة ضد عيوب التصنيع.',
-        'سعر': '💰 أسعارنا تنافسية جداً! تقدر تتصفح المنتجات من [المنتجات](/products.html) وتشوف الأسعار.',
+        'سعر': '💰 أسعارنا تنافسية جداً! تقدر تتصفح المنتجات وتشوف الأسعار.',
         'خصم': '🎟️ عندنا كوبونات خصم! استخدم كود WELCOME لخصم 15% على أول طلب.',
-        'كوبون': '🎟️ الكوبونات المتاحة: WELCOME (15%) - DORA10 (10%) - DORA20 (20%)',
+        'كوبون': '🎟️ الكوبونات: WELCOME (15%) - DORA10 (10%) - DORA20 (20%)',
         'دفع': '💳 نقبل تحويل بنكي، STC Pay، مدى، أبل باي، وتمارا للتقسيط.',
         'تمارا': '🧡 تمارا يتيح لك التقسيط على 4 دفعات بدون فوائد!',
-        'واتساب': '💬 تقدر تتواصل معانا مباشرة على واتساب: 0545358773',
+        'واتساب': '💬 تقدر تتواصل معانا على واتساب: 0545358773',
         'اتصال': '📞 تقدر تتصل بنا على: 0568717449',
-        'منتجات': '🛍️ عندنا طابعات، كمبيوتر، رامات، هاردات، بروجكتور، إكسسوارات، أحبار، ومواد غذائية. [شوف المنتجات](/products.html)',
+        'منتجات': '🛍️ عندنا طابعات، كمبيوتر، رامات، هاردات، بروجكتور، إكسسوارات، أحبار، ومواد غذائية.',
         'خدمات': '🔧 نقدم خدمات: طباعة، كاميرات مراقبة، نقاط بيع، شبكات، باركود، وصيانة.',
         'طابعة': '🖨️ عندنا طابعات HP و Canon و Epson و Brother بأفضل الأسعار.',
         'كمبيوتر': '💻 عندنا أجهزة Dell و Lenovo و HP لابتوب ومكتبي.',
         'طلب': '📦 تقدر تطلب من الموقع مباشرة - أضف اللي عايزه للسلة واتبع الخطوات.',
-        'حساب': '👤 تقدر تسجل حساب من [هنا](/account.html) عشان تتابع طلباتك وتوفر عناوينك.',
-        'تتبع': '📍 تقدر تتابع حالة طلبك من [حسابك](/account.html) في تبويب طلباتي.',
+        'حساب': '👤 تقدر تسجل حساب عشان تتابع طلباتك وتوفر عناوينك.',
+        'تتبع': '📍 تقدر تتابع حالة طلبك من حسابك في تبويب طلباتي.',
         'استرجاع': '🔄 نقبل استرجاع المنتجات خلال 14 يوم من تاريخ الاستلام.',
         'شكرا': 'العفو! 🌹 أي خدمة تانية؟',
         'باي': 'مع السلامة! 👋 يومك سعيد.',
-        'افتح': 'أمرك! 📋 إيه اللي أقدر أساعدك فيه؟',
-        'عرض سعر': '📋 تقدر تطلب عرض سعر مخصص من [واتساب](https://wa.me/966545358773) أو من أي صفحة منتج.'
+        'عرض سعر': '📋 تقدر تطلب عرض سعر مخصص من واتساب أو من أي صفحة منتج.'
     },
     
     getResponse: function(msg) {
         msg = msg.toLowerCase().trim();
-        
         for (var key in this.knowledgeBase) {
-            if (msg.indexOf(key) !== -1) {
-                return this.knowledgeBase[key];
-            }
+            if (msg.indexOf(key) !== -1) return this.knowledgeBase[key];
         }
-        
-        var generalReplies = [
-            '🤔 معلش، ممكن توضح أكثر؟',
-            '📝 أنا لسه بتعلم! تقدر تسأل عن: الأسعار، الشحن، الضمان، المنتجات، الدفع، أو تكتب "مساعدة".',
-            '💡 جرب تسأل عن: شحن، ضمان، سعر، خصم، دفع، تمارا، منتجات، خدمات، تتبع، استرجاع.',
-            '👋 أقدر أساعدك في حاجة تانية؟'
-        ];
-        
-        return generalReplies[Math.floor(Math.random() * generalReplies.length)];
+        var replies = ['🤔 ممكن توضح أكثر؟', '📝 تقدر تسأل عن: الأسعار، الشحن، الضمان، المنتجات، الدفع.', '👋 أقدر أساعدك في حاجة تانية؟'];
+        return replies[Math.floor(Math.random() * replies.length)];
     },
     
     show: function() {
@@ -2469,26 +2458,22 @@ var doraChatbot = {
         document.getElementById('doraChatWidget').style.display = 'none';
         this.isOpen = false;
         var btn = document.getElementById('doraChatBubble');
-        if (btn) btn.style.display = 'flex';
+        if (btn) btn.style.display = 'block';
     },
     
     toggle: function() {
-        if (this.isOpen) { this.hide(); } else { this.show(); }
+        this.isOpen ? this.hide() : this.show();
     },
     
     send: function() {
         var input = document.getElementById('doraChatInput');
         var msg = input.value.trim();
         if (!msg) return;
-        
         this.addMessage('أنت', msg, 'user');
         input.value = '';
-        
         var reply = this.getResponse(msg);
         var self = this;
-        setTimeout(function() {
-            self.addMessage('درة فارس', reply, 'bot');
-        }, 500 + Math.random() * 500);
+        setTimeout(function() { self.addMessage('درة فارس', reply, 'bot'); }, 500 + Math.random() * 500);
     },
     
     addMessage: function(sender, text, type) {
@@ -2501,63 +2486,7 @@ var doraChatbot = {
     },
     
     create: function() {
-        var html = `
-        <div id="doraChatWidget" style="display:none;position:fixed;bottom:30px;left:30px;z-index:99999;width:370px;max-width:90vw;background:#FFFFFF;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.15);direction:rtl;font-family:'Tajawal','Cairo',sans-serif">
-            
-            <!-- Header -->
-            <div style="background:#1E293B;padding:18px 22px;display:flex;justify-content:space-between;align-items:center">
-                <div style="display:flex;align-items:center;gap:12px">
-                    <div style="width:42px;height:42px;background:linear-gradient(135deg,#3B82F6,#8B5CF6);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px">💬</div>
-                    <div>
-                        <div style="color:white;font-weight:700;font-size:15px">درة فارس</div>
-                        <div style="color:#94A3B8;font-size:11px">🟢 متصل</div>
-                    </div>
-                </div>
-               <button onclick="document.getElementById('doraChatWidget').style.display='none';doraChatbot.isOpen=false;var btn=document.getElementById('doraChatBubble');if(btn)btn.style.display='flex';" style="background:rgba(255,255,255,0.1);border:none;color:white;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;transition:0.2s" onmouseenter="this.style.background='rgba(255,255,255,0.2)'" onmouseleave="this.style.background='rgba(255,255,255,0.1)'">✕</button>
-            </div>
-            
-            <!-- Messages -->
-            <div id="doraChatMessages" style="height:340px;overflow-y:auto;padding:16px;background:#F8FAFC">
-                <div class="dora-chat-msg bot">
-                    <div style="display:flex;align-items:start;gap:8px">
-                        <div style="width:28px;height:28px;background:linear-gradient(135deg,#3B82F6,#8B5CF6);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">💬</div>
-                        <div>
-                            <div style="color:#64748B;font-size:11px;margin-bottom:2px">درة فارس</div>
-                            <div style="color:#1E293B;font-size:13px;line-height:1.6">👋 أهلاً وسهلاً! أنا المساعد الذكي لشركة درة فارس الشمال. أقدر أساعدك في:</div>
-                        </div>
-                    </div>
-                </div>
-                <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;padding:0 8px">
-                    <button onclick="doraChatbot.quickAsk('شحن')" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:11px;font-weight:500;transition:0.2s" onmouseenter="this.style.background='#DBEAFE'" onmouseleave="this.style.background='#EFF6FF'">🚚 الشحن</button>
-                    <button onclick="doraChatbot.quickAsk('ضمان')" style="background:#F0FDF4;color:#16A34A;border:1px solid #BBF7D0;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:11px;font-weight:500;transition:0.2s" onmouseenter="this.style.background='#DCFCE7'" onmouseleave="this.style.background='#F0FDF4'">🛡️ الضمان</button>
-                    <button onclick="doraChatbot.quickAsk('خصم')" style="background:#FFF7ED;color:#EA580C;border:1px solid #FED7AA;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:11px;font-weight:500;transition:0.2s" onmouseenter="this.style.background='#FFEDD5'" onmouseleave="this.style.background='#FFF7ED'">🎟️ خصومات</button>
-                    <button onclick="doraChatbot.quickAsk('دفع')" style="background:#F5F3FF;color:#7C3AED;border:1px solid #DDD6FE;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:11px;font-weight:500;transition:0.2s" onmouseenter="this.style.background='#EDE9FE'" onmouseleave="this.style.background='#F5F3FF'">💳 الدفع</button>
-                    <button onclick="doraChatbot.quickAsk('منتجات')" style="background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:11px;font-weight:500;transition:0.2s" onmouseenter="this.style.background='#FEE2E2'" onmouseleave="this.style.background='#FEF2F2'">🛍️ المنتجات</button>
-                </div>
-            </div>
-            
-            <!-- Input -->
-            <div style="display:flex;padding:14px 16px;background:white;border-top:1px solid #E2E8F0;gap:10px">
-                <input id="doraChatInput" type="text" placeholder="اكتب سؤالك هنا..." onkeydown="if(event.key==='Enter')doraChatbot.send()" style="flex:1;padding:12px 16px;border-radius:25px;border:2px solid #E2E8F0;background:#F8FAFC;color:#1E293B;font-family:inherit;font-size:13px;outline:none;transition:0.2s" onfocus="this.style.borderColor='#3B82F6';this.style.background='white'" onblur="this.style.borderColor='#E2E8F0';this.style.background='#F8FAFC'">
-                <button onclick="doraChatbot.send()" style="background:linear-gradient(135deg,#3B82F6,#2563EB);color:white;border:none;padding:12px 18px;border-radius:25px;cursor:pointer;font-weight:700;transition:0.2s;font-size:16px" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">➤</button>
-            </div>
-            
-            <!-- Footer -->
-            <div style="text-align:center;padding:8px;font-size:10px;color:#94A3B8;background:#F8FAFC">⚡ اكتب "تحويل" للتحدث مع خدمة العملاء</div>
-        </div>
-        
-        <style>
-            .dora-chat-msg { padding:10px 14px; margin:6px 0; border-radius:16px; font-size:13px; line-height:1.7; max-width:92%; word-wrap:break-word; }
-            .dora-chat-msg.user { background:linear-gradient(135deg,#EFF6FF,#DBEAFE); margin-right:auto; margin-left:0; color:#1E40AF; text-align:right; border-bottom-left-radius:4px; }
-            .dora-chat-msg.bot { background:white; margin-left:auto; margin-right:0; text-align:right; border:1px solid #E2E8F0; border-bottom-right-radius:4px; }
-            .dora-chat-msg a { color:#2563EB; font-weight:600; }
-            
-            #doraChatMessages::-webkit-scrollbar { width: 4px; }
-            #doraChatMessages::-webkit-scrollbar-track { background: transparent; }
-            #doraChatMessages::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
-        </style>
-        `;
-        
+        var html = '<div id="doraChatWidget" style="display:none;position:fixed;bottom:30px;left:30px;z-index:99999;width:370px;max-width:90vw;background:#FFFFFF;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.15);direction:rtl;font-family:Tajawal,Cairo,sans-serif"><div style="background:#1E293B;padding:18px 22px;display:flex;justify-content:space-between;align-items:center"><div style="display:flex;align-items:center;gap:12px"><div style="width:42px;height:42px;background:linear-gradient(135deg,#3B82F6,#8B5CF6);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px">💬</div><div><div style="color:white;font-weight:700;font-size:15px">درة فارس</div><div style="color:#94A3B8;font-size:11px">🟢 متصل</div></div></div><button onclick="doraChatbot.hide()" style="background:rgba(255,255,255,0.1);border:none;color:white;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px">✕</button></div><div id="doraChatMessages" style="height:340px;overflow-y:auto;padding:16px;background:#F8FAFC"><div class="dora-chat-msg bot">👋 أهلاً! أنا المساعد الذكي. أقدر أساعدك في:</div><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><button onclick="doraChatbot.quickAsk(\'شحن\')" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:11px">🚚 الشحن</button><button onclick="doraChatbot.quickAsk(\'ضمان\')" style="background:#F0FDF4;color:#16A34A;border:1px solid #BBF7D0;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:11px">🛡️ الضمان</button><button onclick="doraChatbot.quickAsk(\'خصم\')" style="background:#FFF7ED;color:#EA580C;border:1px solid #FED7AA;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:11px">🎟️ خصومات</button><button onclick="doraChatbot.quickAsk(\'دفع\')" style="background:#F5F3FF;color:#7C3AED;border:1px solid #DDD6FE;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:11px">💳 الدفع</button></div></div><div style="display:flex;padding:14px 16px;background:white;border-top:1px solid #E2E8F0;gap:10px"><input id="doraChatInput" type="text" placeholder="اكتب سؤالك هنا..." onkeydown="if(event.key===\'Enter\')doraChatbot.send()" style="flex:1;padding:12px 16px;border-radius:25px;border:2px solid #E2E8F0;background:#F8FAFC;color:#1E293B;font-family:inherit;font-size:13px;outline:none"><button onclick="doraChatbot.send()" style="background:linear-gradient(135deg,#3B82F6,#2563EB);color:white;border:none;padding:12px 18px;border-radius:25px;cursor:pointer;font-weight:700;font-size:16px">➤</button></div><div style="text-align:center;padding:8px;font-size:10px;color:#94A3B8;background:#F8FAFC">⚡ اكتب "تحويل" للتحدث مع خدمة العملاء</div></div><style>.dora-chat-msg{padding:10px 14px;margin:6px 0;border-radius:16px;font-size:13px;line-height:1.7;max-width:92%}.dora-chat-msg.user{background:#EFF6FF;color:#1E40AF;margin-right:auto;text-align:right}.dora-chat-msg.bot{background:white;border:1px solid #E2E8F0;margin-left:auto;text-align:right}#doraChatMessages::-webkit-scrollbar{width:4px}#doraChatMessages::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:10px}</style>';
         document.body.insertAdjacentHTML('beforeend', html);
     },
     
@@ -2567,204 +2496,27 @@ var doraChatbot = {
     }
 };
 
-// أيقونة روبوت متحركة مع رسالة ترحيبية
-document.addEventListener('DOMContentLoaded', function() {
-    // الحاوية الرئيسية
+// أيقونة الروبوت
+(function(){
+    if (document.getElementById('doraChatBubble')) return;
     var wrapper = document.createElement('div');
     wrapper.id = 'doraChatBubbleWrapper';
     wrapper.style.cssText = 'position:fixed;bottom:30px;left:30px;z-index:99998;display:flex;align-items:flex-end;gap:12px';
     
-    // فقاعة الرسالة الترحيبية
     var greeting = document.createElement('div');
-    greeting.id = 'doraChatGreeting';
     greeting.innerHTML = '👋 أهلاً! أنا هنا لخدمتك';
-    greeting.style.cssText = 'background:white;color:#1E293B;padding:12px 18px;border-radius:20px 20px 4px 20px;font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,0.1);white-space:nowrap;animation:fadeInRight 0.5s ease, fadeOut 0.5s ease 4s forwards;font-family:Tajawal,sans-serif;max-width:200px';
+    greeting.style.cssText = 'background:white;color:#1E293B;padding:12px 18px;border-radius:20px 20px 4px 20px;font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,0.15);white-space:nowrap;font-family:Tajawal,sans-serif';
     
-    // إضافة أنيميشن CSS
-    var style = document.createElement('style');
-    style.textContent = `
-        @keyframes fadeInRight { from { opacity:0; transform:translateX(-20px); } to { opacity:1; transform:translateX(0); } }
-        @keyframes fadeOut { from { opacity:1; } to { opacity:0; transform:translateY(-10px); } }
-        @keyframes robotWave { 0%,100% { transform:rotate(0deg); } 25% { transform:rotate(-15deg); } 50% { transform:rotate(10deg); } 75% { transform:rotate(-5deg); } }
-        @keyframes robotBounce { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-6px); } }
-        @keyframes notificationDot { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.5; transform:scale(1.3); } }
-        #doraChatBubble:hover { animation: robotBounce 0.6s ease infinite; }
-        #doraChatBubble:hover .robot-hand { animation: robotWave 0.8s ease infinite; }
-        .robot-hand { display:inline-block; transform-origin:bottom right; }
-        .robot-notification { animation: notificationDot 2s ease infinite; }
-    `;
-    document.head.appendChild(style);
-    
-   // أيقونة روبوت مودرن - حر الحركة بدون خلفية - مع حركة ترحيبية
-document.addEventListener('DOMContentLoaded', function() {
-    var wrapper = document.createElement('div');
-    wrapper.id = 'doraChatBubbleWrapper';
-    wrapper.style.cssText = 'position:fixed;bottom:30px;left:30px;z-index:99998;display:flex;align-items:flex-end;gap:12px';
-    
-    // فقاعة الرسالة الترحيبية
-    var greeting = document.createElement('div');
-    greeting.id = 'doraChatGreeting';
-    greeting.innerHTML = '👋 أهلاً! أنا هنا لخدمتك';
-    greeting.style.cssText = 'background:white;color:#1E293B;padding:12px 18px;border-radius:20px 20px 4px 20px;font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,0.15);white-space:nowrap;font-family:Tajawal,sans-serif;animation:greetingIn 0.5s ease, greetingOut 0.5s ease 5s forwards';
-    
-    // الروبوت SVG - 70px بدون خلفية
     var bubble = document.createElement('div');
     bubble.id = 'doraChatBubble';
-    bubble.style.cssText = 'width:70px;height:70px;cursor:pointer;filter:drop-shadow(0 8px 24px rgba(99,102,241,0.5));transition:0.3s;position:relative';
+    bubble.style.cssText = 'width:70px;height:70px;cursor:pointer;filter:drop-shadow(0 8px 24px rgba(99,102,241,0.5));transition:0.3s';
+    bubble.innerHTML = '<svg width="70" height="70" viewBox="0 0 80 88"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6366F1"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs><line x1="40" y1="2" x2="40" y2="14" stroke="#6366F1" stroke-width="3" stroke-linecap="round"/><circle cx="40" cy="0" r="5" fill="#8B5CF6"><animate attributeName="cy" values="0;2;0" dur="2s" repeatCount="indefinite"/></circle><rect x="14" y="14" width="52" height="52" rx="16" fill="url(#bg)"><animate attributeName="rx" values="16;18;16" dur="4s" repeatCount="indefinite"/></rect><rect x="24" y="44" width="32" height="16" rx="6" fill="#1E293B" opacity="0.3"/><text x="40" y="55" text-anchor="middle" fill="white" font-size="8" font-family="monospace"><animate attributeName="opacity" values="0.9;0.3;0.9" dur="1.2s" repeatCount="indefinite"/>⚡</text><ellipse cx="30" cy="34" rx="7" ry="7" fill="#1E293B"><animate attributeName="ry" values="7;0.5;7" dur="4s" repeatCount="indefinite" begin="1s"/></ellipse><ellipse cx="50" cy="34" rx="7" ry="7" fill="#1E293B"><animate attributeName="ry" values="7;0.5;7" dur="4s" repeatCount="indefinite" begin="1s"/></ellipse><circle cx="32" cy="32" r="2.5" fill="white"><animate attributeName="cy" values="32;33;32" dur="4s" repeatCount="indefinite" begin="1s"/></circle><circle cx="52" cy="32" r="2.5" fill="white"><animate attributeName="cy" values="32;33;32" dur="4s" repeatCount="indefinite" begin="1s"/></circle><path d="M28 48 Q40 56 52 48" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round" fill="none"><animate attributeName="d" values="M28 48 Q40 56 52 48;M28 48 Q40 60 52 48;M28 48 Q40 56 52 48" dur="4s" repeatCount="indefinite" begin="1s"/></path><g transform="translate(66,30)"><rect x="0" y="0" width="12" height="28" rx="6" fill="url(#bg)"><animateTransform attributeName="transform" type="rotate" values="0 6 0;-30 6 0;0 6 0;20 6 0;0 6 0" dur="1.2s" repeatCount="indefinite" begin="0.3s"/></rect><circle cx="6" cy="28" r="7" fill="#6366F1"><animateTransform attributeName="transform" type="rotate" values="0 6 28;-30 6 28;0 6 28;20 6 28;0 6 28" dur="1.2s" repeatCount="indefinite" begin="0.3s"/></circle></g><g transform="translate(2,30)"><rect x="0" y="0" width="12" height="28" rx="6" fill="url(#bg)"/><circle cx="6" cy="28" r="7" fill="#6366F1"/></g><rect x="22" y="66" width="14" height="18" rx="7" fill="url(#bg)"/><rect x="44" y="66" width="14" height="18" rx="7" fill="url(#bg)"/></svg>';
     
-   bubble.innerHTML = '<svg width="70" height="70" viewBox="0 0 80 88" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-    '<!-- antenna -->' +
-    '<line x1="40" y1="2" x2="40" y2="14" stroke="#6366F1" stroke-width="3" stroke-linecap="round"/>' +
-    '<circle cx="40" cy="0" r="5" fill="#8B5CF6">' +
-      '<animate attributeName="cy" values="0;2;0" dur="2s" repeatCount="indefinite"/>' +
-    '</circle>' +
-    '<!-- الجسم -->' +
-    '<rect x="14" y="14" width="52" height="52" rx="16" fill="url(#botGradient)">' +
-      '<animate attributeName="rx" values="16;18;16" dur="4s" repeatCount="indefinite"/>' +
-    '</rect>' +
-    '<!-- شاشة الصدر -->' +
-    '<rect x="24" y="44" width="32" height="16" rx="6" fill="#1E293B" opacity="0.3"/>' +
-    '<text x="40" y="55" text-anchor="middle" fill="white" font-size="8" font-family="monospace">' +
-      '<animate attributeName="opacity" values="0.9;0.3;0.9" dur="1.2s" repeatCount="indefinite"/>' +
-      '<animate attributeName="font-size" values="8;9;8" dur="1.2s" repeatCount="indefinite"/>' +
-      '⚡' +
-    '</text>' +
-    '<!-- العيون -->' +
-    '<ellipse cx="30" cy="34" rx="7" ry="7" fill="#1E293B">' +
-      '<animate attributeName="ry" values="7;0.5;7" dur="4s" repeatCount="indefinite" begin="1s"/>' +
-      '<animate attributeName="rx" values="7;7;7" dur="4s" repeatCount="indefinite"/>' +
-    '</ellipse>' +
-    '<ellipse cx="50" cy="34" rx="7" ry="7" fill="#1E293B">' +
-      '<animate attributeName="ry" values="7;0.5;7" dur="4s" repeatCount="indefinite" begin="1s"/>' +
-    '</ellipse>' +
-    '<circle cx="32" cy="32" r="2.5" fill="white">' +
-      '<animate attributeName="cy" values="32;33;32" dur="4s" repeatCount="indefinite" begin="1s"/>' +
-    '</circle>' +
-    '<circle cx="52" cy="32" r="2.5" fill="white">' +
-      '<animate attributeName="cy" values="32;33;32" dur="4s" repeatCount="indefinite" begin="1s"/>' +
-    '</circle>' +
-    '<!-- الابتسامة المتحركة -->' +
-    '<path d="M28 48 Q40 56 52 48" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round" fill="none">' +
-      '<animate attributeName="d" values="M28 48 Q40 56 52 48;M28 48 Q40 60 52 48;M28 48 Q40 56 52 48" dur="4s" repeatCount="indefinite" begin="1s"/>' +
-      '<animate attributeName="stroke-width" values="2.5;3.5;2.5" dur="4s" repeatCount="indefinite" begin="1s"/>' +
-    '</path>' +
-    '<!-- الذراع اليمين - بتحرك ترحيب -->' +
-    '<g transform="translate(66, 30)">' +
-      '<rect x="0" y="0" width="12" height="28" rx="6" fill="url(#botGradient)">' +
-        '<animateTransform attributeName="transform" type="rotate" values="0 6 0;-30 6 0;0 6 0;20 6 0;0 6 0" dur="1.2s" repeatCount="indefinite" begin="0.3s"/>' +
-      '</rect>' +
-      '<circle cx="6" cy="28" r="7" fill="#6366F1">' +
-        '<animateTransform attributeName="transform" type="rotate" values="0 6 28;-30 6 28;0 6 28;20 6 28;0 6 28" dur="1.2s" repeatCount="indefinite" begin="0.3s"/>' +
-      '</circle>' +
-    '</g>' +
-    '<!-- الذراع الشمال - ساكنة -->' +
-    '<g transform="translate(2, 30)">' +
-      '<rect x="0" y="0" width="12" height="28" rx="6" fill="url(#botGradient)"/>' +
-      '<circle cx="6" cy="28" r="7" fill="#6366F1"/>' +
-    '</g>' +
-    '<!-- الرجلين -->' +
-    '<rect x="22" y="66" width="14" height="18" rx="7" fill="url(#botGradient)"/>' +
-    '<rect x="44" y="66" width="14" height="18" rx="7" fill="url(#botGradient)"/>' +
-    '<!-- gradient -->' +
-    '<defs>' +
-      '<linearGradient id="botGradient" x1="0" y1="0" x2="1" y2="1">' +
-        '<stop offset="0%" stop-color="#6366F1"/>' +
-        '<stop offset="100%" stop-color="#8B5CF6"/>' +
-      '</linearGradient>' +
-    '</defs>' +
-'</svg>'; +
-        '<!-- antenna -->' +
-        '<line x1="40" y1="2" x2="40" y2="14" stroke="#6366F1" stroke-width="3" stroke-linecap="round"/>' +
-        '<circle cx="40" cy="0" r="5" fill="#8B5CF6">' +
-          '<animate attributeName="cy" values="0;2;0" dur="2s" repeatCount="indefinite"/>' +
-        '</circle>' +
-        '<!-- الجسم -->' +
-        '<rect x="14" y="14" width="52" height="52" rx="16" fill="url(#botGradient)"/>' +
-        '<!-- شاشة الصدر -->' +
-        '<rect x="24" y="44" width="32" height="16" rx="6" fill="#1E293B" opacity="0.3"/>' +
-        '<text x="40" y="55" text-anchor="middle" fill="white" font-size="8" font-family="monospace" opacity="0.9">' +
-          '<animate attributeName="opacity" values="0.9;0.4;0.9" dur="1.5s" repeatCount="indefinite"/>' +
-          '⚡' +
-        '</text>' +
-        '<!-- العيون -->' +
-        '<circle cx="30" cy="34" r="7" fill="#1E293B"/>' +
-        '<circle cx="50" cy="34" r="7" fill="#1E293B"/>' +
-        '<circle cx="32" cy="32" r="2.5" fill="white"/>' +
-        '<circle cx="52" cy="32" r="2.5" fill="white"/>' +
-        '<!-- الابتسامة -->' +
-        '<path d="M28 48 Q40 56 52 48" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round" fill="none"/>' +
-        '<!-- الذراع اليمين - بتحرك ترحيب -->' +
-        '<g transform="translate(66, 30)">' +
-          '<rect x="0" y="0" width="12" height="28" rx="6" fill="url(#botGradient)">' +
-            '<animateTransform attributeName="transform" type="rotate" values="0 6 0;-30 6 0;0 6 0;15 6 0;0 6 0" dur="1.5s" repeatCount="indefinite" begin="0.5s"/>' +
-          '</rect>' +
-          '<!-- الإيد -->' +
-          '<circle cx="6" cy="28" r="7" fill="#6366F1">' +
-            '<animateTransform attributeName="transform" type="rotate" values="0 6 28;-30 6 28;0 6 28;15 6 28;0 6 28" dur="1.5s" repeatCount="indefinite" begin="0.5s"/>' +
-          '</circle>' +
-        '</g>' +
-        '<!-- الذراع الشمال - ساكنة -->' +
-        '<g transform="translate(2, 30)">' +
-          '<rect x="0" y="0" width="12" height="28" rx="6" fill="url(#botGradient)"/>' +
-          '<circle cx="6" cy="28" r="7" fill="#6366F1"/>' +
-        '</g>' +
-        '<!-- الرجلين -->' +
-        '<rect x="22" y="66" width="14" height="18" rx="7" fill="url(#botGradient)"/>' +
-        '<rect x="44" y="66" width="14" height="18" rx="7" fill="url(#botGradient)"/>' +
-        '<!-- gradient -->' +
-        '<defs>' +
-          '<linearGradient id="botGradient" x1="0" y1="0" x2="1" y2="1">' +
-            '<stop offset="0%" stop-color="#6366F1"/>' +
-            '<stop offset="100%" stop-color="#8B5CF6"/>' +
-          '</linearGradient>' +
-        '</defs>' +
-    '</svg>';
-    
-    // أنيميشن CSS
-    var style = document.createElement('style');
-    style.textContent = `
-        @keyframes greetingIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-        @keyframes greetingOut { from { opacity:1; } to { opacity:0; transform:translateY(-10px); } }
-        @keyframes botFloat { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-6px); } }
-        #doraChatBubble { animation: botFloat 3s ease-in-out infinite; }
-        #doraChatBubble:hover { filter:drop-shadow(0 12px 30px rgba(99,102,241,0.7)); }
-    `;
-    document.head.appendChild(style);
-    
-    bubble.onclick = function() { 
-        if (typeof doraChatbot !== 'undefined') doraChatbot.toggle(); 
-        greeting.style.display = 'none';
-    };
+    bubble.onclick = function() { if (typeof doraChatbot !== 'undefined') doraChatbot.toggle(); greeting.style.display = 'none'; };
     
     wrapper.appendChild(greeting);
     wrapper.appendChild(bubble);
     document.body.appendChild(wrapper);
-    
     setTimeout(function() { greeting.style.display = 'none'; }, 5000);
-});
-    
-   // تأكيد ظهور أيقونة الشات
-(function(){
-  if (document.getElementById('doraChatBubble')) return;
-  var wrapper = document.createElement('div');
-  wrapper.id = 'doraChatBubbleWrapper';
-  wrapper.style.cssText = 'position:fixed;bottom:30px;left:30px;z-index:99998;display:flex;align-items:flex-end;gap:12px';
-  
-  var greeting = document.createElement('div');
-  greeting.id = 'doraChatGreeting';
-  greeting.innerHTML = '👋 أهلاً! أنا هنا لخدمتك';
-  greeting.style.cssText = 'background:white;color:#1E293B;padding:12px 18px;border-radius:20px 20px 4px 20px;font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,0.15);white-space:nowrap;font-family:Tajawal,sans-serif';
-  
-  var bubble = document.createElement('div');
-  bubble.id = 'doraChatBubble';
-  bubble.style.cssText = 'width:70px;height:70px;cursor:pointer;filter:drop-shadow(0 8px 24px rgba(99,102,241,0.5));transition:0.3s';
-  bubble.innerHTML = '<svg width="70" height="70" viewBox="0 0 80 88" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="40" y1="2" x2="40" y2="14" stroke="#6366F1" stroke-width="3" stroke-linecap="round"/><circle cx="40" cy="0" r="5" fill="#8B5CF6"><animate attributeName="cy" values="0;2;0" dur="2s" repeatCount="indefinite"/></circle><rect x="14" y="14" width="52" height="52" rx="16" fill="url(#bg)"><animate attributeName="rx" values="16;18;16" dur="4s" repeatCount="indefinite"/></rect><rect x="24" y="44" width="32" height="16" rx="6" fill="#1E293B" opacity="0.3"/><text x="40" y="55" text-anchor="middle" fill="white" font-size="8" font-family="monospace"><animate attributeName="opacity" values="0.9;0.3;0.9" dur="1.2s" repeatCount="indefinite"/>⚡</text><ellipse cx="30" cy="34" rx="7" ry="7" fill="#1E293B"><animate attributeName="ry" values="7;0.5;7" dur="4s" repeatCount="indefinite" begin="1s"/></ellipse><ellipse cx="50" cy="34" rx="7" ry="7" fill="#1E293B"><animate attributeName="ry" values="7;0.5;7" dur="4s" repeatCount="indefinite" begin="1s"/></ellipse><circle cx="32" cy="32" r="2.5" fill="white"><animate attributeName="cy" values="32;33;32" dur="4s" repeatCount="indefinite" begin="1s"/></circle><circle cx="52" cy="32" r="2.5" fill="white"><animate attributeName="cy" values="32;33;32" dur="4s" repeatCount="indefinite" begin="1s"/></circle><path d="M28 48 Q40 56 52 48" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round" fill="none"><animate attributeName="d" values="M28 48 Q40 56 52 48;M28 48 Q40 60 52 48;M28 48 Q40 56 52 48" dur="4s" repeatCount="indefinite" begin="1s"/></path><g transform="translate(66, 30)"><rect x="0" y="0" width="12" height="28" rx="6" fill="url(#bg)"><animateTransform attributeName="transform" type="rotate" values="0 6 0;-30 6 0;0 6 0;20 6 0;0 6 0" dur="1.2s" repeatCount="indefinite" begin="0.3s"/></rect><circle cx="6" cy="28" r="7" fill="#6366F1"><animateTransform attributeName="transform" type="rotate" values="0 6 28;-30 6 28;0 6 28;20 6 28;0 6 28" dur="1.2s" repeatCount="indefinite" begin="0.3s"/></circle></g><g transform="translate(2, 30)"><rect x="0" y="0" width="12" height="28" rx="6" fill="url(#bg)"/><circle cx="6" cy="28" r="7" fill="#6366F1"/></g><rect x="22" y="66" width="14" height="18" rx="7" fill="url(#bg)"/><rect x="44" y="66" width="14" height="18" rx="7" fill="url(#bg)"/><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6366F1"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs></svg>';
-  
-  bubble.onclick = function() { if (typeof doraChatbot !== 'undefined') doraChatbot.toggle(); greeting.style.display = 'none'; };
-  
-  wrapper.appendChild(greeting);
-  wrapper.appendChild(bubble);
-  document.body.appendChild(wrapper);
-  setTimeout(function() { greeting.style.display = 'none'; }, 5000);
 })();
-})();
+   })(); 
