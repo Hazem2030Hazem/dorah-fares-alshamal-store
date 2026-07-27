@@ -2588,3 +2588,4 @@ document.addEventListener('DOMContentLoaded', function() {
   bubble.onclick = function() { if (typeof doraChatbot !== 'undefined') doraChatbot.toggle(); };
   document.body.appendChild(bubble);
 })();
+})();
