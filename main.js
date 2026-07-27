@@ -2513,7 +2513,7 @@ var doraChatbot = {
                         <div style="color:#94A3B8;font-size:11px">🟢 متصل</div>
                     </div>
                 </div>
-                <button onclick="doraChatbot.hide()" style="background:rgba(255,255,255,0.1);border:none;color:white;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;transition:0.2s" onmouseenter="this.style.background='rgba(255,255,255,0.2)'" onmouseleave="this.style.background='rgba(255,255,255,0.1)'">✕</button>
+               <button onclick="document.getElementById('doraChatWidget').style.display='none';doraChatbot.isOpen=false;var btn=document.getElementById('doraChatBubble');if(btn)btn.style.display='flex';" style="background:rgba(255,255,255,0.1);border:none;color:white;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;transition:0.2s" onmouseenter="this.style.background='rgba(255,255,255,0.2)'" onmouseleave="this.style.background='rgba(255,255,255,0.1)'">✕</button>
             </div>
             
             <!-- Messages -->
