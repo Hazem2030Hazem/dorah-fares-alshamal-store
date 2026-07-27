@@ -2492,7 +2492,7 @@ var doraChatbot = {
         document.body.insertAdjacentHTML('beforeend', html);
     }
 };
-
+window.doraChatbot = doraChatbot;
 // أيقونة الروبوت
 (function(){
     if (document.getElementById('doraChatBubble')) return;
