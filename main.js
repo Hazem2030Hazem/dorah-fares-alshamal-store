@@ -2405,7 +2405,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 2000);
 });
 // ============================================================
-// 🤖 DORA SMART CHATBOT - شات بوت ذكي بالعربي
+// 🤖 DORA SMART CHATBOT - شات بوت ذكي بالعربي (تصميم عصري)
 // ============================================================
 
 var doraChatbot = {
@@ -2441,14 +2441,12 @@ var doraChatbot = {
     getResponse: function(msg) {
         msg = msg.toLowerCase().trim();
         
-        // البحث في قاعدة المعرفة
         for (var key in this.knowledgeBase) {
             if (msg.indexOf(key) !== -1) {
                 return this.knowledgeBase[key];
             }
         }
         
-        // ردود عامة
         var generalReplies = [
             '🤔 معلش، ممكن توضح أكثر؟',
             '📝 أنا لسه بتعلم! تقدر تسأل عن: الأسعار، الشحن، الضمان، المنتجات، الدفع، أو تكتب "مساعدة".',
@@ -2463,11 +2461,15 @@ var doraChatbot = {
         if (!document.getElementById('doraChatWidget')) this.create();
         document.getElementById('doraChatWidget').style.display = 'block';
         this.isOpen = true;
+        var btn = document.getElementById('doraChatBubble');
+        if (btn) btn.style.display = 'none';
     },
     
     hide: function() {
         document.getElementById('doraChatWidget').style.display = 'none';
         this.isOpen = false;
+        var btn = document.getElementById('doraChatBubble');
+        if (btn) btn.style.display = 'flex';
     },
     
     toggle: function() {
@@ -2500,33 +2502,59 @@ var doraChatbot = {
     
     create: function() {
         var html = `
-        <div id="doraChatWidget" style="display:none;position:fixed;bottom:100px;left:25px;z-index:99999;width:350px;max-width:90vw;background:rgba(15,12,41,0.98);border:1px solid rgba(59,130,246,0.5);border-radius:20px;overflow:hidden;box-shadow:0 15px 50px rgba(0,0,0,0.5);direction:rtl">
-            <div style="background:linear-gradient(135deg,#3B82F6,#2563EB);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;color:white;font-weight:800">
-                <span>🤖 درة فارس - مساعد ذكي</span>
-                <button onclick="doraChatbot.hide()" style="background:none;border:none;color:white;font-size:20px;cursor:pointer">✕</button>
+        <div id="doraChatWidget" style="display:none;position:fixed;bottom:30px;left:30px;z-index:99999;width:370px;max-width:90vw;background:#FFFFFF;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.15);direction:rtl;font-family:'Tajawal','Cairo',sans-serif">
+            
+            <!-- Header -->
+            <div style="background:#1E293B;padding:18px 22px;display:flex;justify-content:space-between;align-items:center">
+                <div style="display:flex;align-items:center;gap:12px">
+                    <div style="width:42px;height:42px;background:linear-gradient(135deg,#3B82F6,#8B5CF6);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px">💬</div>
+                    <div>
+                        <div style="color:white;font-weight:700;font-size:15px">درة فارس</div>
+                        <div style="color:#94A3B8;font-size:11px">🟢 متصل</div>
+                    </div>
+                </div>
+                <button onclick="doraChatbot.hide()" style="background:rgba(255,255,255,0.1);border:none;color:white;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;transition:0.2s" onmouseenter="this.style.background='rgba(255,255,255,0.2)'" onmouseleave="this.style.background='rgba(255,255,255,0.1)'">✕</button>
             </div>
-            <div id="doraChatMessages" style="height:300px;overflow-y:auto;padding:15px">
-                <div class="dora-chat-msg bot"><strong>درة فارس:</strong> 👋 أهلاً وسهلاً! أنا المساعد الذكي لشركة درة فارس الشمال. أقدر أساعدك في:</div>
-                <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">
-                    <button onclick="doraChatbot.quickAsk('شحن')" style="background:rgba(59,130,246,0.2);color:#60A5FA;border:none;padding:5px 12px;border-radius:15px;cursor:pointer;font-size:11px">🚚 شحن</button>
-                    <button onclick="doraChatbot.quickAsk('ضمان')" style="background:rgba(59,130,246,0.2);color:#60A5FA;border:none;padding:5px 12px;border-radius:15px;cursor:pointer;font-size:11px">🛡️ ضمان</button>
-                    <button onclick="doraChatbot.quickAsk('خصم')" style="background:rgba(59,130,246,0.2);color:#60A5FA;border:none;padding:5px 12px;border-radius:15px;cursor:pointer;font-size:11px">🎟️ خصم</button>
-                    <button onclick="doraChatbot.quickAsk('دفع')" style="background:rgba(59,130,246,0.2);color:#60A5FA;border:none;padding:5px 12px;border-radius:15px;cursor:pointer;font-size:11px">💳 دفع</button>
-                    <button onclick="doraChatbot.quickAsk('منتجات')" style="background:rgba(59,130,246,0.2);color:#60A5FA;border:none;padding:5px 12px;border-radius:15px;cursor:pointer;font-size:11px">🛍️ منتجات</button>
+            
+            <!-- Messages -->
+            <div id="doraChatMessages" style="height:340px;overflow-y:auto;padding:16px;background:#F8FAFC">
+                <div class="dora-chat-msg bot">
+                    <div style="display:flex;align-items:start;gap:8px">
+                        <div style="width:28px;height:28px;background:linear-gradient(135deg,#3B82F6,#8B5CF6);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">💬</div>
+                        <div>
+                            <div style="color:#64748B;font-size:11px;margin-bottom:2px">درة فارس</div>
+                            <div style="color:#1E293B;font-size:13px;line-height:1.6">👋 أهلاً وسهلاً! أنا المساعد الذكي لشركة درة فارس الشمال. أقدر أساعدك في:</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;padding:0 8px">
+                    <button onclick="doraChatbot.quickAsk('شحن')" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:11px;font-weight:500;transition:0.2s" onmouseenter="this.style.background='#DBEAFE'" onmouseleave="this.style.background='#EFF6FF'">🚚 الشحن</button>
+                    <button onclick="doraChatbot.quickAsk('ضمان')" style="background:#F0FDF4;color:#16A34A;border:1px solid #BBF7D0;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:11px;font-weight:500;transition:0.2s" onmouseenter="this.style.background='#DCFCE7'" onmouseleave="this.style.background='#F0FDF4'">🛡️ الضمان</button>
+                    <button onclick="doraChatbot.quickAsk('خصم')" style="background:#FFF7ED;color:#EA580C;border:1px solid #FED7AA;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:11px;font-weight:500;transition:0.2s" onmouseenter="this.style.background='#FFEDD5'" onmouseleave="this.style.background='#FFF7ED'">🎟️ خصومات</button>
+                    <button onclick="doraChatbot.quickAsk('دفع')" style="background:#F5F3FF;color:#7C3AED;border:1px solid #DDD6FE;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:11px;font-weight:500;transition:0.2s" onmouseenter="this.style.background='#EDE9FE'" onmouseleave="this.style.background='#F5F3FF'">💳 الدفع</button>
+                    <button onclick="doraChatbot.quickAsk('منتجات')" style="background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:11px;font-weight:500;transition:0.2s" onmouseenter="this.style.background='#FEE2E2'" onmouseleave="this.style.background='#FEF2F2'">🛍️ المنتجات</button>
                 </div>
             </div>
-            <div style="display:flex;padding:10px 15px;border-top:1px solid rgba(255,255,255,0.1);gap:8px">
-                <input id="doraChatInput" type="text" placeholder="اكتب سؤالك هنا..." onkeydown="if(event.key==='Enter')doraChatbot.send()" style="flex:1;padding:10px 15px;border-radius:25px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:white;font-family:inherit;font-size:13px">
-                <button onclick="doraChatbot.send()" style="background:#3B82F6;color:white;border:none;padding:10px 18px;border-radius:25px;cursor:pointer;font-weight:700">➤</button>
+            
+            <!-- Input -->
+            <div style="display:flex;padding:14px 16px;background:white;border-top:1px solid #E2E8F0;gap:10px">
+                <input id="doraChatInput" type="text" placeholder="اكتب سؤالك هنا..." onkeydown="if(event.key==='Enter')doraChatbot.send()" style="flex:1;padding:12px 16px;border-radius:25px;border:2px solid #E2E8F0;background:#F8FAFC;color:#1E293B;font-family:inherit;font-size:13px;outline:none;transition:0.2s" onfocus="this.style.borderColor='#3B82F6';this.style.background='white'" onblur="this.style.borderColor='#E2E8F0';this.style.background='#F8FAFC'">
+                <button onclick="doraChatbot.send()" style="background:linear-gradient(135deg,#3B82F6,#2563EB);color:white;border:none;padding:12px 18px;border-radius:25px;cursor:pointer;font-weight:700;transition:0.2s;font-size:16px" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">➤</button>
             </div>
-            <div style="text-align:center;padding:8px;font-size:10px;color:rgba(255,255,255,0.3)">اكتب "تحويل" للتحدث مع خدمة العملاء</div>
+            
+            <!-- Footer -->
+            <div style="text-align:center;padding:8px;font-size:10px;color:#94A3B8;background:#F8FAFC">⚡ اكتب "تحويل" للتحدث مع خدمة العملاء</div>
         </div>
         
         <style>
-            .dora-chat-msg { padding:8px 12px; margin:5px 0; border-radius:12px; font-size:13px; line-height:1.6; max-width:90%; word-wrap:break-word; }
-            .dora-chat-msg.user { background:rgba(59,130,246,0.2); margin-right:auto; margin-left:0; text-align:right; }
-            .dora-chat-msg.bot { background:rgba(255,255,255,0.05); margin-left:auto; margin-right:0; text-align:right; }
-            .dora-chat-msg a { color:#60A5FA; }
+            .dora-chat-msg { padding:10px 14px; margin:6px 0; border-radius:16px; font-size:13px; line-height:1.7; max-width:92%; word-wrap:break-word; }
+            .dora-chat-msg.user { background:linear-gradient(135deg,#EFF6FF,#DBEAFE); margin-right:auto; margin-left:0; color:#1E40AF; text-align:right; border-bottom-left-radius:4px; }
+            .dora-chat-msg.bot { background:white; margin-left:auto; margin-right:0; text-align:right; border:1px solid #E2E8F0; border-bottom-right-radius:4px; }
+            .dora-chat-msg a { color:#2563EB; font-weight:600; }
+            
+            #doraChatMessages::-webkit-scrollbar { width: 4px; }
+            #doraChatMessages::-webkit-scrollbar-track { background: transparent; }
+            #doraChatMessages::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
         </style>
         `;
         
@@ -2539,14 +2567,14 @@ var doraChatbot = {
     }
 };
 
-// أيقونة الشات
+// أيقونة الشات - تصميم عصري
 document.addEventListener('DOMContentLoaded', function() {
     var bubble = document.createElement('div');
-    bubble.style.cssText = 'position:fixed;bottom:100px;left:25px;z-index:99998;width:55px;height:55px;background:linear-gradient(135deg,#3B82F6,#2563EB);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 30px rgba(59,130,246,0.5);animation:pulse 2s infinite;transition:0.3s';
-    bubble.innerHTML = '<span style="font-size:26px">🤖</span>';
+    bubble.id = 'doraChatBubble';
+    bubble.style.cssText = 'position:fixed;bottom:30px;left:30px;z-index:99998;width:58px;height:58px;background:linear-gradient(135deg,#3B82F6,#8B5CF6);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 25px rgba(59,130,246,0.4);transition:0.3s';
+    bubble.innerHTML = '<span style="font-size:28px">💬</span>';
     bubble.onclick = function() { doraChatbot.toggle(); };
-    bubble.onmouseenter = function() { this.style.transform = 'scale(1.1)'; };
-    bubble.onmouseleave = function() { this.style.transform = 'scale(1)'; };
+    bubble.onmouseenter = function() { this.style.transform = 'scale(1.08)'; this.style.boxShadow = '0 12px 35px rgba(59,130,246,0.5)'; };
+    bubble.onmouseleave = function() { this.style.transform = 'scale(1)'; this.style.boxShadow = '0 8px 25px rgba(59,130,246,0.4)'; };
     document.body.appendChild(bubble);
 });
-})();
