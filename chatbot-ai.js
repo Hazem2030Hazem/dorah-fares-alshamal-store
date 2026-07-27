@@ -56,15 +56,7 @@ var doraChatbot = {
             });
             
             var data = await response.json();
-            var reply = data.reply;
-            
-            if (reply) return reply;
-        } catch(e) {
-            console.log('AI fallback:', e);
-        }
-            
-            var data = await response.json();
-            var reply = data.reply;
+var reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
             
             if (reply) return reply;
         } catch(e) {
