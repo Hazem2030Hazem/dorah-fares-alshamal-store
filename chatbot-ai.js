@@ -1,71 +1,51 @@
 // ============================================================
-// 🤖 DORA SMART CHATBOT - Gemini AI
+// 🤖 DORA SMART CHATBOT - المساعد الذكي
 // ============================================================
 
 var doraChatbot = {
     isOpen: false,
     messages: [],
-    conversationHistory: [],
     
-    getSystemPrompt: function() {
-        var pageTitle = document.title || 'الموقع';
-        var pageUrl = window.location.href;
-        var isProduct = pageUrl.includes('product');
-        var isCart = pageUrl.includes('cart') || pageUrl.includes('checkout');
-        var isHome = pageUrl === window.location.origin + '/' || pageUrl.includes('index');
-        
-        var context = 'أنت مساعد ذكي لشركة درة فارس الشمال - شركة سعودية متخصصة في بيع وتوريد: الطابعات، الكمبيوتر، الرامات، الهاردات، البروجكتور، الإكسسوارات، الأحبار، والمواد الغذائية.\n\n';
-        context += 'معلومات الشركة:\n- الهاتف: 0568717449\n- واتساب: 0545358773\n- الشحن لجميع مدن المملكة\n- شحن مجاني للطلبات فوق 300 ريال\n- ضمان سنة على جميع المنتجات\n- نقبل: تحويل بنكي، STC Pay، مدى، أبل باي، تمارا للتقسيط\n\n';
-        context += 'الكوبونات: WELCOME (خصم 15%)، DORA10 (خصم 10%)، DORA20 (خصم 20%)\n\n';
-        context += 'العميل حالياً في صفحة: ' + pageTitle + '\n';
-        
-        if (isHome) context += 'العميل في الصفحة الرئيسية. ساعده في استكشاف المنتجات والخدمات.\n';
-        if (isProduct) context += 'العميل بيتفرج على منتج. قدم له معلومات مفيدة عن المنتج واسأله لو عايز يعرف حاجة معينة.\n';
-        if (isCart) context += 'العميل في صفحة السلة أو الدفع. ساعده في إتمام الطلب وذكره بالكوبونات.\n';
-        
-        context += '\nجاوب بالعربي. خلي إجاباتك مختصرة ومفيدة. استخدم إيموجي بسيط.';
-        
-        return context;
-    },
-    
-    getResponse: async function(msg) {
+    getResponse: function(msg) {
         msg = msg.toLowerCase().trim();
         
-        var quickReplies = {
+        var knowledgeBase = {
             'السلام': 'وعليكم السلام! 👋 كيف أقدر أساعدك؟',
-            'مرحبا': 'أهلاً وسهلاً! 🌟 أقدر أساعدك في أي استفسار عن منتجاتنا وخدماتنا.',
-            'شكرا': 'العفو! 🌹 أي خدمة تانية؟',
-            'باي': 'مع السلامة! 👋 يومك سعيد.'
+            'مرحبا': 'أهلاً وسهلاً! 🌟 أنا المساعد الذكي لشركة درة فارس الشمال. أسألني عن: المنتجات، الأسعار، الشحن، الضمان، الدفع، الخصومات، أو أي خدمة تانية!',
+            'شحن': '🚚 نوفر شحن لجميع مدن المملكة عبر ناقل وأرامكس وسمسا. الشحن مجاني للطلبات فوق 300 ريال. مدة التوصيل 2-5 أيام عمل.',
+            'توصيل': '🚚 نوصل لجميع مناطق المملكة عبر ناقل وأرامكس وسمسا. مدة التوصيل 2-5 أيام عمل.',
+            'ضمان': '🛡️ جميع المنتجات عليها ضمان سنة كاملة ضد عيوب التصنيع. نقدر نساعدك في أي مشكلة تواجهك!',
+            'سعر': '💰 أسعارنا تنافسية جداً! تقدر تتصفح المنتجات وتشوف الأسعار. ولو عايز عرض سعر مخصص، ابعتلنا على واتساب.',
+            'خصم': '🎟️ عندنا كوبونات خصم ممتازة! استخدم كود WELCOME لخصم 15% على أول طلب، DORA10 لخصم 10%، DORA20 لخصم 20%.',
+            'كوبون': '🎟️ الكوبونات المتاحة: WELCOME (خصم 15%) - DORA10 (خصم 10%) - DORA20 (خصم 20%). انسخ الكود واستخدمه في صفحة الدفع.',
+            'دفع': '💳 نقبل جميع وسائل الدفع: تحويل بنكي، STC Pay، مدى، أبل باي، فيزا، ماستركارد، وتمارا للتقسيط على 4 دفعات بدون فوائد!',
+            'تمارا': '🧡 تقدر تقسط مشترياتك على 4 دفعات بدون أي فوائد مع تمارا. اختار تمارا عند الدفع.',
+            'واتساب': '💬 تقدر تتواصل معانا مباشرة على واتساب: 0545358773. أو تضغط على أيقونة واتساب في الموقع.',
+            'اتصال': '📞 تقدر تتصل بنا على: 0568717449. خدمة العملاء متاحة من 9 صباحاً لـ 9 مساءً.',
+            'منتجات': '🛍️ عندنا تشكيلة واسعة: طابعات HP و Canon و Epson و Brother، أجهزة كمبيوتر Dell و Lenovo و HP، رامات، هاردات، بروجكتور، إكسسوارات، أحبار، ومواد غذائية. تقدر تتصفحهم كلهم في صفحة المنتجات!',
+            'خدمات': '🔧 نقدم خدمات متكاملة: طباعة، كاميرات مراقبة، نقاط بيع، شبكات، باركود، صيانة أجهزة. تقدر تطلب خدمة من الموقع.',
+            'طابعة': '🖨️ عندنا طابعات HP و Canon و Epson و Brother. ليزر وحبر. ألوان وأبيض وأسود. تقدر تشوفهم في قسم الطابعات.',
+            'كمبيوتر': '💻 عندنا أجهزة كمبيوتر Dell و Lenovo و HP. مكتبي ومحمول. بمواصفات مختلفة لكل الاحتياجات.',
+            'طلب': '📦 تقدر تطلب من الموقع مباشرة! أضف المنتجات للسلة، اختار طريقة الدفع، وهنوصلك لحد باب البيت.',
+            'تتبع': '📍 تقدر تتابع حالة طلبك من حسابك في الموقع. لو محتاج مساعدة، ابعتلنا على واتساب.',
+            'استرجاع': '🔄 نقبل استرجاع المنتجات خلال 14 يوم من تاريخ الاستلام. المنتج يكون بحالته الأصلية وفي كرتونه.',
+            'شكرا': 'العفو! 🌹 مبسوطين إننا قدرنا نساعدك. أي خدمة تانية؟',
+            'باي': 'مع السلامة! 👋 يومك سعيد. وإن احتجت أي حاجة، أنا موجود.',
+            'عرض سعر': '📋 تقدر تطلب عرض سعر مخصص من واتساب (0545358773) أو من أي صفحة منتج. هتلاقي زرار "عرض سعر" في كل المنتجات.',
+            'مساعدة': '👋 أنا هنا لخدمتك! تقدر تسألني عن:\n📦 المنتجات\n💰 الأسعار والعروض\n🚚 الشحن والتوصيل\n🛡️ الضمان\n💳 طرق الدفع\n🎟️ الكوبونات والخصومات\n🔧 الخدمات\n📋 عروض الأسعار',
         };
         
-        for (var key in quickReplies) {
-            if (msg === key || msg.indexOf(key) === 0) return quickReplies[key];
+        for (var key in knowledgeBase) {
+            if (msg.indexOf(key) !== -1) return knowledgeBase[key];
         }
         
-        try {
-            var fullMessage = this.getSystemPrompt() + '\n\nسؤال العميل: ' + msg;
-            
-           var response = await fetch('https://kcbmvxuzjlaooknwhqqb.supabase.co/functions/v1/chat', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: fullMessage })
-});
-            
-            var data = await response.json();
-            var reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
-            
-            if (reply) return reply;
-        } catch(e) {
-            console.log('AI fallback:', e);
-        }
-        
-        var fallbackReplies = [
-            '🤔 أقدر أساعدك في: الأسعار، الشحن، الضمان، المنتجات، الدفع، الكوبونات.',
-            '📝 جرب تسأل عن: شحن، ضمان، سعر، خصم، دفع، تمارا، منتجات، خدمات.',
-            '💡 محتاج مساعدة في إيه بالضبط؟',
-            '👋 أنا هنا لخدمتك! اسألني أي حاجة عن منتجاتنا وخدماتنا.'
+        var replies = [
+            '🤔 سؤال جميل! ممكن توضح أكتر عشان أقدر أساعدك بشكل أفضل؟',
+            '📝 عندي معلومات كتير عن المنتجات، الأسعار، الشحن، والضمان. ممكن تسألني عن أي حاجة فيهم.',
+            '💡 جرب تسأل عن: شحن، ضمان، أسعار، خصومات، دفع، تمارا، منتجات، خدمات. أنا موجود عشان أساعدك!',
+            '👋 أنا المساعد الذكي لدرة فارس الشمال. أقدر أجاوبك عن أي استفسار عن منتجاتنا وخدماتنا. جرب تسأل!'
         ];
-        return fallbackReplies[Math.floor(Math.random() * fallbackReplies.length)];
+        return replies[Math.floor(Math.random() * replies.length)];
     },
     
     show: function() {
@@ -85,27 +65,19 @@ var doraChatbot = {
         this.isOpen ? this.hide() : this.show();
     },
     
-    send: async function() {
+    send: function() {
         var input = document.getElementById('doraChatInput');
         var msg = input.value.trim();
         if (!msg) return;
         
         this.addMessage('أنت', msg, 'user');
         input.value = '';
-        input.disabled = true;
         
-        var typingDiv = document.createElement('div');
-        typingDiv.className = 'dora-chat-msg bot typing';
-        typingDiv.innerHTML = '<em>⏳ جاري الكتابة...</em>';
-        document.getElementById('doraChatMessages').appendChild(typingDiv);
-        
-        var reply = await this.getResponse(msg);
-        
-        if (typingDiv.parentNode) typingDiv.parentNode.removeChild(typingDiv);
-        
-        this.addMessage('درة فارس', reply, 'bot');
-        input.disabled = false;
-        input.focus();
+        var reply = this.getResponse(msg);
+        var self = this;
+        setTimeout(function() {
+            self.addMessage('درة فارس', reply, 'bot');
+        }, 500 + Math.random() * 500);
     },
     
     addMessage: function(sender, text, type) {
@@ -123,7 +95,7 @@ var doraChatbot = {
     },
 
     create: function() {
-        var html = '<div id="doraChatWidget" style="display:none;position:fixed;bottom:30px;left:30px;z-index:99999;width:380px;max-width:90vw;background:#FFFFFF;border-radius:24px;overflow:hidden;box-shadow:0 25px 80px rgba(0,0,0,0.2);direction:rtl;font-family:Tajawal,Cairo,sans-serif"><div style="background:linear-gradient(135deg,#6366F1,#8B5CF6);padding:20px 22px;display:flex;justify-content:space-between;align-items:center"><div style="display:flex;align-items:center;gap:14px"><div style="width:48px;height:48px;display:flex;align-items:center;justify-content:center"><img src="robot.png" alt="Robot" style="width:48px;height:48px" onerror="this.style.display=\'none\';this.parentElement.innerHTML=\'<span style=font-size:32px>🤖</span>\'"></div><div><div style="color:white;font-weight:700;font-size:16px">درة فارس</div><div style="color:rgba(255,255,255,0.8);font-size:11px">✨ AI متصل</div></div></div><button onclick="document.getElementById(\'doraChatWidget\').style.display=\'none\';doraChatbot.isOpen=false;var b=document.getElementById(\'doraChatBubble\');if(b)b.style.display=\'flex\'" style="background:rgba(255,255,255,0.15);border:none;color:white;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:16px">✕</button></div><div id="doraChatMessages" style="height:320px;overflow-y:auto;padding:20px;background:#F8FAFC"><div class="dora-chat-msg bot">👋 أهلاً وسهلاً! أنا المساعد الذكي لشركة درة فارس الشمال. اسألني أي حاجة عن منتجاتنا، خدماتنا، الشحن، الضمان، والخصومات!</div></div><div style="display:flex;padding:16px 18px;background:white;border-top:1px solid #E8ECF1;gap:10px"><input id="doraChatInput" type="text" placeholder="اسألني أي حاجة..." onkeydown="if(event.key===\'Enter\')doraChatbot.send()" style="flex:1;padding:14px 18px;border-radius:30px;border:2px solid #E8ECF1;background:#F8FAFC;color:#1E293B;font-family:inherit;font-size:13px;outline:none"><button onclick="doraChatbot.send()" style="background:linear-gradient(135deg,#6366F1,#8B5CF6);color:white;border:none;width:46px;height:46px;border-radius:50%;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 15px rgba(99,102,241,0.4)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button></div><div style="text-align:center;padding:10px;font-size:10px;color:#94A3B8;background:#F8FAFC">⚡ مدعوم بالذكاء الاصطناعي | درة فارس الشمال</div></div><style>.dora-chat-msg{padding:12px 16px;margin:6px 0;border-radius:16px;font-size:13px;line-height:1.7;max-width:92%}.dora-chat-msg.user{background:#EFF6FF;color:#1E40AF;margin-right:auto;text-align:right}.dora-chat-msg.bot{background:white;border:1px solid #E8ECF1;margin-left:auto;text-align:right}#doraChatMessages::-webkit-scrollbar{width:4px}#doraChatMessages::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:10px}</style>';
+        var html = '<div id="doraChatWidget" style="display:none;position:fixed;bottom:30px;left:30px;z-index:99999;width:380px;max-width:90vw;background:#FFFFFF;border-radius:24px;overflow:hidden;box-shadow:0 25px 80px rgba(0,0,0,0.2);direction:rtl;font-family:Tajawal,Cairo,sans-serif"><div style="background:linear-gradient(135deg,#6366F1,#8B5CF6);padding:20px 22px;display:flex;justify-content:space-between;align-items:center"><div style="display:flex;align-items:center;gap:14px"><div style="width:48px;height:48px;display:flex;align-items:center;justify-content:center"><img src="robot.png" alt="Robot" style="width:48px;height:48px" onerror="this.style.display=\'none\';this.parentElement.innerHTML=\'<span style=font-size:32px>🤖</span>\'"></div><div><div style="color:white;font-weight:700;font-size:16px">درة فارس</div><div style="color:rgba(255,255,255,0.8);font-size:11px">🟢 متصل</div></div></div><button onclick="document.getElementById(\'doraChatWidget\').style.display=\'none\';doraChatbot.isOpen=false;var b=document.getElementById(\'doraChatBubble\');if(b)b.style.display=\'flex\'" style="background:rgba(255,255,255,0.15);border:none;color:white;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:16px">✕</button></div><div id="doraChatMessages" style="height:320px;overflow-y:auto;padding:20px;background:#F8FAFC"><div class="dora-chat-msg bot">👋 أهلاً وسهلاً! أنا المساعد الذكي لشركة درة فارس الشمال. أقدر أساعدك في أي استفسار عن منتجاتنا وخدماتنا. جرب تسأل عن: الشحن، الضمان، الأسعار، الخصومات، أو الدفع!</div></div><div style="display:flex;padding:16px 18px;background:white;border-top:1px solid #E8ECF1;gap:10px"><input id="doraChatInput" type="text" placeholder="اكتب سؤالك هنا..." onkeydown="if(event.key===\'Enter\')doraChatbot.send()" style="flex:1;padding:14px 18px;border-radius:30px;border:2px solid #E8ECF1;background:#F8FAFC;color:#1E293B;font-family:inherit;font-size:13px;outline:none"><button onclick="doraChatbot.send()" style="background:linear-gradient(135deg,#6366F1,#8B5CF6);color:white;border:none;width:46px;height:46px;border-radius:50%;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 15px rgba(99,102,241,0.4)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button></div><div style="text-align:center;padding:10px;font-size:10px;color:#94A3B8;background:#F8FAFC">⚡ درة فارس الشمال | في خدمتك دائماً</div></div><style>.dora-chat-msg{padding:12px 16px;margin:6px 0;border-radius:16px;font-size:13px;line-height:1.7;max-width:92%}.dora-chat-msg.user{background:#EFF6FF;color:#1E40AF;margin-right:auto;text-align:right}.dora-chat-msg.bot{background:white;border:1px solid #E8ECF1;margin-left:auto;text-align:right}#doraChatMessages::-webkit-scrollbar{width:4px}#doraChatMessages::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:10px}</style>';
         document.body.insertAdjacentHTML('beforeend', html);
     }
 };
