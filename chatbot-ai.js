@@ -45,11 +45,11 @@ var doraChatbot = {
         try {
             var fullMessage = this.getSystemPrompt() + '\n\nسؤال العميل: ' + msg;
             
-            var response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=AQ.Ab8RN6IcFj-sRiT5PTKDbLobu3AjzGaIeOW6dEIyOYE3JcnZTg', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contents: [{ parts: [{ text: fullMessage }] }] })
-            });
+           var response = await fetch('https://kcbmvxuzjlaooknwhqqb.supabase.co/functions/v1/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: fullMessage })
+});
             
             var data = await response.json();
             var reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
