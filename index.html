@@ -3273,6 +3273,9 @@ setTimeout(function(){
 var originalUpdateCartUI = updateCartUI;
 updateCartUI = function() {
   originalUpdateCartUI();
+    };
+}, 500);
+</script>
   
   var couponSection = document.getElementById('couponSection');
   if (couponSection && cart.length > 0 && !activeCoupon) {
