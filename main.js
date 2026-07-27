@@ -2578,3 +2578,13 @@ document.addEventListener('DOMContentLoaded', function() {
     bubble.onmouseleave = function() { this.style.transform = 'scale(1)'; this.style.boxShadow = '0 8px 25px rgba(59,130,246,0.4)'; };
     document.body.appendChild(bubble);
 });
+// تأكيد ظهور أيقونة الشات
+(function(){
+  if (document.getElementById('doraChatBubble')) return;
+  var bubble = document.createElement('div');
+  bubble.id = 'doraChatBubble';
+  bubble.style.cssText = 'position:fixed;bottom:30px;left:30px;z-index:99998;width:58px;height:58px;background:linear-gradient(135deg,#3B82F6,#8B5CF6);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 25px rgba(59,130,246,0.4);transition:0.3s';
+  bubble.innerHTML = '<span style="font-size:28px">💬</span>';
+  bubble.onclick = function() { if (typeof doraChatbot !== 'undefined') doraChatbot.toggle(); };
+  document.body.appendChild(bubble);
+})();
