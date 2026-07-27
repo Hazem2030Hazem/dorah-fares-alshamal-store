@@ -47,8 +47,7 @@ var doraChatbot = {
                    try {
             var self = this;
             var userMsg = msg;
-          var response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AQ.Ab8RN6LDJxeKokRpmkaIFvS8V0tPa1eflqQx1ghmJkdF5ZX4Cg', {
-                method: 'POST',
+var response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyAb8RN6LDJxeKokRpmkaIFvS8V0tPa1eflqQx1ghmJkdF5ZX4Cg', {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     contents: [
