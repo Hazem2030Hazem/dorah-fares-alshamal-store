@@ -2515,5 +2515,6 @@ var doraChatbot = {
     wrapper.appendChild(bubble);
     document.body.appendChild(wrapper);
     setTimeout(function() { greeting.style.display = 'none'; }, 5000);
+setInterval(function(){var b=document.getElementById('doraChatBubble');var w=document.getElementById('doraChatWidget');if(b&&w&&w.style.display==='none'&&b.style.display==='none'){b.style.display='flex';}},1000);
 })();
 })();
