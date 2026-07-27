@@ -2612,7 +2612,67 @@ document.addEventListener('DOMContentLoaded', function() {
     bubble.id = 'doraChatBubble';
     bubble.style.cssText = 'width:70px;height:70px;cursor:pointer;filter:drop-shadow(0 8px 24px rgba(99,102,241,0.5));transition:0.3s;position:relative';
     
-    bubble.innerHTML = '<svg width="70" height="70" viewBox="0 0 80 88" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+   bubble.innerHTML = '<svg width="70" height="70" viewBox="0 0 80 88" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+    '<!-- antenna -->' +
+    '<line x1="40" y1="2" x2="40" y2="14" stroke="#6366F1" stroke-width="3" stroke-linecap="round"/>' +
+    '<circle cx="40" cy="0" r="5" fill="#8B5CF6">' +
+      '<animate attributeName="cy" values="0;2;0" dur="2s" repeatCount="indefinite"/>' +
+    '</circle>' +
+    '<!-- الجسم -->' +
+    '<rect x="14" y="14" width="52" height="52" rx="16" fill="url(#botGradient)">' +
+      '<animate attributeName="rx" values="16;18;16" dur="4s" repeatCount="indefinite"/>' +
+    '</rect>' +
+    '<!-- شاشة الصدر -->' +
+    '<rect x="24" y="44" width="32" height="16" rx="6" fill="#1E293B" opacity="0.3"/>' +
+    '<text x="40" y="55" text-anchor="middle" fill="white" font-size="8" font-family="monospace">' +
+      '<animate attributeName="opacity" values="0.9;0.3;0.9" dur="1.2s" repeatCount="indefinite"/>' +
+      '<animate attributeName="font-size" values="8;9;8" dur="1.2s" repeatCount="indefinite"/>' +
+      '⚡' +
+    '</text>' +
+    '<!-- العيون -->' +
+    '<ellipse cx="30" cy="34" rx="7" ry="7" fill="#1E293B">' +
+      '<animate attributeName="ry" values="7;0.5;7" dur="4s" repeatCount="indefinite" begin="1s"/>' +
+      '<animate attributeName="rx" values="7;7;7" dur="4s" repeatCount="indefinite"/>' +
+    '</ellipse>' +
+    '<ellipse cx="50" cy="34" rx="7" ry="7" fill="#1E293B">' +
+      '<animate attributeName="ry" values="7;0.5;7" dur="4s" repeatCount="indefinite" begin="1s"/>' +
+    '</ellipse>' +
+    '<circle cx="32" cy="32" r="2.5" fill="white">' +
+      '<animate attributeName="cy" values="32;33;32" dur="4s" repeatCount="indefinite" begin="1s"/>' +
+    '</circle>' +
+    '<circle cx="52" cy="32" r="2.5" fill="white">' +
+      '<animate attributeName="cy" values="32;33;32" dur="4s" repeatCount="indefinite" begin="1s"/>' +
+    '</circle>' +
+    '<!-- الابتسامة المتحركة -->' +
+    '<path d="M28 48 Q40 56 52 48" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round" fill="none">' +
+      '<animate attributeName="d" values="M28 48 Q40 56 52 48;M28 48 Q40 60 52 48;M28 48 Q40 56 52 48" dur="4s" repeatCount="indefinite" begin="1s"/>' +
+      '<animate attributeName="stroke-width" values="2.5;3.5;2.5" dur="4s" repeatCount="indefinite" begin="1s"/>' +
+    '</path>' +
+    '<!-- الذراع اليمين - بتحرك ترحيب -->' +
+    '<g transform="translate(66, 30)">' +
+      '<rect x="0" y="0" width="12" height="28" rx="6" fill="url(#botGradient)">' +
+        '<animateTransform attributeName="transform" type="rotate" values="0 6 0;-30 6 0;0 6 0;20 6 0;0 6 0" dur="1.2s" repeatCount="indefinite" begin="0.3s"/>' +
+      '</rect>' +
+      '<circle cx="6" cy="28" r="7" fill="#6366F1">' +
+        '<animateTransform attributeName="transform" type="rotate" values="0 6 28;-30 6 28;0 6 28;20 6 28;0 6 28" dur="1.2s" repeatCount="indefinite" begin="0.3s"/>' +
+      '</circle>' +
+    '</g>' +
+    '<!-- الذراع الشمال - ساكنة -->' +
+    '<g transform="translate(2, 30)">' +
+      '<rect x="0" y="0" width="12" height="28" rx="6" fill="url(#botGradient)"/>' +
+      '<circle cx="6" cy="28" r="7" fill="#6366F1"/>' +
+    '</g>' +
+    '<!-- الرجلين -->' +
+    '<rect x="22" y="66" width="14" height="18" rx="7" fill="url(#botGradient)"/>' +
+    '<rect x="44" y="66" width="14" height="18" rx="7" fill="url(#botGradient)"/>' +
+    '<!-- gradient -->' +
+    '<defs>' +
+      '<linearGradient id="botGradient" x1="0" y1="0" x2="1" y2="1">' +
+        '<stop offset="0%" stop-color="#6366F1"/>' +
+        '<stop offset="100%" stop-color="#8B5CF6"/>' +
+      '</linearGradient>' +
+    '</defs>' +
+'</svg>'; +
         '<!-- antenna -->' +
         '<line x1="40" y1="2" x2="40" y2="14" stroke="#6366F1" stroke-width="3" stroke-linecap="round"/>' +
         '<circle cx="40" cy="0" r="5" fill="#8B5CF6">' +
