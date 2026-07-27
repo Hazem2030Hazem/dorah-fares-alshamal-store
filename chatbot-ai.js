@@ -43,20 +43,17 @@ var doraChatbot = {
         }
         
         try {
-                              try {
+                                 try {
             var fullMessage = this.getSystemPrompt() + '\n\nسؤال العميل: ' + msg;
             
             var response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=AQ.Ab8RN6IRcpbeYXSHI6G4-ZEKQZWTR3BSYBykJzgajrBXvfJcaA', {
                 method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                   
-                },
-               body: JSON.stringify({ contents: [{ parts: [{ text: fullMessage }] }] })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contents: [{ parts: [{ text: fullMessage }] }] })
             });
             
             var data = await response.json();
-var reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            var reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
             
             if (reply) return reply;
         } catch(e) {
