@@ -163,6 +163,12 @@ async function initAdminAuth(){
    التبويبات
    ============================================================ */
 window.showTab = function(tabName){
+   document.querySelectorAll('.sidebar-nav a').forEach(function(a){a.classList.remove('active');});
+var sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+sidebarLinks.forEach(function(a){
+  if(a.getAttribute('onclick') && a.getAttribute('onclick').indexOf("'"+tabName+"'") > -1) a.classList.add('active');
+});
+document.getElementById('pageTitle').textContent = tabName === 'products' ? 'المنتجات' : tabName === 'orders' ? 'الطلبات' : tabName === 'customers' ? 'العملاء' : tabName === 'services' ? 'الخدمات' : tabName === 'receipts' ? 'المدفوعات' : tabName === 'reviews' ? 'التقييمات' : tabName === 'messages' ? 'الرسائل' : tabName === 'settings' ? 'الإعدادات' : tabName === 'marketing' ? 'التسويق' : tabName;
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
   const clicked = window.event?.target;
