@@ -1327,35 +1327,45 @@ async function submitProductRating() {
 }
 
 async function renderReviews() {
-    const reviewsGrid = document.getElementById('reviewsGrid');
-    if (!reviewsGrid) return;
+    var container = document.getElementById('reviewsGrid');
+    if (!container) return;
+    
     try {
-        const { data: reviewsData, error } = await supabaseClient.from('reviews').select('*').order('id', {ascending: false});
-        if (error) { return; }
-        let reviews = [];
-        if (reviewsData && reviewsData.length > 0) {
-            reviews = reviewsData.map(r => ({
-                name: r.name || 'زائر', product: r.product || 'الموقع عامةً', comment: r.text || '', rating: r.rating || 5, date: r.date || new Date().toLocaleDateString('ar-SA')
-            }));
-        }
-        if (reviews.length === 0) {
-            reviews = [
-                {name: 'محمد العتيبي', product: 'طابعة HP LaserJet', comment: 'تم تركيب نظام الطباعة بالكامل خلال يوم واحد فقط.', rating: 5, date: '2024-06-15'},
-                {name: 'أحمد السبيعي', product: 'كاميرات المراقبة', comment: 'تعاملنا مع درة فارس الشمال في تركيب كاميرات المراقبة.', rating: 5, date: '2024-06-10'},
-                {name: 'فهد الدوسري', product: 'نقاط البيع', comment: 'صيانة سريعة ودعم فني على مدار الساعة.', rating: 5, date: '2024-06-08'}
-            ];
-        }
-        reviewsGrid.innerHTML = reviews.map(r => {
-            const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
-            return `
-                <div class="review-card">
-                    <div class="review-card-header"><span class="review-card-author">${r.name}</span><span class="review-card-date">${r.date}</span></div>
-                    <div class="review-card-stars">${stars}</div>
-                    <p class="review-card-text">${r.comment}</p>
-                    <div class="review-card-product">📦 ${r.product}</div>
-                </div>`;
+        var { data } = await supabaseClient
+            .from('site_items')
+            .select('*')
+            .eq('section_key', 'testimonials')
+            .eq('is_active', true)
+            .order('sort_order');
+        
+        if (!data || !data.length) return;
+        
+        var companyKeywords = ['شركة', 'مؤسسة', 'مستشفى', 'وزارة', 'هيئة', 'بنك', 'فندق', 'مطاعم', 'مصنع', 'متجر', 'وكالة', 'جامعة', 'مدرسة', 'مجموعة', 'مركز', 'معرض', 'صيدلية', 'مكتب'];
+        
+        var personalReviews = data.filter(function(r) {
+            var name = (r.title_ar || '').trim();
+            for (var i = 0; i < companyKeywords.length; i++) {
+                if (name.includes(companyKeywords[i])) return false;
+            }
+            return true;
+        });
+        
+        if (!personalReviews.length) return;
+        
+        container.innerHTML = personalReviews.map(function(r) {
+            var meta = r.metadata || {};
+            var stars = '★'.repeat(meta.rating || 5) + '☆'.repeat(5 - (meta.rating || 5));
+            return '<div class="review-card">' +
+                '<div class="review-card-header"><span class="review-card-author">' + esc(r.title_ar || 'عميل') + '</span></div>' +
+                '<div class="review-card-stars">' + stars + '</div>' +
+                '<p class="review-card-text">' + esc(r.description_ar || '') + '</p>' +
+                '<div class="review-card-product">📦 ' + esc(meta.company_name || meta.product_name || 'الموقع عامةً') + '</div>' +
+                '</div>';
         }).join('');
-    } catch (error) { console.error('Error in renderReviews:', error); }
+        
+    } catch(e) {
+        console.log('Render reviews error:', e);
+    }
 }
 
 // ===== PWA INSTALL PROMPT =====
