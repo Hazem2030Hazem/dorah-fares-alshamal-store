@@ -2357,12 +2357,6 @@ window.deleteSiteItem = async function(id, sectionKey) {
   adminToast('✅ تم الحذف بنجاح');
   loadSiteItems(sectionKey);
 };
-  if (!confirm('هل أنت متأكد من حذف هذا العنصر؟')) return;
-  var result = await supabaseClient.from('site_items').delete().eq('id', id);
-  if (result.error) { adminToast('❌ خطأ: ' + result.error.message, 'error'); return; }
-  adminToast('✅ تم الحذف بنجاح');
-  loadSiteItems(sectionKey);
-};
 
 /* ============================================================
    📑 مدير التبويبات النهائي
