@@ -1150,7 +1150,10 @@ document.addEventListener('DOMContentLoaded', () => {
      .then(function(registration) { console.log('✅ Service Worker registered:', registration.scope); })
      .catch(function(error) { console.log('❌ Service Worker registration failed:', error); });
  }
- renderProducts('all');
+ loadProductsFromSupabase().then(function() {
+    renderProducts('all');
+    updateCategoryCounts();
+});
  updateCartUI();
  updateCompareBar();
  updateCategoryCounts();
