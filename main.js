@@ -2488,7 +2488,7 @@ function doraIcon(sectionKey, meta) {
           var meta = item.metadata || {};
           var stars = '⭐'.repeat(meta.rating || 5);
           return '<div class="why-card">' +
-            '<div class="why-icon">💬</div>' +
+            '<div class="why-icon">' + doraIcon('testimonials', meta) + '</div>' +
             '<div style="color:#F59E0B;margin-bottom:10px;font-size:18px">' + stars + '</div>' +
             '<h4>' + esc(item.title_ar || 'عميل') + '</h4>' +
             '<p>"' + esc(item.description_ar || '') + '"</p>' +
