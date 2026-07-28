@@ -543,7 +543,7 @@ function init() {
 <div style="text-align:center;padding:26px 20px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));margin-top:20px;border-radius:14px;">
  <p style="color:white;font-size:17px;margin-bottom:16px;font-weight:800;">📲 حمّل تطبيق درة فارس الشمال على جوالك أو الكمبيوتر، أو اطلب عرض سعر الآن!</p>
  <div class="app-download-btns">
-  <a href="https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk" download="" class="btn-primary">📱 تحميل تطبيق Android</a>
+  <a href="https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk" download class="btn-primary">📱 تحميل تطبيق Android</a>
   <a href="javascript:void(0)" onclick="installPWA()" id="installBtn" class="btn-primary">💻 حمّل تطبيق درة فارس الشمال</a>
   <a href="https://wa.me/966545358773?text=مرحباً%20أرغب%20في%20طلب%20عرض%20سعر%20من%20شركة%20درة%20فارس%20الشمال" target="_blank" class="btn-primary">📋 اطلب عرض سعر</a>
  </div>
@@ -551,12 +551,6 @@ function init() {
 </div>
 </div>
 </footer>
-
-
-
-
-
-
 
 <div class="product-modal-overlay" id="productModalOverlay" onclick="closeProductModal(event)">
 <div class="product-modal" id="productModal">
@@ -585,119 +579,19 @@ function init() {
 <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
 <div class="cart-sidebar" id="cartSidebar">
 <div class="cart-header"><h3>🛒 سلة المشتريات</h3><button class="close-cart" onclick="toggleCart()" aria-label="إغلاق السلة">✕</button></div>
-<div class="cart-items" id="cartItems">
-   <div class="cart-empty">
-    <span class="icon">🛒</span>
-    <p>السلة فارغة</p>
-    <small>أضف منتجات لبدء التسوق</small>
-   </div></div>
-<div class="coupon-section" id="couponSection" style="display: none;">
-<div class="coupon-input-wrapper">
-<input type="text" class="coupon-input" id="couponInput" placeholder="أدخل كود الخصم">
-<button class="coupon-btn" onclick="applyCoupon()">تطبيق</button>
-</div>
-</div>
-<div class="cart-footer">
-<div class="cart-total"><span>المجموع:</span><strong id="cartTotal">٠ ر.س</strong></div>
-<div class="cart-tax" id="cartTax">شامل الضريبة (15%): ٠ ر.س</div>
-<button class="checkout-btn" onclick="checkout()">🛒 إتمام الشراء</button>
-</div>
+<div class="cart-items" id="cartItems"><div class="cart-empty"><span class="icon">🛒</span><p>السلة فارغة</p><small>أضف منتجات لبدء التسوق</small></div></div>
+<div class="coupon-section" id="couponSection" style="display:none;"><div class="coupon-input-wrapper"><input type="text" class="coupon-input" id="couponInput" placeholder="أدخل كود الخصم"><button class="coupon-btn" onclick="applyCoupon()">تطبيق</button></div></div>
+<div class="cart-footer"><div class="cart-total"><span>المجموع:</span><strong id="cartTotal">٠ ر.س</strong></div><div class="cart-tax" id="cartTax">شامل الضريبة (15%): ٠ ر.س</div><button class="checkout-btn" onclick="checkout()">🛒 إتمام الشراء</button></div>
 </div>
 
 <div class="toast" id="toast"><div class="toast-icon" id="toastIcon">✅</div><div class="toast-text" id="toastMsg">تمت الإضافة للسلة</div></div>
 
+<a href="https://wa.me/966545358773?text=مرحباً%20شركة%20درة%20فارس%20الشمال%2C%20أرغب%20في%20الاستفسار%20عن%20منتجاتكم" class="whatsapp-float" target="_blank" rel="noopener" aria-label="تواصل عبر واتساب">💬<span class="tooltip">تواصل معنا على واتساب</span></a>
 
+<a href="https://wa.me/966545358773?text=مرحباً%20أرغب%20في%20طلب%20عرض%20سعر%20من%20شركة%20درة%20فارس%20الشمال" class="sticky-cta" target="_blank" rel="noopener">📋 اطلب عرض سعر الآن</a>
 
-<a href="https://wa.me/966545358773?text=مرحباً%20شركة%20درة%20فارس%20الشمال%2C%20أرغب%20في%20الاستفسار%20عن%20منتجاتكم" class="whatsapp-float" target="_blank" rel="noopener" aria-label="تواصل عبر واتساب">
- 💬
- <span class="tooltip">تواصل معنا على واتساب</span>
-</a>
+<div class="install-prompt show" id="installPrompt" onclick="installPWA()" style="cursor:pointer;"><span>💻 حمّل تطبيق درة فارس الشمال!</span><button class="close-prompt" onclick="event.stopPropagation();dismissInstallPrompt()" aria-label="إغلاق">✕</button></div>
 
-<a href="https://wa.me/966545358773?text=مرحباً%20أرغب%20في%20طلب%20عرض%20سعر%20من%20شركة%20درة%20فارس%20الشمال" class="sticky-cta" target="_blank" rel="noopener">
- 📋 اطلب عرض سعر الآن
-</a>
-
-<div class="install-prompt show" id="installPrompt" onclick="installPWA()" style="cursor:pointer;">
- <span>💻 حمّل تطبيق درة فارس الشمال!</span>
- <button class="close-prompt" onclick="event.stopPropagation();dismissInstallPrompt()" aria-label="إغلاق">✕</button>
-</div>
-
-
-<div id="reviewModal" class="dora-modal">
-            <div class="dora-modal-content">
-                <div class="dora-modal-header">
-                    <h3>⭐ أضف تقييمك</h3>
-                    <button class="dora-modal-close" onclick="closeReviewModal()">✕</button>
-                </div>
-                <form id="reviewForm" onsubmit="return submitReview(event)">
-                    <div class="dora-form-group">
-                        <label>👤 اسمك</label>
-                        <input type="text" id="reviewName" placeholder="أدخل اسمك" required="">
-                    </div>
-                    <div class="dora-form-group">
-                        <label>⭐ التقييم</label>
-                        <div class="dora-star-rating" id="starRating">
-                            <span class="dora-star active" data-value="1">★</span>
-                            <span class="dora-star active" data-value="2">★</span>
-                            <span class="dora-star active" data-value="3">★</span>
-                            <span class="dora-star active" data-value="4">★</span>
-                            <span class="dora-star active" data-value="5">★</span>
-                        </div>
-                        <input type="hidden" id="reviewRating" value="5">
-                    </div>
-                    <div class="dora-form-group">
-                        <label>📦 المنتج/الخدمة</label>
-                        <input type="text" id="reviewProduct" placeholder="اسم المنتج أو الخدمة">
-                    </div>
-                    <div class="dora-form-group">
-                        <label>💬 رأيك</label>
-                        <textarea id="reviewText" rows="4" placeholder="اكتب تقييمك هنا..." required=""></textarea>
-                    </div>
-                    <button type="submit" class="dora-btn-submit">📨 إرسال التقييم</button>
-                </form>
-            </div>
-        </div><div id="messageModal" class="dora-modal">
-            <div class="dora-modal-content">
-                <div class="dora-modal-header">
-                    <h3>📨 تواصل معنا</h3>
-                    <button class="dora-modal-close" onclick="closeMessageModal()">✕</button>
-                </div>
-                <form id="messageForm" onsubmit="return submitMessage(event)">
-                    <div class="dora-form-group">
-                        <label>👤 اسمك</label>
-                        <input type="text" id="msgName" placeholder="أدخل اسمك" required="">
-                    </div>
-                    <div class="dora-form-group">
-                        <label>📱 رقم الجوال</label>
-                        <input type="tel" id="msgPhone" placeholder="05xxxxxxxx" required="" pattern="05[0-9]{8}">
-                    </div>
-                    <div class="dora-form-group">
-                        <label>✉️ البريد الإلكتروني</label>
-                        <input type="email" id="msgEmail" placeholder="your@email.com" required="">
-                    </div>
-                    <div class="dora-form-group">
-                        <label>📌 الموضوع</label>
-                        <select id="msgSubject" required="">
-                            <option value="">اختر الموضوع</option>
-                            <option value="استفسار">❓ استفسار</option>
-                            <option value="شكوى">😞 شكوى</option>
-                            <option value="اقتراح">💡 اقتراح</option>
-                            <option value="طلب منتج">📦 طلب منتج</option>
-                            <option value="أخرى">📝 أخرى</option>
-                        </select>
-                    </div>
-                    <div class="dora-form-group">
-                        <label>💬 الرسالة</label>
-                        <textarea id="msgText" rows="4" placeholder="اكتب رسالتك هنا..." required=""></textarea>
-                    </div>
-                    <button type="submit" class="dora-btn-submit">📨 إرسال الرسالة</button>
-                </form>
-            </div>
-        </div>
-
-
-
-<!-- ===== SITE RATING MODAL ===== -->
 <div class="rating-modal-overlay" id="siteRatingModal" onclick="closeSiteRatingModal(event)">
     <div class="rating-modal-content" style="position:relative">
         <button class="rating-close" onclick="closeSiteRatingModal()" aria-label="إغلاق">✕</button>
@@ -720,7 +614,6 @@ function init() {
     </div>
 </div>
 
-<!-- ===== PRODUCT RATING MODAL ===== -->
 <div class="rating-modal-overlay" id="productRatingModal" onclick="closeProductRatingModal(event)">
     <div class="rating-modal-content" style="position:relative">
         <button class="rating-close" onclick="closeProductRatingModal()" aria-label="إغلاق">✕</button>
@@ -743,91 +636,6 @@ function init() {
     </div>
 </div>
 
-<!-- WhatsApp Chat Widget -->
-<div class="wa-chat-widget" id="waWidget">
-    <div class="wa-chat-bubble" id="waBubble" onclick="toggleWaChat()">
-        <span class="wa-icon">💬</span>
-    </div>
-    <div class="wa-chat-box" id="waChatBox" style="display:none">
-        <div class="wa-chat-header">
-            <span>👋 مرحباً! كيف نقدر نساعدك؟</span>
-            <button onclick="toggleWaChat()" style="background:none;border:none;color:white;font-size:20px;cursor:pointer">✕</button>
-        </div>
-        <div class="wa-chat-body">
-            <p style="color:rgba(255,255,255,0.7);font-size:13px">اختر نوع الاستفسار:</p>
-            <button onclick="waOpen('استفسار عن منتج')" style="display:block;width:100%;padding:12px;margin:5px 0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:10px;color:white;cursor:pointer;text-align:right;font-family:inherit">📦 استفسار عن منتج</button>
-            <button onclick="waOpen('طلب خدمة')" style="display:block;width:100%;padding:12px;margin:5px 0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:10px;color:white;cursor:pointer;text-align:right;font-family:inherit">🔧 طلب خدمة</button>
-            <button onclick="waOpen('طلب عرض سعر')" style="display:block;width:100%;padding:12px;margin:5px 0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:10px;color:white;cursor:pointer;text-align:right;font-family:inherit">📋 طلب عرض سعر</button>
-            <button onclick="waOpen('استفسار عام')" style="display:block;width:100%;padding:12px;margin:5px 0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:10px;color:white;cursor:pointer;text-align:right;font-family:inherit">💬 استفسار عام</button>
-        </div>
-    </div>
-</div>
-
-<style>
-.wa-chat-widget { position:fixed; bottom:100px; left:20px; z-index:9998; }
-.wa-chat-bubble { width:60px; height:60px; border-radius:50%; background:#25D366; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 8px 25px rgba(37,211,102,0.4); transition:all 0.3s; animation:pulse 2s infinite; }
-.wa-chat-bubble:hover { transform:scale(1.1); }
-.wa-icon { font-size:30px; }
-.wa-chat-box { position:absolute; bottom:70px; left:0; width:300px; background:rgba(15,12,41,0.97); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.2); border-radius:20px; overflow:hidden; }
-.wa-chat-header { background:linear-gradient(135deg,#075E54,#128C7E); padding:15px; color:white; display:flex; justify-content:space-between; align-items:center; font-weight:700; }
-.wa-chat-body { padding:15px; }
-@keyframes pulse { 0%,100% { box-shadow:0 8px 25px rgba(37,211,102,0.4); } 50% { box-shadow:0 8px 40px rgba(37,211,102,0.7); } }
-@media(max-width:768px) { .wa-chat-widget { bottom:80px; left:10px; } .wa-chat-box { width:280px; } }
-</style>
-
-<script>
-function toggleWaChat() {
-    var box = document.getElementById('waChatBox');
-    box.style.display = box.style.display === 'none' ? 'block' : 'none';
-}
-
-function waOpen(type) {
-    var msg = 'مرحباً شركة درة فارس الشمال،\n\n' + type + '\n\nالاسم: \nالجوال: \nالتفاصيل: ';
-    window.open('https://wa.me/966545358773?text=' + encodeURIComponent(msg), '_blank');
-    toggleWaChat();
-}
-
-// إخفاء أيقونة واتساب القديمة لو موجودة
-document.addEventListener('DOMContentLoaded', function() {
-    var oldFloat = document.querySelector('.whatsapp-float');
-    if (oldFloat) oldFloat.style.display = 'none';
-});
-</script>
-<!-- WhatsApp Chat Widget -->
-<div class="wa-chat-widget" id="waWidget">
-    <div class="wa-chat-bubble" id="waBubble" onclick="toggleWaChat()">
-        <span class="wa-icon">💬</span>
-    </div>
-    <div class="wa-chat-box" id="waChatBox" style="display:none">
-        <div class="wa-chat-header">
-            <span>👋 مرحباً! كيف نقدر نساعدك؟</span>
-            <button onclick="toggleWaChat()" style="background:none;border:none;color:white;font-size:20px;cursor:pointer">✕</button>
-        </div>
-        <div class="wa-chat-body">
-            <p style="color:rgba(255,255,255,0.7);font-size:13px">اختر نوع الاستفسار:</p>
-            <button onclick="waOpen('استفسار عن منتج')">📦 استفسار عن منتج</button>
-            <button onclick="waOpen('طلب خدمة')">🔧 طلب خدمة</button>
-            <button onclick="waOpen('طلب عرض سعر')">📋 طلب عرض سعر</button>
-            <button onclick="waOpen('استفسار عام')">💬 استفسار عام</button>
-        </div>
-    </div>
-</div>
-
-<script>
-function toggleWaChat() {
-    var box = document.getElementById('waChatBox');
-    box.style.display = box.style.display === 'none' ? 'block' : 'none';
-}
-function waOpen(type) {
-    var msg = 'مرحباً شركة درة فارس الشمال،\n\n' + type + '\n\nالاسم: \nالجوال: \nالتفاصيل: ';
-    window.open('https://wa.me/966545358773?text=' + encodeURIComponent(msg), '_blank');
-}
-</script>
-<!-- ============================================================
-     📢 DORA MARKETING SUITE - أدوات التسويق المتكاملة
-     ============================================================ -->
-
-<!-- 1️⃣ POPUP: خصم 10% لأول طلب -->
 <div class="marketing-popup-overlay" id="welcomePopup" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:99999;align-items:center;justify-content:center">
   <div style="background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);border:2px solid rgba(59,130,246,0.5);border-radius:24px;padding:40px 30px;max-width:450px;width:90%;text-align:center;position:relative;animation:popIn 0.5s ease">
     <button onclick="closeWelcomePopup()" style="position:absolute;top:15px;left:15px;background:rgba(255,255,255,0.1);border:none;color:white;width:35px;height:35px;border-radius:50%;cursor:pointer;font-size:18px">✕</button>
@@ -839,163 +647,19 @@ function waOpen(type) {
   </div>
 </div>
 
-<style>
-@keyframes popIn { from { transform:scale(0.5);opacity:0 } to { transform:scale(1);opacity:1 } }
-</style>
-
-<script>
-function showWelcomePopup() {
-  if (localStorage.getItem('doraWelcomeShown')) return;
-  setTimeout(function() {
-    document.getElementById('welcomePopup').style.display = 'flex';
-    localStorage.setItem('doraWelcomeShown', 'true');
-  }, 3000);
-}
-function closeWelcomePopup() {
-  document.getElementById('welcomePopup').style.display = 'none';
-}
-function copyCoupon(code) {
-  navigator.clipboard.writeText(code).then(function() {
-    if (typeof showToast === 'function') showToast('✅ تم نسخ الكود: ' + code);
-  });
-}
-document.addEventListener('DOMContentLoaded', showWelcomePopup);
-</script>
-
-<!-- 2️⃣ COUNTDOWN TIMER للعرض الترحيبي -->
 <div id="countdownBar" style="display:none;background:linear-gradient(135deg,#DC2626,#991B1B);color:white;text-align:center;padding:12px;font-size:14px;font-weight:bold;position:sticky;top:0;z-index:9999">
   <span>🔥 عرض خاص - خصم 10% مع كود WELCOME | ⏰ ينتهي خلال: </span>
   <span id="countdownTimer" style="font-size:18px;background:rgba(0,0,0,0.3);padding:4px 12px;border-radius:8px;margin:0 8px">24:00:00</span>
   <button onclick="document.getElementById('countdownBar').style.display='none'" style="background:rgba(255,255,255,0.2);border:none;color:white;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:12px;margin-right:10px">✕</button>
 </div>
 
-<script>
-function startCountdown() {
-  var endTime = localStorage.getItem('doraOfferEnd');
-  if (!endTime) {
-    endTime = new Date().getTime() + 24 * 60 * 60 * 1000;
-    localStorage.setItem('doraOfferEnd', endTime);
-  }
-  
-  document.getElementById('countdownBar').style.display = 'block';
-  
-  var timer = setInterval(function() {
-    var now = new Date().getTime();
-    var distance = endTime - now;
-    
-    if (distance < 0) {
-      clearInterval(timer);
-      document.getElementById('countdownBar').style.display = 'none';
-      localStorage.removeItem('doraOfferEnd');
-      return;
-    }
-    
-    var h = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
-    var m = Math.floor((distance % (1000*60*60)) / (1000*60));
-    var s = Math.floor((distance % (1000*60)) / 1000);
-    
-    document.getElementById('countdownTimer').textContent = 
-      String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
-  }, 1000);
-}
-document.addEventListener('DOMContentLoaded', startCountdown);
-</script>
-
-<!-- 3️⃣ SOCIAL PROOF: إشعارات "عميل اشترى الآن" -->
 <div id="socialProofToast" style="display:none;position:fixed;bottom:100px;right:20px;background:rgba(15,12,41,0.95);backdrop-filter:blur(15px);border:1px solid rgba(16,185,129,0.5);border-radius:16px;padding:15px 20px;z-index:9998;color:white;box-shadow:0 10px 40px rgba(0,0,0,0.5);animation:slideInRight 0.5s ease;max-width:320px">
   <div style="display:flex;align-items:center;gap:12px">
     <div style="width:45px;height:45px;border-radius:50%;background:linear-gradient(135deg,#10B981,#059669);display:flex;align-items:center;justify-content:center;font-size:22px">✅</div>
-    <div>
-      <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.9)" id="socialProofText"></p>
-      <small style="color:#10B981;font-size:11px" id="socialProofTime"></small>
-    </div>
+    <div><p style="margin:0;font-size:13px;color:rgba(255,255,255,0.9)" id="socialProofText"></p><small style="color:#10B981;font-size:11px" id="socialProofTime"></small></div>
   </div>
 </div>
 
-<style>
-@keyframes slideInRight { from { transform:translateX(100%);opacity:0 } to { transform:translateX(0);opacity:1 } }
-</style>
-
-<script>
-var socialProofMessages = [
-  'اشترى للتو طابعة HP LaserJet Pro',
-  'طلب عرض سعر لنقاط البيع',
-  'اشترى كيبورد ميكانيكي Keychron K2',
-  'حجز خدمة تركيب كاميرات مراقبة',
-  'اشترى SSD Samsung 980 NVMe 1TB',
-  'طلب خدمة صيانة شبكات',
-  'اشترى رام Kingston DDR4 16GB',
-  'حجز استشارة تقنية مجانية'
-];
-
-function showSocialProof() {
-  var toast = document.getElementById('socialProofToast');
-  var text = document.getElementById('socialProofText');
-  var time = document.getElementById('socialProofTime');
-  
-  var msg = socialProofMessages[Math.floor(Math.random() * socialProofMessages.length)];
-  text.textContent = '👤 ' + msg;
-  time.textContent = 'منذ ' + Math.floor(Math.random() * 30 + 1) + ' دقيقة';
-  
-  toast.style.display = 'block';
-  toast.style.animation = 'none';
-  toast.offsetHeight;
-  toast.style.animation = 'slideInRight 0.5s ease';
-  
-  setTimeout(function() {
-    toast.style.display = 'none';
-  }, 4000);
-}
-
-setInterval(function() {
-  showSocialProof();
-}, 15000 + Math.random() * 30000);
-
-document.addEventListener('DOMContentLoaded', function() {
-  setTimeout(showSocialProof, 5000);
-});
-</script>
-
-<!-- 4️⃣ STICKY HEADER مع العرض -->
-<script>
-window.addEventListener('scroll', function() {
-  var header = document.getElementById('header');
-  var countdown = document.getElementById('countdownBar');
-  
-  if (window.pageYOffset > 200) {
-    if (header) header.style.boxShadow = '0 4px 30px rgba(0,0,0,0.3)';
-  } else {
-    if (header) header.style.boxShadow = 'none';
-  }
-});
-</script>
-
-<!-- 5️⃣ كوبون ترحيبي تلقائي في السلة -->
-<script>
-setTimeout(function(){
-var originalUpdateCartUI = updateCartUI;
-updateCartUI = function() {
-  originalUpdateCartUI();
-    };
-}, 500);
-</script>
-  
-  var couponSection = document.getElementById('couponSection');
-  if (couponSection && cart.length > 0 && !activeCoupon) {
-    var hasShown = localStorage.getItem('doraAutoCoupon');
-    if (!hasShown) {
-      setTimeout(function() {
-        if (typeof showToast === 'function') {
-          showToast('🎉 استخدم كود WELCOME للحصول على خصم 15%!', 'success');
-        }
-        localStorage.setItem('doraAutoCoupon', 'true');
-      }, 2000);
-    }
-  }
-};
-</script>
-
-<!-- ========== END MARKETING SUITE ========== -->
 <script src="main.js"></script>
 <script src="chatbot-ai.js"></script>
 <script src="site-content.js"></script>
