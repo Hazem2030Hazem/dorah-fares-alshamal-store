@@ -2607,5 +2607,13 @@ loadSection('contact', 'contactGridList', function(container, items) {
       
     }, 800);
   });
+loadSection('hero_stats', 'achievementsStats', function(container, items) {
+    var html = '';
+    items.forEach(function(item) {
+        var meta = item.metadata || {};
+        html += '<div class="why-card" style="text-align:center"><div style="font-size:38px;font-weight:900;color:' + esc(meta.color || '#22D3EE') + '">' + esc(meta.number || '') + '</div><div style="width:40px;height:3px;background:' + esc(meta.color || '#22D3EE') + ';margin:8px auto;border-radius:2px"></div><p style="font-size:15px;color:#111827;font-weight:600">' + esc(item.description_ar || item.title_ar || '') + '</p></div>';
+    });
+    if (html) container.innerHTML = html;
+});
 })();
 })();
