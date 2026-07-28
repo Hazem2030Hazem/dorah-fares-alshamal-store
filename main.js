@@ -2442,56 +2442,168 @@ loadSection('hero_stats', 'aboutStats', function(container, items) {
       });
       
       // المشاريع (projects)
-      loadSection('projects', 'projects', function(container, items) {
-        var grid = container.querySelector('.why-grid');
-        if (!grid) return;
-        var html = '';
-        items.forEach(function(item) {
-          var meta = item.metadata || {};
-          html += '<div class="why-card"><div class="why-icon">📦</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;font-size:13px;color:#10B981;font-weight:700">🏢 ' + esc(meta.client_name || '') + '</div></div>';
-        });
-        if (html) grid.innerHTML = html;
-      });
+loadSection('projects', 'projectsGridList', function(container, items) {
+    var html = '';
+    items.forEach(function(item) {
+        var meta = item.metadata || {};
+        html += '<div class="why-card"><div class="why-icon">📦</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;font-size:13px;color:#10B981;font-weight:700">🏢 ' + esc(meta.client_name || '') + '</div></div>';
+    });
+    if (html) container.innerHTML = html;
+});
+
+loadSection('blog', 'blogGridList', function(container, items) {
+    var html = '';
+    items.forEach(function(item) {
+        var meta = item.metadata || {};
+        html += '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')"><div class="why-icon">📝</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;display:flex;gap:15px;font-size:12px;color:rgba(255,255,255,0.5)"><span>📅 ' + esc(meta.publish_date || '') + '</span><span>⏱️ ' + esc(meta.read_time || '') + '</span></div></div>';
+    });
+    if (html) container.innerHTML = html;
+});
+
+loadSection('certifications', 'certificationsGridList', function(container, items) {
+    var html = '';
+    items.forEach(function(item) {
+        var meta = item.metadata || {};
+        html += '<div class="why-card"><div class="why-icon">📜</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;font-size:13px;color:#10B981;font-weight:700">✅ ' + esc(meta.badge_text || 'معتمد') + '</div></div>';
+    });
+    if (html) container.innerHTML = html;
+});
+
+loadSection('contact', 'contactGridList', function(container, items) {
+    var html = '';
+    items.forEach(function(item) {
+        var meta = item.metadata || {};
+        var icon = '📞';
+        if (meta.type === 'whatsapp') icon = '💬';
+        if (meta.type === 'email') icon = '✉️';
+        if (meta.type === 'location') icon = '📍';
+        html += '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')"><div class="why-icon">' + icon + '</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:8px;font-size:14px;color:#60A5FA;font-weight:800">' + esc(meta.value || '') + '</div></div>';
+    });
+    if (html) container.innerHTML = html;
+});
       
       // المقالات (blog)
-      loadSection('blog', 'blog', function(container, items) {
-        var grid = container.querySelector('.why-grid');
-        if (!grid) return;
-        var html = '';
-        items.forEach(function(item) {
-          var meta = item.metadata || {};
-          html += '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')"><div class="why-icon">📝</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;display:flex;gap:15px;font-size:12px;color:rgba(255,255,255,0.5)"><span>📅 ' + esc(meta.publish_date || '') + '</span><span>⏱️ ' + esc(meta.read_time || '') + '</span></div></div>';
-        });
-        if (html) grid.innerHTML = html;
-      });
+loadSection('projects', 'projectsGridList', function(container, items) {
+    var html = '';
+    items.forEach(function(item) {
+        var meta = item.metadata || {};
+        html += '<div class="why-card"><div class="why-icon">📦</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;font-size:13px;color:#10B981;font-weight:700">🏢 ' + esc(meta.client_name || '') + '</div></div>';
+    });
+    if (html) container.innerHTML = html;
+});
+
+loadSection('blog', 'blogGridList', function(container, items) {
+    var html = '';
+    items.forEach(function(item) {
+        var meta = item.metadata || {};
+        html += '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')"><div class="why-icon">📝</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;display:flex;gap:15px;font-size:12px;color:rgba(255,255,255,0.5)"><span>📅 ' + esc(meta.publish_date || '') + '</span><span>⏱️ ' + esc(meta.read_time || '') + '</span></div></div>';
+    });
+    if (html) container.innerHTML = html;
+});
+
+loadSection('certifications', 'certificationsGridList', function(container, items) {
+    var html = '';
+    items.forEach(function(item) {
+        var meta = item.metadata || {};
+        html += '<div class="why-card"><div class="why-icon">📜</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;font-size:13px;color:#10B981;font-weight:700">✅ ' + esc(meta.badge_text || 'معتمد') + '</div></div>';
+    });
+    if (html) container.innerHTML = html;
+});
+
+loadSection('contact', 'contactGridList', function(container, items) {
+    var html = '';
+    items.forEach(function(item) {
+        var meta = item.metadata || {};
+        var icon = '📞';
+        if (meta.type === 'whatsapp') icon = '💬';
+        if (meta.type === 'email') icon = '✉️';
+        if (meta.type === 'location') icon = '📍';
+        html += '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')"><div class="why-icon">' + icon + '</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:8px;font-size:14px;color:#60A5FA;font-weight:800">' + esc(meta.value || '') + '</div></div>';
+    });
+    if (html) container.innerHTML = html;
+});
       
       // الشهادات (certifications)
-      loadSection('certifications', 'certifications', function(container, items) {
-        var grid = container.querySelector('.why-grid');
-        if (!grid) return;
-        var html = '';
-        items.forEach(function(item) {
-          var meta = item.metadata || {};
-          html += '<div class="why-card"><div class="why-icon">📜</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;font-size:13px;color:#10B981;font-weight:700">✅ ' + esc(meta.badge_text || 'معتمد') + '</div></div>';
-        });
-        if (html) grid.innerHTML = html;
-      });
+loadSection('projects', 'projectsGridList', function(container, items) {
+    var html = '';
+    items.forEach(function(item) {
+        var meta = item.metadata || {};
+        html += '<div class="why-card"><div class="why-icon">📦</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;font-size:13px;color:#10B981;font-weight:700">🏢 ' + esc(meta.client_name || '') + '</div></div>';
+    });
+    if (html) container.innerHTML = html;
+});
+
+loadSection('blog', 'blogGridList', function(container, items) {
+    var html = '';
+    items.forEach(function(item) {
+        var meta = item.metadata || {};
+        html += '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')"><div class="why-icon">📝</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;display:flex;gap:15px;font-size:12px;color:rgba(255,255,255,0.5)"><span>📅 ' + esc(meta.publish_date || '') + '</span><span>⏱️ ' + esc(meta.read_time || '') + '</span></div></div>';
+    });
+    if (html) container.innerHTML = html;
+});
+
+loadSection('certifications', 'certificationsGridList', function(container, items) {
+    var html = '';
+    items.forEach(function(item) {
+        var meta = item.metadata || {};
+        html += '<div class="why-card"><div class="why-icon">📜</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;font-size:13px;color:#10B981;font-weight:700">✅ ' + esc(meta.badge_text || 'معتمد') + '</div></div>';
+    });
+    if (html) container.innerHTML = html;
+});
+
+loadSection('contact', 'contactGridList', function(container, items) {
+    var html = '';
+    items.forEach(function(item) {
+        var meta = item.metadata || {};
+        var icon = '📞';
+        if (meta.type === 'whatsapp') icon = '💬';
+        if (meta.type === 'email') icon = '✉️';
+        if (meta.type === 'location') icon = '📍';
+        html += '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')"><div class="why-icon">' + icon + '</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:8px;font-size:14px;color:#60A5FA;font-weight:800">' + esc(meta.value || '') + '</div></div>';
+    });
+    if (html) container.innerHTML = html;
+});
       
       // التواصل (contact)
-      loadSection('contact', 'contact', function(container, items) {
-        var grid = container.querySelector('.why-grid');
-        if (!grid) return;
-        var html = '';
-        items.forEach(function(item) {
-          var meta = item.metadata || {};
-          var icon = '📞';
-          if (meta.type === 'whatsapp') icon = '💬';
-          if (meta.type === 'email') icon = '✉️';
-          if (meta.type === 'location') icon = '📍';
-          html += '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')"><div class="why-icon">' + icon + '</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:8px;font-size:14px;color:#60A5FA;font-weight:800">' + esc(meta.value || '') + '</div></div>';
-        });
-        if (html) grid.innerHTML = html;
-      });
+loadSection('projects', 'projectsGridList', function(container, items) {
+    var html = '';
+    items.forEach(function(item) {
+        var meta = item.metadata || {};
+        html += '<div class="why-card"><div class="why-icon">📦</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;font-size:13px;color:#10B981;font-weight:700">🏢 ' + esc(meta.client_name || '') + '</div></div>';
+    });
+    if (html) container.innerHTML = html;
+});
+
+loadSection('blog', 'blogGridList', function(container, items) {
+    var html = '';
+    items.forEach(function(item) {
+        var meta = item.metadata || {};
+        html += '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')"><div class="why-icon">📝</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;display:flex;gap:15px;font-size:12px;color:rgba(255,255,255,0.5)"><span>📅 ' + esc(meta.publish_date || '') + '</span><span>⏱️ ' + esc(meta.read_time || '') + '</span></div></div>';
+    });
+    if (html) container.innerHTML = html;
+});
+
+loadSection('certifications', 'certificationsGridList', function(container, items) {
+    var html = '';
+    items.forEach(function(item) {
+        var meta = item.metadata || {};
+        html += '<div class="why-card"><div class="why-icon">📜</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;font-size:13px;color:#10B981;font-weight:700">✅ ' + esc(meta.badge_text || 'معتمد') + '</div></div>';
+    });
+    if (html) container.innerHTML = html;
+});
+
+loadSection('contact', 'contactGridList', function(container, items) {
+    var html = '';
+    items.forEach(function(item) {
+        var meta = item.metadata || {};
+        var icon = '📞';
+        if (meta.type === 'whatsapp') icon = '💬';
+        if (meta.type === 'email') icon = '✉️';
+        if (meta.type === 'location') icon = '📍';
+        html += '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')"><div class="why-icon">' + icon + '</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:8px;font-size:14px;color:#60A5FA;font-weight:800">' + esc(meta.value || '') + '</div></div>';
+    });
+    if (html) container.innerHTML = html;
+});
       
     }, 800);
   });
