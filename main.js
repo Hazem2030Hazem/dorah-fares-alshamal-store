@@ -1173,6 +1173,109 @@ function initRealtimeUpdates() {
     )
     .subscribe();
 }
+// ============================================================
+// 🔄 REALTIME UPDATES - تحديث تلقائي من Supabase
+// ============================================================
+function initRealtimeUpdates() {
+  
+  // قناة المخزون والمنتجات
+  supabaseClient
+    .channel('store-products-realtime')
+    .on('postgres_changes', 
+      { event: '*', schema: 'public', table: 'store_products' },
+      function(payload) {
+        console.log('📦 تحديث منتج:', payload);
+        loadProductsFromSupabase().then(function() {
+          renderProducts(currentFilter);
+          updateCategoryCounts();
+        });
+      }
+    )
+    .subscribe();
+
+  // قناة site_items (التقييمات والمحتوى)
+  supabaseClient
+    .channel('site-items-realtime')
+    .on('postgres_changes', 
+      { event: '*', schema: 'public', table: 'site_items' },
+      function(payload) {
+        console.log('📝 تحديث محتوى:', payload);
+        // إعادة تحميل كل الأقسام
+        setTimeout(function() {
+          location.reload();
+        }, 500);
+      }
+    )
+    .subscribe();
+
+  // قناة المشاريع
+  supabaseClient
+    .channel('projects-realtime')
+    .on('postgres_changes', 
+      { event: '*', schema: 'public', table: 'projects' },
+      function() { loadSection('projects', 'projectsGridList', renderProjects); }
+    )
+    .subscribe();
+
+  // قناة المقالات
+  supabaseClient
+    .channel('blog-realtime')
+    .on('postgres_changes', 
+      { event: '*', schema: 'public', table: 'blog_posts' },
+      function() { loadSection('blog', 'blogGridList', renderBlog); }
+    )
+    .subscribe();
+
+  // قناة الشهادات
+  supabaseClient
+    .channel('certifications-realtime')
+    .on('postgres_changes', 
+      { event: '*', schema: 'public', table: 'certifications' },
+      function() { loadSection('certifications', 'certificationsGridList', renderCertifications); }
+    )
+    .subscribe();
+
+  // قناة التواصل
+  supabaseClient
+    .channel('contact-realtime')
+    .on('postgres_changes', 
+      { event: '*', schema: 'public', table: 'contact_info' },
+      function() { loadSection('contact', 'contactGridList', renderContact); }
+    )
+    .subscribe();
+
+  // قناة الشركاء
+  supabaseClient
+    .channel('partners-realtime')
+    .on('postgres_changes', 
+      { event: '*', schema: 'public', table: 'partners' },
+      function() { loadPartners(); }
+    )
+    .subscribe();
+
+  // قناة التقييمات المنفصلة
+  supabaseClient
+    .channel('reviews-realtime')
+    .on('postgres_changes', 
+      { event: 'INSERT', schema: 'public', table: 'reviews' },
+      function(payload) {
+        console.log('⭐ تقييم جديد:', payload);
+        renderReviews();
+        loadCompanyTestimonials();
+        showToast('🌟 تم إضافة تقييم جديد!');
+      }
+    )
+    .subscribe();
+
+  // قناة تقييمات الشركات
+  supabaseClient
+    .channel('testimonials-realtime')
+    .on('postgres_changes', 
+      { event: '*', schema: 'public', table: 'testimonials' },
+      function() { loadCompanyTestimonials(); }
+    )
+    .subscribe();
+}
 document.addEventListener('DOMContentLoaded', () => {
  initTheme();
  checkPWAInstallState();
