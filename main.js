@@ -1773,6 +1773,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // تحميل الشركاء
   setTimeout(loadPartners, 500);
+   setTimeout(initRealtimeUpdates, 3000); 
 });
 
 // ===== عرض تقييمات الشركات والمؤسسات =====
