@@ -2517,8 +2517,8 @@ function doraIcon(sectionKey, meta) {
             '<div class="why-icon">' + doraIcon('blog', meta) + '</div>' +
             '<h4>' + esc(item.title_ar || '') + '</h4>' +
             '<p>' + esc(item.description_ar || '') + '</p>' +
-            '<div class="blog-meta"><span>📅 ' + esc(meta.publish_date || '') + '</span><span>⏱️ ' + esc(meta.read_time || '') + '</span></div>' +
-            '</div>';
+            '<div class="blog-meta"><span><svg style="width:14px;height:14px;vertical-align:middle;margin-left:4px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>' + esc(meta.publish_date || '') + '</span><span><svg style="width:14px;height:14px;vertical-align:middle;margin-left:4px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>' + esc(meta.read_time || '') + '</span></div>' +
+              '</div>';
         }).join('');
       });
 
