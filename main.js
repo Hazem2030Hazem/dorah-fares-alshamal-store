@@ -2420,7 +2420,7 @@ loadSection('hero_stats', 'aboutStats', function(container, items) {
     var html = '';
     items.forEach(function(item) {
         var meta = item.metadata || {};
-        html += '<div class="why-card" style="text-align:center"><div style="font-size:32px;font-weight:900;color:' + esc(meta.color || '#22D3EE') + '">' + esc(meta.number || '') + '</div><div style="width:30px;height:3px;background:' + esc(meta.color || '#22D3EE') + ';margin:8px auto;border-radius:2px"></div><span style="font-size:14px;color:rgba(255,255,255,0.7)">' + esc(item.description_ar || item.title_ar || '') + '</span></div>';
+html += '<div class="why-card" style="text-align:center"><div class="stat-number" style="color:' + esc(meta.color || '#22D3EE') + '">' + esc(meta.number || '') + '</div><div style="width:30px;height:3px;background:' + esc(meta.color || '#22D3EE') + ';margin:8px auto;border-radius:2px"></div><span style="font-size:14px;color:rgba(255,255,255,0.7)">' + esc(item.description_ar || item.title_ar || '') + '</span></div>';
     });
     if (html) container.innerHTML = html;
 });
@@ -2500,7 +2500,7 @@ loadSection('certifications', 'certificationsGridList', function(container, item
     var html = '';
     items.forEach(function(item) {
         var meta = item.metadata || {};
-        html += '<div class="why-card"><div class="why-icon">📜</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;font-size:13px;color:#10B981;font-weight:700">✅ ' + esc(meta.badge_text || 'معتمد') + '</div></div>';
+html += '<div class="why-card"><div class="why-icon">📜</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div class="cert-badge">✅ ' + esc(meta.badge_text || 'معتمد') + '</div></div>';
     });
     if (html) container.innerHTML = html;
 });
@@ -2513,7 +2513,7 @@ loadSection('contact', 'contactGridList', function(container, items) {
         if (meta.type === 'whatsapp') icon = '💬';
         if (meta.type === 'email') icon = '✉️';
         if (meta.type === 'location') icon = '📍';
-        html += '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')"><div class="why-icon">' + icon + '</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:8px;font-size:14px;color:#60A5FA;font-weight:800">' + esc(meta.value || '') + '</div></div>';
+html += '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')"><div class="why-icon">' + icon + '</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div class="contact-value">' + esc(meta.value || '') + '</div></div>';
     });
     if (html) container.innerHTML = html;
 });
@@ -2532,7 +2532,7 @@ loadSection('blog', 'blogGridList', function(container, items) {
     var html = '';
     items.forEach(function(item) {
         var meta = item.metadata || {};
-        html += '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')"><div class="why-icon">📝</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;display:flex;gap:15px;font-size:12px;color:rgba(255,255,255,0.5)"><span>📅 ' + esc(meta.publish_date || '') + '</span><span>⏱️ ' + esc(meta.read_time || '') + '</span></div></div>';
+html += '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')"><div class="why-icon">📝</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div class="blog-meta"><span>📅 ' + esc(meta.publish_date || '') + '</span><span>⏱️ ' + esc(meta.read_time || '') + '</span></div></div>';
     });
     if (html) container.innerHTML = html;
 });
@@ -2564,7 +2564,7 @@ loadSection('projects', 'projectsGridList', function(container, items) {
     var html = '';
     items.forEach(function(item) {
         var meta = item.metadata || {};
-        html += '<div class="why-card"><div class="why-icon">📦</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;font-size:13px;color:#10B981;font-weight:700">🏢 ' + esc(meta.client_name || '') + '</div></div>';
+html += '<div class="why-card"><div class="why-icon">📦</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div class="client-name">🏢 ' + esc(meta.client_name || '') + '</div></div>';
     });
     if (html) container.innerHTML = html;
 });
@@ -2604,13 +2604,13 @@ loadSection('contact', 'contactGridList', function(container, items) {
     var html = '';
     items.forEach(function(item) {
         var meta = item.metadata || {};
-        html += '<div class="why-card"><div class="why-icon">' + (meta.icon_name || '⭐') + '</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p></div>';
+      html += '<div class="why-card"><div class="why-icon">' + (meta.icon_name || '⭐') + '</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p></div>';
     });
       loadSection('vision_mission', 'visionMissionGrid', function(container, items) {
     var html = '';
     items.forEach(function(item) {
         var meta = item.metadata || {};
-        html += '<div class="why-card"><div class="why-icon" style="background:linear-gradient(135deg,' + esc(meta.color1 || '#E0F2FE') + ',' + esc(meta.color2 || '#BBDEFB') + ')">' + (meta.icon_name || '🎯') + '</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p></div>';
+     html += '<div class="why-card"><div class="why-icon">' + (meta.icon_name || '🎯') + '</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p></div>';
     });
     if (html) container.innerHTML = html;
 }); 
@@ -2622,7 +2622,7 @@ loadSection('hero_stats', 'achievementsStats', function(container, items) {
     var html = '';
     items.forEach(function(item) {
         var meta = item.metadata || {};
-        html += '<div class="why-card" style="text-align:center"><div style="font-size:38px;font-weight:900;color:' + esc(meta.color || '#22D3EE') + '">' + esc(meta.number || '') + '</div><div style="width:40px;height:3px;background:' + esc(meta.color || '#22D3EE') + ';margin:8px auto;border-radius:2px"></div><p style="font-size:15px;color:#111827;font-weight:600">' + esc(item.description_ar || item.title_ar || '') + '</p></div>';
+html += '<div class="why-card" style="text-align:center"><div class="stat-number" style="color:' + esc(meta.color || '#22D3EE') + '">' + esc(meta.number || '') + '</div><div style="width:40px;height:3px;background:' + esc(meta.color || '#22D3EE') + ';margin:8px auto;border-radius:2px"></div><p style="font-size:15px;color:#111827;font-weight:600">' + esc(item.description_ar || item.title_ar || '') + '</p></div>';
     });
     if (html) container.innerHTML = html;
 });
