@@ -2610,6 +2610,14 @@ loadSection('contact', 'contactGridList', function(container, items) {
         var meta = item.metadata || {};
         html += '<div class="why-card"><div class="why-icon">' + (meta.icon_name || '⭐') + '</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p></div>';
     });
+      loadSection('vision_mission', 'visionMissionGrid', function(container, items) {
+    var html = '';
+    items.forEach(function(item) {
+        var meta = item.metadata || {};
+        html += '<div class="why-card"><div class="why-icon" style="background:linear-gradient(135deg,' + esc(meta.color1 || '#E0F2FE') + ',' + esc(meta.color2 || '#BBDEFB') + ')">' + (meta.icon_name || '🎯') + '</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p></div>';
+    });
+    if (html) container.innerHTML = html;
+}); 
     if (html) container.innerHTML = html;
 });
     }, 800);
