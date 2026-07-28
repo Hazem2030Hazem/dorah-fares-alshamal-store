@@ -2442,3 +2442,4 @@ window.handleLogin = async function(e){
   showDashboard();
   return false;
 };
+})();
