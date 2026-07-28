@@ -34,17 +34,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20fill%3D%27%25231E88E5%27%20rx%3D%2715%27%20width%3D%27100%27%20height%3D%27100%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27white%27%3E%E2%9A%A1%3C%2Ftext%3E%3C%2Fsvg%3E">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
   <title>شركة درة فارس الشمال | متجر التقنية</title>
-  
-  <!-- ========== AUDIO AUTO-PLAY SCRIPT (مباشر في الصفحة) ========== -->
-  
-  
-  
-  
-  
 <base target="_blank">
-
-
-
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -54,44 +44,35 @@
       let audio = null;
       let isPlaying = false;
       let isMuted = false;
-
-      // Expose audio element globally for volume control
       window.doraAudio = null;
       window.doraAudioPlaying = false;
       window.doraAudioMuted = false;
-
       function createAudio() {
           if (audio) return audio;
           audio = new Audio(AUDIO_URL);
           audio.loop = true;
           audio.volume = 0.30;
           audio.preload = 'auto';
-          // Expose globally
           window.doraAudio = audio;
           return audio;
       }
-
       function tryPlay() {
           if (isPlaying || !audio || isMuted) return;
           audio.play().then(() => {
               isPlaying = true;
-              console.log('✅ Audio playing');
               updateSpeakerIcon();
           }).catch((err) => {
-              console.log('⚠️ Autoplay blocked, waiting for user interaction...');
               document.addEventListener('click', function playOnClick() {
                   if (!isMuted && audio) {
                       audio.play().then(() => {
                           isPlaying = true;
-                          console.log('✅ Audio playing after click');
                           updateSpeakerIcon();
-                      }).catch((e) => console.log('❌ Audio failed:', e));
+                      }).catch((e) => {});
                   }
                   document.removeEventListener('click', playOnClick);
               }, { once: true });
           });
       }
-
       window.toggleAudio = function() {
           if (!audio) audio = createAudio();
           if (isPlaying) {
@@ -104,13 +85,12 @@
                   isPlaying = true;
                   window.doraAudioPlaying = true;
                   updateSpeakerIcon();
-              }).catch((e) => console.log('❌ Toggle failed:', e));
+              }).catch((e) => {});
           }
           window.doraAudioPlaying = isPlaying;
           window.doraAudioMuted = isMuted;
           updateSpeakerIcon();
       };
-
       function updateSpeakerIcon() {
   const svg = document.getElementById('speakerIconSvg');
   if (svg) {
@@ -132,16 +112,13 @@ function init() {
           window.doraAudioPlaying = isPlaying;
           window.doraAudioMuted = isMuted;
       }
-
       if (document.readyState === 'loading') {
           document.addEventListener('DOMContentLoaded', init);
       } else {
           init();
       }
   })();
-  
 </script>
-  <!-- ✅ Schema Markup - بيانات منظمة لمحركات البحث -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -153,32 +130,14 @@ function init() {
   "image": "https://dorafares.com/og-image.jpg",
   "telephone": "+966568717449",
   "email": "info@alshamal-df.com",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "الرياض",
-    "addressCountry": "SA"
-  },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": "24.7136",
-    "longitude": "46.6753"
-  },
-  "openingHoursSpecification": {
-    "@type": "OpeningHoursSpecification",
-    "dayOfWeek": ["Sunday","Monday","Tuesday","Wednesday","Thursday"],
-    "opens": "09:00",
-    "closes": "18:00"
-  },
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.9",
-    "reviewCount": "500"
-  },
+  "address": { "@type": "PostalAddress", "addressLocality": "الرياض", "addressCountry": "SA" },
+  "geo": { "@type": "GeoCoordinates", "latitude": "24.7136", "longitude": "46.6753" },
+  "openingHoursSpecification": { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Sunday","Monday","Tuesday","Wednesday","Thursday"], "opens": "09:00", "closes": "18:00" },
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "500" },
   "priceRange": "ر.س"
 }
 </script>
- <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="fbe13262-4414-4ead-b11c-8be25ec1a317" type="text/javascript" async></script>
-<!-- Google Analytics 4 -->
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="fbe13262-4414-4ead-b11c-8be25ec1a317" type="text/javascript" async></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-5J1QD56BN0"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -186,168 +145,6 @@ function init() {
   gtag('js', new Date());
   gtag('config', 'G-5J1QD56BN0');
 </script>
-<style>
-/* ========== بطاقات موحدة - تصميم مستوحى من قسم المنتجات ========== */
-.why-card,
-.review-card {
-    background: #FFFFFF;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 20px;
-    padding: 35px 25px 30px;
-    text-align: center;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: visible;
-}
-
-.why-card:hover,
-.review-card:hover {
-    border-color: rgba(14, 165, 233, 0.4);
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
-    transform: translateY(-6px);
-}
-
-/* الأيقونة في دايرة */
-.why-icon {
-    width: 75px;
-    height: 75px;
-    margin: 0 auto 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-    background: linear-gradient(135deg, #EFF6FF, #DBEAFE);
-    border-radius: 50%;
-    transition: all 0.3s ease;
-}
-
-.why-card:hover .why-icon {
-    background: linear-gradient(135deg, #0EA5E9, #3B82F6);
-    transform: scale(1.05);
-}
-
-/* العنوان */
-.why-card h4 {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 10px;
-    color: #111827;
-}
-
-/* النص الوصفي */
-.why-card p {
-    font-size: 14px;
-    color: #6B7280;
-    line-height: 1.7;
-    margin-bottom: 8px;
-}
-
-/* أرقام الإحصائيات */
-.stat-number {
-    font-size: 44px;
-    font-weight: 900;
-    color: #0EA5E9;
-    display: block;
-    margin-bottom: 5px;
-    line-height: 1;
-}
-
-/* شارة العميل والشهادة */
-.client-name,
-.cert-badge {
-    display: inline-block;
-    margin-top: 12px;
-    padding: 6px 16px;
-    background: #ECFDF5;
-    color: #059669;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 700;
-    border: 1px solid #A7F3D0;
-}
-
-/* شارة التواصل */
-.contact-value {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 8px 20px;
-    background: #EFF6FF;
-    color: #3B82F6;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: 800;
-    border: 1px solid #BFDBFE;
-}
-
-/* ميتا المقال */
-.blog-meta {
-    display: flex;
-    justify-content: center;
-    gap: 18px;
-    margin-top: 14px;
-    padding-top: 14px;
-    border-top: 1px solid #F3F4F6;
-    font-size: 12px;
-    color: #9CA3AF;
-}
-
-/* الجريد */
-#whyUsGrid,
-#visionMissionGrid,
-#projectsGridList,
-#blogGridList,
-#certificationsGridList,
-#contactGridList,
-#achievementsStats,
-#aboutStats,
-#partnersGrid,
-#companyTestimonialsGrid,
-#reviewsGrid {
-    display: grid;
-    gap: 25px;
-    padding: 20px 0;
-}
-
-/* البطاقات القابلة للنقر */
-.why-card[onclick],
-.why-card[style*="cursor:pointer"] {
-    cursor: pointer;
-}
-
-.why-card[onclick]:hover,
-.why-card[style*="cursor:pointer"]:hover {
-    border-color: rgba(14, 165, 233, 0.5);
-}
-
-/* نجوم التقييم */
-.why-card .stars-display {
-    color: #F59E0B;
-    font-size: 15px;
-    letter-spacing: 2px;
-    margin-bottom: 6px;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .why-card {
-        padding: 25px 18px 22px;
-    }
-    
-    .why-icon {
-        width: 60px;
-        height: 60px;
-        font-size: 26px;
-    }
-    
-    .why-card h4 {
-        font-size: 16px;
-    }
-    
-    .stat-number {
-        font-size: 34px;
-    }
-}
-</style>
 <style>
 .why-card {
     background: #FFFFFF;
@@ -372,6 +169,7 @@ function init() {
     font-size: 32px;
     background: linear-gradient(135deg, #EFF6FF, #DBEAFE);
     border-radius: 50%;
+    transition: all 0.3s ease;
 }
 .why-card:hover .why-icon {
     background: linear-gradient(135deg, #0EA5E9, #3B82F6);
@@ -387,11 +185,15 @@ function init() {
     font-size: 14px;
     color: #6B7280;
     line-height: 1.7;
+    margin-bottom: 8px;
 }
 .stat-number {
     font-size: 44px;
     font-weight: 900;
     color: #0EA5E9;
+    display: block;
+    margin-bottom: 5px;
+    line-height: 1;
 }
 .client-name, .cert-badge {
     display: inline-block;
