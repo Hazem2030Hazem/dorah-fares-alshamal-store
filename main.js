@@ -2444,7 +2444,7 @@ function doraIcon(sectionKey, meta) {
       loadSection('why_us', 'whyUsGrid', function(container, items) {
         container.innerHTML = items.map(function(item) {
           var meta = item.metadata || {};
-          return cardHTML(meta.icon_name || '⭐', item.title_ar || '', item.description_ar || '');
+          return cardHTML(doraIcon('why_us', meta), item.title_ar, ...);
         }).join('');
       });
 
@@ -2452,7 +2452,7 @@ function doraIcon(sectionKey, meta) {
       loadSection('vision_mission', 'visionMissionGrid', function(container, items) {
         container.innerHTML = items.map(function(item) {
           var meta = item.metadata || {};
-          return cardHTML(meta.icon_name || '🎯', item.title_ar || '', item.description_ar || '');
+          return cardHTML(doraIcon('why_us', meta), item.title_ar, ...);
         }).join('');
       });
 
