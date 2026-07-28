@@ -100,7 +100,53 @@ window.deleteProduct=async function(id){
   loadProducts();adminToast('✅ تم الحذف');
 };
 
-window.openModal=function(){alert('مودال المنتجات - ممكن تضيفه في HTML');};
+window.openModal = function() {
+    document.getElementById('productModal').classList.add('show');
+    document.getElementById('productModalTitle').textContent = '📦 إضافة منتج';
+    document.getElementById('productForm').reset();
+    document.getElementById('productId').value = '';
+};
+
+window.closeProductModal = function() {
+    document.getElementById('productModal').classList.remove('show');
+};
+
+window.saveProduct = async function(e) {
+    e.preventDefault();
+    var id = document.getElementById('productId').value;
+    var product = {
+        name: document.getElementById('productName').value,
+        description: document.getElementById('productDesc').value,
+        price: parseFloat(document.getElementById('productPrice').value),
+        old_price: parseFloat(document.getElementById('productOldPrice').value) || null,
+        stock: parseInt(document.getElementById('productStock').value) || 0,
+        category: document.getElementById('productCategory').value,
+        badge: document.getElementById('productBadge').value,
+        image: document.getElementById('productImage').value,
+        rating: parseFloat(document.getElementById('productRating').value) || 0
+    };
+    
+    var btn = document.querySelector('#productForm .btn-save');
+    btn.disabled = true; btn.textContent = '⏳ جاري الحفظ...';
+    
+    var error;
+    if (id) {
+        var result = await supabaseClient.from('store_products').update(product).eq('id', id);
+        error = result.error;
+    } else {
+        var result = await supabaseClient.from('store_products').insert([product]);
+        error = result.error;
+    }
+    
+    btn.disabled = false; btn.textContent = '💾 حفظ المنتج';
+    
+    if (error) { adminToast('❌ خطأ: ' + error.message, 'error'); return; }
+    
+    document.getElementById('productModal').classList.remove('show');
+    adminToast('✅ تم الحفظ بنجاح');
+    loadProducts();
+    return false;
+};
 
 window.loadOrders=async function(){
   var c=document.getElementById('ordersList');if(!c)return;
