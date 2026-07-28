@@ -124,7 +124,15 @@ function renderCustomers(){
 
 window.loadServiceRequests=async function(){
   var c=document.getElementById('servicesList');if(!c)return;
-  c.innerHTML=adminState.services.map(s=>`<div class="admin-data-card"><strong>${esc(s.service_type)}</strong></div>`).join('')||'<div class="admin-empty">🔧 لا توجد خدمات</div>';
+  c.innerHTML='<div class="admin-empty">⏳ جاري تحميل الخدمات...</div>';
+  var{data}=await supabaseClient.from('service_requests').select('*').order('created_at',{ascending:false});
+  if(!data||!data.length){c.innerHTML='<div class="admin-empty">🔧 لا توجد طلبات خدمات</div>';return;}
+  var html='<table><thead><tr><th>#</th><th>الخدمة</th><th>العميل</th><th>الجوال</th><th>المدينة</th><th>الحالة</th><th>التاريخ</th></tr></thead><tbody>';
+  data.forEach(function(s,i){
+    html+='<tr><td>'+(i+1)+'</td><td>'+esc(s.service_type||'—')+'</td><td>'+esc(s.customer_name||'—')+'</td><td>'+esc(s.customer_phone||'—')+'</td><td>'+esc(s.city||'—')+'</td><td>'+esc(s.status||'جديد')+'</td><td>'+dateAr(s.created_at)+'</td></tr>';
+  });
+  html+='</tbody></table>';
+  c.innerHTML=html;
 };
 window.loadReceipts=async function(){
   var c=document.getElementById('receiptsList');if(!c)return;
