@@ -1739,56 +1739,48 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ===== عرض تقييمات الشركات والمؤسسات =====
 async function loadCompanyTestimonials() {
-    var grid = document.querySelector('#testimonials .testimonials-grid');
+    var grid = document.getElementById('companyTestimonialsGrid');
     if (!grid) return;
 
     try {
         var result = await supabaseClient
-            .from('reviews')
+            .from('site_items')
             .select('*')
-            .or('status.eq.published,status.eq.approved,status.is.null')
-            .order('id', { ascending: false })
-            .limit(50);
+            .eq('section_key', 'testimonials')
+            .eq('is_active', true)
+            .order('sort_order');
 
-        if (result.error) return;
+        if (result.error || !result.data || result.data.length === 0) return;
 
-        var allReviews = result.data || [];
+        var companyKeywords = ['شركة', 'مؤسسة', 'مجموعة', 'فندق', 'مطاعم', 'صيدلية', 'مكتب', 'مستشفى', 'مركز', 'معرض', 'مصنع', 'متجر', 'وكالة', 'جامعة', 'مدرسة', 'وزارة', 'هيئة', 'بنك', 'شركات'];
         
-        var companyKeywords = ['شركة', 'مؤسسة', 'مجموعة', 'فندق', 'مطاعم', 'صيدلية', 'مكتب', 'مستشفى', 'مركز', 'معرض', 'مصنع', 'متجر', 'وكالة', 'جامعة', 'مدرسة'];
-        
-        var companyReviews = allReviews.filter(function(r) {
-            var name = (r.name || '').trim();
-            var product = (r.product || '').trim();
-            
+        var companyReviews = result.data.filter(function(r) {
+            var name = (r.title_ar || '').trim();
+            var desc = (r.description_ar || '').trim();
             if (name.split(' ').length >= 3) return true;
-            
             for (var i = 0; i < companyKeywords.length; i++) {
-                if (name.includes(companyKeywords[i]) || product.includes(companyKeywords[i])) return true;
+                if (name.includes(companyKeywords[i]) || desc.includes(companyKeywords[i])) return true;
             }
-            
             return false;
         });
 
         if (companyReviews.length === 0) return;
 
-        grid.innerHTML = companyReviews.slice(0, 6).map(function(r) {
-            var stars = '⭐'.repeat(r.rating || 5);
-            var initials = (r.name || 'ش').trim().charAt(0);
-            return '<div class="testimonial-card">' +
-                '<div class="testimonial-stars">' + stars + '</div>' +
-                '<p class="testimonial-text">"' + (r.text || '').replace(/"/g, '&quot;') + '"</p>' +
-                '<div class="testimonial-author">' +
-                '<div class="testimonial-avatar">' + initials + '</div>' +
-                '<div class="testimonial-info">' +
-                '<h5>' + (r.name || 'عميل') + '</h5>' +
-                '<span>' + (r.product || 'جهة معتمدة') + '</span>' +
-                '</div>' +
-                '</div>' +
+        grid.innerHTML = companyReviews.map(function(r) {
+            var meta = r.metadata || {};
+            var stars = '⭐'.repeat(meta.rating || 5);
+            var initials = (r.title_ar || 'ش').trim().charAt(0);
+            return '<div class="why-card">' +
+                '<div class="why-icon" style="font-size:24px">💬</div>' +
+                '<div style="color:#F59E0B;margin-bottom:8px">' + stars + '</div>' +
+                '<h4>' + esc(r.title_ar || 'عميل') + '</h4>' +
+                '<p>"' + esc(r.description_ar || '').replace(/"/g, '&quot;') + '"</p>' +
+                '<div style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.4)">📦 ' + esc(meta.company_name || 'جهة معتمدة') + '</div>' +
                 '</div>';
         }).join('');
 
     } catch (e) {
-               console.log('Company testimonials:', e);
+        console.log('Company testimonials:', e);
     }
 }
 
