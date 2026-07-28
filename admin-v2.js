@@ -675,7 +675,29 @@ function exportJson(data, prefix){
   URL.revokeObjectURL(url);
 }
 
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initAdminAuth);
+window.handleLogin = async function(e){
+  e.preventDefault();
+  var email = document.getElementById('username').value.trim();
+  var password = document.getElementById('password').value;
+  var btn = e.target.querySelector('button[type="submit"]');
+  var errorMsg = document.getElementById('errorMsg');
+  errorMsg.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = '⏳ جاري التحقق...';
+  var result = await supabaseClient.auth.signInWithPassword({ email: email, password: password });
+  if (result.error || !result.data.user) {
+    btn.disabled = false; btn.textContent = 'دخول إلى لوحة التحكم';
+    errorMsg.textContent = '❌ البريد الإلكتروني أو كلمة المرور غير صحيحة';
+    errorMsg.style.display = 'block';
+    return false;
+  }
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('dashboardLayout').classList.add('active');
+  if (typeof loadProducts === 'function') loadProducts();
+  if (typeof loadSettings === 'function') loadSettings();
+  return false;
+};
+   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initAdminAuth);
 else initAdminAuth();
 
 })();
