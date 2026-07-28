@@ -58,7 +58,8 @@ window.showTab=function(tabName){
   if(tabName==='messages')loadMessages();
   if(tabName==='settings')loadSettings();
   if(tabName==='why_us')loadSiteItems('why_us');
-   if(tabName==='hero_stats')loadSiteItems('hero_stats');
+  if(tabName==='vision_mission')loadSiteItems('vision_mission');
+  if(tabName==='hero_stats')loadSiteItems('hero_stats');
   if(tabName==='about')loadSiteItems('about');
   if(tabName==='testimonials')loadSiteItems('testimonials');
   if(tabName==='projects')loadSiteItems('projects');
