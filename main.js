@@ -2421,9 +2421,14 @@ document.addEventListener('DOMContentLoaded', function() {
   document.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() {
       // الإحصائيات (hero_stats) - تحديث الأرقام في قسم about و achievements
-      loadSection('hero_stats', 'about', function(container, items) {
-        // تحديث الإحصائيات في الصفحة - لو فيه عناصر html معينة
-      });
+loadSection('hero_stats', 'aboutStats', function(container, items) {
+    var html = '';
+    items.forEach(function(item) {
+        var meta = item.metadata || {};
+        html += '<div class="why-card" style="text-align:center"><div style="font-size:32px;font-weight:900;color:' + esc(meta.color || '#22D3EE') + '">' + esc(meta.number || '') + '</div><div style="width:30px;height:3px;background:' + esc(meta.color || '#22D3EE') + ';margin:8px auto;border-radius:2px"></div><span style="font-size:14px;color:rgba(255,255,255,0.7)">' + esc(item.description_ar || item.title_ar || '') + '</span></div>';
+    });
+    if (html) container.innerHTML = html;
+});
       
       // تقييمات العملاء (testimonials) - تحميل في قسم testimonials
       loadSection('testimonials', 'companyTestimonialsGrid', function(container, items) {
