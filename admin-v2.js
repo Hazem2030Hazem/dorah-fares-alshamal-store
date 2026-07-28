@@ -132,7 +132,26 @@ window.loadReceipts=async function(){
 };
 window.loadReviews=async function(){
   var c=document.getElementById('reviewsList');if(!c)return;
-  c.innerHTML='<div class="admin-empty">⭐ لا توجد تقييمات</div>';
+  c.innerHTML='<div class="admin-empty">⏳ جاري تحميل التقييمات...</div>';
+  var{data}=await supabaseClient.from('reviews').select('*').order('id',{ascending:false});
+  if(!data||!data.length){c.innerHTML='<div class="admin-empty">⭐ لا توجد تقييمات</div>';return;}
+  var html='<table><thead><tr><th>#</th><th>الاسم</th><th>المنتج</th><th>التقييم</th><th>التعليق</th><th>الحالة</th><th>الإجراءات</th></tr></thead><tbody>';
+  data.forEach(function(r,i){
+    html+='<tr><td>'+(i+1)+'</td><td>'+esc(r.name||'—')+'</td><td>'+esc(r.product||'—')+'</td><td>'+'★'.repeat(r.rating||5)+'</td><td>'+esc((r.text||'').substring(0,60))+'</td><td>'+esc(r.status||'جديد')+'</td><td><button class="btn-edit" onclick="updateReviewStatus('+r.id+',\'published\')">✅ نشر</button> <button class="btn-delete" onclick="deleteReviewAdmin('+r.id+')">🗑️</button></td></tr>';
+  });
+  html+='</tbody></table>';
+  c.innerHTML=html;
+};
+
+window.updateReviewStatus=async function(id,status){
+  await supabaseClient.from('reviews').update({status:status}).eq('id',id);
+  loadReviews();adminToast('✅ تم التحديث');
+};
+
+window.deleteReviewAdmin=async function(id){
+  if(!confirm('حذف التقييم؟'))return;
+  await supabaseClient.from('reviews').delete().eq('id',id);
+  loadReviews();adminToast('✅ تم الحذف');
 };
 window.loadMessages=async function(){
   var c=document.getElementById('messagesList');if(!c)return;
