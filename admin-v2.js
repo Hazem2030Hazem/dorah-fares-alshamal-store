@@ -2298,22 +2298,30 @@ window.loadSiteItems = async function(sectionKey) {
 
   var items = result.data || [];
   if (!items.length) {
-    container.innerHTML = '<div class="admin-empty">📭 لا توجد بيانات</div>';
+    container.innerHTML = '<div class="admin-empty">📭 لا توجد بيانات. اضغط ➕ إضافة.</div>';
     return;
   }
 
-  var html = '<table><thead><tr><th>#</th><th>العنوان</th><th>الوصف</th><th>الترتيب</th><th>الإجراءات</th></tr></thead><tbody>';
+  var html = '<table><thead><tr><th>#</th><th>العنوان</th><th>الوصف</th><th>التفاصيل</th><th>الترتيب</th><th>الإجراءات</th></tr></thead><tbody>';
   
   items.forEach(function(item, index) {
-    var desc = (item.description_ar || '').substring(0, 60) + ((item.description_ar || '').length > 60 ? '…' : '');
+    var meta = item.metadata || {};
+    var desc = (item.description_ar || '').substring(0, 50) + ((item.description_ar || '').length > 50 ? '…' : '');
+    var extra = '';
+    if (meta.number) extra += '📊 ' + esc(meta.number) + ' ';
+    if (meta.rating) extra += '⭐' + meta.rating + ' ';
+    if (meta.badge_text) extra += '🏅 ' + esc(meta.badge_text) + ' ';
+    if (meta.type) extra += '📌 ' + esc(meta.type) + ' ';
+    if (meta.value) extra += esc(meta.value).substring(0,20);
     html += '<tr>' +
       '<td>' + (index + 1) + '</td>' +
       '<td><strong>' + esc(item.title_ar || 'بدون عنوان') + '</strong></td>' +
-      '<td>' + esc(desc) + '</td>' +
+      '<td>' + esc(desc || '—') + '</td>' +
+      '<td>' + (extra || '—') + '</td>' +
       '<td>' + item.sort_order + '</td>' +
       '<td>' +
-        '<button class="btn-edit" onclick="editSiteItem(' + item.id + ')">✏️ تعديل</button> ' +
-        '<button class="btn-delete" onclick="deleteSiteItem(' + item.id + ', \'' + sectionKey + '\')">🗑️ حذف</button>' +
+        '<button class="btn-edit" onclick="editSiteItem(' + item.id + ')">✏️</button> ' +
+        '<button class="btn-delete" onclick="deleteSiteItem(' + item.id + ', \'' + sectionKey + '\')">🗑️</button>' +
       '</td>' +
     '</tr>';
   });
@@ -2323,14 +2331,37 @@ window.loadSiteItems = async function(sectionKey) {
 };
 
 window.addSiteItem = async function(sectionKey) {
-  var title = prompt('العنوان بالعربية:');
+  var title = prompt('العنوان:');
   if (!title) return;
   var description = prompt('الوصف (اختياري):') || '';
-  var sortOrder = parseInt(prompt('رقم الترتيب:', '1')) || 1;
+  var sortOrder = parseInt(prompt('الترتيب (رقم):', '1')) || 1;
+  var metadata = {};
+  
+  if (sectionKey === 'hero_stats') {
+    metadata.number = prompt('الرقم (مثلاً: +500):', '') || '';
+    metadata.color = prompt('اللون (مثلاً: #22D3EE):', '#22D3EE') || '#22D3EE';
+    metadata.icon_name = prompt('الإيموجي (مثلاً: 🏆):', '🏆') || '🏆';
+  } else if (sectionKey === 'testimonials') {
+    metadata.reviewer_name = title;
+    metadata.company_name = prompt('اسم الشركة:') || '';
+    metadata.rating = parseInt(prompt('التقييم (1-5):', '5')) || 5;
+  } else if (sectionKey === 'blog') {
+    metadata.publish_date = prompt('تاريخ النشر:') || '';
+    metadata.read_time = prompt('وقت القراءة:') || '';
+    metadata.link_url = prompt('الرابط:') || '#';
+  } else if (sectionKey === 'contact') {
+    metadata.type = prompt('النوع (phone/email/whatsapp/location):', 'phone') || 'phone';
+    metadata.value = prompt('القيمة:') || '';
+    metadata.link_url = prompt('الرابط:') || '#';
+  } else if (sectionKey === 'certifications') {
+    metadata.badge_text = prompt('الشارة (مثلاً: معتمد):') || '';
+  } else if (sectionKey === 'projects') {
+    metadata.client_name = prompt('اسم العميل:') || '';
+  }
 
   var result = await supabaseClient.from('site_items').insert([{
     section_key: sectionKey, title_ar: title, description_ar: description,
-    sort_order: sortOrder
+    metadata: metadata, sort_order: sortOrder
   }]);
 
   if (result.error) { adminToast('❌ خطأ: ' + result.error.message, 'error'); return; }
