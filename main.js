@@ -1140,6 +1140,39 @@ async function loadProductsFromSupabase() {
         console.log('Error loading products:', e);
     }
 }
+// ============================================================
+// 🔄 REALTIME UPDATES - تحديث تلقائي من Supabase
+// ============================================================
+function initRealtimeUpdates() {
+  // قناة المخزون
+  var productChannel = supabaseClient
+    .channel('products-realtime')
+    .on('postgres_changes', 
+      { event: '*', schema: 'public', table: 'store_products' },
+      function(payload) {
+        console.log('📦 تحديث المخزون:', payload);
+        loadProductsFromSupabase().then(function() {
+          renderProducts(currentFilter);
+          updateCategoryCounts();
+        });
+      }
+    )
+    .subscribe();
+
+  // قناة التقييمات
+  var reviewsChannel = supabaseClient
+    .channel('reviews-realtime')
+    .on('postgres_changes',
+      { event: 'INSERT', schema: 'public', table: 'site_items', filter: 'section_key=eq.testimonials' },
+      function(payload) {
+        console.log('⭐ تقييم جديد:', payload);
+        renderReviews();
+        loadCompanyTestimonials();
+        showToast('🌟 تم إضافة تقييم جديد!');
+      }
+    )
+    .subscribe();
+}
 document.addEventListener('DOMContentLoaded', () => {
  initTheme();
  checkPWAInstallState();
