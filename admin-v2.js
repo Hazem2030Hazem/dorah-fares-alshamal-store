@@ -125,8 +125,8 @@ window.logout = async function(){
 };
 
 window.showDashboard = function(){
-  document.getElementById('loginSection').style.display = 'none';
-  document.getElementById('dashboard').style.display = 'block';
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('dashboardLayout').classList.add('active');
   if (typeof loadProducts === 'function') loadProducts();
   if (typeof loadSettings === 'function') loadSettings();
   loadAdminV2Data();
