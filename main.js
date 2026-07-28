@@ -2604,6 +2604,14 @@ loadSection('contact', 'contactGridList', function(container, items) {
     if (html) container.innerHTML = html;
 });
       
+   loadSection('why_us', 'whyUsGrid', function(container, items) {
+    var html = '';
+    items.forEach(function(item) {
+        var meta = item.metadata || {};
+        html += '<div class="why-card"><div class="why-icon">' + (meta.icon_name || '⭐') + '</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p></div>';
+    });
+    if (html) container.innerHTML = html;
+});
     }, 800);
   });
 loadSection('hero_stats', 'achievementsStats', function(container, items) {
