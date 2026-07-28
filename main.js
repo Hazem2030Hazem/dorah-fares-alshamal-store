@@ -1714,13 +1714,12 @@ async function loadPartners() {
         }
 
         grid.innerHTML = partners.map(function(p) {
-            var imgHtml = '';
-            if (p.image_url) {
-                imgHtml = '<img src="' + p.image_url + '" alt="' + p.name + '" class="partner-logo" style="width:60px;height:60px;border-radius:12px;object-fit:cover;margin-left:10px" loading="lazy">';
-            }
-            return '<div class="partner-item" style="display:flex;align-items:center;justify-content:center;gap:10px">' +
-                imgHtml +
-                '<span>' + p.name + '</span>' +
+            var imgHtml = p.image_url ? '<img src="' + esc(p.image_url) + '" alt="' + esc(p.name) + '" style="width:50px;height:50px;border-radius:10px;object-fit:cover">' : '<span style="font-size:30px">🏢</span>';
+            return '<div class="why-card">' +
+                '<div class="why-icon">' + imgHtml + '</div>' +
+                '<h4>' + esc(p.name) + '</h4>' +
+                '<p>' + esc(p.category || 'شريك') + '</p>' +
+                '<div style="margin-top:8px;font-size:12px;color:#60A5FA;font-weight:700">🤝 شريك</div>' +
                 '</div>';
         }).join('');
 
