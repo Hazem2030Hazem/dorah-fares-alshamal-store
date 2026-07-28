@@ -1280,6 +1280,20 @@ function initRealtimeUpdates() {
 
 document.addEventListener('DOMContentLoaded', () => {
  initTheme();
+    // ===== زرار تحميل صغير جنب إحصائيات البانر =====
+setTimeout(function() {
+  var heroStats = document.querySelector('.hero-stats');
+  if (heroStats) {
+    var downloadBadge = document.createElement('div');
+    downloadBadge.className = 'hero-stat';
+    downloadBadge.style.cssText = 'cursor:pointer;background:linear-gradient(135deg,#0EA5E9,#3B82F6);padding:12px 18px;border-radius:14px;transition:all 0.3s';
+    downloadBadge.innerHTML = '<strong style="display:flex;align-items:center;gap:6px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>حمل التطبيق</strong><span>مجاناً</span>';
+    downloadBadge.onclick = function() { location.href = 'download.html'; };
+    downloadBadge.onmouseenter = function() { this.style.transform = 'scale(1.05)'; this.style.boxShadow = '0 8px 25px rgba(14,165,233,0.4)'; };
+    downloadBadge.onmouseleave = function() { this.style.transform = 'scale(1)'; this.style.boxShadow = 'none'; };
+    heroStats.appendChild(downloadBadge);
+  }
+}, 1000);
    // ===== زرار تحميل التطبيق فوق البانر =====
 var topDownloadBar = document.createElement('div');
 topDownloadBar.id = 'topDownloadBar';
