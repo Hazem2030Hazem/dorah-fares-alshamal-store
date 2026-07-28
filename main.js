@@ -2503,7 +2503,7 @@ function doraIcon(sectionKey, meta) {
       loadSection('projects', 'projectsGridList', function(container, items) {
         container.innerHTML = items.map(function(item) {
           var meta = item.metadata || {};
-          return cardHTML('📦', item.title_ar || '', item.description_ar || '',
+          return cardHTML(doraIcon('projects', meta), item.title_ar || '', item.description_ar || '',
             '<div class="client-name">🏢 ' + esc(meta.client_name || '') + '</div>');
         }).join('');
       });
