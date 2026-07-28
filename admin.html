@@ -5,7 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة الإدارة | شركة درة فارس الشمال</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-<style>
+.sidebar-nav a svg, .stat-icon svg, .header-notif svg, .sidebar-footer button svg {
+    filter: drop-shadow(0 0 6px rgba(14,165,233,0.6));
+    transition: all 0.3s ease;
+}
+.sidebar-nav a:hover svg, .sidebar-nav a.active svg {
+    filter: drop-shadow(0 0 12px rgba(14,165,233,0.9));
+    transform: scale(1.15);
+}
+.stat-card:hover .stat-icon svg {
+    filter: drop-shadow(0 0 15px rgba(14,165,233,0.9));
+    transform: scale(1.2);
+}
+    <style>
     :root {
         --sidebar-width: 260px; --header-height: 70px;
         --primary: #0f0c29; --accent: #c9a84c; --text: #e2e8f0; --text-muted: #94a3b8;
