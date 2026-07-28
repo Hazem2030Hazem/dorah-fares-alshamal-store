@@ -38,7 +38,6 @@
         .sidebar-nav .nav-section { padding:16px 20px 8px; font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--accent); font-weight:700; opacity:0.8; }
         .sidebar-nav a { display:flex; align-items:center; gap:10px; padding:10px 20px; color:var(--text-muted); text-decoration:none; font-size:13px; transition:0.2s; cursor:pointer; border-left:3px solid transparent; margin:1px 0; }
         .sidebar-nav a:hover,.sidebar-nav a.active { color:white; background:rgba(201,168,76,0.06); border-left-color:var(--accent); }
-        .sidebar-nav a svg { width:18px; height:18px; flex-shrink:0; }
         .sidebar-footer { padding:16px 20px; border-top:1px solid var(--border); }
         .sidebar-footer button { width:100%; padding:10px; background:rgba(239,68,68,0.1); color:var(--danger); border:1px solid rgba(239,68,68,0.2); border-radius:8px; cursor:pointer; font-weight:600; font-family:inherit; }
         .header { position:fixed; top:0; left:var(--sidebar-width); right:0; height:var(--header-height); background:var(--primary); border-bottom:1px solid var(--border); z-index:999; display:flex; align-items:center; justify-content:space-between; padding:0 30px; }
@@ -50,26 +49,7 @@
         .header-user { display:flex; align-items:center; gap:8px; }
         .header-user .avatar { width:36px; height:36px; background:var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; color:var(--primary); }
         .header-user .name { font-size:13px; font-weight:600; }
-        ..main {
-    margin-left:var(--sidebar-width); margin-top:var(--header-height);
-    padding:30px; min-height:calc(100vh - var(--header-height));
-    background-image:url('admin-bg.png.jpg');
-    background-size:cover;
-    background-position:center;
-    background-attachment:fixed;
-    position:relative;
-}
-.main::before {
-    content:'';
-    position:absolute;
-    inset:0;
-    background:rgba(15,17,25,0.85);
-    z-index:0;
-}
-.main > * {
-    position:relative;
-    z-index:1;
-}
+        .main { margin-left:var(--sidebar-width); margin-top:var(--header-height); padding:30px; min-height:calc(100vh - var(--header-height)); }
         .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px; }
         .stat-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; display:flex; align-items:center; gap:14px; transition:0.3s; }
         .stat-card:hover { border-color:var(--accent); }
@@ -87,12 +67,20 @@
         th,td { padding:10px 14px; text-align:right; border-bottom:1px solid var(--border); font-size:13px; }
         th { color:var(--text-muted); font-weight:600; font-size:11px; text-transform:uppercase; }
         .btn-add { background:var(--accent); color:var(--primary); border:none; padding:8px 16px; border-radius:8px; font-weight:700; cursor:pointer; font-family:inherit; font-size:13px; }
+        .btn-edit { background:var(--info); color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-family:inherit; font-size:12px; margin:2px; }
+        .btn-delete { background:var(--danger); color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-family:inherit; font-size:12px; margin:2px; }
         .btn-save { background:var(--accent); color:var(--primary); border:none; padding:12px 24px; border-radius:8px; font-weight:700; cursor:pointer; font-family:inherit; font-size:14px; margin-top:16px; }
         .form-group { margin-bottom:16px; }
         .form-group label { display:block; margin-bottom:6px; color:var(--text-muted); font-size:13px; }
         .form-group input,.form-group select,.form-group textarea { width:100%; padding:12px; border-radius:8px; border:1px solid var(--border); background:rgba(255,255,255,0.03); color:white; font-family:inherit; font-size:13px; }
         .form-group textarea { resize:vertical; }
         .admin-empty { text-align:center; padding:40px; color:var(--text-muted); }
+        .admin-data-card { background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:12px; }
+        .admin-data-card .admin-card-title { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+        .admin-data-card .admin-card-title strong { font-size:15px; color:white; }
+        .admin-data-card .admin-note { color:var(--text-muted); font-size:12px; margin-top:4px; }
+        .admin-data-card .admin-meta { display:flex; gap:12px; font-size:11px; color:var(--text-muted); margin-top:6px; }
+        .admin-data-card .admin-card-actions { display:flex; gap:8px; margin-top:10px; }
         @media (max-width:768px) { .sidebar { transform:translateX(-100%); } .header { left:0; } .main { margin-left:0; } .stats-grid { grid-template-columns:repeat(2,1fr); } }
     </style>
 </head>
@@ -178,13 +166,16 @@
             <div class="tab-content" id="receiptsTab"><div id="receiptsList"></div></div>
             <div class="tab-content" id="messagesTab"><div id="messagesList"></div></div>
             <div class="tab-content" id="invoicesTab"><div id="invoicesTable"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-            <div class="tab-content" id="hero_statsTab"><div id="hero_statsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-            <div class="tab-content" id="aboutTab"><div id="aboutList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-            <div class="tab-content" id="testimonialsTab"><div id="testimonialsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-            <div class="tab-content" id="projectsTab"><div id="projectsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-            <div class="tab-content" id="blogTab"><div id="blogList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-            <div class="tab-content" id="certificationsTab"><div id="certificationsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-            <div class="tab-content" id="contactTab"><div id="contactList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+            
+            <!-- المحتوى الديناميكي بأزرار تحكم كاملة -->
+            <div class="tab-content" id="hero_statsTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3>📊 الإحصائيات</h3><button class="btn-add" onclick="addSiteItem('hero_stats')">➕ إضافة</button></div><div id="hero_statsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+            <div class="tab-content" id="aboutTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3>🌟 عن الشركة</h3><button class="btn-add" onclick="addSiteItem('about')">➕ إضافة</button></div><div id="aboutList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+            <div class="tab-content" id="testimonialsTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3>💬 آراء العملاء</h3><button class="btn-add" onclick="addSiteItem('testimonials')">➕ إضافة</button></div><div id="testimonialsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+            <div class="tab-content" id="projectsTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3>📦 المشاريع</h3><button class="btn-add" onclick="addSiteItem('projects')">➕ إضافة</button></div><div id="projectsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+            <div class="tab-content" id="blogTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3>📝 المقالات</h3><button class="btn-add" onclick="addSiteItem('blog')">➕ إضافة</button></div><div id="blogList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+            <div class="tab-content" id="certificationsTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3>📜 الشهادات</h3><button class="btn-add" onclick="addSiteItem('certifications')">➕ إضافة</button></div><div id="certificationsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+            <div class="tab-content" id="contactTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3>📞 التواصل</h3><button class="btn-add" onclick="addSiteItem('contact')">➕ إضافة</button></div><div id="contactList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+            
             <div class="tab-content" id="bank_accountsTab"><div id="bankAccountsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
             <div class="tab-content" id="payment_methodsTab"><div id="paymentMethodsTable"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
             <div class="tab-content" id="shippingTab"><div id="shippingRatesTable"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
