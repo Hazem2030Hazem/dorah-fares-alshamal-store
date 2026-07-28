@@ -50,7 +50,26 @@
         .header-user { display:flex; align-items:center; gap:8px; }
         .header-user .avatar { width:36px; height:36px; background:var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; color:var(--primary); }
         .header-user .name { font-size:13px; font-weight:600; }
-        .main { margin-left:var(--sidebar-width); margin-top:var(--header-height); padding:30px; min-height:calc(100vh - var(--header-height)); }
+        ..main {
+    margin-left:var(--sidebar-width); margin-top:var(--header-height);
+    padding:30px; min-height:calc(100vh - var(--header-height));
+    background-image:url('admin-bg.png.jpg');
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+    position:relative;
+}
+.main::before {
+    content:'';
+    position:absolute;
+    inset:0;
+    background:rgba(15,17,25,0.85);
+    z-index:0;
+}
+.main > * {
+    position:relative;
+    z-index:1;
+}
         .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px; }
         .stat-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; display:flex; align-items:center; gap:14px; transition:0.3s; }
         .stat-card:hover { border-color:var(--accent); }
