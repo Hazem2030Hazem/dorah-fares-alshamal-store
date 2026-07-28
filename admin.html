@@ -20,6 +20,11 @@
     .modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:99999;align-items:center;justify-content:center;padding:20px}
 .modal.show{display:flex}
 .modal-content{background:rgba(15,12,41,0.95);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.15);border-radius:24px;padding:30px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto}
+   .form-group label{display:block;color:rgba(255,255,255,0.7);font-size:13px;margin-bottom:6px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:white;font-family:inherit;font-size:14px;margin-bottom:4px}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:rgba(14,165,233,0.5);box-shadow:0 0 15px rgba(14,165,233,0.1)}
+.btn-save{width:100%;padding:14px;background:linear-gradient(135deg,#0EA5E9,#3B82F6);color:white;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn-save:hover{box-shadow:0 8px 25px rgba(14,165,233,0.4)}
     <style>
     :root {
         --sidebar-width: 260px; --header-height: 70px;
