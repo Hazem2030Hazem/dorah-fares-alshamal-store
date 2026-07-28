@@ -148,16 +148,28 @@ function init() {
 <style>
 .why-card {
     background: #FFFFFF;
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(14, 165, 233, 0.15);
     border-radius: 20px;
     padding: 35px 25px 30px;
     text-align: center;
     transition: all 0.3s ease;
+    animation: cardPulse 3s ease-in-out infinite;
+    box-shadow: 0 0 15px rgba(14, 165, 233, 0.05);
+}
+.why-card:nth-child(2) { animation-delay: 0.5s; }
+.why-card:nth-child(3) { animation-delay: 1s; }
+.why-card:nth-child(4) { animation-delay: 1.5s; }
+.why-card:nth-child(5) { animation-delay: 2s; }
+.why-card:nth-child(6) { animation-delay: 2.5s; }
+@keyframes cardPulse {
+    0%, 100% { box-shadow: 0 0 15px rgba(14, 165, 233, 0.05); transform: scale(1); }
+    50% { box-shadow: 0 0 30px rgba(14, 165, 233, 0.2), 0 0 60px rgba(14, 165, 233, 0.05); transform: scale(1.015); }
 }
 .why-card:hover {
-    border-color: rgba(14, 165, 233, 0.4);
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
-    transform: translateY(-6px);
+    border-color: rgba(14, 165, 233, 0.6);
+    box-shadow: 0 0 40px rgba(14, 165, 233, 0.3), 0 15px 40px rgba(14, 165, 233, 0.15);
+    transform: translateY(-6px) scale(1.02);
+    animation: none;
 }
 .why-icon {
     width: 75px;
@@ -170,10 +182,19 @@ function init() {
     background: linear-gradient(135deg, #EFF6FF, #DBEAFE);
     border-radius: 50%;
     transition: all 0.3s ease;
+    text-shadow: 0 0 15px rgba(14, 165, 233, 0.6), 0 0 30px rgba(14, 165, 233, 0.3);
+    box-shadow: 0 0 15px rgba(14, 165, 233, 0.2);
+    animation: iconGlow 2s ease-in-out infinite;
+}
+@keyframes iconGlow {
+    0%, 100% { box-shadow: 0 0 15px rgba(14, 165, 233, 0.2); text-shadow: 0 0 15px rgba(14, 165, 233, 0.6); }
+    50% { box-shadow: 0 0 30px rgba(14, 165, 233, 0.5), 0 0 50px rgba(14, 165, 233, 0.2); text-shadow: 0 0 25px rgba(14, 165, 233, 0.9), 0 0 40px rgba(14, 165, 233, 0.4); }
 }
 .why-card:hover .why-icon {
     background: linear-gradient(135deg, #0EA5E9, #3B82F6);
-    transform: scale(1.05);
+    transform: scale(1.1);
+    box-shadow: 0 0 40px rgba(14, 165, 233, 0.6), 0 0 80px rgba(14, 165, 233, 0.3);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
 }
 .why-card h4 {
     font-size: 18px;
@@ -194,6 +215,8 @@ function init() {
     display: block;
     margin-bottom: 5px;
     line-height: 1;
+    text-shadow: 0 0 20px rgba(14, 165, 233, 0.4);
+    animation: iconGlow 2s ease-in-out infinite;
 }
 .client-name, .cert-badge {
     display: inline-block;
@@ -204,6 +227,7 @@ function init() {
     border-radius: 20px;
     font-size: 13px;
     font-weight: 700;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
 }
 .contact-value {
     display: inline-block;
@@ -214,6 +238,7 @@ function init() {
     border-radius: 20px;
     font-size: 14px;
     font-weight: 800;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
 }
 .blog-meta {
     display: flex;
