@@ -2273,6 +2273,13 @@ const sectionLabels = {
   contact: 'معلومات التواصل'
 };
 
+if (typeof esc === 'undefined') {
+  function esc(value) {
+    return String(value ?? '').replace(/[&<>"']/g, function(ch) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch];
+    });
+  }
+}
 window.loadSiteItems = async function(sectionKey) {
   var container = document.getElementById(sectionKey + 'List');
   if (!container) return;
