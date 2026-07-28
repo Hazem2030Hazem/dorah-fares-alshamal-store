@@ -84,21 +84,27 @@ async function isAdminUser(user){
    ============================================================ */
 window.handleLogin = async function(e){
   e.preventDefault();
-  const email = document.getElementById('username').value.trim();
-  const password = document.getElementById('password').value;
-  const btn = e.target.querySelector('button[type="submit"]');
-  const errorMsg = document.getElementById('errorMsg');
+  var email = document.getElementById('username').value.trim();
+  var password = document.getElementById('password').value;
+  var btn = e.target.querySelector('button[type="submit"]');
+  var errorMsg = document.getElementById('errorMsg');
   errorMsg.style.display = 'none';
   btn.disabled = true;
   btn.textContent = '⏳ جاري التحقق...';
-
-  const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-  if (error || !data.user) {
+  var result = await supabaseClient.auth.signInWithPassword({ email: email, password: password });
+  if (result.error || !result.data.user) {
     btn.disabled = false; btn.textContent = 'دخول إلى لوحة التحكم';
     errorMsg.textContent = '❌ البريد الإلكتروني أو كلمة المرور غير صحيحة';
     errorMsg.style.display = 'block';
     return false;
   }
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('dashboardLayout').classList.add('active');
+  if (typeof loadProducts === 'function') loadProducts();
+  if (typeof loadSettings === 'function') loadSettings();
+  loadAdminV2Data();
+  return false;
+};
 
   const allowed = await isAdminUser(data.user);
   if (!allowed) {
