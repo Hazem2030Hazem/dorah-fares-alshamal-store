@@ -85,13 +85,21 @@ window.loadProducts=async function(){
   document.getElementById('totalProducts').textContent=data.length;
 };
 
-window.editProduct=async function(id){
-  var{data}=await supabaseClient.from('store_products').select('*').eq('id',id).single();
-  if(!data)return;
-  var n=prompt('الاسم:',data.name);if(!n)return;
-  var pr=parseFloat(prompt('السعر:',data.price));if(isNaN(pr))return;
-  await supabaseClient.from('store_products').update({name:n,price:pr}).eq('id',id);
-  loadProducts();adminToast('✅ تم التعديل');
+window.editProduct = async function(id) {
+    var { data } = await supabaseClient.from('store_products').select('*').eq('id', id).single();
+    if (!data) return;
+    document.getElementById('productId').value = data.id;
+    document.getElementById('productName').value = data.name;
+    document.getElementById('productDesc').value = data.description || '';
+    document.getElementById('productPrice').value = data.price;
+    document.getElementById('productOldPrice').value = data.old_price || '';
+    document.getElementById('productStock').value = data.stock || 0;
+    document.getElementById('productCategory').value = data.category;
+    document.getElementById('productBadge').value = data.badge || '';
+    document.getElementById('productImage').value = data.image || '';
+    document.getElementById('productRating').value = data.rating || 0;
+    document.getElementById('productModalTitle').textContent = '✏️ تعديل منتج';
+    document.getElementById('productModal').classList.add('show');
 };
 
 window.deleteProduct=async function(id){
