@@ -2493,7 +2493,10 @@ function doraIcon(sectionKey, meta) {
             '<div style="color:#F59E0B;margin-bottom:10px;font-size:18px">' + stars + '</div>' +
             '<h4>' + esc(item.title_ar || 'عميل') + '</h4>' +
             '<p>"' + esc(item.description_ar || '') + '"</p>' +
-            '<div class="client-name">📦 ' + esc(meta.company_name || 'جهة معتمدة') + '</div>' +
+           '<div class="client-name">' + 
+  (meta.client_logo ? '<img src="' + esc(meta.client_logo) + '" alt="logo" style="width:20px;height:20px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-left:4px" onerror="this.style.display=\'none\'">' : '<svg style="width:14px;height:14px;vertical-align:middle;margin-left:4px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>') + 
+  esc(meta.client_name || meta.company_name || 'جهة معتمدة') + 
+'</div>' +
             '</div>';
         }).join('');
       });
