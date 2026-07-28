@@ -2539,7 +2539,7 @@ var icon = doraIcon('contact', meta);
       loadSection('certifications', 'certificationsGridList', function(container, items) {
         container.innerHTML = items.map(function(item) {
           var meta = item.metadata || {};
-          return cardHTML('📜', item.title_ar || '', item.description_ar || '',
+          return cardHTML(doraIcon('certifications', meta), item.title_ar || '', item.description_ar || '',
             '<div class="cert-badge">✅ ' + esc(meta.badge_text || 'معتمد') + '</div>');
         }).join('');
       });
