@@ -1276,6 +1276,8 @@ function initRealtimeUpdates() {
     )
     .subscribe();
 }
+// كود Realtime هنا
+
 document.addEventListener('DOMContentLoaded', () => {
  initTheme();
  checkPWAInstallState();
