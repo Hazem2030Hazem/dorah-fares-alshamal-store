@@ -1266,7 +1266,7 @@ async function submitSiteRating(event) {
 
     try {
         const review = { name: name, product: product || 'الموقع عامةً', text: comment, rating: rating };
-        const { data, error } = await supabaseClient.from('reviews').insert([review]);
+        const { data, error } = await supabaseClient.from('site_items').insert([{section_key: 'testimonials', title_ar: name, description_ar: comment, metadata: {rating: rating, company_name: product}, sort_order: 1, is_active: true}])
         if (error) { throw error; }
         closeSiteRatingModal();
         document.getElementById('siteRaterName').value = '';
