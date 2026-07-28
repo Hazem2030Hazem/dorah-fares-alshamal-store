@@ -1752,14 +1752,12 @@ async function loadCompanyTestimonials() {
 
         if (result.error || !result.data || result.data.length === 0) return;
 
-        var companyKeywords = ['شركة', 'مؤسسة', 'مجموعة', 'فندق', 'مطاعم', 'صيدلية', 'مكتب', 'مستشفى', 'مركز', 'معرض', 'مصنع', 'متجر', 'وكالة', 'جامعة', 'مدرسة', 'وزارة', 'هيئة', 'بنك', 'شركات'];
+        var companyKeywords = ['شركة', 'مؤسسة', 'مستشفى', 'وزارة', 'هيئة', 'بنك', 'فندق', 'مطاعم', 'مصنع', 'متجر', 'وكالة', 'جامعة', 'مدرسة', 'مجموعة', 'مركز', 'معرض', 'صيدلية', 'مكتب'];
         
         var companyReviews = result.data.filter(function(r) {
             var name = (r.title_ar || '').trim();
-            var desc = (r.description_ar || '').trim();
-            if (name.split(' ').length >= 3) return true;
             for (var i = 0; i < companyKeywords.length; i++) {
-                if (name.includes(companyKeywords[i]) || desc.includes(companyKeywords[i])) return true;
+                if (name.includes(companyKeywords[i])) return true;
             }
             return false;
         });
@@ -1769,7 +1767,6 @@ async function loadCompanyTestimonials() {
         grid.innerHTML = companyReviews.map(function(r) {
             var meta = r.metadata || {};
             var stars = '⭐'.repeat(meta.rating || 5);
-            var initials = (r.title_ar || 'ش').trim().charAt(0);
             return '<div class="why-card">' +
                 '<div class="why-icon" style="font-size:24px">💬</div>' +
                 '<div style="color:#F59E0B;margin-bottom:8px">' + stars + '</div>' +
@@ -1783,7 +1780,6 @@ async function loadCompanyTestimonials() {
         console.log('Company testimonials:', e);
     }
 }
-
 // ===== WHATSAPP CHAT WIDGET =====
 (function() {
     // إنشاء عنصر الشات
