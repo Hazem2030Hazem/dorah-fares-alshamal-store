@@ -1294,13 +1294,6 @@ setTimeout(function() {
     heroStats.appendChild(downloadBadge);
   }
 }, 1000);
-   // ===== زرار تحميل التطبيق فوق البانر =====
-var topDownloadBar = document.createElement('div');
-topDownloadBar.id = 'topDownloadBar';
-topDownloadBar.style.cssText = 'background:linear-gradient(135deg,#0EA5E9,#3B82F6);color:white;text-align:center;padding:10px;font-size:14px;font-weight:700;cursor:pointer;position:sticky;top:0;z-index:10000;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 2px 10px rgba(14,165,233,0.3)';
-topDownloadBar.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> حمل تطبيق درة فارس الشمال الآن - اضغط للتحميل';
-topDownloadBar.onclick = function() { location.href = 'download.html'; };
-document.body.insertBefore(topDownloadBar, document.body.firstChild); 
  checkPWAInstallState();
  renderReviews();
 
