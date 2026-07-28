@@ -2398,7 +2398,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 2000);
 });
 // ============================================================
-// ربط أقسام الصفحة الرئيسية بـ site_items
+// ربط أقسام الصفحة الرئيسية بـ site_items - موحد واحترافي
 // ============================================================
 (function(){
   function esc(v){ return String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch])); }
@@ -2411,220 +2411,128 @@ document.addEventListener('DOMContentLoaded', function() {
       if (data && data.length > 0) renderFn(container, data);
     } catch(e) { console.log('Error loading ' + sectionKey, e); }
   }
-  
-  // تحميل كل الأقسام
+
+  // ===== دالة مساعدة لإنشاء بطاقة why-card =====
+  function cardHTML(icon, title, desc, extra) {
+    return '<div class="why-card">' +
+      '<div class="why-icon">' + icon + '</div>' +
+      '<h4>' + esc(title) + '</h4>' +
+      '<p>' + esc(desc) + '</p>' +
+      (extra || '') +
+      '</div>';
+  }
+
   document.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() {
-      // الإحصائيات (hero_stats) - تحديث الأرقام في قسم about و achievements
-loadSection('hero_stats', 'aboutStats', function(container, items) {
-    var html = '';
-    items.forEach(function(item) {
-        var meta = item.metadata || {};
-html += '<div class="why-card" style="text-align:center"><div class="stat-number" style="color:' + esc(meta.color || '#22D3EE') + '">' + esc(meta.number || '') + '</div><div style="width:30px;height:3px;background:' + esc(meta.color || '#22D3EE') + ';margin:8px auto;border-radius:2px"></div><span style="font-size:14px;color:rgba(255,255,255,0.7)">' + esc(item.description_ar || item.title_ar || '') + '</span></div>';
-    });
-    if (html) container.innerHTML = html;
-});
-      
-      // تقييمات العملاء (testimonials) - تحميل في قسم testimonials
+
+      // 1. لماذا تختارنا
+      loadSection('why_us', 'whyUsGrid', function(container, items) {
+        container.innerHTML = items.map(function(item) {
+          var meta = item.metadata || {};
+          return cardHTML(meta.icon_name || '⭐', item.title_ar || '', item.description_ar || '');
+        }).join('');
+      });
+
+      // 2. رؤيتنا - رسالتنا - قيمنا
+      loadSection('vision_mission', 'visionMissionGrid', function(container, items) {
+        container.innerHTML = items.map(function(item) {
+          var meta = item.metadata || {};
+          return cardHTML(meta.icon_name || '🎯', item.title_ar || '', item.description_ar || '');
+        }).join('');
+      });
+
+      // 3. إحصائيات about
+      loadSection('hero_stats', 'aboutStats', function(container, items) {
+        container.innerHTML = items.map(function(item) {
+          var meta = item.metadata || {};
+          return '<div class="why-card" style="text-align:center">' +
+            '<div class="stat-number">' + esc(meta.number || '') + '</div>' +
+            '<div style="width:30px;height:3px;background:' + esc(meta.color || '#0EA5E9') + ';margin:8px auto;border-radius:2px"></div>' +
+            '<p style="font-size:14px;color:#6B7280;font-weight:600">' + esc(item.description_ar || item.title_ar || '') + '</p>' +
+            '</div>';
+        }).join('');
+      });
+
+      // 4. إحصائيات achievements
+      loadSection('hero_stats', 'achievementsStats', function(container, items) {
+        container.innerHTML = items.map(function(item) {
+          var meta = item.metadata || {};
+          return '<div class="why-card" style="text-align:center">' +
+            '<div class="stat-number">' + esc(meta.number || '') + '</div>' +
+            '<div style="width:40px;height:3px;background:' + esc(meta.color || '#0EA5E9') + ';margin:8px auto;border-radius:2px"></div>' +
+            '<p style="font-size:15px;color:#6B7280;font-weight:600">' + esc(item.description_ar || item.title_ar || '') + '</p>' +
+            '</div>';
+        }).join('');
+      });
+
+      // 5. آراء عملائنا (أفراد) - بيستخدم renderReviews() خلاص، فمش هنتدخل فيه
+
+      // 6. آراء كبرى الشركات
       loadSection('testimonials', 'companyTestimonialsGrid', function(container, items) {
-        var html = '';
-        items.forEach(function(item) {
+        container.innerHTML = items.map(function(item) {
           var meta = item.metadata || {};
           var stars = '⭐'.repeat(meta.rating || 5);
-          html += '<div class="why-card"><div class="why-icon">' + (meta.icon_name || '⭐') + '</div><div style="color:#F59E0B;margin-bottom:8px">' + stars + '</div><h4>' + esc(item.title_ar || '') + '</h4><p>"' + esc(item.description_ar || '') + '"</p><span style="font-size:12px;color:rgba(255,255,255,0.4)">📦 ' + esc(meta.company_name || '') + '</span></div>';
-        });
-        if (html) container.innerHTML = html;
+          return '<div class="why-card">' +
+            '<div class="why-icon">💬</div>' +
+            '<div style="color:#F59E0B;margin-bottom:10px;font-size:18px">' + stars + '</div>' +
+            '<h4>' + esc(item.title_ar || 'عميل') + '</h4>' +
+            '<p>"' + esc(item.description_ar || '') + '"</p>' +
+            '<div class="client-name">📦 ' + esc(meta.company_name || 'جهة معتمدة') + '</div>' +
+            '</div>';
+        }).join('');
       });
-      
-      // المشاريع (projects)
-loadSection('projects', 'projectsGridList', function(container, items) {
-    var html = '';
-    items.forEach(function(item) {
-        var meta = item.metadata || {};
-        html += '<div class="why-card"><div class="why-icon">📦</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;font-size:13px;color:#10B981;font-weight:700">🏢 ' + esc(meta.client_name || '') + '</div></div>';
-    });
-    if (html) container.innerHTML = html;
-});
 
-loadSection('blog', 'blogGridList', function(container, items) {
-    var html = '';
-    items.forEach(function(item) {
-        var meta = item.metadata || {};
-        html += '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')"><div class="why-icon">📝</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;display:flex;gap:15px;font-size:12px;color:rgba(255,255,255,0.5)"><span>📅 ' + esc(meta.publish_date || '') + '</span><span>⏱️ ' + esc(meta.read_time || '') + '</span></div></div>';
-    });
-    if (html) container.innerHTML = html;
-});
+      // 7. شركاؤنا - خلاص متعمل في loadPartners()، مش هنتدخل فيه
 
-loadSection('certifications', 'certificationsGridList', function(container, items) {
-    var html = '';
-    items.forEach(function(item) {
-        var meta = item.metadata || {};
-        html += '<div class="why-card"><div class="why-icon">📜</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;font-size:13px;color:#10B981;font-weight:700">✅ ' + esc(meta.badge_text || 'معتمد') + '</div></div>';
-    });
-    if (html) container.innerHTML = html;
-});
+      // 8. مشاريعنا المنفذة
+      loadSection('projects', 'projectsGridList', function(container, items) {
+        container.innerHTML = items.map(function(item) {
+          var meta = item.metadata || {};
+          return cardHTML('📦', item.title_ar || '', item.description_ar || '',
+            '<div class="client-name">🏢 ' + esc(meta.client_name || '') + '</div>');
+        }).join('');
+      });
 
-loadSection('contact', 'contactGridList', function(container, items) {
-    var html = '';
-    items.forEach(function(item) {
-        var meta = item.metadata || {};
-        var icon = '📞';
-        if (meta.type === 'whatsapp') icon = '💬';
-        if (meta.type === 'email') icon = '✉️';
-        if (meta.type === 'location') icon = '📍';
-        html += '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')"><div class="why-icon">' + icon + '</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:8px;font-size:14px;color:#60A5FA;font-weight:800">' + esc(meta.value || '') + '</div></div>';
-    });
-    if (html) container.innerHTML = html;
-});
-      
-      // المقالات (blog)
-loadSection('projects', 'projectsGridList', function(container, items) {
-    var html = '';
-    items.forEach(function(item) {
-        var meta = item.metadata || {};
-        html += '<div class="why-card"><div class="why-icon">📦</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;font-size:13px;color:#10B981;font-weight:700">🏢 ' + esc(meta.client_name || '') + '</div></div>';
-    });
-    if (html) container.innerHTML = html;
-});
+      // 9. أحدث المقالات
+      loadSection('blog', 'blogGridList', function(container, items) {
+        container.innerHTML = items.map(function(item) {
+          var meta = item.metadata || {};
+          return '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')">' +
+            '<div class="why-icon">📝</div>' +
+            '<h4>' + esc(item.title_ar || '') + '</h4>' +
+            '<p>' + esc(item.description_ar || '') + '</p>' +
+            '<div class="blog-meta"><span>📅 ' + esc(meta.publish_date || '') + '</span><span>⏱️ ' + esc(meta.read_time || '') + '</span></div>' +
+            '</div>';
+        }).join('');
+      });
 
-loadSection('blog', 'blogGridList', function(container, items) {
-    var html = '';
-    items.forEach(function(item) {
-        var meta = item.metadata || {};
-        html += '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')"><div class="why-icon">📝</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;display:flex;gap:15px;font-size:12px;color:rgba(255,255,255,0.5)"><span>📅 ' + esc(meta.publish_date || '') + '</span><span>⏱️ ' + esc(meta.read_time || '') + '</span></div></div>';
-    });
-    if (html) container.innerHTML = html;
-});
+      // 10. تواصل معنا
+      loadSection('contact', 'contactGridList', function(container, items) {
+        container.innerHTML = items.map(function(item) {
+          var meta = item.metadata || {};
+          var icon = meta.icon_name || '📞';
+          if (meta.type === 'whatsapp') icon = '💬';
+          if (meta.type === 'email') icon = '✉️';
+          if (meta.type === 'location') icon = '📍';
+          return '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')">' +
+            '<div class="why-icon">' + icon + '</div>' +
+            '<h4>' + esc(item.title_ar || '') + '</h4>' +
+            '<p>' + esc(item.description_ar || '') + '</p>' +
+            '<div class="contact-value">' + esc(meta.value || '') + '</div>' +
+            '</div>';
+        }).join('');
+      });
 
-loadSection('certifications', 'certificationsGridList', function(container, items) {
-    var html = '';
-    items.forEach(function(item) {
-        var meta = item.metadata || {};
-html += '<div class="why-card"><div class="why-icon">📜</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div class="cert-badge">✅ ' + esc(meta.badge_text || 'معتمد') + '</div></div>';
-    });
-    if (html) container.innerHTML = html;
-});
+      // 11. شهاداتنا واعتماداتنا
+      loadSection('certifications', 'certificationsGridList', function(container, items) {
+        container.innerHTML = items.map(function(item) {
+          var meta = item.metadata || {};
+          return cardHTML('📜', item.title_ar || '', item.description_ar || '',
+            '<div class="cert-badge">✅ ' + esc(meta.badge_text || 'معتمد') + '</div>');
+        }).join('');
+      });
 
-loadSection('contact', 'contactGridList', function(container, items) {
-    var html = '';
-    items.forEach(function(item) {
-        var meta = item.metadata || {};
-        var icon = '📞';
-        if (meta.type === 'whatsapp') icon = '💬';
-        if (meta.type === 'email') icon = '✉️';
-        if (meta.type === 'location') icon = '📍';
-html += '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')"><div class="why-icon">' + icon + '</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div class="contact-value">' + esc(meta.value || '') + '</div></div>';
-    });
-    if (html) container.innerHTML = html;
-});
-      
-      // الشهادات (certifications)
-loadSection('projects', 'projectsGridList', function(container, items) {
-    var html = '';
-    items.forEach(function(item) {
-        var meta = item.metadata || {};
-        html += '<div class="why-card"><div class="why-icon">📦</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;font-size:13px;color:#10B981;font-weight:700">🏢 ' + esc(meta.client_name || '') + '</div></div>';
-    });
-    if (html) container.innerHTML = html;
-});
-
-loadSection('blog', 'blogGridList', function(container, items) {
-    var html = '';
-    items.forEach(function(item) {
-        var meta = item.metadata || {};
-html += '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')"><div class="why-icon">📝</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div class="blog-meta"><span>📅 ' + esc(meta.publish_date || '') + '</span><span>⏱️ ' + esc(meta.read_time || '') + '</span></div></div>';
-    });
-    if (html) container.innerHTML = html;
-});
-
-loadSection('certifications', 'certificationsGridList', function(container, items) {
-    var html = '';
-    items.forEach(function(item) {
-        var meta = item.metadata || {};
-        html += '<div class="why-card"><div class="why-icon">📜</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;font-size:13px;color:#10B981;font-weight:700">✅ ' + esc(meta.badge_text || 'معتمد') + '</div></div>';
-    });
-    if (html) container.innerHTML = html;
-});
-
-loadSection('contact', 'contactGridList', function(container, items) {
-    var html = '';
-    items.forEach(function(item) {
-        var meta = item.metadata || {};
-        var icon = '📞';
-        if (meta.type === 'whatsapp') icon = '💬';
-        if (meta.type === 'email') icon = '✉️';
-        if (meta.type === 'location') icon = '📍';
-        html += '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')"><div class="why-icon">' + icon + '</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:8px;font-size:14px;color:#60A5FA;font-weight:800">' + esc(meta.value || '') + '</div></div>';
-    });
-    if (html) container.innerHTML = html;
-});
-      
-      // التواصل (contact)
-loadSection('projects', 'projectsGridList', function(container, items) {
-    var html = '';
-    items.forEach(function(item) {
-        var meta = item.metadata || {};
-html += '<div class="why-card"><div class="why-icon">📦</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div class="client-name">🏢 ' + esc(meta.client_name || '') + '</div></div>';
-    });
-    if (html) container.innerHTML = html;
-});
-
-loadSection('blog', 'blogGridList', function(container, items) {
-    var html = '';
-    items.forEach(function(item) {
-        var meta = item.metadata || {};
-        html += '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')"><div class="why-icon">📝</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;display:flex;gap:15px;font-size:12px;color:rgba(255,255,255,0.5)"><span>📅 ' + esc(meta.publish_date || '') + '</span><span>⏱️ ' + esc(meta.read_time || '') + '</span></div></div>';
-    });
-    if (html) container.innerHTML = html;
-});
-
-loadSection('certifications', 'certificationsGridList', function(container, items) {
-    var html = '';
-    items.forEach(function(item) {
-        var meta = item.metadata || {};
-        html += '<div class="why-card"><div class="why-icon">📜</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:12px;font-size:13px;color:#10B981;font-weight:700">✅ ' + esc(meta.badge_text || 'معتمد') + '</div></div>';
-    });
-    if (html) container.innerHTML = html;
-});
-
-loadSection('contact', 'contactGridList', function(container, items) {
-    var html = '';
-    items.forEach(function(item) {
-        var meta = item.metadata || {};
-        var icon = '📞';
-        if (meta.type === 'whatsapp') icon = '💬';
-        if (meta.type === 'email') icon = '✉️';
-        if (meta.type === 'location') icon = '📍';
-        html += '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')"><div class="why-icon">' + icon + '</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p><div style="margin-top:8px;font-size:14px;color:#60A5FA;font-weight:800">' + esc(meta.value || '') + '</div></div>';
-    });
-    if (html) container.innerHTML = html;
-});
-      
-   loadSection('why_us', 'whyUsGrid', function(container, items) {
-    var html = '';
-    items.forEach(function(item) {
-        var meta = item.metadata || {};
-      html += '<div class="why-card"><div class="why-icon">' + (meta.icon_name || '⭐') + '</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p></div>';
-    });
-      loadSection('vision_mission', 'visionMissionGrid', function(container, items) {
-    var html = '';
-    items.forEach(function(item) {
-        var meta = item.metadata || {};
-     html += '<div class="why-card"><div class="why-icon">' + (meta.icon_name || '🎯') + '</div><h4>' + esc(item.title_ar || '') + '</h4><p>' + esc(item.description_ar || '') + '</p></div>';
-    });
-    if (html) container.innerHTML = html;
-}); 
-    if (html) container.innerHTML = html;
-});
     }, 800);
   });
-loadSection('hero_stats', 'achievementsStats', function(container, items) {
-    var html = '';
-    items.forEach(function(item) {
-        var meta = item.metadata || {};
-html += '<div class="why-card" style="text-align:center"><div class="stat-number" style="color:' + esc(meta.color || '#22D3EE') + '">' + esc(meta.number || '') + '</div><div style="width:40px;height:3px;background:' + esc(meta.color || '#22D3EE') + ';margin:8px auto;border-radius:2px"></div><p style="font-size:15px;color:#111827;font-weight:600">' + esc(item.description_ar || item.title_ar || '') + '</p></div>';
-    });
-    if (html) container.innerHTML = html;
-});
 })();
 })();
