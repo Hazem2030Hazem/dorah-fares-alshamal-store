@@ -127,12 +127,34 @@ window.loadServiceRequests=async function(){
   c.innerHTML='<div class="admin-empty">⏳ جاري تحميل الخدمات...</div>';
   var{data}=await supabaseClient.from('service_requests').select('*').order('created_at',{ascending:false});
   if(!data||!data.length){c.innerHTML='<div class="admin-empty">🔧 لا توجد طلبات خدمات</div>';return;}
-  var html='<table><thead><tr><th>#</th><th>الخدمة</th><th>العميل</th><th>الجوال</th><th>المدينة</th><th>الحالة</th><th>التاريخ</th></tr></thead><tbody>';
+  var html='<table><thead><tr><th>#</th><th>الخدمة</th><th>العميل</th><th>الجوال</th><th>المدينة</th><th>الحالة</th><th>التاريخ</th><th>الإجراءات</th></tr></thead><tbody>';
   data.forEach(function(s,i){
-    html+='<tr><td>'+(i+1)+'</td><td>'+esc(s.service_type||'—')+'</td><td>'+esc(s.customer_name||'—')+'</td><td>'+esc(s.customer_phone||'—')+'</td><td>'+esc(s.city||'—')+'</td><td>'+esc(s.status||'جديد')+'</td><td>'+dateAr(s.created_at)+'</td></tr>';
+    html+='<tr><td>'+(i+1)+'</td><td>'+esc(s.service_type||'—')+'</td><td>'+esc(s.customer_name||'—')+'</td><td>'+esc(s.customer_phone||'—')+'</td><td>'+esc(s.city||'—')+'</td><td><select onchange="updateServiceStatus(\''+s.id+'\',this.value)"><option value="new" '+(s.status==='new'?'selected':'')+'>جديد</option><option value="contacted" '+(s.status==='contacted'?'selected':'')+'>تم التواصل</option><option value="in_progress" '+(s.status==='in_progress'?'selected':'')+'>قيد التنفيذ</option><option value="completed" '+(s.status==='completed'?'selected':'')+'>مكتمل</option><option value="cancelled" '+(s.status==='cancelled'?'selected':'')+'>ملغي</option></select></td><td>'+dateAr(s.created_at)+'</td><td><button class="btn-delete" onclick="deleteService(\''+s.id+'\')">🗑️</button></td></tr>';
   });
   html+='</tbody></table>';
   c.innerHTML=html;
+};
+
+window.updateServiceStatus=async function(id,status){
+  await supabaseClient.from('service_requests').update({status:status}).eq('id',id);
+  adminToast('✅ تم تحديث الحالة');
+};
+
+window.deleteService=async function(id){
+  if(!confirm('حذف طلب الخدمة؟'))return;
+  await supabaseClient.from('service_requests').delete().eq('id',id);
+  loadServiceRequests();adminToast('✅ تم الحذف');
+};
+
+window.addService=async function(){
+  var type=prompt('نوع الخدمة:');if(!type)return;
+  var name=prompt('اسم العميل:');if(!name)return;
+  var phone=prompt('الجوال:');if(!phone)return;
+  var city=prompt('المدينة:');if(!city)return;
+  var desc=prompt('الوصف:');if(!desc)return;
+  var{error}=await supabaseClient.from('service_requests').insert([{service_type:type,customer_name:name,customer_phone:phone,city:city,description:desc,status:'new'}]);
+  if(error){adminToast('❌ خطأ: '+error.message,'error');return;}
+  adminToast('✅ تمت الإضافة');loadServiceRequests();
 };
 window.loadReceipts=async function(){
   var c=document.getElementById('receiptsList');if(!c)return;
