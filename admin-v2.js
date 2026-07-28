@@ -133,10 +133,10 @@ window.showDashboard = function(){
 };
 
 function showLoginOnly(){
-  const login = document.getElementById('loginSection');
-  const dashboard = document.getElementById('dashboard');
+  const login = document.getElementById('loginPage');
+  const dashboard = document.getElementById('dashboardLayout');
   if (login) login.style.display = 'flex';
-  if (dashboard) dashboard.style.display = 'none';
+  if (dashboard) dashboard.classList.remove('active');
 }
 
 async function initAdminAuth(){
