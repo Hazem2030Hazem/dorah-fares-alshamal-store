@@ -1110,6 +1110,36 @@ document.addEventListener('DOMContentLoaded', function() {
   document.addEventListener('touchend', function() { isDraggingVolume = false; });
 });
 
+async function loadProductsFromSupabase() {
+    try {
+        var { data, error } = await supabaseClient
+            .from('store_products')
+            .select('*')
+            .eq('is_active', true)
+            .order('id');
+        
+        if (error) throw error;
+        if (data && data.length > 0) {
+            productsData = data.map(function(p) {
+                return {
+                    id: p.id,
+                    name: p.name,
+                    price: Number(p.price),
+                    oldPrice: p.old_price ? Number(p.old_price) : null,
+                    stock: p.stock || 0,
+                    category: p.category,
+                    badge: p.badge || '',
+                    image: p.image || 'https://via.placeholder.com/50',
+                    desc: p.description || '',
+                    rating: Number(p.rating) || 0,
+                    reviews: []
+                };
+            });
+        }
+    } catch(e) {
+        console.log('Error loading products:', e);
+    }
+}
 document.addEventListener('DOMContentLoaded', () => {
  initTheme();
  checkPWAInstallState();
