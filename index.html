@@ -348,6 +348,88 @@ function init() {
     }
 }
 </style>
+<style>
+.why-card {
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    padding: 35px 25px 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+.why-card:hover {
+    border-color: rgba(14, 165, 233, 0.4);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+    transform: translateY(-6px);
+}
+.why-icon {
+    width: 75px;
+    height: 75px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    background: linear-gradient(135deg, #EFF6FF, #DBEAFE);
+    border-radius: 50%;
+}
+.why-card:hover .why-icon {
+    background: linear-gradient(135deg, #0EA5E9, #3B82F6);
+    transform: scale(1.05);
+}
+.why-card h4 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #111827;
+}
+.why-card p {
+    font-size: 14px;
+    color: #6B7280;
+    line-height: 1.7;
+}
+.stat-number {
+    font-size: 44px;
+    font-weight: 900;
+    color: #0EA5E9;
+}
+.client-name, .cert-badge {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 6px 16px;
+    background: #ECFDF5;
+    color: #059669;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+}
+.contact-value {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 20px;
+    background: #EFF6FF;
+    color: #3B82F6;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 800;
+}
+.blog-meta {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #F3F4F6;
+    font-size: 12px;
+    color: #9CA3AF;
+}
+@media (max-width: 768px) {
+    .why-card { padding: 25px 18px; }
+    .why-icon { width: 60px; height: 60px; font-size: 26px; }
+    .why-card h4 { font-size: 16px; }
+    .stat-number { font-size: 34px; }
+}
+</style>
 </head>
 <body>
 
