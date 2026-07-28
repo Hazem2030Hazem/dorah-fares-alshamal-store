@@ -2513,7 +2513,7 @@ function doraIcon(sectionKey, meta) {
         container.innerHTML = items.map(function(item) {
           var meta = item.metadata || {};
           return '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')">' +
-            '<div class="why-icon">📝</div>' +
+            '<div class="why-icon">' + doraIcon('blog', meta) + '</div>' +
             '<h4>' + esc(item.title_ar || '') + '</h4>' +
             '<p>' + esc(item.description_ar || '') + '</p>' +
             '<div class="blog-meta"><span>📅 ' + esc(meta.publish_date || '') + '</span><span>⏱️ ' + esc(meta.read_time || '') + '</span></div>' +
@@ -2525,10 +2525,7 @@ function doraIcon(sectionKey, meta) {
       loadSection('contact', 'contactGridList', function(container, items) {
         container.innerHTML = items.map(function(item) {
           var meta = item.metadata || {};
-          var icon = meta.icon_name || '📞';
-          if (meta.type === 'whatsapp') icon = '💬';
-          if (meta.type === 'email') icon = '✉️';
-          if (meta.type === 'location') icon = '📍';
+var icon = doraIcon('contact', meta);
           return '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + esc(meta.link_url || '#') + '\',\'_blank\')">' +
             '<div class="why-icon">' + icon + '</div>' +
             '<h4>' + esc(item.title_ar || '') + '</h4>' +
