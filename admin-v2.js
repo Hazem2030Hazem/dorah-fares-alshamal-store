@@ -135,7 +135,8 @@ window.saveProduct = async function(e) {
         image: document.getElementById('productImage').value,
         rating: parseFloat(document.getElementById('productRating').value) || 0
     };
-    
+        // إزالة حقل id من البيانات قبل الإرسال (عشان القاعدة تولده لوحدها)
+    delete product.id;
     var btn = document.querySelector('#productForm .btn-save');
     btn.disabled = true; btn.textContent = '⏳ جاري الحفظ...';
     
