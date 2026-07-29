@@ -150,7 +150,7 @@ window.saveProduct = async function(e) {
         // إضافة منتج جديد: إزالة حقل id تماماً من البيانات المرسلة
         delete product.id;
         
-        var result = await supabaseClient.from('store_products').insert([product]);
+       var result = await supabaseClient.from('store_products').insert([product]).select();
         error = result.error;
     }
     
