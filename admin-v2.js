@@ -88,7 +88,12 @@ window.loadProducts = async function() {
   t.innerHTML = data.map((p, i) => 
     `<tr>
       <td>${i+1}</td>
-     <td><img src="${p.image || 'https://via.placeholder.com/50'}" style="width:50px;height:50px;object-fit:cover;border-radius:6px" onerror="this.style.display='none';this.parentElement.innerHTML+='📷'"></td>
+      <td>
+        <div style="width:50px;height:50px;display:flex;align-items:center;justify-content:center;border-radius:6px;overflow:hidden;background:#f0f0f0;">
+          <img src="${p.image}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <svg style="display:none;width:24px;height:24px;color:#666;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+      </td>
       <td>${esc(p.name)}</td>
       <td>${esc((p.description || '').substring(0, 50))}</td>
       <td>${Number(p.price).toLocaleString()} ر.س</td>
