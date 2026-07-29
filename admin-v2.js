@@ -86,8 +86,9 @@ window.loadProducts=async function(){
 };
 
 window.editProduct = async function(id) {
-    // جلب المنتج الواحد بناءً على الـ id
+    // دي بقى بتجيب منتج واحد فقط بناءً على الـ id، مش كل المنتجات
     var { data } = await supabaseClient.from('store_products').select('*').eq('id', id).single();
+    
     if (!data) return;
     document.getElementById('productId').value = data.id;
     document.getElementById('productName').value = data.name;
