@@ -109,7 +109,17 @@ window.saveProduct = async function(e) {
         error = result.error;
     } else {
         product.is_active = true;
-        var result = await supabaseClient.from('store_products').insert(product);
+       var result = await supabaseClient.rpc('insert_product', {
+  p_name: product.name,
+  p_description: product.description,
+  p_price: product.price,
+  p_old_price: product.old_price,
+  p_stock: product.stock,
+  p_category: product.category,
+  p_badge: product.badge,
+  p_image: product.image,
+  p_rating: product.rating
+});
         error = result.error;
     }
     
