@@ -104,6 +104,8 @@ window.doraChatbot = doraChatbot;
 
 // أيقونة الروبوت
 (function(){
+   // إلغاء تفعيل الروبوت العائم القديم
+    return; 
     if (document.getElementById('doraChatBubble')) return;
     var wrapper = document.createElement('div');
     wrapper.id = 'doraChatBubbleWrapper';
