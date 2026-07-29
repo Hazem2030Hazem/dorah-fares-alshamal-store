@@ -2720,3 +2720,130 @@ function updateSpeakerIcon() {
         }
     }
 }
+// ============================================================
+//  1. روبوت 2D متحرك (يظهر في كل الصفحات)
+// ============================================================
+(function() {
+    if (document.getElementById('chat-robot-container')) return;
+    var container = document.createElement('div');
+    container.id = 'chat-robot-container';
+    container.onclick = function() { 
+        if (typeof doraChatbot !== 'undefined' && doraChatbot.toggle) {
+            doraChatbot.toggle(); 
+        }
+    };
+    var bubble = document.createElement('div');
+    bubble.id = 'robot-bubble';
+    bubble.innerText = 'أهلاً! اسألني أي حاجة 🤖';
+    var img = document.createElement('img');
+    img.id = 'chat-robot-img';
+    img.src = 'robot.png';
+    img.alt = 'مساعد درة فارس';
+    container.appendChild(bubble);
+    container.appendChild(img);
+    document.body.appendChild(container);
+})();
+
+// ============================================================
+//  2. إشعار ملفات تعريف الارتباط (الكوكيز) - يظهر في كل الصفحات
+// ============================================================
+(function() {
+    if (localStorage.getItem('cookie_consent')) return;
+    var banner = document.createElement('div');
+    banner.id = 'customCookieBanner';
+    banner.innerHTML = `
+        <style>
+            #customCookieBanner {
+                position: fixed; bottom: 20px; left: 20px; right: 20px;
+                max-width: 600px; margin: 0 auto;
+                background: #1e293b; color: #f8fafc; padding: 20px;
+                border-radius: 16px; z-index: 999999;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+                font-family: 'Cairo', sans-serif;
+                display: flex; flex-direction: column; gap: 15px;
+                border: 1px solid rgba(255,255,255,0.1);
+            }
+            #customCookieBanner.hidden { display: none; }
+            #customCookieBanner p { margin: 0; font-size: 14px; line-height: 1.6; }
+            .cookie-actions { display: flex; gap: 10px; justify-content: flex-end; }
+            .cookie-btn { padding: 8px 20px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; font-size: 14px; transition: 0.3s; }
+            .cookie-btn.accept { background: #3b82f6; color: white; }
+            .cookie-btn.accept:hover { background: #2563eb; }
+            .cookie-btn.decline { background: transparent; color: #94a3b8; border: 1px solid #475569; }
+            .cookie-btn.decline:hover { background: rgba(255,255,255,0.05); }
+        </style>
+        <p>🍪 نحن نستخدم ملفات تعريف الارتباط (Cookies) لتحسين تجربتك في موقع <strong>درة فارس الشمال</strong>.</p>
+        <div class="cookie-actions">
+            <button class="cookie-btn decline" onclick="document.getElementById('customCookieBanner').classList.add('hidden'); localStorage.setItem('cookie_consent', 'declined')">رفض</button>
+            <button class="cookie-btn accept" onclick="document.getElementById('customCookieBanner').classList.add('hidden'); localStorage.setItem('cookie_consent', 'accepted')">قبول</button>
+        </div>
+    `;
+    document.body.appendChild(banner);
+})();
+
+// ============================================================
+//  3. بوب أب خصم الترحيب الفاخر (يظهر في كل الصفحات)
+// ============================================================
+(function() {
+    const closedUntil = localStorage.getItem('popup_closed_until');
+    if (closedUntil && new Date().getTime() < parseInt(closedUntil)) return;
+
+    var popup = document.createElement('div');
+    popup.id = 'welcome-popup-overlay';
+    popup.innerHTML = `
+        <style>
+            #welcome-popup-overlay {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(15, 23, 42, 0.85);
+                backdrop-filter: blur(8px);
+                z-index: 9999999;
+                display: flex; align-items: center; justify-content: center;
+                opacity: 0; visibility: hidden; transition: all 0.4s ease;
+            }
+            #welcome-popup-overlay.show { opacity: 1; visibility: visible; }
+            #welcome-popup-box {
+                background: #ffffff; max-width: 580px; width: 90%;
+                border-radius: 24px; padding: 40px; position: relative;
+                box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+                transform: scale(0.9) translateY(30px);
+                transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                text-align: center; font-family: 'Cairo', sans-serif; direction: rtl;
+            }
+            #welcome-popup-overlay.show #welcome-popup-box { transform: scale(1) translateY(0); }
+            #popup-close-btn { position: absolute; top: 15px; left: 15px; background: #f1f5f9; border: none; width: 38px; height: 38px; border-radius: 50%; font-size: 18px; cursor: pointer; color: #475569; transition: 0.3s; }
+            #popup-close-btn:hover { background: #e2e8f0; transform: rotate(90deg); }
+            #popup-icon { display: inline-block; font-size: 56px; margin-bottom: 10px; line-height: 1; }
+            #popup-title { font-size: 26px; font-weight: 900; color: #0f172a; margin: 5px 0 10px; }
+            #popup-desc { font-size: 15px; color: #64748b; line-height: 1.7; margin-bottom: 20px; }
+            #popup-code-box { display: inline-block; background: #f8fafc; border: 2px dashed #94a3b8; padding: 12px 30px; border-radius: 12px; font-size: 22px; font-weight: 900; color: #0f172a; letter-spacing: 2px; margin-bottom: 20px; }
+            #popup-btn { display: block; width: 100%; padding: 14px; border: none; border-radius: 12px; background: linear-gradient(135deg, #3b82f6, #2563eb); color: #ffffff; font-size: 16px; font-weight: 800; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3); }
+            #popup-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(59, 130, 246, 0.5); }
+            #popup-footer { margin-top: 15px; font-size: 12px; color: #94a3b8; }
+        </style>
+        <div id="welcome-popup-box">
+            <button id="popup-close-btn" onclick="closeWelcomePopup()">✕</button>
+            <div id="popup-icon">🎁</div>
+            <h3 id="popup-title">خصم خاص لك!</h3>
+            <p id="popup-desc">احصل على خصم <strong>15%</strong> على أول طلب لك في متجر درة فارس الشمال.</p>
+            <div id="popup-code-box">WELCOME15</div>
+            <button id="popup-btn" onclick="copyCodeAndClose()">📋 نسخ الكود وبدء التسوق</button>
+            <p id="popup-footer">العرض ساري لمدة 24 ساعة</p>
+        </div>
+    `;
+    document.body.appendChild(popup);
+
+    window.closeWelcomePopup = function() {
+        document.getElementById('welcome-popup-overlay').classList.remove('show');
+        const expiry = new Date().getTime() + 24 * 60 * 60 * 1000;
+        localStorage.setItem('popup_closed_until', expiry);
+    };
+    window.copyCodeAndClose = function() {
+        navigator.clipboard.writeText('WELCOME15');
+        window.closeWelcomePopup();
+        alert('✅ تم نسخ كود الخصم! استخدمه عند الدفع.');
+    };
+
+    setTimeout(() => {
+        document.getElementById('welcome-popup-overlay').classList.add('show');
+    }, 2000);
+})();
