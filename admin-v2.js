@@ -85,29 +85,45 @@ window.loadProducts=async function(){
   document.getElementById('totalProducts').textContent=data.length;
 };
 
-window.editProduct = async function(id) {
-    // دي بقى بتجيب منتج واحد فقط بناءً على الـ id، مش كل المنتجات
-    var { data } = await supabaseClient.from('store_products').select('*').eq('id', id).single();
+window.saveProduct = async function(e) {
+    e.preventDefault();
+    var id = document.getElementById('productId').value;
+    var product = {
+        name: document.getElementById('productName').value,
+        description: document.getElementById('productDesc').value,
+        price: parseFloat(document.getElementById('productPrice').value),
+        old_price: parseFloat(document.getElementById('productOldPrice').value) || null,
+        stock: parseInt(document.getElementById('productStock').value) || 0,
+        category: document.getElementById('productCategory').value,
+        badge: document.getElementById('productBadge').value,
+        image: document.getElementById('productImage').value,
+        rating: parseFloat(document.getElementById('productRating').value) || 0
+    };
     
-    if (!data) return;
-    document.getElementById('productId').value = data.id;
-    document.getElementById('productName').value = data.name;
-    document.getElementById('productDesc').value = data.description || '';
-    document.getElementById('productPrice').value = data.price;
-    document.getElementById('productOldPrice').value = data.old_price || '';
-    document.getElementById('productStock').value = data.stock || 0;
-    document.getElementById('productCategory').value = data.category;
-    document.getElementById('productBadge').value = data.badge || '';
-    document.getElementById('productImage').value = data.image || '';
-    document.getElementById('productRating').value = data.rating || 0;
-    document.getElementById('productModalTitle').textContent = '✏️ تعديل منتج';
-    document.getElementById('productModal').classList.add('show');
-};
-
-window.deleteProduct=async function(id){
-  if(!confirm('حذف؟'))return;
-  await supabaseClient.from('store_products').delete().eq('id',id);
-  loadProducts();adminToast('✅ تم الحذف');
+    var btn = document.querySelector('#productForm .btn-save');
+    btn.disabled = true; btn.textContent = '⏳ جاري الحفظ...';
+    
+    var error;
+    if (id) {
+        var result = await supabaseClient.from('store_products').update(product).eq('id', id);
+        error = result.error;
+    } else {
+        product.is_active = true;
+        var result = await supabaseClient.from('store_products').insert(product);
+        error = result.error;
+    }
+    
+    btn.disabled = false; btn.textContent = '💾 حفظ المنتج';
+    
+    if (error) { 
+        adminToast('❌ خطأ: ' + error.message, 'error'); 
+        return; 
+    }
+    
+    document.getElementById('productModal').classList.remove('show');
+    adminToast('✅ تم الحفظ بنجاح');
+    loadProducts();
+    return false;
 };
 
 window.openModal = function() {
