@@ -2134,7 +2134,10 @@ openProductModal = function(productId) {
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px">
               ${fbtProducts.map(p => `
                 <div onclick="openProductModal(${p.id})" style="cursor:pointer;background:white;border-radius:12px;padding:12px;text-align:center;border:1px solid rgba(0,0,0,0.1);transition:all 0.3s ease" onmouseenter="this.style.borderColor='#3B82F6';this.style.boxShadow='0 4px 12px rgba(59,130,246,0.2)'" onmouseleave="this.style.borderColor='rgba(0,0,0,0.1)';this.style.boxShadow='none'">
-                  <img src="${p.image}" alt="${sanitizeInput(p.name)}" style="width:80px;height:80px;object-fit:cover;border-radius:8px;margin-bottom:8px" loading="lazy">
+                  <div style="background:#f5f7fa; width:100%; height:180px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
+  <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${sanitizeInput(p.name)}" loading="lazy" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+  <svg style="display:none; width:40px; height:40px; color:#9aa5b9;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+</div>
                   <div style="font-size:12px;font-weight:bold;margin-bottom:4px;color:#1F2937">${sanitizeInput(p.name.substring(0, 25))}...</div>
                   <div style="font-size:14px;color:#3B82F6;font-weight:bold">${formatPrice(p.price)}</div>
                   ${p.rating ? `<div style="font-size:11px;color:#F59E0B">${'★'.repeat(Math.floor(p.rating))} ${p.rating}</div>` : ''}
