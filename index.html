@@ -736,4 +736,89 @@ function updateRobotMessage(text) {
     }
 })();
 </script>
+<!-- ===== COOKIE BANNER CODE (تحكم كامل) ===== -->
+<style>
+#customCookieBanner {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 20px;
+    border-radius: 16px;
+    z-index: 999999;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    font-family: 'Cairo', sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+#customCookieBanner.hidden {
+    display: none;
+}
+#customCookieBanner p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+}
+.cookie-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+.cookie-btn {
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+}
+.cookie-btn.accept {
+    background: #3b82f6;
+    color: white;
+}
+.cookie-btn.accept:hover { background: #2563eb; }
+.cookie-btn.decline {
+    background: transparent;
+    color: #94a3b8;
+    border: 1px solid #475569;
+}
+.cookie-btn.decline:hover { background: rgba(255,255,255,0.05); }
+@media (max-width: 600px) {
+    #customCookieBanner { left: 10px; right: 10px; bottom: 10px; }
+}
+</style>
+
+<div id="customCookieBanner">
+    <p>
+        🍪 نحن نستخدم ملفات تعريف الارتباط (Cookies) لتحسين تجربتك في موقع <strong>درة فارس الشمال</strong>. استمرارك في استخدام الموقع يعني موافقتك على سياسة الخصوصية الخاصة بنا.
+    </p>
+    <div class="cookie-actions">
+        <button class="cookie-btn decline" onclick="acceptCookies(false)">رفض</button>
+        <button class="cookie-btn accept" onclick="acceptCookies(true)">قبول</button>
+    </div>
+</div>
+
+<script>
+function acceptCookies(accepted) {
+    // حفظ القرار في المتصفح بحيث ما يظهرش تاني للعميل ده
+    localStorage.setItem('cookie_consent', accepted ? 'accepted' : 'declined');
+    document.getElementById('customCookieBanner').classList.add('hidden');
+}
+
+// التحقق عند فتح الصفحة: إذا كان العميل وافق قبل كده، نخفي الإشعار
+window.addEventListener('DOMContentLoaded', function() {
+    const consent = localStorage.getItem('cookie_consent');
+    if (consent) {
+        document.getElementById('customCookieBanner').classList.add('hidden');
+    }
+});
+</script>
+<!-- ===== END COOKIE BANNER ===== -->
 </body></html>
