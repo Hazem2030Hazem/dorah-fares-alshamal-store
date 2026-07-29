@@ -688,25 +688,5 @@ function init() {
 <script src="main.js"></script>
 <script src="chatbot-ai.js"></script>
 <script src="site-content.js"></script>
-<!-- 2D Robot Avatar System -->
-<div id="chat-robot-container">
-  <div id="robot-bubble">أهلاً! اسألني أي حاجة 🤖</div>
-  <img id="chat-robot-img" src="robot.png" alt="مساعد درة فارس">
-</div>
 
-<!-- Update Bubble Message Function -->
-<script>
-function updateRobotMessage(text) {
-    const bubble = document.getElementById('robot-bubble');
-    if (bubble) {
-        bubble.innerText = text;
-        bubble.style.opacity = '1';
-        // Auto-hide after 3 seconds
-        clearTimeout(window.bubbleTimeout);
-        window.bubbleTimeout = setTimeout(() => {
-            bubble.style.opacity = '0';
-        }, 4000);
-    }
-}
-</script>
 </body></html>
