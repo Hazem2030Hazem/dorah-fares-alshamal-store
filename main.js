@@ -249,7 +249,7 @@ function renderProducts(filter) {
     <div class="prod-img" onclick="openProductModal(${p.id})">
      ${p.badge ? `<div class="prod-badge ${p.badge === 'جديد' ? 'new' : p.badge === 'خصم' ? 'discount' : ''}">${p.badge}${hasDiscount && p.badge === 'خصم' ? ' -' + discountPercent + '%' : ''}</div>` : ''}
      ${hasDiscount && !p.badge ? `<div class="prod-badge discount">خصم -${discountPercent}%</div>` : ''}
-     <img src="${p.image}" alt="${sanitizeInput(p.name)}" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML+='<div style=font-size:60px>📦</div>'">
+    <img src="${p.image && p.image.length > 0 ? p.image : 'https://kcbmvxuzjlaooknwhqqb.supabase.co/storage/v1/object/public/products/default-product.png'}" alt="${sanitizeInput(p.name)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
     </div>
     <button class="wishlist-btn ${isWishlisted ? 'active' : ''}" onclick="toggleWishlist(${p.id}, event)" aria-label="${isWishlisted ? 'إزالة من المفضلة' : 'إضافة للمفضلة'}">
      ${isWishlisted ? '❤️' : '🤍'}
