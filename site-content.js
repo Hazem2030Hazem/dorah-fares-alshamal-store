@@ -28,30 +28,3 @@ var doraContent = {
     }
   }
 };
-// ============================================================
-// إضافة روبوت 2D إلى جميع الصفحات (موجود في site-content.js)
-// ============================================================
-(function() {
-    if (document.getElementById('chat-robot-container')) return;
-
-    var container = document.createElement('div');
-    container.id = 'chat-robot-container';
-    container.onclick = function() { 
-        if (typeof doraChatbot !== 'undefined' && doraChatbot.toggle) {
-            doraChatbot.toggle(); 
-        }
-    };
-
-    var bubble = document.createElement('div');
-    bubble.id = 'robot-bubble';
-    bubble.innerText = 'أهلاً! اسألني أي حاجة 🤖';
-
-    var img = document.createElement('img');
-    img.id = 'chat-robot-img';
-    img.src = 'robot.png';
-    img.alt = 'مساعد درة فارس';
-
-    container.appendChild(bubble);
-    container.appendChild(img);
-    document.body.appendChild(container);
-})();
