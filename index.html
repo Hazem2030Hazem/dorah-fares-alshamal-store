@@ -714,4 +714,26 @@ function updateRobotMessage(text) {
     }
 })();
 </script>
+<script>
+function updateRobotMessage(text) {
+    const bubble = document.getElementById('robot-bubble');
+    if (bubble) {
+        bubble.innerText = text;
+        bubble.style.opacity = '1';
+        clearTimeout(window.bubbleTimeout);
+        window.bubbleTimeout = setTimeout(() => {
+            bubble.style.opacity = '0';
+        }, 4000);
+    }
+}
+(function() {
+    if (window.doraChatbot && window.doraChatbot.addMessage) {
+        const originalAddMessage = window.doraChatbot.addMessage;
+        window.doraChatbot.addMessage = function(sender, text, type) {
+            if (originalAddMessage) originalAddMessage.call(this, sender, text, type);
+            if (type === 'bot') updateRobotMessage(text);
+        };
+    }
+})();
+</script>
 </body></html>
