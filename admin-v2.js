@@ -122,6 +122,8 @@ window.closeProductModal = function() {
 window.saveProduct = async function(e) {
     e.preventDefault();
     var id = document.getElementById('productId').value;
+    
+    // تجهيز البيانات
     var product = {
         name: document.getElementById('productName').value,
         description: document.getElementById('productDesc').value,
@@ -139,16 +141,23 @@ window.saveProduct = async function(e) {
     
     var error;
     if (id) {
+        // تعديل (نستخدم update)
         var result = await supabaseClient.from('store_products').update(product).eq('id', id);
         error = result.error;
     } else {
+        // إضافة منتج جديد: لازم نحذف حقل id لأنه ممنوع إرساله للقاعدة
+        delete product.id; 
+        
         var result = await supabaseClient.from('store_products').insert([product]);
         error = result.error;
     }
     
     btn.disabled = false; btn.textContent = '💾 حفظ المنتج';
     
-    if (error) { adminToast('❌ خطأ: ' + error.message, 'error'); return; }
+    if (error) { 
+        adminToast('❌ خطأ: ' + error.message, 'error'); 
+        return; 
+    }
     
     document.getElementById('productModal').classList.remove('show');
     adminToast('✅ تم الحفظ بنجاح');
