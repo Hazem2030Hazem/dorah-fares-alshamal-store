@@ -146,8 +146,7 @@ window.saveProduct = async function(e) {
         var result = await supabaseClient.from('store_products').update(product).eq('id', id);
         error = result.error;
     } else {
-        // إضافة منتج جديد: نرسل id = null عشان القاعدة تختار رقم جديد
-        product.id = null;
+
         
         var result = await supabaseClient.from('store_products').insert([product]);
         error = result.error;
