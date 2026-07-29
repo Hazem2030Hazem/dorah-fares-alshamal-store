@@ -127,3 +127,43 @@ window.doraChatbot = doraChatbot;
 })();
 
 setInterval(function(){var b=document.getElementById('doraChatBubble');var w=document.getElementById('doraChatWidget');if(b&&w&&w.style.display==='none'&&b.style.display==='none'){b.style.display='flex';}},1000);
+// ============================================================
+// 👾 ROBOT RESPONSE INTEGRATION (Update Bubble with Chatbot)
+// ============================================================
+(function(){
+    // 1. Initial Welcome Message
+    setTimeout(() => {
+        const bubble = document.getElementById('robot-bubble');
+        if (bubble) bubble.style.opacity = '1';
+    }, 1000);
+
+    // 2. Override the Bot Reply to update the bubble
+    const originalAddMessage = window.doraChatbot.addMessage;
+    window.doraChatbot.addMessage = function(sender, text, type) {
+        // Keep the chat history intact
+        if (originalAddMessage) {
+            originalAddMessage.call(this, sender, text, type);
+        }
+        
+        // Update the 2D Robot Bubble
+        if (type === 'bot') {
+            updateRobotMessage(text);
+        }
+    };
+    
+    // 3. Close Robot Bubble if Chat Widget is opened/closed
+    const originalToggle = window.doraChatbot.toggle;
+    window.doraChatbot.toggle = function() {
+        const bubble = document.getElementById('robot-bubble');
+        if (this.isOpen) {
+            // Closing chat -> Show bubble back
+            if (bubble) bubble.style.opacity = '1';
+        } else {
+            // Opening chat -> Hide bubble (so it's not blocked)
+            if (bubble) bubble.style.opacity = '0';
+        }
+        if (originalToggle) {
+            originalToggle.call(this);
+        }
+    };
+})();
