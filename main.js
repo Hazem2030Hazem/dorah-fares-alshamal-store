@@ -2703,5 +2703,34 @@ var icon = doraIcon('contact', meta);
 
     }, 800);
   });
+// ============================================================
+// إضافة روبوت 2D إلى جميع الصفحات (عن طريق main.js)
+// ============================================================
+(function() {
+    // إذا كان الروبوت موجوداً بالفعل فلا نضيفه مرة أخرى
+    if (document.getElementById('chat-robot-container')) return;
+
+    // إنشاء العناصر
+    var container = document.createElement('div');
+    container.id = 'chat-robot-container';
+    container.onclick = function() { 
+        // فتح الشات بوت عند الضغط
+        if (typeof doraChatbot !== 'undefined' && doraChatbot.toggle) {
+            doraChatbot.toggle(); 
+        }
+    };
+
+    var bubble = document.createElement('div');
+    bubble.id = 'robot-bubble';
+    bubble.innerText = 'أهلاً! اسألني أي حاجة 🤖';
+
+    var img = document.createElement('img');
+    img.id = 'chat-robot-img';
+    img.src = 'robot.png';
+    img.alt = 'مساعد درة فارس';
+
+    container.appendChild(bubble);
+    container.appendChild(img);
+    document.body.appendChild(container);
 })();
 })();
