@@ -86,7 +86,7 @@ window.loadProducts=async function(){
 };
 
 window.editProduct = async function(id) {
-    var { data } = await supabaseClient.from('store_products').select('*').eq('id', id).single();
+var { data } = await supabaseClient.from('store_products').select('*').order('id', { ascending: false });
     if (!data) return;
     document.getElementById('productId').value = data.id;
     document.getElementById('productName').value = data.name;
