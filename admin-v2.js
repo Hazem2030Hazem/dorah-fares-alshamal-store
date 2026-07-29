@@ -135,18 +135,18 @@ window.saveProduct = async function(e) {
         image: document.getElementById('productImage').value,
         rating: parseFloat(document.getElementById('productRating').value) || 0
     };
-        // إزالة حقل id من البيانات قبل الإرسال (عشان القاعدة تولده لوحدها)
-    delete product.id;
+    
     var btn = document.querySelector('#productForm .btn-save');
     btn.disabled = true; btn.textContent = '⏳ جاري الحفظ...';
     
     var error;
     if (id) {
-        // تعديل (نستخدم update)
+        // تعديل منتج موجود
         var result = await supabaseClient.from('store_products').update(product).eq('id', id);
         error = result.error;
     } else {
-
+        // إضافة منتج جديد: إزالة حقل id تماماً من البيانات المرسلة
+        delete product.id;
         
         var result = await supabaseClient.from('store_products').insert([product]);
         error = result.error;
