@@ -88,11 +88,9 @@ window.loadProducts = async function() {
   t.innerHTML = data.map((p, i) => 
     `<tr>
       <td>${i+1}</td>
-      <td>
-        <div style="width:50px;height:50px;display:flex;align-items:center;justify-content:center;border-radius:6px;overflow:hidden;background:#f0f0f0;">
-          <img src="${p.image}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          <svg style="display:none;width:24px;height:24px;color:#666;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        </div>
+      <td style="width:50px; height:50px; text-align:center; vertical-align:middle; border-radius:6px; overflow:hidden; background:#f0f0f0;">
+        <img src="${p.image}" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <svg style="display:none; width:24px; height:24px; margin:auto; color:#666;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
       </td>
       <td>${esc(p.name)}</td>
       <td>${esc((p.description || '').substring(0, 50))}</td>
@@ -106,6 +104,7 @@ window.loadProducts = async function() {
   ).join('');
   document.getElementById('totalProducts').textContent = data.length;
 };
+
 window.editProduct = async function(id) {
   var { data } = await supabaseClient.from('store_products').select('*').eq('id', id).single();
   if (!data) return;
@@ -130,7 +129,6 @@ window.deleteProduct = async function(id) {
   adminToast('✅ تم الحذف بنجاح');
   loadProducts();
 };
-   
 
 window.openModal = function() {
   document.getElementById('productModal').classList.add('show');
@@ -146,6 +144,7 @@ window.closeProductModal = function() {
 window.saveProduct = async function(e) {
   e.preventDefault();
   var id = document.getElementById('productId').value;
+
   var product = {
     name: document.getElementById('productName').value,
     description: document.getElementById('productDesc').value,
@@ -154,10 +153,12 @@ window.saveProduct = async function(e) {
     stock: parseInt(document.getElementById('productStock').value) || 0,
     category: document.getElementById('productCategory').value,
     badge: document.getElementById('productBadge').value,
-    image: document.getElementById('productImage').value,
+    image: document.getElementById('productImage').value,  // هذا الحقل هو المسؤول عن الصورة
     rating: parseFloat(document.getElementById('productRating').value) || 0,
     is_active: true
   };
+
+  console.log('البيانات المرسلة:', product); // للتأكد من وجود رابط الصورة
 
   var btn = document.querySelector('#productForm .btn-save');
   btn.disabled = true; btn.textContent = '⏳ جاري الحفظ...';
@@ -175,6 +176,7 @@ window.saveProduct = async function(e) {
 
   if (error) {
     adminToast('❌ خطأ: ' + error.message, 'error');
+    console.error('خطأ Supabase:', error); // يوضح الخطأ في الكونسول
     return;
   }
 
