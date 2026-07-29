@@ -88,7 +88,7 @@ window.loadProducts = async function() {
   t.innerHTML = data.map((p, i) => 
     `<tr>
       <td>${i+1}</td>
-      <td><img src="${p.image || 'https://via.placeholder.com/50'}" width="40"></td>
+     <td><img src="${p.image || 'https://via.placeholder.com/50'}" style="width:50px;height:50px;object-fit:cover;border-radius:6px" onerror="this.style.display='none';this.parentElement.innerHTML+='📷'"></td>
       <td>${esc(p.name)}</td>
       <td>${esc((p.description || '').substring(0, 50))}</td>
       <td>${Number(p.price).toLocaleString()} ر.س</td>
