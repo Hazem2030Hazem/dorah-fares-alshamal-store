@@ -131,30 +131,6 @@ window.deleteProduct = async function(id) {
   loadProducts();
 };
    
-window.editProduct = async function(id) {
-  var { data } = await supabaseClient.from('store_products').select('*').eq('id', id).single();
-  if (!data) return;
-  document.getElementById('productId').value = data.id;
-  document.getElementById('productName').value = data.name;
-  document.getElementById('productDesc').value = data.description || '';
-  document.getElementById('productPrice').value = data.price;
-  document.getElementById('productOldPrice').value = data.old_price || '';
-  document.getElementById('productStock').value = data.stock || 0;
-  document.getElementById('productCategory').value = data.category;
-  document.getElementById('productBadge').value = data.badge || '';
-  document.getElementById('productImage').value = data.image || '';
-  document.getElementById('productRating').value = data.rating || 0;
-  document.getElementById('productModalTitle').textContent = '✏️ تعديل منتج';
-  document.getElementById('productModal').classList.add('show');
-};
-
-window.deleteProduct = async function(id) {
-  if (!confirm('حذف هذا المنتج؟')) return;
-  var { error } = await supabaseClient.from('store_products').delete().eq('id', id);
-  if (error) { adminToast('❌ خطأ: ' + error.message, 'error'); return; }
-  adminToast('✅ تم الحذف بنجاح');
-  loadProducts();
-};
 
 window.openModal = function() {
   document.getElementById('productModal').classList.add('show');
