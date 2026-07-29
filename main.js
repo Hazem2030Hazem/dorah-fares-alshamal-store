@@ -249,7 +249,7 @@ function renderProducts(filter) {
     <div class="prod-img" onclick="openProductModal(${p.id})">
      ${p.badge ? `<div class="prod-badge ${p.badge === 'جديد' ? 'new' : p.badge === 'خصم' ? 'discount' : ''}">${p.badge}${hasDiscount && p.badge === 'خصم' ? ' -' + discountPercent + '%' : ''}</div>` : ''}
      ${hasDiscount && !p.badge ? `<div class="prod-badge discount">خصم -${discountPercent}%</div>` : ''}
-    <img src="${p.image && p.image.length > 0 ? p.image : 'https://kcbmvxuzjlaooknwhqqb.supabase.co/storage/v1/object/public/products/default-product.png'}" alt="${sanitizeInput(p.name)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    <img src="${p.image && p.image.length > 0 ? p.image : 'https://kcbmvxuzjlaooknwhqqb.supabase.co/storage/v1/object/public/products/default-product.png'}" alt="${sanitizeInput(p.name)}" onerror="this.style.display='none'; var svg = this.parentElement.querySelector('svg'); if(svg) svg.style.display='flex';"
     </div>
     <button class="wishlist-btn ${isWishlisted ? 'active' : ''}" onclick="toggleWishlist(${p.id}, event)" aria-label="${isWishlisted ? 'إزالة من المفضلة' : 'إضافة للمفضلة'}">
      ${isWishlisted ? '❤️' : '🤍'}
@@ -377,7 +377,7 @@ function openProductModal(productId) {
  document.getElementById('productModalContent').innerHTML = `
   <div class="modal-image">
    <div style="position:relative; width:100%; height:300px; background:#f5f7fa; display:flex; align-items:center; justify-content:center; border-radius:12px; overflow:hidden;">
-  <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${sanitizeInput(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+  <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${sanitizeInput(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.style.display='none'; var svg = this.parentElement.querySelector('svg'); if(svg) svg.style.display='flex';"
   <svg style="display:none; width:64px; height:64px; color:#9aa5b9;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
 </div>
   </div>
@@ -1774,7 +1774,7 @@ function openQuickView(productId) {
   if (!content) return;
   content.innerHTML = `
     <div class="quick-view-image"><div style="position:relative; width:100%; height:300px; background:#f5f7fa; display:flex; align-items:center; justify-content:center; border-radius:12px; overflow:hidden;">
-  <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${sanitizeInput(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+  <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${sanitizeInput(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.style.display='none'; var svg = this.parentElement.querySelector('svg'); if(svg) svg.style.display='flex';"
   <svg style="display:none; width:64px; height:64px; color:#9aa5b9;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
 </div>
     <div class="quick-view-info">
@@ -2036,7 +2036,7 @@ function renderRecentlyViewed() {
           ${p.badge ? `<div class="prod-badge">${p.badge}</div>` : ''}
           ${hasDiscount && !p.badge ? `<div class="prod-badge discount">خصم</div>` : ''}
          <div style="background:#f5f7fa; display:flex; align-items:center; justify-content:center; border-radius:8px; height:200px;">
-  <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${sanitizeInput(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+  <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${sanitizeInput(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.style.display='none'; var svg = this.parentElement.querySelector('svg'); if(svg) svg.style.display='flex';"
   <svg style="display:none; width:48px; height:48px; color:#9aa5b9;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
 </div>
         </div>
@@ -2135,7 +2135,7 @@ openProductModal = function(productId) {
               ${fbtProducts.map(p => `
                 <div onclick="openProductModal(${p.id})" style="cursor:pointer;background:white;border-radius:12px;padding:12px;text-align:center;border:1px solid rgba(0,0,0,0.1);transition:all 0.3s ease" onmouseenter="this.style.borderColor='#3B82F6';this.style.boxShadow='0 4px 12px rgba(59,130,246,0.2)'" onmouseleave="this.style.borderColor='rgba(0,0,0,0.1)';this.style.boxShadow='none'">
                   <div style="background:#f5f7fa; width:100%; height:180px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
-  <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${sanitizeInput(p.name)}" loading="lazy" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+  <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${sanitizeInput(p.name)}" loading="lazy" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.style.display='none'; var svg = this.parentElement.querySelector('svg'); if(svg) svg.style.display='flex';"
   <svg style="display:none; width:40px; height:40px; color:#9aa5b9;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
 </div>
                   <div style="font-size:12px;font-weight:bold;margin-bottom:4px;color:#1F2937">${sanitizeInput(p.name.substring(0, 25))}...</div>
@@ -2210,7 +2210,7 @@ function renderBestSellers() {
         ${medal ? `<div style="position:absolute;top:10px;left:10px;font-size:30px;z-index:10">${medal}</div>` : ''}
         <div class="prod-img" style="height:180px">
          <div style="background:#f5f7fa; width:100%; height:180px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
-  <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${sanitizeInput(p.name)}" loading="lazy" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+  <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${sanitizeInput(p.name)}" loading="lazy" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.style.display='none'; var svg = this.parentElement.querySelector('svg'); if(svg) svg.style.display='flex';"
   <svg style="display:none; width:40px; height:40px; color:#9aa5b9;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
 </div>
         </div>
