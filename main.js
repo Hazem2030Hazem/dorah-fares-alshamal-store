@@ -2175,7 +2175,7 @@ function injectRecommendationSections() {
           <h2 style="font-size:28px;display:flex;align-items:center;gap:10px">👁️ شاهدتها مؤخراً</h2>
           <button onclick="localStorage.removeItem('doraRecentlyViewed');recentlyViewed=[];renderRecentlyViewed();" style="background:none;border:1px solid rgba(0,0,0,0.2);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px">🗑️ مسح السجل</button>
         </div>
-        <div id="recentlyViewedGrid" class="prod-grid" style="grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));gap:20px"></div>
+        <div id="recentlyViewedGrid" class="prod-grid"></div>
       </div>
     </section>
     
