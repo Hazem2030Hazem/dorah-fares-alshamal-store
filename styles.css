@@ -4320,3 +4320,36 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
   #chat-robot-img:hover { transform: scale(1.05); }
 }
 /* ===== END 2D ROBOT ===== */
+/* ===== عرض الشبكة الموحد 5 أعمدة ===== */
+.prod-grid {
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 20px;
+}
+
+/* ===== عرض القائمة زي ما هو ===== */
+.prod-grid.list-view {
+    grid-template-columns: 1fr !important;
+}
+
+/* ===== أقسام التوصيات بنفس الشكل ===== */
+#recentlyViewedGrid,
+#bestSellersGrid {
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 20px !important;
+}
+
+/* ===== تجاوب مع الشاشات الأصغر ===== */
+@media (max-width: 1200px) {
+    .prod-grid { grid-template-columns: repeat(4, 1fr) !important; }
+    #recentlyViewedGrid, #bestSellersGrid { grid-template-columns: repeat(4, 1fr) !important; }
+}
+
+@media (max-width: 768px) {
+    .prod-grid { grid-template-columns: repeat(3, 1fr) !important; }
+    #recentlyViewedGrid, #bestSellersGrid { grid-template-columns: repeat(3, 1fr) !important; }
+}
+
+@media (max-width: 480px) {
+    .prod-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    #recentlyViewedGrid, #bestSellersGrid { grid-template-columns: repeat(2, 1fr) !important; }
+}
