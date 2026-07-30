@@ -2183,7 +2183,7 @@ function injectRecommendationSections() {
     <section id="bestSellersSection" class="recommendation-section" style="padding:60px 0">
       <div class="container">
         <h2 style="font-size:28px;display:flex;align-items:center;gap:10px;margin-bottom:30px">🔥 الأكثر مبيعاً</h2>
-        <div id="bestSellersGrid" class="prod-grid" style="grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));gap:20px"></div>
+<div id="bestSellersGrid" class="prod-grid"></div>
       </div>
     </section>
   `;
