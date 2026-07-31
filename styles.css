@@ -4476,3 +4476,49 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
     padding-bottom: env(safe-area-inset-bottom);
   }
 }
+
+/* ============================================================
+   📐 توحيد بطاقات المنتجات — منتجاتنا المميزة × الأكثر مبيعاً
+   نفس عدد الأعمدة والـ gap (وراثة من .prod-grid)، نفس ارتفاع
+   الصورة، نفس padding لجسم البطاقة، ونفس ارتفاع الأزرار
+   ============================================================ */
+
+/* صفوف الشبكة متساوية الارتفاع والبطاقة تملأ الصف بالكامل */
+.prod-grid:not(.list-view) { grid-auto-rows: 1fr; align-items: stretch; }
+.prod-grid:not(.list-view) > .prod-card { height: 100%; min-height: 600px; }
+
+/* تثبيت ارتفاع اسم المنتج والوصف (سطران) لتوحيد ارتفاع البطاقات */
+.prod-card .prod-name {
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; min-height: calc(1.4em * 2);
+}
+.prod-card .prod-desc {
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; min-height: calc(1.6em * 2);
+}
+
+/* أزرار البطاقات بنفس الارتفاع (ديسكتوب) */
+@media (min-width: 769px) {
+  .prod-footer .add-btn, .prod-footer .quote-btn { min-height: 38px; }
+}
+
+/* بطاقات "الأكثر مبيعاً": نفس أبعاد بطاقات "منتجاتنا المميزة" تماماً */
+.best-seller-card .prod-img,
+.best-seller-card .prod-img > div { height: 220px !important; }
+.best-seller-card .prod-body { padding: 25px !important; flex: 1; display: flex; flex-direction: column; }
+.best-seller-card .prod-tag { font-size: 12px !important; margin-bottom: 12px !important; }
+.best-seller-card .prod-name { font-size: 17px !important; margin: 0 0 8px !important; }
+.best-seller-card .prod-price { font-size: 24px !important; margin-top: auto; }
+.best-seller-card .prod-price .old-price { font-size: 14px !important; }
+
+/* الجوال: نفس أبعاد بطاقات المميزة في الميديا كويري الأصلية */
+@media (max-width: 768px) {
+  .prod-grid:not(.list-view) > .prod-card { min-height: 520px; }
+  .best-seller-card .prod-img,
+  .best-seller-card .prod-img > div { height: 160px !important; }
+  .best-seller-card .prod-body { padding: 15px !important; }
+  .best-seller-card .prod-name { font-size: 15px !important; }
+  .best-seller-card .prod-price { font-size: 20px !important; }
+}
+/* ===== END توحيد بطاقات المنتجات ===== */
+

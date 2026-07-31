@@ -260,13 +260,14 @@ async function submitMessage(e) {
     }
 
     // Save to Supabase
+    // ملاحظة توافق: حُذف حقل date لأن عمود date غير موجود في جدول messages الفعلي
+    // وكان يتسبب في فشل إرسال كل رسالة — يُستخدم created_at الافتراضي في القاعدة بدلاً منه.
     const { error } = await supabase.from('messages').insert([{
         name,
         phone,
         email,
         subject,
         message: text,
-        date: new Date().toLocaleDateString('ar-SA'),
         status: 'new'
     }]);
 
@@ -421,6 +422,15 @@ function closeAdminLoginModal() {
 
 async function handleAdminLogin(e) {
     e.preventDefault();
+
+    // ⚠️ تعطيل أمني: هذا المسار القديم كان يتحقق من اسم المستخدم وكلمة المرور
+    // بمقارنة نصية عبر استعلام anon على جدول admins — أي زائر يستطيع قراءة
+    // بيانات الدخول من الجدول، وهذا غير آمن إطلاقاً.
+    // تم تعطيل المسار بدون حذف الكود الأصلي (محفوظ بالأسفل للمرجعية) —
+    // تسجيل دخول الإدارة يتم حصرياً من صفحة admin.html عبر Supabase Auth.
+    showToast('⚠️ هذا المسار لم يعد متاحاً — استخدم صفحة الإدارة', 'error');
+    return false;
+
     const user = document.getElementById('adminLoginUser').value;
     const pass = document.getElementById('adminLoginPass').value;
 

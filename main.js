@@ -2259,10 +2259,10 @@ function injectRecommendationStyles() {
         transition: all 0.3s ease;
       }
       
+      /* 📐 التوحيد: أبعاد البطاقة والشبكة تُدار من styles.css
+         (نفس أعمدة .prod-grid ونفس ارتفاع الصورة والجسم) */
       .best-seller-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 40px rgba(59,130,246,0.2);
-        border-color: rgba(59,130,246,0.5);
+        transform: translateY(-4px);
       }
       
       .fbt-section {
@@ -2272,14 +2272,6 @@ function injectRecommendationStyles() {
       @keyframes fadeInUp {
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
-      }
-      
-      @media (max-width: 768px) {
-        #recentlyViewedGrid,
-        #bestSellersGrid {
-          grid-template-columns: repeat(2, 1fr) !important;
-          gap: 12px !important;
-        }
       }
     </style>
   `;
@@ -2904,7 +2896,7 @@ function updateSpeakerIcon() {
             var st = document.createElement('style');
             st.id = 'doraNotifStyle';
             st.textContent = [
-                '#doraNotifBell{position:fixed;bottom:30px;left:30px;z-index:9997;width:58px;height:58px;border-radius:50%;',
+                '#doraNotifBell{position:fixed;bottom:30px;right:30px;z-index:9997;width:58px;height:58px;border-radius:50%;',
                 'background:linear-gradient(135deg,rgba(14,165,233,.9),rgba(37,99,235,.9));border:1px solid rgba(125,211,252,.55);',
                 'color:#fff;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;',
                 'box-shadow:0 8px 28px rgba(14,165,233,.45),0 0 20px rgba(56,189,248,.25);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);',
@@ -2914,7 +2906,7 @@ function updateSpeakerIcon() {
                 'color:#fff;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;padding:0 6px;',
                 'box-shadow:0 0 12px rgba(239,68,68,.7);border:2px solid rgba(10,20,40,.9);}',
                 '#doraNotifBadge.doraNotifHide{display:none;}',
-                '#doraNotifPanel{position:fixed;bottom:100px;left:30px;z-index:9997;width:340px;max-width:calc(100vw - 40px);max-height:440px;overflow-y:auto;',
+                '#doraNotifPanel{position:fixed;bottom:100px;right:30px;z-index:10002;width:340px;max-width:calc(100vw - 40px);max-height:440px;overflow-y:auto;',
                 'background:rgba(8,18,38,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(56,189,248,.35);border-radius:20px;',
                 'box-shadow:0 16px 50px rgba(2,10,30,.65),0 0 30px rgba(14,165,233,.15);padding:0;opacity:0;transform:translateY(14px) scale(.97);pointer-events:none;',
                 'transition:all .3s ease;direction:rtl;font-family:\'Cairo\',\'Tajawal\',sans-serif;}',
@@ -2929,7 +2921,7 @@ function updateSpeakerIcon() {
                 '.doraNotifItem h4{margin:0 0 6px;color:#eaf6ff;font-size:15px;font-weight:900;display:flex;align-items:center;gap:8px;}',
                 '.doraNotifItem h4 .doraNotifNew{flex:none;font-size:10px;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;padding:2px 8px;border-radius:20px;font-weight:900;}',
                 '.doraNotifItem p{margin:0;color:rgba(200,225,245,.8);font-size:13px;line-height:1.8;font-weight:600;}',
-                '@media (max-width:640px){#doraNotifBell{bottom:20px;left:16px;width:52px;height:52px;font-size:21px;}#doraNotifPanel{left:12px;bottom:84px;}}'
+                '@media (max-width:640px){#doraNotifBell{bottom:20px;right:20px;width:52px;height:52px;font-size:21px;}#doraNotifPanel{right:12px;bottom:84px;}}'
             ].join('');
             document.head.appendChild(st);
         }
@@ -3010,6 +3002,152 @@ function updateSpeakerIcon() {
             document.addEventListener('DOMContentLoaded', doraNotifLoad);
         } else {
             doraNotifLoad();
+        }
+    } catch (e) {
+        /* صمت تام — لا نكسر أي صفحة */
+    }
+})();
+
+
+// ============================================================
+// ⚖️ DORA LEGAL - الشريط القانوني + روابط العروض والتتبع
+// وحدة مستقلة تعمل على كل الصفحات — حقن مركزي بدون تعديل HTML
+// ============================================================
+(function doraLegal() {
+    'use strict';
+    try {
+        // ✏️ عدّل الأرقام هنا — ضع السجل التجاري والرقم الضريبي ورابط معروف
+        var DORA_LEGAL = {
+            cr: 'XXXXXXXXXX',        // ✏️ السجل التجاري
+            vat: '3XXXXXXXXXXXXXX',  // ✏️ الرقم الضريبي (15 رقم يبدأ بـ 3)
+            maroof: ''               // ✏️ رابط/رقم توثيق معروف — اتركه فارغاً لإخفاء الرابط
+        };
+
+        // ---------- حقن CSS الخاص بالوحدة ----------
+        function doraLegalInjectCSS() {
+            if (document.getElementById('doraLegalStyle')) return;
+            var st = document.createElement('style');
+            st.id = 'doraLegalStyle';
+            st.textContent = [
+                '#doraLegalBar{direction:rtl;font-family:\'Cairo\',\'Tajawal\',sans-serif;',
+                'background:linear-gradient(135deg,rgba(8,18,38,.97),rgba(15,23,42,.97));',
+                'border-top:1px solid rgba(56,189,248,.25);padding:14px 20px;text-align:center;',
+                'color:rgba(203,213,225,.85);font-size:13px;font-weight:600;line-height:2;position:relative;z-index:50;}',
+                '#doraLegalBar .doraLegalSep{color:rgba(56,189,248,.5);margin:0 10px;}',
+                '#doraLegalBar a{color:#7dd3fc;text-decoration:none;font-weight:700;transition:color .25s ease;}',
+                '#doraLegalBar a:hover{color:#bae6fd;text-decoration:underline;}',
+                '#doraLegalBar .doraLegalLinks{margin-top:4px;display:flex;justify-content:center;gap:18px;flex-wrap:wrap;}',
+                '@media (max-width:640px){#doraLegalBar{font-size:12px;padding:12px 10px;}}'
+            ].join('');
+            document.head.appendChild(st);
+        }
+
+        // ---------- الشريط القانوني أسفل الفوتر ----------
+        function doraLegalInjectBar() {
+            if (document.getElementById('doraLegalBar')) return;
+            doraLegalInjectCSS();
+
+            var bar = document.createElement('div');
+            bar.id = 'doraLegalBar';
+
+            var html = 'سجل تجاري: ' + DORA_LEGAL.cr +
+                '<span class="doraLegalSep">|</span>الرقم الضريبي: ' + DORA_LEGAL.vat +
+                '<span class="doraLegalSep">|</span>شركة درة فارس الشمال © 2026';
+
+            if (DORA_LEGAL.maroof && String(DORA_LEGAL.maroof).trim() !== '') {
+                var m = String(DORA_LEGAL.maroof).trim();
+                var href = /^https?:\/\//i.test(m) ? m : ('https://maroof.sa/' + m);
+                html += '<span class="doraLegalSep">|</span><a href="' + href + '" target="_blank" rel="noopener">✅ توثيق معروف</a>';
+            }
+
+            html += '<div class="doraLegalLinks">' +
+                '<a href="privacy.html">🔒 سياسة الخصوصية</a>' +
+                '<a href="terms.html">📜 شروط الاستخدام</a>' +
+                '</div>';
+
+            bar.innerHTML = html;
+
+            var footer = document.querySelector('footer');
+            if (footer && footer.parentNode) {
+                footer.parentNode.insertBefore(bar, footer.nextSibling);
+            } else if (document.body) {
+                document.body.appendChild(bar);
+            }
+        }
+
+        // ---------- روابط العروض والتتبع (هيدر + فوتر) ----------
+        function doraLegalInjectQuickLinks() {
+            // 1) قائمة الهيدر الرئيسية
+            try {
+                var nav = document.querySelector('.nav-links');
+                if (nav && !nav.querySelector('a[href="offers.html"]')) {
+                    var offersLink = document.createElement('a');
+                    offersLink.href = 'offers.html';
+                    offersLink.setAttribute('aria-label', 'العروض');
+                    offersLink.textContent = '🔥 العروض';
+                    nav.appendChild(offersLink);
+                }
+                if (nav && !nav.querySelector('a[href="track.html"]')) {
+                    var trackLink = document.createElement('a');
+                    trackLink.href = 'track.html';
+                    trackLink.setAttribute('aria-label', 'تتبع طلبك');
+                    trackLink.textContent = '📦 تتبع طلبك';
+                    nav.appendChild(trackLink);
+                }
+            } catch (eNav) { /* يفشل بصمت بدون كسر */ }
+
+            // 2) الفوتر — بجانب روابط التصنيفات إن وُجدت
+            try {
+                var injected = false;
+                var cols = document.querySelectorAll('.footer .footer-col, footer .footer-col');
+                for (var i = 0; i < cols.length; i++) {
+                    var h = cols[i].querySelector('h5');
+                    var ul = cols[i].querySelector('ul');
+                    if (h && ul && h.textContent.indexOf('التصنيفات') !== -1) {
+                        if (!ul.querySelector('a[href="offers.html"]')) {
+                            var li1 = document.createElement('li');
+                            li1.innerHTML = '<a href="offers.html">🔥 العروض</a>';
+                            ul.appendChild(li1);
+                        }
+                        if (!ul.querySelector('a[href="track.html"]')) {
+                            var li2 = document.createElement('li');
+                            li2.innerHTML = '<a href="track.html">📦 تتبع طلبك</a>';
+                            ul.appendChild(li2);
+                        }
+                        injected = true;
+                        break;
+                    }
+                }
+                // فولباك: روابط أسفل الفوتر (سياسة الخصوصية / شروط الاستخدام)
+                if (!injected) {
+                    var bottom = document.querySelector('.footer .footer-bottom div, footer .footer-bottom div');
+                    if (bottom) {
+                        if (!bottom.querySelector('a[href="offers.html"]')) {
+                            var a1 = document.createElement('a');
+                            a1.href = 'offers.html';
+                            a1.textContent = '🔥 العروض';
+                            bottom.appendChild(a1);
+                        }
+                        if (!bottom.querySelector('a[href="track.html"]')) {
+                            var a2 = document.createElement('a');
+                            a2.href = 'track.html';
+                            a2.textContent = '📦 تتبع طلبك';
+                            bottom.appendChild(a2);
+                        }
+                    }
+                }
+            } catch (eFooter) { /* يفشل بصمت بدون كسر */ }
+        }
+
+        function doraLegalInit() {
+            try { doraLegalInjectBar(); } catch (e1) {}
+            try { doraLegalInjectQuickLinks(); } catch (e2) {}
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', doraLegalInit);
+        } else {
+            doraLegalInit();
         }
     } catch (e) {
         /* صمت تام — لا نكسر أي صفحة */
