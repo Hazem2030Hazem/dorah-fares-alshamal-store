@@ -2,80 +2,70 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>سياسة الخصوصية | شركة درة فارس الشمال</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <meta name="description" content="سياسة الخصوصية لشركة درة فارس الشمال - كيف نحمي بياناتك">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20fill%3D%27%25231E88E5%27%20rx%3D%2715%27%20width%3D%27100%27%20height%3D%27100%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27white%27%3E%E2%9A%A1%3C%2Ftext%3E%3C%2Fsvg%3E">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
     <style>
-        :root {
-            --primary: #0EA5E9;
-            --primary-dark: #0369A1;
-            --text: #111827;
-            --text-secondary: #4B5563;
-            --bg: #F8FAFC;
-            --card-bg: #FFFFFF;
-            --border: #E5E7EB;
+        .privacy-hero {
+            background: url(hero-bg-dark-logos.jpg) center/cover no-repeat;
+            padding: 185px 20px 85px;
+            text-align: center;
+            position: relative;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Tajawal', 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-            color: var(--text);
+        .privacy-hero h1 {
+            color: #ffffff;
+            font-size: 46px;
+            font-weight: 900;
+            margin: 0 auto 16px;
+            text-shadow: 0 4px 25px rgba(0,0,0,.55);
+        }
+        .privacy-hero p {
+            color: rgba(255,255,255,.88);
+            font-size: 18px;
             line-height: 1.8;
-            min-height: 100vh;
-        }
-        .container {
-            max-width: 900px;
+            max-width: 720px;
             margin: 0 auto;
-            padding: 40px 20px;
+            text-shadow: 0 2px 10px rgba(0,0,0,.45);
+        }
+        .privacy-content {
+            padding: 60px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
         }
         .privacy-card {
-            background: var(--card-bg);
-            border-radius: 24px;
-            padding: 50px 40px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-            border: 1px solid var(--border);
-        }
-        .privacy-card h1 {
-            font-size: 32px;
-            font-weight: 900;
-            color: var(--primary-dark);
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        .privacy-card .last-updated {
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 14px;
-            margin-bottom: 40px;
+            background: #ffffff;
+            border: 1px solid #E5E7EB;
+            border-radius: 20px;
+            padding: 45px;
+            box-shadow: 0 6px 30px rgba(0,0,0,.06);
+            margin-bottom: 30px;
         }
         .privacy-card h2 {
-            font-size: 22px;
+            color: #111827;
+            font-size: 26px;
             font-weight: 800;
-            color: var(--primary-dark);
-            margin-top: 35px;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--border);
+            margin: 25px 0 14px;
         }
+        .privacy-card h2:first-of-type { margin-top: 0; }
         .privacy-card h3 {
-            font-size: 18px;
+            color: #2C4F86;
+            font-size: 20px;
             font-weight: 700;
-            color: var(--primary);
-            margin-top: 25px;
-            margin-bottom: 10px;
+            margin: 22px 0 10px;
         }
         .privacy-card p, .privacy-card li {
+            color: #4B5563;
             font-size: 16px;
-            color: var(--text-secondary);
-            margin-bottom: 12px;
+            line-height: 1.9;
         }
         .privacy-card ul, .privacy-card ol {
-            padding-right: 25px;
-            margin-bottom: 15px;
+            padding-right: 22px;
+            margin: 10px 0;
         }
-        .privacy-card strong {
-            color: var(--text);
-        }
+        .privacy-card strong { color: #111827; }
         .contact-box {
             background: #f0f9ff;
             border: 1px solid #bae6fd;
@@ -84,30 +74,47 @@
             margin-top: 30px;
             text-align: center;
         }
-        .contact-box h3 {
-            margin-top: 0;
-            color: var(--primary-dark);
-        }
-        .contact-box a {
-            color: var(--primary);
-            font-weight: 700;
-            text-decoration: none;
-        }
-        .contact-box a:hover {
-            text-decoration: underline;
-        }
+        .contact-box h3 { color: #0369A1; margin-top: 0; }
+        .contact-box a { color: #0EA5E9; font-weight: 700; text-decoration: none; }
+        .contact-box a:hover { text-decoration: underline; }
         @media (max-width: 768px) {
-            .privacy-card { padding: 30px 20px; }
-            .privacy-card h1 { font-size: 26px; }
+            .privacy-hero { padding: 150px 16px 55px; }
+            .privacy-hero h1 { font-size: 29px; }
+            .privacy-hero p { font-size: 15px; }
+            .privacy-card { padding: 28px 22px; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="privacy-card">
-            <h1>سياسة الخصوصية</h1>
-            <p class="last-updated">آخر تحديث: 31 يوليو 2026</p>
 
+    <div class="ocean-bg"></div>
+    <div class="particles" id="particles"></div>
+
+    <header class="header" id="header">
+        <div class="header-inner" style="width:100%;max-width:100%;">
+            <div class="logo">
+                <img src="https://www.alshamal-df.com/logo.png?v=2.1_1783834267413" alt="شركة درة فارس الشمال" style="width:85px;height:85px;border-radius:14px;object-fit:contain;">
+                <div class="logo-text">
+                    <a href="index.html" style="text-decoration:none;color:inherit;"><h1>شركة درة فارس الشمال</h1></a>
+                    <span>Dora Fares Al Shamal</span>
+                </div>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html">الرئيسية</a>
+                <a href="index.html#products">المنتجات</a>
+                <a href="index.html#about">عن الشركة</a>
+                <a href="index.html#contact">تواصل معنا</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="privacy-hero">
+        <h1>سياسة الخصوصية</h1>
+        <p>آخر تحديث: 31 يوليو 2026 - نحن ملتزمون بحماية بياناتك</p>
+    </section>
+
+    <section class="privacy-content">
+        <div class="privacy-card">
             <p>مرحباً بك في موقع وتطبيق <strong>شركة درة فارس الشمال للتجارة</strong> ("نحن"، "المنصة"، "التطبيق"). نحن ملتزمون بحماية خصوصيتك وبياناتك الشخصية. توضح سياسة الخصوصية هذه كيفية جمعنا واستخدامنا ومعالجتنا لبياناتك عند استخدامك لموقعنا الإلكتروني وتطبيق الهاتف المحمول.</p>
 
             <h2>1. المعلومات التي نجمعها</h2>
@@ -177,6 +184,20 @@
                 <p>رقم الجوال: <a href="https://wa.me/966545358773">966545358773+</a></p>
             </div>
         </div>
-    </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom" style="text-align:center;padding-top:25px;">
+                <p>© 2024 شركة درة فارس الشمال. جميع الحقوق محفوظة.</p>
+                <div>
+                    <a href="privacy.html">سياسة الخصوصية</a> | 
+                    <a href="terms.html">شروط الاستخدام</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
 </body>
 </html>
