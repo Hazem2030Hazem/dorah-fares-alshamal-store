@@ -1426,7 +1426,7 @@ function gatewayCardHtml(g){
   var name=String(g.gateway_name||code);
   var active=!!g.is_active;
   var live=g.mode==='live';
-  var masked=maskSecret(g.secret_key);
+  var masked=maskSecret(g.secret_key)||(g.secret_key_enc?'●●●● 🔒 مشفّر':'');
   var h='<div class="gateway-card">';
   h+='<div class="gateway-card-head">';
   h+='<div><div class="gateway-name">'+esc(name)+'</div><div class="gateway-code">'+esc(code)+'</div></div>';
@@ -1509,13 +1509,44 @@ window.toggleGatewayActive=async function(code){
 window.saveGateway=async function(code){
   try{
     if(!(await hasAuthSession())){adminToast(GATEWAYS_AUTH_MSG,'error');return;}
+    var secret=formVal('gw-secret-'+code);
+    if(secret){
+      /* مفتاح سري جديد ← يُرسل عبر فانكشن manage-gateway (تشفير AES-256-GCM + تحقق أدمن)
+         ولا يُحفظ نصاً صريحاً في الجدول أبداً */
+      var sr=await supabaseClient.auth.getSession();
+      var token=sr&&sr.data&&sr.data.session?sr.data.session.access_token:null;
+      if(!token){adminToast('❌ لا توجد جلسة دخول — سجّل دخولك من جديد','error');return;}
+      var g=(adminState.gateways||[]).find(function(x){return String(x.gateway_code)===String(code);});
+      var payload={
+        gateway_code:String(code),
+        gateway_name:g?String(g.gateway_name||code):String(code),
+        publishable_key:formVal('gw-pub-'+code),
+        webhook_secret:formVal('gw-webhook-'+code),
+        mode:formVal('gw-mode-'+code)||'test',
+        secret_key:secret
+      };
+      if(String(code)==='hyperpay')payload.entity_id=formVal('gw-entity-'+code);
+      var res=await fetch('https://kcbmvxuzjlaooknwhqqb.supabase.co/functions/v1/manage-gateway',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+        body:JSON.stringify(payload)
+      });
+      var data=await res.json().catch(function(){return null;});
+      if(res.status===403){adminToast('❌ تحتاج صلاحية أدمن','error');return;}
+      if(res.status===401){adminToast('❌ جلسة الدخول غير صالحة — سجّل دخولك من جديد','error');return;}
+      if(data&&data.error==='MASTER_KEY_MISSING'){adminToast('⚠️ مفتاح التشفير غير مضبوط — أضف GATEWAY_MASTER_KEY في Supabase (Project Settings ← Edge Functions ← Secrets)','error');return;}
+      if(!res.ok||!data||!data.ok){adminToast('❌ تعذر حفظ البوابة: '+((data&&data.error)||('HTTP '+res.status)),'error');return;}
+      adminToast('✅ تم حفظ إعدادات البوابة — المفتاح السري محفوظ مشفّراً 🔒');
+      logAudit('حفظ إعدادات بوابة دفع',String(code)+' — وضع: '+payload.mode+' — مفتاح سري مشفّر');
+      loadPaymentGateways();
+      return;
+    }
+    /* الحقل السري فارغ = لا تغيير عليه ← تحديث الحقول غير السرية مباشرة كالمعتاد */
     var rec={
       publishable_key:formVal('gw-pub-'+code),
       webhook_secret:formVal('gw-webhook-'+code),
       mode:formVal('gw-mode-'+code)||'test'
     };
-    var secret=formVal('gw-secret-'+code);
-    if(secret)rec.secret_key=secret; /* فارغ = لا تحدّثه — حافظ على القديم */
     if(String(code)==='hyperpay')rec.entity_id=formVal('gw-entity-'+code);
     var{error}=await supabaseClient.from('payment_gateways').update(rec).eq('gateway_code',code);
     if(error)throw error;
