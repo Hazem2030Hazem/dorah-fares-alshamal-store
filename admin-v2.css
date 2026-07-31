@@ -294,8 +294,64 @@ body::before{
 
 @media(max-width:992px){
   .afaky-guide-grid{grid-template-columns:repeat(2,1fr)}
+  .dash-charts-grid{grid-template-columns:1fr}
 }
 @media(max-width:768px){
   .afaky-status-card{flex-direction:column;align-items:flex-start}
   .afaky-guide-grid{grid-template-columns:1fr}
 }
+
+/* ===== لوحة المؤشرات — بطاقات الرسوم البيانية ===== */
+.dash-charts-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-bottom:10px;
+}
+.dash-chart-card{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:16px;
+  padding:20px;
+  backdrop-filter:blur(10px);
+  transition:all 0.3s;
+}
+.dash-chart-card:hover{
+  border-color:rgba(14,165,233,0.35);
+  box-shadow:0 12px 40px rgba(14,165,233,0.12);
+}
+.dash-chart-card h4{font-size:15px;font-weight:800;color:#fff;margin-bottom:14px}
+.dash-chart-box{
+  position:relative;height:300px;direction:ltr;
+}
+.dash-chart-box canvas{max-width:100%}
+
+/* ===== الفوترة الإلكترونية ZATCA ===== */
+.zatca-note{
+  background:rgba(245,158,11,0.08);
+  border:1px solid rgba(245,158,11,0.25);
+  border-radius:12px;
+  padding:14px 16px;
+  color:#fbbf24;
+  font-size:13px;
+  line-height:1.9;
+  margin-bottom:20px;
+}
+.zatca-note strong{color:#fde68a}
+.zatca-qr-wrap{
+  display:flex;align-items:center;justify-content:center;
+  background:#fff;border-radius:16px;padding:16px;
+  min-height:200px;
+  box-shadow:0 0 30px rgba(14,165,233,0.15);
+}
+.zatca-qr-wrap img{max-width:280px;width:100%;height:auto;display:block}
+
+/* ===== سجل المزامنة ===== */
+.sync-status-ok{
+  color:#34d399;font-weight:800;font-size:12px;
+  background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3);
+  padding:4px 10px;border-radius:8px;white-space:nowrap;
+}
+.sync-status-fail{
+  color:#f87171;font-weight:800;font-size:12px;
+  background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);
+  padding:4px 10px;border-radius:8px;white-space:nowrap;
+}
+
