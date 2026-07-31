@@ -1296,6 +1296,20 @@ setTimeout(function() {
   }
 }, 1000);
  checkPWAInstallState();
+    // إنشاء زر الهمبرغر للجوال
+if (window.innerWidth <= 768) {
+  var hamburger = document.createElement('button');
+  hamburger.className = 'hamburger-btn';
+  hamburger.setAttribute('aria-label', 'القائمة');
+  hamburger.innerHTML = '<span></span><span></span><span></span>';
+  hamburger.onclick = function() {
+    document.querySelector('.nav-links').classList.toggle('active');
+  };
+  var headerInner = document.querySelector('.header-inner');
+  if (headerInner) {
+    headerInner.insertBefore(hamburger, headerInner.firstChild);
+  }
+}
  renderReviews();
 
  if ('serviceWorker' in navigator) {
