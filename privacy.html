@@ -1,194 +1,340 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>سياسة الخصوصية | شركة درة فارس الشمال</title>
-    <meta name="description" content="سياسة الخصوصية لشركة درة فارس الشمال - كيف نحمي بياناتك">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20fill%3D%27%25231E88E5%27%20rx%3D%2715%27%20width%3D%27100%27%20height%3D%27100%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27white%27%3E%E2%9A%A1%3C%2Ftext%3E%3C%2Fsvg%3E">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        .privacy-hero {
-            background: url(hero-bg-dark-logos.jpg) center/cover no-repeat;
-            padding: 185px 20px 85px;
-            text-align: center;
-            position: relative;
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="google-site-verification" content="googlea1b2c3d4e5f6.html">
+<meta charset="UTF-8">
+<meta name="cache-version" content="v3.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="سياسة الخصوصية لشركة درة فارس الشمال - كيف نحمي بياناتك">
+<meta name="keywords" content="شركة درة فارس الشمال, سياسة الخصوصية, حماية البيانات">
+<meta name="geo.region" content="SA">
+<meta name="geo.placename" content="حائل, عرعر, الشمال">
+<meta name="author" content="شركة درة فارس الشمال">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#1E88E5">
+<meta name="mobile-web-app-capable" content="no">
+<meta name="apple-mobile-web-app-capable" content="no">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://dorafares.com">
+<meta property="og:title" content="سياسة الخصوصية | شركة درة فارس الشمال">
+<meta property="og:description" content="سياسة الخصوصية لشركة درة فارس الشمال - كيف نحمي بياناتك">
+<meta property="og:site_name" content="شركة درة فارس الشمال">
+<meta property="og:locale" content="ar_SA">
+<meta property="og:image" content="https://dorafares.com/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="سياسة الخصوصية | شركة درة فارس الشمال">
+<meta name="twitter:description" content="سياسة الخصوصية لشركة درة فارس الشمال - كيف نحمي بياناتك">
+<meta name="twitter:image" content="https://dorafares.com/og-image.jpg">
+<meta http-equiv="Surrogate-Control" content="no-store">
+<meta http-equiv="Vary" content="*">
+<link rel="canonical" href="https://dorafares.com">
+<link rel="manifest" href="manifest.json?v=4.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20fill%3D%27%25231E88E5%27%20rx%3D%2715%27%20width%3D%27100%27%20height%3D%27100%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27white%27%3E%E2%9A%A1%3C%2Ftext%3E%3C%2Fsvg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+<title>سياسة الخصوصية | شركة درة فارس الشمال</title>
+<base target="_blank">
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function() {
+    'use strict';
+    const AUDIO_URL = 'https://raw.githubusercontent.com/Hazem2030Hazem/dorah-fares-alshamal-store/refs/heads/main/music.mp3';
+    let audio = null;
+    let isPlaying = false;
+    let isMuted = false;
+    window.doraAudio = null;
+    window.doraAudioPlaying = false;
+    window.doraAudioMuted = false;
+    function createAudio() {
+        if (audio) return audio;
+        audio = new Audio(AUDIO_URL);
+        audio.loop = true;
+        audio.volume = 0.30;
+        audio.preload = 'auto';
+        window.doraAudio = audio;
+        return audio;
+    }
+    function tryPlay() {
+        if (isPlaying || !audio || isMuted) return;
+        audio.play().then(() => {
+            isPlaying = true;
+            updateSpeakerIcon();
+        }).catch((err) => {
+            document.addEventListener('click', function playOnClick() {
+                if (!isMuted && audio) {
+                    audio.play().then(() => {
+                        isPlaying = true;
+                        updateSpeakerIcon();
+                    }).catch((e) => {});
+                }
+                document.removeEventListener('click', playOnClick);
+            }, { once: true });
+        });
+    }
+    window.toggleAudio = function() {
+        if (!audio) audio = createAudio();
+        if (isPlaying) {
+            audio.pause();
+            isPlaying = false;
+            isMuted = true;
+        } else {
+            isMuted = false;
+            audio.play().then(() => {
+                isPlaying = true;
+                window.doraAudioPlaying = true;
+                updateSpeakerIcon();
+            }).catch((e) => {});
         }
-        .privacy-hero h1 {
-            color: #ffffff;
-            font-size: 46px;
-            font-weight: 900;
-            margin: 0 auto 16px;
-            text-shadow: 0 4px 25px rgba(0,0,0,.55);
+        window.doraAudioPlaying = isPlaying;
+        window.doraAudioMuted = isMuted;
+        updateSpeakerIcon();
+    };
+    function updateSpeakerIcon() {
+        const svg = document.getElementById('speakerIconSvg');
+        if (svg) {
+            if (isPlaying) {
+                svg.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>';
+                svg.style.opacity = '1';
+                svg.style.filter = 'drop-shadow(0 0 8px rgba(16,185,129,0.8))';
+            } else {
+                svg.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line>';
+                svg.style.opacity = '0.5';
+                svg.style.filter = 'none';
+            }
         }
-        .privacy-hero p {
-            color: rgba(255,255,255,.88);
-            font-size: 18px;
-            line-height: 1.8;
-            max-width: 720px;
-            margin: 0 auto;
-            text-shadow: 0 2px 10px rgba(0,0,0,.45);
-        }
-        .privacy-content {
-            padding: 60px 20px;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-        .privacy-card {
-            background: #ffffff;
-            border: 1px solid #E5E7EB;
-            border-radius: 20px;
-            padding: 45px;
-            box-shadow: 0 6px 30px rgba(0,0,0,.06);
-            margin-bottom: 30px;
-        }
-        .privacy-card h2 {
-            color: #111827;
-            font-size: 26px;
-            font-weight: 800;
-            margin: 25px 0 14px;
-        }
-        .privacy-card h2:first-of-type { margin-top: 0; }
-        .privacy-card h3 {
-            color: #2C4F86;
-            font-size: 20px;
-            font-weight: 700;
-            margin: 22px 0 10px;
-        }
-        .privacy-card p, .privacy-card li {
-            color: #4B5563;
-            font-size: 16px;
-            line-height: 1.9;
-        }
-        .privacy-card ul, .privacy-card ol {
-            padding-right: 22px;
-            margin: 10px 0;
-        }
-        .privacy-card strong { color: #111827; }
-        .contact-box {
-            background: #f0f9ff;
-            border: 1px solid #bae6fd;
-            border-radius: 16px;
-            padding: 25px 30px;
-            margin-top: 30px;
-            text-align: center;
-        }
-        .contact-box h3 { color: #0369A1; margin-top: 0; }
-        .contact-box a { color: #0EA5E9; font-weight: 700; text-decoration: none; }
-        .contact-box a:hover { text-decoration: underline; }
-        @media (max-width: 768px) {
-            .privacy-hero { padding: 150px 16px 55px; }
-            .privacy-hero h1 { font-size: 29px; }
-            .privacy-hero p { font-size: 15px; }
-            .privacy-card { padding: 28px 22px; }
-        }
-    </style>
+    }
+    function init() {
+        createAudio();
+        tryPlay();
+        setTimeout(tryPlay, 1000);
+        window.doraAudioPlaying = isPlaying;
+        window.doraAudioMuted = isMuted;
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+</script>
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="fbe13262-4414-4ead-b11c-8be25ec1a317" type="text/javascript" async></script>
 </head>
 <body>
-
-    <div class="ocean-bg"></div>
-    <div class="particles" id="particles"></div>
+    <div class="sidebar-icons">
+        <div class="sidebar-icon" title="الرئيسية" onclick="window.location.href='index.html'">
+            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <span class="icon-glow"></span>
+        </div>
+        <div class="sidebar-icon" title="المنتجات" onclick="window.location.href='index.html#products'">
+            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+            <span class="icon-glow"></span>
+        </div>
+        <div class="sidebar-icon" title="عن الشركة" onclick="window.location.href='about.html'">
+            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <span class="icon-glow"></span>
+        </div>
+        <div class="sidebar-icon" title="تواصل معنا" onclick="window.location.href='index.html#contact'">
+            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            <span class="icon-glow"></span>
+        </div>
+        <div class="sidebar-icon" title="السلة" onclick="window.location.href='index.html'">
+            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            <span class="icon-glow"></span>
+        </div>
+        <div class="sidebar-icon" title="التقييم" onclick="window.location.href='index.html#reviews'">
+            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            <span class="icon-glow"></span>
+        </div>
+    </div>
 
     <header class="header" id="header">
         <div class="header-inner" style="width:100%;max-width:100%;">
             <div class="logo">
                 <img src="https://www.alshamal-df.com/logo.png?v=2.1_1783834267413" alt="شركة درة فارس الشمال" style="width:85px;height:85px;border-radius:14px;object-fit:contain;">
+                <div class="logo-particles">
+                    <div class="logo-particle"></div>
+                    <div class="logo-particle"></div>
+                    <div class="logo-particle"></div>
+                    <div class="logo-particle"></div>
+                </div>
                 <div class="logo-text">
-                    <a href="index.html" style="text-decoration:none;color:inherit;"><h1>شركة درة فارس الشمال</h1></a>
+                    <h1>شركة درة فارس الشمال</h1>
                     <span>Dora Fares Al Shamal</span>
                 </div>
             </div>
             <nav class="nav-links">
-                <a href="index.html">الرئيسية</a>
-                <a href="index.html#products">المنتجات</a>
-                <a href="index.html#about">عن الشركة</a>
-                <a href="index.html#contact">تواصل معنا</a>
+                <a href="index.html" aria-label="الرئيسية">الرئيسية</a>
+                <div class="nav-item">
+                    <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="عن الشركة">عن الشركة <span class="arrow">▼</span></button>
+                    <div class="dropdown-menu">
+                        <a href="about.html" aria-label="نبذة عن الشركة">نبذة عن الشركة</a>
+                        <a href="vision.html" aria-label="رؤيتنا">رؤيتنا</a>
+                        <a href="mission.html" aria-label="رسالتنا">رسالتنا</a>
+                        <a href="team.html" aria-label="فريق العمل">فريق العمل</a>
+                        <a href="certifications.html" aria-label="الشهادات">الشهادات</a>
+                    </div>
+                </div>
+                <div class="nav-item">
+                    <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="التصنيفات">التصنيفات <span class="arrow">▼</span></button>
+                    <div class="dropdown-menu">
+                        <a href="service_printing.html" aria-label="خدمات الطباعة">خدمات الطباعة</a>
+                        <a href="service_cameras.html" aria-label="كاميرات المراقبة">كاميرات المراقبة</a>
+                        <a href="service_pos.html" aria-label="نقاط البيع">نقاط البيع</a>
+                        <a href="service_network.html" aria-label="شبكات">شبكات</a>
+                        <a href="service_barcode.html" aria-label="باركود">باركود</a>
+                        <a href="service_maintenance.html" aria-label="الصيانة">الصيانة</a>
+                    </div>
+                </div>
+                <div class="nav-item">
+                    <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="المنتجات">المنتجات <span class="arrow">▼</span></button>
+                    <div class="dropdown-menu">
+                        <a href="products.html" aria-label="جميع المنتجات">جميع المنتجات</a>
+                        <a href="products.html?category=printers" aria-label="طابعات">طابعات</a>
+                        <a href="products.html?category=computers" aria-label="أجهزة الكمبيوتر">أجهزة الكمبيوتر</a>
+                        <a href="products.html?category=ram" aria-label="رامات">رامات</a>
+                        <a href="products.html?category=hard-drives" aria-label="هاردات">هاردات</a>
+                        <a href="products.html?category=accessories" aria-label="إكسسوارات">إكسسوارات</a>
+                    </div>
+                </div>
+                <div class="nav-item">
+                    <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="المعلومات">المعلومات <span class="arrow">▼</span></button>
+                    <div class="dropdown-menu">
+                        <a href="privacy.html" aria-label="سياسة الخصوصية">سياسة الخصوصية</a>
+                        <a href="terms.html" aria-label="شروط الاستخدام">شروط الاستخدام</a>
+                        <a href="faq.html" aria-label="الأسئلة الشائعة">الأسئلة الشائعة</a>
+                    </div>
+                </div>
+                <div class="nav-item">
+                    <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="الدعم">الدعم <span class="arrow">▼</span></button>
+                    <div class="dropdown-menu">
+                        <a href="contact.html" aria-label="تواصل معنا">تواصل معنا</a>
+                    </div>
+                </div>
             </nav>
+            <div class="header-controls">
+                <button onclick="location.href='https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk'" class="install-btn" title="تثبيت تطبيق درة فارس الشمال" aria-label="تثبيت تطبيق درة فارس الشمال">
+                    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                    <span class="icon-glow"></span>
+                </button>
+                <div class="audio-toggle-wrapper">
+                    <button class="audio-toggle" onclick="toggleAudioVolumePopup(event)" title="تشغيل/إيقاف الصوت" aria-label="تشغيل/إيقاف الصوت" id="audioToggleBtn">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="speakerIconSvg"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                        <span class="icon-glow"></span>
+                    </button>
+                    <div class="audio-volume-popup" id="audioVolumePopup">
+                        <h4>🔊 مستوى الصوت</h4>
+                        <div class="volume-slider-container" id="volumeSlider" onclick="setVolumeFromClick(event)"><div class="volume-slider-fill" id="volumeSliderFill" style="width: 30%"></div><div class="volume-slider-thumb" id="volumeSliderThumb"></div></div>
+                        <div class="volume-value" id="volumeValue">30%</div>
+                        <button class="volume-mute-btn" onclick="toggleMute()">🔇 كتم / تشغيل</button>
+                    </div>
+                </div>
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="ابحث عن منتج..." oninput="handleSearch(this.value)" aria-label="البحث عن منتج">
+                    <span class="search-icon"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span>
+                    <div class="search-results" id="searchResults"></div>
+                </div>
+                <button class="theme-toggle" onclick="toggleTheme()" title="تبديل الوضع" aria-label="تبديل الوضع الداكن/الفاتح" id="themeToggleBtn">
+                    <svg id="themeIcon" class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <span class="icon-glow"></span>
+                </button>
+                <button class="cart-btn" onclick="toggleCart()" aria-label="سلة المشتريات">
+                    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                    <span class="icon-glow"></span>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+            </div>
         </div>
     </header>
 
-    <section class="privacy-hero">
-        <h1>سياسة الخصوصية</h1>
-        <p>آخر تحديث: 31 يوليو 2026 - نحن ملتزمون بحماية بياناتك</p>
-    </section>
-
-    <section class="privacy-content">
-        <div class="privacy-card">
-            <p>مرحباً بك في موقع وتطبيق <strong>شركة درة فارس الشمال للتجارة</strong> ("نحن"، "المنصة"، "التطبيق"). نحن ملتزمون بحماية خصوصيتك وبياناتك الشخصية. توضح سياسة الخصوصية هذه كيفية جمعنا واستخدامنا ومعالجتنا لبياناتك عند استخدامك لموقعنا الإلكتروني وتطبيق الهاتف المحمول.</p>
-
-            <h2>1. المعلومات التي نجمعها</h2>
-            <h3>أ. المعلومات التي تقدمها أنت مباشرة:</h3>
-            <ul>
-                <li><strong>الاسم الكامل:</strong> لإنشاء حسابك وتخصيص تجربتك.</li>
-                <li><strong>البريد الإلكتروني:</strong> للتواصل معك وإرسال الفواتير وتأكيد الطلبات.</li>
-                <li><strong>رقم الجوال:</strong> للتواصل بخصوص طلباتك والخدمات المقدمة.</li>
-                <li><strong>العنوان (المدينة، الحي، الشارع):</strong> لتوصيل الطلبات إليك بدقة.</li>
-                <li><strong>بيانات الدفع وإيصالات التحويل:</strong> لتأكيد عملية الدفع وإتمام طلبك.</li>
-            </ul>
-
-            <h3>ب. المعلومات التي يتم جمعها تلقائياً:</h3>
-            <ul>
-                <li><strong>بيانات الجهاز:</strong> نوع الجهاز، نظام التشغيل، وإصدار المتصفح لتحسين توافق التطبيق.</li>
-                <li><strong>بيانات الاستخدام:</strong> الصفحات التي تزورها، والمنتجات التي تشاهدها، والوقت الذي تقضيه في التطبيق، لتحسين تجربتك وتقديم توصيات تناسب اهتماماتك.</li>
-                <li><strong>ملفات تعريف الارتباط (Cookies):</strong> لحفظ تفضيلاتك (مثل اللغة والعملة) وتذكر محتويات سلة التسوق.</li>
-            </ul>
-
-            <h2>2. كيف نستخدم معلوماتك</h2>
-            <p>نحن نستخدم بياناتك للأغراض التالية فقط:</p>
-            <ul>
-                <li>معالجة طلبات الشراء وإتمام عمليات الدفع والتوصيل.</li>
-                <li>إنشاء حسابك وإدارته وتقديم خدمة العملاء والدعم الفني.</li>
-                <li>إرسال الفواتير الإلكترونية وتأكيدات الطلبات وتحديثات الشحن.</li>
-                <li>تحسين المنصة وتطوير خدماتنا بناءً على سلوك المستخدمين.</li>
-                <li>الامتثال للمتطلبات القانونية والتنظيمية في المملكة العربية السعودية، بما في ذلك الفوترة الإلكترونية (فاتورة).</li>
-            </ul>
-
-            <h2>3. مشاركة البيانات والإفصاح عنها</h2>
-            <p>نحن لا نبيع أو نؤجر معلوماتك الشخصية لأي طرف ثالث. قد نشارك بياناتك فقط في الحالات التالية:</p>
-            <ul>
-                <li><strong>مقدمو الخدمة:</strong> مثل شركات الشحن (سبل، أرامكس) لتوصيل طلبك، وشركات الدفع الإلكتروني لتأكيد المعاملات. هؤلاء الشركاء ملزمون بعقود لحماية بياناتك.</li>
-                <li><strong>الالتزام القانوني:</strong> إذا طُلب منا ذلك بموجب القانون أو أمر قضائي ساري المفعول في المملكة العربية السعودية.</li>
-            </ul>
-
-            <h2>4. تخزين البيانات وأمانها</h2>
-            <ul>
-                <li><strong>التخزين:</strong> بياناتك مخزنة على خوادم سحابية آمنة ومشفرة تتمتع بأعلى معايير الحماية.</li>
-                <li><strong>التشفير:</strong> جميع الاتصالات بين تطبيقك وخوادمنا مؤمنة باستخدام بروتوكول SSL/TLS.</li>
-                <li><strong>الاحتفاظ بالبيانات:</strong> نحتفظ ببياناتك طالما كان حسابك نشطًا أو حسب ما تتطلبه القوانين واللوائح السعودية (مثل الاحتفاظ بالفواتير الضريبية لمدة 6 سنوات).</li>
-            </ul>
-
-            <h2>5. حقوق المستخدم</h2>
-            <p>وفقًا لسياسات الخصوصية العالمية والنظام السعودي، يحق لك:</p>
-            <ul>
-                <li><strong>الوصول:</strong> يمكنك طلب نسخة من بياناتك الشخصية المخزنة لدينا في أي وقت.</li>
-                <li><strong>التصحيح:</strong> يمكنك تصحيح أو تحديث معلوماتك الخاطئة أو غير المكتملة من خلال إعدادات حسابك.</li>
-                <li><strong>الحذف:</strong> يمكنك طلب حذف حسابك وجميع بياناتك المرتبطة به نهائياً. سنقوم بذلك خلال 30 يومًا من الطلب، ما لم تكن هناك حاجة للاحتفاظ بها لأغراض قانونية أو ضريبية.</li>
-                <li><strong>إلغاء الاشتراك:</strong> يمكنك إلغاء الاشتراك في الرسائل التسويقية في أي وقت عبر رابط "إلغاء الاشتراك" الموجود في أسفل كل رسالة.</li>
-            </ul>
-
-            <h2>6. ملفات تعريف الارتباط (Cookies)</h2>
-            <p>نستخدم ملفات تعريف الارتباط لتحسين تجربتك، مثل تذكر تفضيلاتك ومحتويات سلة التسوق. يمكنك تعطيلها من خلال إعدادات متصفحك، ولكن هذا قد يؤثر على بعض وظائف المنصة.</p>
-
-            <h2>7. حماية الأطفال</h2>
-            <p>خدماتنا ليست موجهة للأفراد الذين تقل أعمارهم عن 18 عامًا. نحن لا نجمع عن قصد بيانات شخصية من الأطفال. إذا اكتشفنا أن طفلاً قد زودنا ببيانات شخصية، فسنقوم بحذفها فوراً.</p>
-
-            <h2>8. التغييرات على سياسة الخصوصية</h2>
-            <p>قد نقوم بتحديث سياسة الخصوصية هذه من وقت لآخر. سيتم إعلامك بأي تغييرات هامة عبر البريد الإلكتروني المسجل في حسابك أو من خلال إشعار بارز على موقعنا الإلكتروني. تاريخ "آخر تحديث" في الأعلى يشير دائمًا إلى أحدث نسخة.</p>
-
-            <div class="contact-box">
-                <h3>📬 تواصل مع مسؤول حماية البيانات</h3>
-                <p>إذا كان لديك أي استفسار أو شكوى أو طلب يتعلق بخصوصية بياناتك، يمكنك التواصل معنا عبر:</p>
-                <p><strong>شركة درة فارس الشمال للتجارة</strong></p>
-                <p>البريد الإلكتروني: <a href="mailto:info@alshamal-df.com">info@alshamal-df.com</a></p>
-                <p>رقم الجوال: <a href="https://wa.me/966545358773">966545358773+</a></p>
-            </div>
+    <section class="page-hero">
+        <div class="hero-content">
+            <h2 class="page-title">سياسة الخصوصية</h2>
+            <p class="page-subtitle">آخر تحديث: 31 يوليو 2026 - نحن ملتزمون بحماية خصوصيتك وبياناتك</p>
         </div>
     </section>
 
+    <main class="main">
+        <section class="section">
+            <div class="about-text" style="max-width: 1100px; margin: 0 auto; background: #ffffff; border: 1px solid #E5E7EB; border-radius: 20px; padding: 45px; box-shadow: 0 6px 30px rgba(0,0,0,.06); color: #111827; font-size: 16px; line-height: 1.9;">
+                <p>مرحباً بك في موقع وتطبيق <strong>شركة درة فارس الشمال للتجارة</strong> ("نحن"، "المنصة"، "التطبيق"). نحن ملتزمون بحماية خصوصيتك وبياناتك الشخصية. توضح سياسة الخصوصية هذه كيفية جمعنا واستخدامنا ومعالجتنا لبياناتك عند استخدامك لموقعنا الإلكتروني وتطبيق الهاتف المحمول.</p>
+
+                <h2 style="font-size: 26px; font-weight: 800; color: #111827; margin: 25px 0 14px;">1. المعلومات التي نجمعها</h2>
+                <h3 style="font-size: 20px; font-weight: 700; color: #2C4F86; margin: 22px 0 10px;">أ. المعلومات التي تقدمها أنت مباشرة:</h3>
+                <ul style="padding-right: 22px; margin: 10px 0;">
+                    <li><strong>الاسم الكامل:</strong> لإنشاء حسابك وتخصيص تجربتك.</li>
+                    <li><strong>البريد الإلكتروني:</strong> للتواصل معك وإرسال الفواتير وتأكيد الطلبات.</li>
+                    <li><strong>رقم الجوال:</strong> للتواصل بخصوص طلباتك والخدمات المقدمة.</li>
+                    <li><strong>العنوان (المدينة، الحي، الشارع):</strong> لتوصيل الطلبات إليك بدقة.</li>
+                    <li><strong>بيانات الدفع وإيصالات التحويل:</strong> لتأكيد عملية الدفع وإتمام طلبك.</li>
+                </ul>
+
+                <h3 style="font-size: 20px; font-weight: 700; color: #2C4F86; margin: 22px 0 10px;">ب. المعلومات التي يتم جمعها تلقائياً:</h3>
+                <ul style="padding-right: 22px; margin: 10px 0;">
+                    <li><strong>بيانات الجهاز:</strong> نوع الجهاز، نظام التشغيل، وإصدار المتصفح لتحسين توافق التطبيق.</li>
+                    <li><strong>بيانات الاستخدام:</strong> الصفحات التي تزورها، والمنتجات التي تشاهدها، والوقت الذي تقضيه في التطبيق، لتحسين تجربتك وتقديم توصيات تناسب اهتماماتك.</li>
+                    <li><strong>ملفات تعريف الارتباط (Cookies):</strong> لحفظ تفضيلاتك (مثل اللغة والعملة) وتذكر محتويات سلة التسوق.</li>
+                </ul>
+
+                <h2 style="font-size: 26px; font-weight: 800; color: #111827; margin: 25px 0 14px;">2. كيف نستخدم معلوماتك</h2>
+                <p>نحن نستخدم بياناتك للأغراض التالية فقط:</p>
+                <ul style="padding-right: 22px; margin: 10px 0;">
+                    <li>معالجة طلبات الشراء وإتمام عمليات الدفع والتوصيل.</li>
+                    <li>إنشاء حسابك وإدارته وتقديم خدمة العملاء والدعم الفني.</li>
+                    <li>إرسال الفواتير الإلكترونية وتأكيدات الطلبات وتحديثات الشحن.</li>
+                    <li>تحسين المنصة وتطوير خدماتنا بناءً على سلوك المستخدمين.</li>
+                    <li>الامتثال للمتطلبات القانونية والتنظيمية في المملكة العربية السعودية، بما في ذلك الفوترة الإلكترونية (فاتورة).</li>
+                </ul>
+
+                <h2 style="font-size: 26px; font-weight: 800; color: #111827; margin: 25px 0 14px;">3. مشاركة البيانات والإفصاح عنها</h2>
+                <p>نحن لا نبيع أو نؤجر معلوماتك الشخصية لأي طرف ثالث. قد نشارك بياناتك فقط في الحالات التالية:</p>
+                <ul style="padding-right: 22px; margin: 10px 0;">
+                    <li><strong>مقدمو الخدمة:</strong> مثل شركات الشحن (سبل، أرامكس) لتوصيل طلبك، وشركات الدفع الإلكتروني لتأكيد المعاملات. هؤلاء الشركاء ملزمون بعقود لحماية بياناتك.</li>
+                    <li><strong>الالتزام القانوني:</strong> إذا طُلب منا ذلك بموجب القانون أو أمر قضائي ساري المفعول في المملكة العربية السعودية.</li>
+                </ul>
+
+                <h2 style="font-size: 26px; font-weight: 800; color: #111827; margin: 25px 0 14px;">4. تخزين البيانات وأمانها</h2>
+                <ul style="padding-right: 22px; margin: 10px 0;">
+                    <li><strong>التخزين:</strong> بياناتك مخزنة على خوادم سحابية آمنة ومشفرة تتمتع بأعلى معايير الحماية.</li>
+                    <li><strong>التشفير:</strong> جميع الاتصالات بين تطبيقك وخوادمنا مؤمنة باستخدام بروتوكول SSL/TLS.</li>
+                    <li><strong>الاحتفاظ بالبيانات:</strong> نحتفظ ببياناتك طالما كان حسابك نشطًا أو حسب ما تتطلبه القوانين واللوائح السعودية (مثل الاحتفاظ بالفواتير الضريبية لمدة 6 سنوات).</li>
+                </ul>
+
+                <h2 style="font-size: 26px; font-weight: 800; color: #111827; margin: 25px 0 14px;">5. حقوق المستخدم</h2>
+                <p>وفقًا لسياسات الخصوصية العالمية والنظام السعودي، يحق لك:</p>
+                <ul style="padding-right: 22px; margin: 10px 0;">
+                    <li><strong>الوصول:</strong> يمكنك طلب نسخة من بياناتك الشخصية المخزنة لدينا في أي وقت.</li>
+                    <li><strong>التصحيح:</strong> يمكنك تصحيح أو تحديث معلوماتك الخاطئة أو غير المكتملة من خلال إعدادات حسابك.</li>
+                    <li><strong>الحذف:</strong> يمكنك طلب حذف حسابك وجميع بياناتك المرتبطة به نهائياً. سنقوم بذلك خلال 30 يومًا من الطلب، ما لم تكن هناك حاجة للاحتفاظ بها لأغراض قانونية أو ضريبية.</li>
+                    <li><strong>إلغاء الاشتراك:</strong> يمكنك إلغاء الاشتراك في الرسائل التسويقية في أي وقت عبر رابط "إلغاء الاشتراك" الموجود في أسفل كل رسالة.</li>
+                </ul>
+
+                <h2 style="font-size: 26px; font-weight: 800; color: #111827; margin: 25px 0 14px;">6. ملفات تعريف الارتباط (Cookies)</h2>
+                <p>نستخدم ملفات تعريف الارتباط لتحسين تجربتك، مثل تذكر تفضيلاتك ومحتويات سلة التسوق. يمكنك تعطيلها من خلال إعدادات متصفحك، ولكن هذا قد يؤثر على بعض وظائف المنصة.</p>
+
+                <h2 style="font-size: 26px; font-weight: 800; color: #111827; margin: 25px 0 14px;">7. حماية الأطفال</h2>
+                <p>خدماتنا ليست موجهة للأفراد الذين تقل أعمارهم عن 18 عامًا. نحن لا نجمع عن قصد بيانات شخصية من الأطفال. إذا اكتشفنا أن طفلاً قد زودنا ببيانات شخصية، فسنقوم بحذفها فوراً.</p>
+
+                <h2 style="font-size: 26px; font-weight: 800; color: #111827; margin: 25px 0 14px;">8. التغييرات على سياسة الخصوصية</h2>
+                <p>قد نقوم بتحديث سياسة الخصوصية هذه من وقت لآخر. سيتم إعلامك بأي تغييرات هامة عبر البريد الإلكتروني المسجل في حسابك أو من خلال إشعار بارز على موقعنا الإلكتروني. تاريخ "آخر تحديث" في الأعلى يشير دائمًا إلى أحدث نسخة.</p>
+
+                <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 16px; padding: 25px 30px; margin-top: 30px; text-align: center;">
+                    <h3 style="color: #0369A1; margin-top: 0;">📬 تواصل مع مسؤول حماية البيانات</h3>
+                    <p>إذا كان لديك أي استفسار أو شكوى أو طلب يتعلق بخصوصية بياناتك، يمكنك التواصل معنا عبر:</p>
+                    <p><strong>شركة درة فارس الشمال للتجارة</strong></p>
+                    <p>البريد الإلكتروني: <a href="mailto:info@alshamal-df.com" style="color: #0EA5E9; font-weight: 700; text-decoration: none;">info@alshamal-df.com</a></p>
+                    <p>رقم الجوال: <a href="https://wa.me/966545358773" style="color: #0EA5E9; font-weight: 700; text-decoration: none;">966545358773+</a></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
     <footer class="footer">
         <div class="container">
-            <div class="footer-bottom" style="text-align:center;padding-top:25px;">
+            <div class="footer-bottom" style="text-align: center; padding-top: 25px;">
                 <p>© 2024 شركة درة فارس الشمال. جميع الحقوق محفوظة.</p>
                 <div>
                     <a href="privacy.html">سياسة الخصوصية</a> | 
@@ -198,6 +344,20 @@
         </div>
     </footer>
 
+    <div class="install-prompt show" id="installPrompt" onclick="installPWA()">
+        <span>💻 حمّل تطبيق درة فارس الشمال!</span>
+        <button class="close-prompt" onclick="event.stopPropagation();dismissInstallPrompt()" aria-label="إغلاق">✕</button>
+    </div>
+
+    <a href="https://wa.me/966568717449?text=مرحباً%20شركة%20درة%20فارس%20الشمال%2C%20أرغب%20في%20الاستفسار%20عن%20منتجاتكم" class="whatsapp-float" target="_blank" rel="noopener" aria-label="تواصل عبر واتساب">💬</a>
+
+    <div class="toast" id="toast">
+        <div class="toast-icon" id="toastIcon">✅</div>
+        <div class="toast-text" id="toastMsg">تمت الإضافة للسلة</div>
+    </div>
+
     <script src="main.js"></script>
+    <script src="chatbot-ai.js"></script>
+    <script src="site-content.js"></script>
 </body>
 </html>
