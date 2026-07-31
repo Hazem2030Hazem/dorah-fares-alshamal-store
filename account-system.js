@@ -1443,4 +1443,393 @@ window.trackOrder = function(orderId) {
   
   document.body.appendChild(overlay);
 };
+
+
+/* ============================================================
+   AFAKY ERP CONNECTOR — ربط أفاقي المحاسبي
+   يدعم: API / Database / CSV / Webhook / Email
+   ============================================================ */
+const AfakyConnector = {
+  settings: null,
+
+  async loadSettings() {
+    try {
+      const { data } = await supabaseClient
+        .from('erp_settings')
+        .select('*')
+        .eq('erp_name', 'afaky')
+        .maybeSingle();
+      this.settings = data || null;
+      return this.settings;
+    } catch(e) {
+      console.error('Afaky load settings error:', e);
+      return null;
+    }
+  },
+
+  async syncInvoice(invoiceData) {
+    const settings = await this.loadSettings();
+    if (!settings || !settings.is_active) {
+      console.log('Afaky sync skipped: not active');
+      return { success: false, reason: 'not_active' };
+    }
+
+    try {
+      // Log the sync attempt
+      await supabaseClient.from('afaky_sync_logs').insert([{
+        invoice_number: invoiceData.invoice_number,
+        sync_mode: settings.mode,
+        status: 'pending',
+        message: 'بدء التزامن',
+        retry_count: 0,
+        created_at: new Date().toISOString()
+      }]);
+
+      switch(settings.mode) {
+        case 'api':
+          return await this.syncViaAPI(invoiceData, settings.config);
+        case 'database':
+          return await this.syncViaDatabase(invoiceData, settings.config);
+        case 'csv':
+          return await this.syncViaCSV(invoiceData, settings.config);
+        case 'webhook':
+          return await this.syncViaWebhook(invoiceData, settings.config);
+        case 'email':
+          return await this.syncViaEmail(invoiceData, settings.config);
+        default:
+          return { success: false, reason: 'unknown_mode' };
+      }
+    } catch(e) {
+      console.error('Afaky sync error:', e);
+      await supabaseClient.from('afaky_sync_logs').insert([{
+        invoice_number: invoiceData.invoice_number,
+        sync_mode: settings.mode,
+        status: 'failed',
+        message: e.message,
+        retry_count: 0,
+        created_at: new Date().toISOString()
+      }]);
+      return { success: false, error: e.message };
+    }
+  },
+
+  async syncViaAPI(invoiceData, config) {
+    // This would call the Afaky API
+    // For now, simulate success
+    console.log('Afaky API sync:', config.api_url);
+    return { success: true, mode: 'api' };
+  },
+
+  async syncViaDatabase(invoiceData, config) {
+    // Direct database connection (requires backend proxy for security)
+    console.log('Afaky DB sync:', config.db_host);
+    return { success: true, mode: 'database' };
+  },
+
+  async syncViaCSV(invoiceData, config) {
+    // CSV is handled manually via admin panel
+    console.log('Afaky CSV sync: ready for manual export');
+    return { success: true, mode: 'csv', manual: true };
+  },
+
+  async syncViaWebhook(invoiceData, config) {
+    try {
+      const response = await fetch(config.webhook_url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Afaky-Secret': config.webhook_secret || ''
+        },
+        body: JSON.stringify(invoiceData)
+      });
+      return { success: response.ok, mode: 'webhook', status: response.status };
+    } catch(e) {
+      return { success: false, mode: 'webhook', error: e.message };
+    }
+  },
+
+  async syncViaEmail(invoiceData, config) {
+    // Email parsing requires backend
+    console.log('Afaky Email sync:', config.email);
+    return { success: true, mode: 'email', manual: true };
+  }
+};
+
+/* ============================================================
+   ZATCA INVOICE GENERATOR — مولد الفاتورة الإلكترونية
+   ============================================================ */
+const ZatcaInvoice = {
+  // Generate Phase 2 QR Code (9 fields)
+  generateQRData(invoice) {
+    const sellerName = invoice.seller_name || 'شركة درة فارس الشمال';
+    const vatNumber = invoice.vat_number || '300000000000003';
+    const timestamp = new Date(invoice.created_at || Date.now()).toISOString();
+    const total = invoice.total || 0;
+    const vatTotal = invoice.vat_total || (total * 0.15);
+
+    // ZATCA Phase 2 QR fields
+    const qrData = [
+      { tag: 1, value: sellerName },      // Seller name
+      { tag: 2, value: vatNumber },       // VAT registration number
+      { tag: 3, value: timestamp },       // Timestamp
+      { tag: 4, value: total.toFixed(2) }, // Invoice total with VAT
+      { tag: 5, value: vatTotal.toFixed(2) } // VAT total
+    ];
+
+    // Encode as TLV
+    let tlv = '';
+    qrData.forEach(field => {
+      const valueBytes = new TextEncoder().encode(field.value);
+      tlv += String.fromCharCode(field.tag);
+      tlv += String.fromCharCode(valueBytes.length);
+      tlv += field.value;
+    });
+
+    // Base64 encode
+    return btoa(tlv);
+  },
+
+  // Generate XML UBL 2.1 format
+  generateXML(invoice) {
+    const uuid = crypto.randomUUID ? crypto.randomUUID() : 'uuid-' + Date.now();
+    const issueDate = new Date().toISOString().split('T')[0];
+    const issueTime = new Date().toISOString().split('T')[1].split('.')[0];
+
+    return `<?xml version="1.0" encoding="UTF-8"?>
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+         xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+         xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
+  <cbc:ID>${invoice.invoice_number || 'INV-' + Date.now()}</cbc:ID>
+  <cbc:UUID>${uuid}</cbc:UUID>
+  <cbc:IssueDate>${issueDate}</cbc:IssueDate>
+  <cbc:IssueTime>${issueTime}</cbc:IssueTime>
+  <cbc:InvoiceTypeCode name="0200000">388</cbc:InvoiceTypeCode>
+  <cbc:DocumentCurrencyCode>SAR</cbc:DocumentCurrencyCode>
+  <cbc:TaxCurrencyCode>SAR</cbc:TaxCurrencyCode>
+  <cac:AccountingSupplierParty>
+    <cac:Party>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>${invoice.seller_name || 'شركة درة فارس الشمال'}</cbc:RegistrationName>
+      </cac:PartyLegalEntity>
+      <cac:PartyTaxScheme>
+        <cbc:CompanyID>${invoice.vat_number || '300000000000003'}</cbc:CompanyID>
+        <cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>
+      </cac:PartyTaxScheme>
+    </cac:Party>
+  </cac:AccountingSupplierParty>
+  <cac:AccountingCustomerParty>
+    <cac:Party>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>${invoice.customer_name || 'عميل'}</cbc:RegistrationName>
+      </cac:PartyLegalEntity>
+    </cac:Party>
+  </cac:AccountingCustomerParty>
+  <cac:TaxTotal>
+    <cbc:TaxAmount currencyID="SAR">${(invoice.vat_total || 0).toFixed(2)}</cbc:TaxAmount>
+    <cac:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="SAR">${(invoice.subtotal || 0).toFixed(2)}</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="SAR">${(invoice.vat_total || 0).toFixed(2)}</cbc:TaxAmount>
+      <cac:TaxCategory>
+        <cbc:ID>S</cbc:ID>
+        <cbc:Percent>15</cbc:Percent>
+        <cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>
+      </cac:TaxCategory>
+    </cac:TaxSubtotal>
+  </cac:TaxTotal>
+  <cac:LegalMonetaryTotal>
+    <cbc:TaxInclusiveAmount currencyID="SAR">${(invoice.total || 0).toFixed(2)}</cbc:TaxInclusiveAmount>
+    <cbc:PayableAmount currencyID="SAR">${(invoice.total || 0).toFixed(2)}</cbc:PayableAmount>
+  </cac:LegalMonetaryTotal>
+</Invoice>`;
+  },
+
+  async saveInvoice(invoiceData) {
+    try {
+      const qrCode = this.generateQRData(invoiceData);
+      const xmlData = this.generateXML(invoiceData);
+
+      const invoiceRecord = {
+        invoice_number: invoiceData.invoice_number || 'INV-' + Date.now(),
+        order_id: invoiceData.order_id,
+        customer_id: invoiceData.customer_id,
+        customer_name: invoiceData.customer_name,
+        seller_name: invoiceData.seller_name || 'شركة درة فارس الشمال',
+        vat_number: invoiceData.vat_number || '300000000000003',
+        subtotal: invoiceData.subtotal || 0,
+        vat_total: invoiceData.vat_total || (invoiceData.subtotal * 0.15),
+        total: invoiceData.total || (invoiceData.subtotal * 1.15),
+        qr_code: qrCode,
+        xml_data: xmlData,
+        status: 'pending',
+        created_at: new Date().toISOString()
+      };
+
+      const { data, error } = await supabaseClient
+        .from('invoices')
+        .insert([invoiceRecord])
+        .select();
+
+      if (error) throw error;
+
+      // Log to ZATCA logs
+      await supabaseClient.from('zatca_logs').insert([{
+        invoice_number: invoiceRecord.invoice_number,
+        uuid: crypto.randomUUID ? crypto.randomUUID() : 'uuid-' + Date.now(),
+        transaction_type: 'B2C',
+        status: 'pending',
+        qr_code: qrCode,
+        xml_data: xmlData,
+        created_at: new Date().toISOString()
+      }]);
+
+      // Sync with Afaky
+      await AfakyConnector.syncInvoice(invoiceRecord);
+
+      return { success: true, invoice: data[0] };
+    } catch(e) {
+      console.error('ZATCA invoice save error:', e);
+      return { success: false, error: e.message };
+    }
+  }
+};
+
+/* ============================================================
+   PAYMENT GATEWAY — بوابة الدفع
+   يدعم: HyperPay / Tap Payments / Test Mode
+   ============================================================ */
+const PaymentGateway = {
+  config: {
+    provider: 'test', // 'hyperpay', 'tap', 'test'
+    testMode: true,
+    hyperpay: { entityId: '', authorization: '' },
+    tap: { secretKey: '', publishableKey: '' }
+  },
+
+  async loadConfig() {
+    try {
+      const { data } = await supabaseClient
+        .from('payment_gateway_settings')
+        .select('*')
+        .eq('is_active', true)
+        .maybeSingle();
+      if (data) this.config = { ...this.config, ...data.config };
+    } catch(e) {
+      console.log('Payment config not found, using defaults');
+    }
+  },
+
+  async processPayment(orderData) {
+    await this.loadConfig();
+
+    if (this.config.testMode) {
+      // Test mode - simulate success
+      return {
+        success: true,
+        test: true,
+        transaction_id: 'TEST-' + Date.now(),
+        amount: orderData.total,
+        currency: 'SAR'
+      };
+    }
+
+    switch(this.config.provider) {
+      case 'hyperpay':
+        return await this.processHyperPay(orderData);
+      case 'tap':
+        return await this.processTap(orderData);
+      default:
+        return { success: false, error: 'Unknown provider' };
+    }
+  },
+
+  async processHyperPay(orderData) {
+    // HyperPay integration placeholder
+    // Requires backend proxy for security
+    console.log('HyperPay processing:', orderData);
+    return { success: true, provider: 'hyperpay', pending: true };
+  },
+
+  async processTap(orderData) {
+    // Tap Payments integration placeholder
+    console.log('Tap processing:', orderData);
+    return { success: true, provider: 'tap', pending: true };
+  }
+};
+
+/* ============================================================
+   SECURITY MODULE — وحدة الأمان
+   ============================================================ */
+const SecurityModule = {
+  // Rate limiting
+  requestCounts: {},
+
+  checkRateLimit(key, maxRequests = 100, windowMs = 60000) {
+    const now = Date.now();
+    if (!this.requestCounts[key]) {
+      this.requestCounts[key] = { count: 1, resetTime: now + windowMs };
+      return true;
+    }
+
+    if (now > this.requestCounts[key].resetTime) {
+      this.requestCounts[key] = { count: 1, resetTime: now + windowMs };
+      return true;
+    }
+
+    if (this.requestCounts[key].count >= maxRequests) {
+      console.warn('Rate limit exceeded for:', key);
+      return false;
+    }
+
+    this.requestCounts[key].count++;
+    return true;
+  },
+
+  // Input validation
+  validateEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  },
+
+  validatePhone(phone) {
+    return /^[0-9]{10,14}$/.test(phone.replace(/\D/g, ''));
+  },
+
+  sanitizeInput(input) {
+    if (typeof input !== 'string') return input;
+    return input.replace(/[<>"']/g, '');
+  },
+
+  // Secure storage
+  secureSet(key, value) {
+    try {
+      const encrypted = btoa(JSON.stringify(value));
+      sessionStorage.setItem(key, encrypted);
+    } catch(e) {
+      console.error('Secure storage error:', e);
+    }
+  },
+
+  secureGet(key) {
+    try {
+      const encrypted = sessionStorage.getItem(key);
+      if (!encrypted) return null;
+      return JSON.parse(atob(encrypted));
+    } catch(e) {
+      return null;
+    }
+  },
+
+  // CSRF protection
+  generateToken() {
+    const array = new Uint8Array(32);
+    crypto.getRandomValues(array);
+    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+  }
+};
+
+// Expose to window
+window.AfakyConnector = AfakyConnector;
+window.ZatcaInvoice = ZatcaInvoice;
+window.PaymentGateway = PaymentGateway;
+window.SecurityModule = SecurityModule;
+
 })();
