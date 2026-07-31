@@ -355,3 +355,96 @@ body::before{
   padding:4px 10px;border-radius:8px;white-space:nowrap;
 }
 
+/* ===== تبويبات الإعدادات والمالية — شبكة نماذج بعمودين ===== */
+.admin-form-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:0 16px;
+}
+.admin-form-grid .form-group-full{grid-column:1/-1}
+button.btn-edit[disabled]{opacity:0.4;cursor:default}
+@media(max-width:768px){
+  .admin-form-grid{grid-template-columns:1fr}
+}
+
+/* ===== تلميح صفحة الدخول ===== */
+.login-hint{
+  margin-top:14px;text-align:center;
+  color:var(--admin-muted);font-size:11px;line-height:1.8;
+}
+
+/* ===== 💳 بوابات الدفع ===== */
+.gateways-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+.gateway-card{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:16px;
+  padding:20px;
+  backdrop-filter:blur(10px);
+  transition:all 0.3s;
+}
+.gateway-card:hover{
+  border-color:rgba(14,165,233,0.35);
+  box-shadow:0 12px 40px rgba(14,165,233,0.12);
+}
+.gateway-card-head{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:10px;
+  margin-bottom:14px;
+}
+.gateway-name{font-size:16px;font-weight:800;color:#fff}
+.gateway-code{font-size:11px;color:var(--admin-muted);direction:ltr;text-align:right}
+.gateway-badges{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.gw-badge{
+  font-size:11px;font-weight:800;padding:4px 10px;border-radius:8px;white-space:nowrap;
+}
+.gw-badge.on{
+  color:#34d399;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3);
+}
+.gw-badge.off{
+  color:#94a3b8;background:rgba(148,163,184,0.1);border:1px solid rgba(148,163,184,0.25);
+}
+.gw-badge.test{
+  color:#fbbf24;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);
+}
+.gw-badge.live{
+  color:#f87171;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);
+  box-shadow:0 0 15px rgba(239,68,68,0.15);
+}
+.gateway-actions{display:flex;gap:8px;flex-wrap:wrap}
+.gateway-form{
+  margin-top:16px;padding-top:16px;
+  border-top:1px dashed rgba(14,165,233,0.25);
+}
+.gw-secret-wrap{position:relative}
+.gw-secret-wrap input{padding-left:44px}
+.gw-eye{
+  position:absolute;top:50%;left:10px;transform:translateY(-50%);
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+  border-radius:8px;padding:4px 8px;cursor:pointer;font-size:13px;
+  color:var(--admin-text);transition:all 0.3s;font-family:inherit;
+}
+.gw-eye:hover,.gw-eye.on{background:rgba(14,165,233,0.2);border-color:rgba(14,165,233,0.4)}
+.gw-masked-hint{
+  display:block;margin-top:4px;font-weight:400;font-size:11px;color:#fbbf24;
+}
+.gw-live-warning{
+  background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);
+  border-radius:10px;padding:10px 12px;margin-top:12px;
+  color:#f87171;font-size:12px;font-weight:800;line-height:1.7;
+}
+.gateway-auth-note{
+  grid-column:1/-1;
+  background:rgba(14,165,233,0.07);border:1px solid rgba(14,165,233,0.3);
+  border-radius:14px;padding:22px;text-align:center;
+  color:#7dd3fc;font-size:13px;font-weight:700;line-height:2;
+}
+.gw-err-detail{
+  margin-top:8px;font-size:11px;font-weight:400;color:var(--admin-muted);direction:ltr;
+}
+@media(max-width:992px){
+  .gateways-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+  .gateways-grid{grid-template-columns:1fr}
+}
+

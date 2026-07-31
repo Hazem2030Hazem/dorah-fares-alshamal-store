@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نتيجة الدفع | شركة درة فارس الشمال</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #0f0c29, #1a1a2e); color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 20px; }
+        .result-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 40px 30px; max-width: 550px; width: 100%; backdrop-filter: blur(10px); }
+        .result-icon { font-size: 70px; margin-bottom: 15px; }
+        .result-card h1 { font-size: 26px; font-weight: 900; margin-bottom: 8px; }
+        .result-card p { color: rgba(255,255,255,0.7); font-size: 14px; margin-bottom: 18px; line-height: 1.7; }
+        .success h1 { color: #10B981; }
+        .failed h1 { color: #EF4444; }
+
+        .order-number { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); padding: 12px; border-radius: 12px; font-size: 16px; font-weight: 800; color: #10B981; margin-bottom: 15px; }
+        .status-note { font-size: 12px; color: rgba(255,255,255,0.45); margin-bottom: 18px; }
+
+        .btn { display: inline-block; padding: 12px 25px; border-radius: 12px; font-weight: 700; text-decoration: none; margin: 5px; transition: 0.3s; font-size: 14px; }
+        .btn-primary { background: linear-gradient(135deg, #10B981, #059669); color: #fff; }
+        .btn-secondary { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+        .btn-retry { background: linear-gradient(135deg, #F59E0B, #D97706); color: #fff; }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-whatsapp { background: #25D366; color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="result-card" id="resultCard">
+        <div class="result-icon" id="resultIcon">⏳</div>
+        <h1 id="resultTitle">جاري معالجة نتيجة الدفع...</h1>
+        <p id="resultMsg">يرجى الانتظار لحظة</p>
+        <div class="order-number" id="orderNumber" style="display:none"></div>
+        <div class="status-note" id="statusNote"></div>
+        <div id="resultButtons"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="main.js"></script>
+    <script>
+        (function() {
+            var params = new URLSearchParams(window.location.search);
+            var status = params.get('status'); // success | failed
+            var orderId = params.get('order') || '';
+            var gateway = params.get('gateway') || '';
+
+            var card = document.getElementById('resultCard');
+            var icon = document.getElementById('resultIcon');
+            var title = document.getElementById('resultTitle');
+            var msg = document.getElementById('resultMsg');
+            var orderBox = document.getElementById('orderNumber');
+            var note = document.getElementById('statusNote');
+            var buttons = document.getElementById('resultButtons');
+
+            var whatsappLink = 'https://wa.me/966545358773?text=' + encodeURIComponent('مرحباً، لدي استفسار عن الطلب ' + (orderId || ''));
+
+            if (orderId) {
+                orderBox.style.display = 'block';
+                orderBox.textContent = 'رقم الطلب: ' + orderId;
+            }
+
+            // ✅ حالة النجاح: تحديث الطلب في Supabase + عرض التأكيد
+            async function handleSuccess() {
+                card.className = 'result-card success';
+                icon.textContent = '🎉';
+                title.textContent = 'تم الدفع بنجاح!';
+                msg.textContent = 'شكراً لك — تم استلام دفعتك' + (gateway ? ' عبر ' + gateway : '') + ' وسيتم تجهيز طلبك قريباً.';
+
+                // تحديث حالة الطلب في قاعدة البيانات — try/catch شامل ولا يكسر العرض
+                var updateNote = '';
+                try {
+                    if (orderId && typeof supabaseClient !== 'undefined' && supabaseClient) {
+                        var upd = await supabaseClient.from('store_orders')
+                            .update({ status: 'paid', payment_status: 'paid' })
+                            .eq('id', orderId);
+                        if (upd.error) {
+                            // فولباك: عمود payment_status قد لا يكون موجوداً — نحدّث status فقط
+                            var upd2 = await supabaseClient.from('store_orders')
+                                .update({ status: 'paid' })
+                                .eq('id', orderId);
+                            if (upd2.error) updateNote = 'تعذر تحديث حالة الطلب تلقائياً — سيتم التأكيد يدوياً';
+                        }
+                    }
+                } catch (e) {
+                    updateNote = 'تعذر تحديث حالة الطلب تلقائياً — سيتم التأكيد يدوياً';
+                }
+                if (updateNote) note.textContent = updateNote;
+
+                // 🧹 إفراغ السلة بعد الدفع الناجح
+                try { localStorage.removeItem('doraCart'); } catch (e) {}
+
+                buttons.innerHTML =
+                    '<a href="track.html" class="btn btn-primary">📦 تتبع الطلب</a>' +
+                    '<a href="account.html" class="btn btn-secondary">🧾 طلباتي وفواتيري</a>' +
+                    '<a href="' + whatsappLink + '" class="btn btn-whatsapp" target="_blank">💬 واتساب</a>' +
+                    '<br><a href="index.html" class="btn btn-secondary">🏠 العودة للرئيسية</a>';
+            }
+
+            // ❌ حالة الفشل: رسالة + إعادة محاولة + واتساب
+            function handleFailed() {
+                card.className = 'result-card failed';
+                icon.textContent = '❌';
+                title.textContent = 'فشلت عملية الدفع';
+                msg.textContent = 'لم يتم خصم أي مبلغ. يمكنك إعادة المحاولة أو اختيار طريقة دفع أخرى — طلبك محفوظ ولم يُلغَ.';
+                if (gateway) note.textContent = 'البوابة: ' + gateway;
+                buttons.innerHTML =
+                    '<a href="checkout.html" class="btn btn-retry">🔄 إعادة المحاولة</a>' +
+                    '<a href="' + whatsappLink + '" class="btn btn-whatsapp" target="_blank">💬 تواصل واتساب</a>' +
+                    '<br><a href="index.html" class="btn btn-secondary">🏠 العودة للرئيسية</a>';
+            }
+
+            // توجيه حسب الحالة — أي قيمة غير success تعامل كفشل
+            if (status === 'success') {
+                handleSuccess();
+            } else {
+                handleFailed();
+            }
+        })();
+    </script>
+    <script src="chatbot-ai.js"></script>
+    <script src="site-content.js"></script>
+</body>
+</html>

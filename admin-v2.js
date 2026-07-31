@@ -26,7 +26,7 @@ function adminToast(m,t){ if(typeof showToast==='function')showToast(m,t);else a
 /* ========== سجل التدقيق — تسجيل صامت لا يكسر شيئاً لو الجدول غير موجود ========== */
 window.logAudit=function(action,details){
   try{
-    supabaseClient.from('audit_log').insert([{action:String(action||''),details:String(details||'')}]).then(function(){},function(){});
+    supabaseClient.from('audit_logs').insert([{action:String(action||''),details:String(details||'')}]).then(function(){},function(){});
   }catch(_){}
 };
 
@@ -49,24 +49,46 @@ async function currentUser(){ const {data}=await supabaseClient.auth.getUser();r
 async function isAdminUser(user){ if(!user)return false;const{data}=await supabaseClient.from('profiles').select('role').eq('id',user.id).maybeSingle();return data?.role==='admin'; }
 
 /* ========== LOGIN ========== */
+function openAdminPanel(){
+  document.getElementById('loginPage').style.display='none';
+  document.getElementById('dashboardLayout').classList.add('active');
+  if(typeof loadProducts==='function')loadProducts();
+  if(typeof loadSettings==='function')loadSettings();
+  loadAdminV2Data();
+}
+
+async function hasAuthSession(){
+  try{
+    var r=await supabaseClient.auth.getSession();
+    return !!(r&&r.data&&r.data.session);
+  }catch(_){return false;}
+}
+
 window.handleLogin=async function(e){
   e.preventDefault();
   var email=document.getElementById('username').value.trim(),password=document.getElementById('password').value;
   var btn=e.target.querySelector('button'),err=document.getElementById('errorMsg');
   err.style.display='none';btn.disabled=true;btn.textContent='⏳ جاري التحقق...';
-  var{data,error}=await supabaseClient.auth.signInWithPassword({email,password});
-  if(error||!data.user){btn.disabled=false;btn.textContent='دخول';err.textContent='❌ بيانات غير صحيحة';err.style.display='block';return false;}
-  if(!(await isAdminUser(data.user))){await supabaseClient.auth.signOut();btn.disabled=false;btn.textContent='دخول';err.textContent='❌ لا تملك صلاحية';err.style.display='block';return false;}
-  document.getElementById('loginPage').style.display='none';
-  document.getElementById('dashboardLayout').classList.add('active');
-  logAudit('تسجيل دخول','دخول المدير إلى لوحة الإدارة: '+email);
-  if(typeof loadProducts==='function')loadProducts();
-  if(typeof loadSettings==='function')loadSettings();
-  loadAdminV2Data();
+  function loginFail(msg){btn.disabled=false;btn.textContent='دخول إلى لوحة التحكم';err.textContent=msg;err.style.display='block';}
+  /* دخول آمن عبر Supabase Auth + فحص صلاحية الأدمن (profiles.role==='admin') — لا يوجد أي مسار بديل، واستعادة الجلسة تعتمد على getSession() فقط */
+  try{
+    var{data,error}=await supabaseClient.auth.signInWithPassword({email:email,password:password});
+    if(error||!data||!data.user){loginFail('❌ بيانات الدخول غير صحيحة أو لم يُنشأ مستخدم الأدمن بعد (Authentication → Users)');return false;}
+    if(!(await isAdminUser(data.user))){try{await supabaseClient.auth.signOut();}catch(_){}loginFail('❌ لا تملك صلاحية الأدمن');return false;}
+    logAudit('تسجيل دخول','دخول المدير إلى لوحة الإدارة عبر Supabase Auth: '+email);
+    openAdminPanel();
+  }catch(ex){
+    console.warn('handleLogin:',ex);
+    loginFail('❌ بيانات الدخول غير صحيحة أو لم يُنشأ مستخدم الأدمن بعد (Authentication → Users)');
+  }
   return false;
 };
 
-window.logout=async function(){await supabaseClient.auth.signOut();localStorage.clear();location.reload();};
+window.logout=async function(){
+  try{await supabaseClient.auth.signOut();}catch(_){}
+  try{localStorage.clear();}catch(_){}
+  location.reload();
+};
 
 window.showTab=function(tabName){
   document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
@@ -95,10 +117,14 @@ window.showTab=function(tabName){
   if(tabName==='einvoice'){loadZatcaSettings();loadZatcaInvoices();}
   if(tabName==='bank_accounts')loadBankAccounts();
   if(tabName==='payment_methods')loadPaymentMethodsAdmin();
+  if(tabName==='gateways')loadPaymentGateways();
   if(tabName==='shipping')loadShippingRates();
   if(tabName==='invoices')loadInvoices();
   if(tabName==='files')loadSiteFiles();
-  var tabTitles={dashboard:'لوحة المؤشرات',auditLog:'سجل التدقيق',einvoice:'الفوترة الإلكترونية'};
+  if(tabName==='company_info')loadCompanyInfo();
+  if(tabName==='gov_docs')loadGovDocs();
+  if(tabName==='marketing')loadMarketing();
+  var tabTitles={dashboard:'لوحة المؤشرات',auditLog:'سجل التدقيق',einvoice:'الفوترة الإلكترونية',bank_accounts:'الحسابات البنكية',payment_methods:'طرق الدفع',gateways:'بوابات الدفع',shipping:'الشحن',settings:'الإعدادات العامة',company_info:'بيانات الشركة',gov_docs:'التوثيق الحكومي',marketing:'التسويق',files:'الملفات'};
   document.getElementById('pageTitle').textContent=tabTitles[tabName]||tabName;
 };
 
@@ -306,47 +332,449 @@ window.loadMessages=async function(){
   c.innerHTML=data.map(m=>`<div class="admin-data-card"><strong>${esc(m.name)}</strong>: ${esc(m.message).substring(0,100)}</div>`).join('');
 };
 
-window.loadSettings=async function(){};
+/* ========== مساعدات site_settings — قراءة/دمج/حفظ بدون مسح باقي المفاتيح ========== */
+function formVal(id){var el=document.getElementById(id);return el?el.value.trim():'';}
+function formSet(id,v){var el=document.getElementById(id);if(el)el.value=(v===null||v===undefined?'':v);}
+async function siteSettingsGet(key){
+  try{
+    var{data}=await supabaseClient.from('site_settings').select('settings').eq('id',1).maybeSingle();
+    var all=(data&&data.settings)||{};
+    if(key==='_all_')return {all:all,value:{}};
+    var v=all[key];
+    if(typeof v==='string'){try{v=JSON.parse(v);}catch(_){v=null;}}
+    return {all:all,value:(v&&typeof v==='object')?v:{}};
+  }catch(e){console.warn('siteSettingsGet:',e);return {all:{},value:{}};}
+}
+async function siteSettingsSave(key,value,auditAction,auditDetails){
+  try{
+    var r=await siteSettingsGet('_all_');
+    var all=r.all||{};
+    all[key]=value;
+    var{error}=await supabaseClient.from('site_settings').upsert([{id:1,settings:all}]);
+    if(error){adminToast('❌ خطأ: '+error.message,'error');return false;}
+    adminToast('✅ تم الحفظ بنجاح');
+    logAudit(auditAction||'حفظ إعدادات',auditDetails||key);
+    return true;
+  }catch(e){console.warn('siteSettingsSave:',e);adminToast('❌ تعذر الحفظ','error');return false;}
+}
+
+/* ========== الإعدادات العامة — settings.general ========== */
+window.loadSettings=async function(){
+  var r=await siteSettingsGet('general');
+  var g=r.value||{};
+  formSet('setStoreName',g.store_name);
+  formSet('setCurrency',g.currency||'ر.س');
+  formSet('setTaxPercent',g.tax_percent!=null?g.tax_percent:15);
+  formSet('setFreeShippingMin',g.free_shipping_min);
+  formSet('setWhatsapp',g.whatsapp);
+};
+window.saveSettings=async function(e){
+  if(e&&e.preventDefault)e.preventDefault();
+  var g={
+    store_name:formVal('setStoreName'),
+    currency:formVal('setCurrency')||'ر.س',
+    tax_percent:parseFloat(formVal('setTaxPercent'))||0,
+    free_shipping_min:parseFloat(formVal('setFreeShippingMin'))||0,
+    whatsapp:formVal('setWhatsapp')
+  };
+  await siteSettingsSave('general',g,'حفظ الإعدادات العامة','الضريبة: '+g.tax_percent+'% — العملة: '+g.currency);
+  return false;
+};
+
+/* ========== بيانات الشركة — settings.company ========== */
+window.loadCompanyInfo=async function(){
+  var r=await siteSettingsGet('company');
+  var c=r.value||{};
+  formSet('compOfficialName',c.official_name);
+  formSet('compCR',c.commercial_register);
+  formSet('compTaxNumber',c.tax_number);
+  formSet('compAddress',c.address);
+  formSet('compEmail',c.email);
+  formSet('compPhone',c.phone);
+};
+window.saveCompanyInfo=async function(e){
+  if(e&&e.preventDefault)e.preventDefault();
+  var c={
+    official_name:formVal('compOfficialName'),
+    commercial_register:formVal('compCR'),
+    tax_number:formVal('compTaxNumber'),
+    address:formVal('compAddress'),
+    email:formVal('compEmail'),
+    phone:formVal('compPhone')
+  };
+  await siteSettingsSave('company',c,'حفظ بيانات الشركة',c.official_name||'—');
+  return false;
+};
+
+/* ========== التوثيق الحكومي — settings.gov_docs ========== */
+function govDocsUpdateUI(g){
+  g=g||{};
+  var ok=!!(g.commercial_register&&g.tax_number);
+  var badge=document.getElementById('govDocsStatus'),note=document.getElementById('govDocsStatusNote');
+  if(badge){badge.textContent=ok?'🟢 موثق':'⚪ غير موثق';badge.classList.toggle('active',ok);}
+  if(note)note.textContent=ok
+    ?'بيانات التوثيق مكتملة — رقم السجل التجاري والرقم الضريبي مسجلان.'
+    :'التوثيق غير مكتمل — أدخل رقم السجل التجاري والرقم الضريبي ثم احفظ.';
+}
+window.loadGovDocs=async function(){
+  var r=await siteSettingsGet('gov_docs');
+  var g=r.value||{};
+  formSet('govCR',g.commercial_register);
+  formSet('govTaxNumber',g.tax_number);
+  formSet('govMaroofUrl',g.maroof_url);
+  formSet('govNotes',g.notes);
+  govDocsUpdateUI(g);
+};
+window.saveGovDocs=async function(e){
+  if(e&&e.preventDefault)e.preventDefault();
+  var g={
+    commercial_register:formVal('govCR'),
+    tax_number:formVal('govTaxNumber'),
+    maroof_url:formVal('govMaroofUrl'),
+    notes:formVal('govNotes')
+  };
+  var ok=await siteSettingsSave('gov_docs',g,'حفظ التوثيق الحكومي','سجل: '+(g.commercial_register||'—')+' — ضريبي: '+(g.tax_number||'—'));
+  if(ok)govDocsUpdateUI(g);
+  return false;
+};
+
+/* ========== التسويق — settings.marketing ========== */
+function marketingUpdateUI(m){
+  m=m||{};
+  var on=!!m.enabled;
+  var badge=document.getElementById('marketingStatus'),note=document.getElementById('marketingStatusNote');
+  if(badge){badge.textContent=on?'🟢 مفعل':'⚪ معطل';badge.classList.toggle('active',on);}
+  if(note)note.textContent=on
+    ?'الحملة التسويقية مفعلة — البانر الترويجي والكوبون الترحيبي ظاهران للزوار.'
+    :'التسويق معطل حالياً — فعّل الحملة واحفظ لتظهر للزوار.';
+}
+window.loadMarketing=async function(){
+  var r=await siteSettingsGet('marketing');
+  var m=r.value||{};
+  var en=document.getElementById('mktEnabled');if(en)en.checked=!!m.enabled;
+  formSet('mktWelcomeCoupon',m.welcome_coupon);
+  formSet('mktBannerMessage',m.banner_message);
+  marketingUpdateUI(m);
+};
+window.saveMarketing=async function(e){
+  if(e&&e.preventDefault)e.preventDefault();
+  var m={
+    enabled:!!(document.getElementById('mktEnabled')||{}).checked,
+    welcome_coupon:formVal('mktWelcomeCoupon'),
+    banner_message:formVal('mktBannerMessage')
+  };
+  var ok=await siteSettingsSave('marketing',m,'حفظ إعدادات التسويق',m.enabled?'تفعيل الحملة — كوبون: '+(m.welcome_coupon||'—'):'تعطيل الحملة');
+  if(ok)marketingUpdateUI(m);
+  return false;
+};
+
+/* ========== الحسابات البنكية — CRUD على company_bank_accounts ========== */
 window.loadBankAccounts=async function(){
   var c=document.getElementById('bankAccountsList');if(!c)return;
-  var{data}=await supabaseClient.from('company_bank_accounts').select('*');
-  if(!data||!data.length){c.innerHTML='<div class="admin-empty">🏦 لا توجد حسابات</div>';return;}
-  c.innerHTML=data.map(a=>`<div class="admin-data-card"><strong>${esc(a.bank_name)}</strong> - ${esc(a.account_number)}</div>`).join('');
+  c.innerHTML='<div class="admin-empty">⏳ جاري التحميل...</div>';
+  try{
+    var{data,error}=await supabaseClient.from('company_bank_accounts').select('*').order('sort_order').order('id');
+    if(error)throw error;
+    adminState.bankAccounts=data||[];
+    if(!data.length){c.innerHTML='<div class="admin-empty">🏦 لا توجد حسابات بنكية — اضغط ➕ إضافة حساب.</div>';return;}
+    var html='<table><thead><tr><th>#</th><th>البنك</th><th>صاحب الحساب</th><th>رقم الحساب</th><th>الآيبان</th><th>الترتيب</th><th>الحالة</th><th>الإجراءات</th></tr></thead><tbody>';
+    data.forEach(function(a,i){
+      html+='<tr><td>'+(i+1)+'</td><td><strong>'+esc(a.bank_name||'—')+'</strong></td><td>'+esc(a.account_name||'—')+'</td><td dir="ltr">'+esc(a.account_number||'—')+'</td><td dir="ltr">'+esc(a.iban||'—')+'</td><td>'+(a.sort_order==null?'—':a.sort_order)+'</td><td>'+(a.is_active?'<span class="sync-status-ok">✅ مفعّل</span>':'<span class="sync-status-fail">⛔ معطّل</span>')+'</td><td style="white-space:nowrap"><button class="btn-edit" onclick="editBankAccount(\''+a.id+'\')">✏️</button> <button class="btn-edit" onclick="toggleBankAccount(\''+a.id+'\','+(a.is_active?'true':'false')+')">'+(a.is_active?'⛔ تعطيل':'✅ تفعيل')+'</button> <button class="btn-delete" onclick="deleteBankAccount(\''+a.id+'\')">🗑️</button></td></tr>';
+    });
+    html+='</tbody></table>';
+    c.innerHTML=html;
+  }catch(e){
+    console.warn('loadBankAccounts:',e);
+    c.innerHTML='<div class="admin-empty">🏦 تعذر تحميل الحسابات — تأكد من وجود جدول company_bank_accounts في Supabase.</div>';
+  }
 };
-window.addBankAccount=async function(){
-  var n=prompt('اسم البنك:');if(!n)return;
-  var an=prompt('رقم الحساب:');if(!an)return;
-  await supabaseClient.from('company_bank_accounts').insert([{bank_name:n,account_number:an,is_active:true}]);
-  loadBankAccounts();adminToast('✅ تمت الإضافة');
+window.addBankAccount=function(){
+  var f=document.getElementById('bankAccountForm');if(f)f.reset();
+  formSet('bankAccountId','');
+  var act=document.getElementById('bankIsActive');if(act)act.checked=true;
+  var t=document.getElementById('bankAccountModalTitle');if(t)t.textContent='🏦 إضافة حساب بنكي';
+  var m=document.getElementById('bankAccountModal');if(m)m.classList.add('show');
+};
+window.editBankAccount=function(id){
+  var a=(adminState.bankAccounts||[]).find(function(x){return String(x.id)===String(id);});
+  if(!a){adminToast('⚠️ تعذر العثور على الحساب — حدّث القائمة','error');return;}
+  formSet('bankAccountId',a.id);
+  formSet('bankName',a.bank_name);
+  formSet('bankAccountName',a.account_name);
+  formSet('bankAccountNumber',a.account_number);
+  formSet('bankIban',a.iban);
+  formSet('bankSortOrder',a.sort_order!=null?a.sort_order:1);
+  var act=document.getElementById('bankIsActive');if(act)act.checked=!!a.is_active;
+  var t=document.getElementById('bankAccountModalTitle');if(t)t.textContent='✏️ تعديل حساب بنكي';
+  var m=document.getElementById('bankAccountModal');if(m)m.classList.add('show');
+};
+window.closeBankAccountModal=function(){
+  var m=document.getElementById('bankAccountModal');if(m)m.classList.remove('show');
+};
+window.saveBankAccount=async function(e){
+  if(e&&e.preventDefault)e.preventDefault();
+  var id=formVal('bankAccountId');
+  var rec={
+    bank_name:formVal('bankName'),
+    account_name:formVal('bankAccountName'),
+    account_number:formVal('bankAccountNumber'),
+    iban:formVal('bankIban'),
+    sort_order:parseInt(formVal('bankSortOrder'))||0,
+    is_active:!!(document.getElementById('bankIsActive')||{}).checked
+  };
+  if(!rec.bank_name||!rec.account_number){adminToast('⚠️ اسم البنك ورقم الحساب مطلوبان','error');return false;}
+  try{
+    var res=id
+      ?await supabaseClient.from('company_bank_accounts').update(rec).eq('id',id)
+      :await supabaseClient.from('company_bank_accounts').insert([rec]);
+    if(res.error)throw res.error;
+    closeBankAccountModal();
+    adminToast('✅ تم حفظ الحساب البنكي');
+    logAudit(id?'تعديل حساب بنكي':'إضافة حساب بنكي',rec.bank_name+' — '+(rec.iban||rec.account_number));
+    loadBankAccounts();
+  }catch(err){
+    console.warn('saveBankAccount:',err);
+    adminToast('❌ تعذر الحفظ: '+((err&&err.message)||err),'error');
+  }
+  return false;
+};
+window.toggleBankAccount=async function(id,current){
+  try{
+    var{error}=await supabaseClient.from('company_bank_accounts').update({is_active:!current}).eq('id',id);
+    if(error)throw error;
+    adminToast(!current?'✅ تم تفعيل الحساب':'⛔ تم تعطيل الحساب');
+    logAudit('تغيير حالة حساب بنكي','حساب رقم '+id+' → '+(!current?'مفعّل':'معطّل'));
+    loadBankAccounts();
+  }catch(e){console.warn('toggleBankAccount:',e);adminToast('❌ تعذر تحديث الحالة','error');}
+};
+window.deleteBankAccount=async function(id){
+  if(!confirm('حذف هذا الحساب البنكي؟'))return;
+  try{
+    var{error}=await supabaseClient.from('company_bank_accounts').delete().eq('id',id);
+    if(error)throw error;
+    adminToast('✅ تم حذف الحساب');
+    logAudit('حذف حساب بنكي','حساب رقم: '+id);
+    loadBankAccounts();
+  }catch(e){console.warn('deleteBankAccount:',e);adminToast('❌ تعذر الحذف','error');}
 };
 
+/* ========== طرق الدفع — CRUD + ترتيب على payment_methods (تقرأها checkout مباشرة) ========== */
 window.loadPaymentMethodsAdmin=async function(){
   var c=document.getElementById('paymentMethodsTable');if(!c)return;
-  var{data}=await supabaseClient.from('payment_methods').select('*').order('sort_order');
-  if(!data||!data.length){c.innerHTML='<tr><td colspan="6">💳 لا توجد طرق دفع</td></tr>';return;}
-  c.innerHTML=data.map((m,i)=>`<tr><td>${i+1}</td><td>${m.icon||'💳'}</td><td>${m.name}</td><td>${m.description||'—'}</td><td>${m.is_active?'✅':'❌'}</td><td><button class="btn-edit" onclick="editPaymentMethod(${m.id},'${m.name}','${m.icon||'💳'}','${m.description||''}',${m.sort_order},${m.is_active})">✏️</button></td></tr>`).join('');
+  c.innerHTML='<tr><td colspan="6">⏳ جاري التحميل...</td></tr>';
+  try{
+    var{data,error}=await supabaseClient.from('payment_methods').select('*').order('sort_order').order('id');
+    if(error)throw error;
+    adminState.paymentMethods=data||[];
+    if(!data.length){c.innerHTML='<tr><td colspan="6">💳 لا توجد طرق دفع — اضغط ➕ إضافة طريقة.</td></tr>';return;}
+    c.innerHTML=data.map(function(m,i){
+      var upBtn='<button class="btn-edit" title="أعلى" onclick="movePaymentMethod(\''+m.id+'\',-1)"'+(i===0?' disabled':'')+'>▲</button>';
+      var downBtn='<button class="btn-edit" title="أسفل" onclick="movePaymentMethod(\''+m.id+'\',1)"'+(i===data.length-1?' disabled':'')+'>▼</button>';
+      return '<tr><td>'+(i+1)+'</td><td style="font-size:20px">'+esc(m.icon||'💳')+'</td><td><strong>'+esc(m.name||'—')+'</strong></td><td>'+(m.sort_order==null?'—':m.sort_order)+'</td><td>'+(m.is_active?'<span class="sync-status-ok">✅ مفعّلة</span>':'<span class="sync-status-fail">⛔ معطّلة</span>')+'</td><td style="white-space:nowrap">'+upBtn+' '+downBtn+' <button class="btn-edit" onclick="editPaymentMethod(\''+m.id+'\')">✏️</button> <button class="btn-edit" onclick="togglePaymentMethod(\''+m.id+'\','+(m.is_active?'true':'false')+')">'+(m.is_active?'⛔':'✅')+'</button> <button class="btn-delete" onclick="deletePaymentMethod(\''+m.id+'\')">🗑️</button></td></tr>';
+    }).join('');
+  }catch(e){
+    console.warn('loadPaymentMethodsAdmin:',e);
+    c.innerHTML='<tr><td colspan="6">💳 تعذر تحميل طرق الدفع — تأكد من وجود جدول payment_methods في Supabase.</td></tr>';
+  }
 };
-window.editPaymentMethod=function(id,n,ic,d,o,a){alert('تعديل: '+n);};
-window.openPaymentMethodModal=function(){alert('مودال إضافة طريقة دفع');};
+window.openPaymentMethodModal=function(){
+  var f=document.getElementById('paymentMethodForm');if(f)f.reset();
+  formSet('paymentMethodId','');
+  var act=document.getElementById('pmIsActive');if(act)act.checked=true;
+  var t=document.getElementById('paymentMethodModalTitle');if(t)t.textContent='💳 إضافة طريقة دفع';
+  var m=document.getElementById('paymentMethodModal');if(m)m.classList.add('show');
+};
+window.editPaymentMethod=function(id){
+  var m=(adminState.paymentMethods||[]).find(function(x){return String(x.id)===String(id);});
+  if(!m){adminToast('⚠️ تعذر العثور على الطريقة — حدّث القائمة','error');return;}
+  formSet('paymentMethodId',m.id);
+  formSet('pmName',m.name);
+  formSet('pmIcon',m.icon);
+  formSet('pmSortOrder',m.sort_order!=null?m.sort_order:1);
+  var act=document.getElementById('pmIsActive');if(act)act.checked=!!m.is_active;
+  var t=document.getElementById('paymentMethodModalTitle');if(t)t.textContent='✏️ تعديل طريقة دفع';
+  var md=document.getElementById('paymentMethodModal');if(md)md.classList.add('show');
+};
+window.closePaymentMethodModal=function(){
+  var m=document.getElementById('paymentMethodModal');if(m)m.classList.remove('show');
+};
+window.savePaymentMethod=async function(e){
+  if(e&&e.preventDefault)e.preventDefault();
+  var id=formVal('paymentMethodId');
+  var rec={
+    name:formVal('pmName'),
+    icon:formVal('pmIcon')||'💳',
+    sort_order:parseInt(formVal('pmSortOrder'))||0,
+    is_active:!!(document.getElementById('pmIsActive')||{}).checked
+  };
+  if(!rec.name){adminToast('⚠️ اسم طريقة الدفع مطلوب','error');return false;}
+  try{
+    var res=id
+      ?await supabaseClient.from('payment_methods').update(rec).eq('id',id)
+      :await supabaseClient.from('payment_methods').insert([rec]);
+    if(res.error)throw res.error;
+    closePaymentMethodModal();
+    adminToast('✅ تم حفظ طريقة الدفع');
+    logAudit(id?'تعديل طريقة دفع':'إضافة طريقة دفع',rec.name);
+    loadPaymentMethodsAdmin();
+  }catch(err){
+    console.warn('savePaymentMethod:',err);
+    adminToast('❌ تعذر الحفظ: '+((err&&err.message)||err),'error');
+  }
+  return false;
+};
+window.togglePaymentMethod=async function(id,current){
+  try{
+    var{error}=await supabaseClient.from('payment_methods').update({is_active:!current}).eq('id',id);
+    if(error)throw error;
+    adminToast(!current?'✅ تم تفعيل الطريقة':'⛔ تم تعطيل الطريقة');
+    logAudit('تغيير حالة طريقة دفع','طريقة رقم '+id+' → '+(!current?'مفعّلة':'معطّلة'));
+    loadPaymentMethodsAdmin();
+  }catch(e){console.warn('togglePaymentMethod:',e);adminToast('❌ تعذر تحديث الحالة','error');}
+};
+window.movePaymentMethod=async function(id,dir){
+  var list=(adminState.paymentMethods||[]).slice();
+  var idx=list.findIndex(function(m){return String(m.id)===String(id);});
+  var swap=idx+dir;
+  if(idx<0||swap<0||swap>=list.length)return;
+  var a=list[idx],b=list[swap];
+  var ao=(a.sort_order==null?idx+1:a.sort_order),bo=(b.sort_order==null?swap+1:b.sort_order);
+  if(ao===bo)bo=ao+dir;
+  try{
+    var r1=await supabaseClient.from('payment_methods').update({sort_order:bo}).eq('id',a.id);
+    if(r1.error)throw r1.error;
+    var r2=await supabaseClient.from('payment_methods').update({sort_order:ao}).eq('id',b.id);
+    if(r2.error)throw r2.error;
+    adminToast('✅ تم تحديث الترتيب');
+    logAudit('إعادة ترتيب طرق الدفع',(a.name||a.id)+' ↔ '+(b.name||b.id));
+    loadPaymentMethodsAdmin();
+  }catch(e){console.warn('movePaymentMethod:',e);adminToast('❌ تعذر تحديث الترتيب','error');}
+};
+window.deletePaymentMethod=async function(id){
+  if(!confirm('حذف طريقة الدفع هذه؟ ستختفي من صفحة الدفع فوراً.'))return;
+  try{
+    var{error}=await supabaseClient.from('payment_methods').delete().eq('id',id);
+    if(error)throw error;
+    adminToast('✅ تم حذف الطريقة');
+    logAudit('حذف طريقة دفع','طريقة رقم: '+id);
+    loadPaymentMethodsAdmin();
+  }catch(e){console.warn('deletePaymentMethod:',e);adminToast('❌ تعذر الحذف','error');}
+};
 
+/* ========== الشحن — CRUD على shipping_rates + سعر افتراضي في settings.shipping ========== */
 window.loadShippingRates=async function(){
+  try{
+    var sr=await siteSettingsGet('shipping');
+    formSet('shippingDefaultPrice',sr.value.default_price);
+  }catch(_){}
   var c=document.getElementById('shippingRatesTable');if(!c)return;
-  var{data}=await supabaseClient.from('shipping_rates').select('*');
-  if(!data||!data.length){c.innerHTML='<tr><td colspan="7">🚚 لا توجد أسعار</td></tr>';return;}
-  c.innerHTML=data.map((r,i)=>`<tr><td>${i+1}</td><td>${r.from_city}</td><td>${r.to_city}</td><td>${r.weight_kg}</td><td>${r.price_sar} ر.س</td><td>${r.estimated_days} أيام</td><td><button class="btn-edit">✏️</button></td></tr>`).join('');
+  c.innerHTML='<tr><td colspan="7">⏳ جاري التحميل...</td></tr>';
+  try{
+    var{data,error}=await supabaseClient.from('shipping_rates').select('*').order('id');
+    if(error)throw error;
+    adminState.shippingRates=data||[];
+    if(!data.length){c.innerHTML='<tr><td colspan="7">🚚 لا توجد أسعار شحن — اضغط ➕ إضافة سعر.</td></tr>';return;}
+    c.innerHTML=data.map(function(r,i){
+      return '<tr><td>'+(i+1)+'</td><td>'+esc(r.from_city||'—')+'</td><td><strong>'+esc(r.to_city||'—')+'</strong></td><td>'+(r.weight_kg==null?'—':r.weight_kg)+'</td><td>'+money(r.price_sar)+'</td><td>'+(r.estimated_days==null?'—':r.estimated_days+' يوم')+'</td><td style="white-space:nowrap"><button class="btn-edit" onclick="editShippingRate(\''+r.id+'\')">✏️</button> <button class="btn-delete" onclick="deleteShippingRate(\''+r.id+'\')">🗑️</button></td></tr>';
+    }).join('');
+  }catch(e){
+    console.warn('loadShippingRates:',e);
+    c.innerHTML='<tr><td colspan="7">🚚 تعذر تحميل أسعار الشحن — تأكد من وجود جدول shipping_rates في Supabase.</td></tr>';
+  }
 };
-window.openShippingRateModal=function(){alert('مودال إضافة سعر شحن');};
+window.saveShippingSettings=async function(){
+  var p=parseFloat(formVal('shippingDefaultPrice'))||0;
+  await siteSettingsSave('shipping',{default_price:p},'حفظ إعدادات الشحن','السعر الافتراضي: '+p+' ر.س');
+};
+window.openShippingRateModal=function(){
+  var f=document.getElementById('shippingRateForm');if(f)f.reset();
+  formSet('shippingRateId','');
+  var t=document.getElementById('shippingRateModalTitle');if(t)t.textContent='🚚 إضافة سعر شحن';
+  var m=document.getElementById('shippingRateModal');if(m)m.classList.add('show');
+};
+window.editShippingRate=function(id){
+  var r=(adminState.shippingRates||[]).find(function(x){return String(x.id)===String(id);});
+  if(!r){adminToast('⚠️ تعذر العثور على السعر — حدّث القائمة','error');return;}
+  formSet('shippingRateId',r.id);
+  formSet('shipFromCity',r.from_city);
+  formSet('shipToCity',r.to_city);
+  formSet('shipWeight',r.weight_kg);
+  formSet('shipPrice',r.price_sar);
+  formSet('shipDays',r.estimated_days);
+  var t=document.getElementById('shippingRateModalTitle');if(t)t.textContent='✏️ تعديل سعر شحن';
+  var m=document.getElementById('shippingRateModal');if(m)m.classList.add('show');
+};
+window.closeShippingRateModal=function(){
+  var m=document.getElementById('shippingRateModal');if(m)m.classList.remove('show');
+};
+window.saveShippingRate=async function(e){
+  if(e&&e.preventDefault)e.preventDefault();
+  var id=formVal('shippingRateId');
+  var rec={
+    from_city:formVal('shipFromCity')||null,
+    to_city:formVal('shipToCity'),
+    weight_kg:formVal('shipWeight')!==''?(parseFloat(formVal('shipWeight'))||0):null,
+    price_sar:parseFloat(formVal('shipPrice'))||0,
+    estimated_days:formVal('shipDays')!==''?(parseInt(formVal('shipDays'))||0):null
+  };
+  if(!rec.to_city){adminToast('⚠️ مدينة الوصول مطلوبة','error');return false;}
+  try{
+    var res=id
+      ?await supabaseClient.from('shipping_rates').update(rec).eq('id',id)
+      :await supabaseClient.from('shipping_rates').insert([rec]);
+    if(res.error)throw res.error;
+    closeShippingRateModal();
+    adminToast('✅ تم حفظ سعر الشحن');
+    logAudit(id?'تعديل سعر شحن':'إضافة سعر شحن',(rec.from_city||'—')+' → '+rec.to_city+': '+rec.price_sar+' ر.س');
+    loadShippingRates();
+  }catch(err){
+    console.warn('saveShippingRate:',err);
+    adminToast('❌ تعذر الحفظ: '+((err&&err.message)||err),'error');
+  }
+  return false;
+};
+window.deleteShippingRate=async function(id){
+  if(!confirm('حذف سعر الشحن هذا؟'))return;
+  try{
+    var{error}=await supabaseClient.from('shipping_rates').delete().eq('id',id);
+    if(error)throw error;
+    adminToast('✅ تم حذف السعر');
+    logAudit('حذف سعر شحن','سعر رقم: '+id);
+    loadShippingRates();
+  }catch(e){console.warn('deleteShippingRate:',e);adminToast('❌ تعذر الحذف','error');}
+};
 
 window.loadInvoices=async function(){
   var c=document.getElementById('invoicesTable');if(!c)return;
   c.innerHTML='<tr><td colspan="7">🧾 لا توجد فواتير</td></tr>';
 };
 
+/* ========== الملفات الثابتة — قراءة فقط ========== */
+var SITE_STATIC_FILES=[
+  {icon:'📄',name:'الملف التعريفي للشركة (PDF)',path:'DFS_Company_profile.pdf.pdf',desc:'البروفايل الرسمي لشركة درة فارس الشمال — يُستخدم في صفحة التحميل/التعريف.'},
+  {icon:'📱',name:'تطبيق أندرويد (APK)',path:'app-release.apk',desc:'نسخة الإصدار من تطبيق المتجر لأجهزة أندرويد — رابط التحميل في صفحة download.'},
+  {icon:'⚙️',name:'ملف Manifest (PWA)',path:'manifest.json',desc:'إعدادات تطبيق الويب التقدمي: الاسم، الأيقونات، ألوان الثيم.'}
+];
 window.loadSiteFiles=async function(){
   var c=document.getElementById('siteFilesList');if(!c)return;
-  c.innerHTML='<div class="admin-empty">📁 لا توجد ملفات</div>';
+  c.innerHTML=SITE_STATIC_FILES.map(function(f){
+    return '<div class="admin-data-card"><div class="admin-card-title"><strong>'+f.icon+' '+esc(f.name)+'</strong></div><div class="admin-note">'+esc(f.desc)+'</div><div class="admin-meta"><span dir="ltr">'+esc(f.path)+'</span></div><div class="admin-card-actions"><button class="btn-view" onclick="openSiteFile(\''+f.path+'\')">🔗 فتح الملف</button> <button class="btn-edit" onclick="copySiteFileLink(\''+f.path+'\')">📋 نسخ الرابط</button></div></div>';
+  }).join('');
 };
-window.addNewFile=function(){alert('مودال رفع ملف');};
+window.openSiteFile=function(path){
+  try{window.open(encodeURI(path),'_blank');}catch(e){console.warn('openSiteFile:',e);adminToast('❌ تعذر فتح الملف','error');}
+};
+window.copySiteFileLink=function(path){
+  var url=path;
+  try{url=new URL(path,location.href).href;}catch(_){}
+  var done=function(){adminToast('✅ تم نسخ رابط الملف');};
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url).then(done,function(){adminToast('🔗 الرابط: '+url);});
+    }else adminToast('🔗 الرابط: '+url);
+  }catch(e){console.warn('copySiteFileLink:',e);adminToast('🔗 الرابط: '+url);}
+};
+window.addNewFile=function(){alert('الرفع غير متاح — تبويب الملفات للعرض فقط');};
 
 window.loadSiteItems=async function(sectionKey){
   var container=document.getElementById(sectionKey+'List');if(!container)return;
@@ -385,9 +813,6 @@ window.deleteSiteItem=async function(id,sectionKey){
   adminToast('✅ تم الحذف');loadSiteItems(sectionKey);
 };
 
-window.saveSettings=async function(){adminToast('✅ تم حفظ الإعدادات');};
-window.saveCompanyInfo=async function(){adminToast('✅ تم حفظ بيانات الشركة');};
-window.saveGovDocs=async function(){adminToast('✅ تم حفظ التوثيق');};
 window.saveEInvoice=async function(){adminToast('✅ تم حفظ الفوترة');};
 
 window.updateStats=async function(){
@@ -775,7 +1200,7 @@ window.loadAuditLog=async function(){
   var c=document.getElementById('auditLogList');if(!c)return;
   c.innerHTML='<div class="admin-empty">⏳ جاري التحميل...</div>';
   try{
-    var{data,error}=await supabaseClient.from('audit_log').select('*').order('created_at',{ascending:false}).limit(100);
+    var{data,error}=await supabaseClient.from('audit_logs').select('*').order('created_at',{ascending:false}).limit(100);
     if(error)throw error;
     if(!data||!data.length){c.innerHTML='<div class="admin-empty">📋 لا توجد عمليات مسجلة بعد</div>';return;}
     var html='<table><thead><tr><th>#</th><th>الوقت</th><th>العملية</th><th>التفاصيل</th></tr></thead><tbody>';
@@ -786,7 +1211,7 @@ window.loadAuditLog=async function(){
     c.innerHTML=html;
   }catch(e){
     console.warn('loadAuditLog:',e);
-    c.innerHTML='<div class="admin-empty">📋 لا توجد بيانات — تأكد من تنفيذ جدول audit_log في Supabase (ملف جداول-اللوحة-المتقدمة.sql)</div>';
+    c.innerHTML='<div class="admin-empty">📋 لا توجد بيانات — تأكد من تنفيذ جدول audit_logs في Supabase (ملف جداول-اللوحة-المتقدمة.sql)</div>';
   }
 };
 
@@ -874,7 +1299,7 @@ window.generateZatcaQR=async function(idx){
   var b64=document.getElementById('zatcaQrBase64');if(b64)b64.value=tlv;
   var modal=document.getElementById('zatcaQrModal');if(modal)modal.classList.add('show');
   try{
-    supabaseClient.from('zatca_log').insert([{invoice_number:String(inv.invoice_number||''),total:Number(total),tax:Number(tax),qr_code:tlv}]).then(function(){},function(){});
+    supabaseClient.from('zatca_logs').insert([{invoice_number:String(inv.invoice_number||''),total:Number(total),tax:Number(tax),qr_code:tlv}]).then(function(){},function(){});
   }catch(_){}
   logAudit('توليد QR زاتكا','فاتورة: '+(inv.invoice_number||'—')+' — إجمالي: '+total+' ر.س');
 };
@@ -897,7 +1322,7 @@ window.copyZatcaQr=function(){
 /* ========== مزامنة أفاقي + سجل المزامنة ========== */
 function afakyLogSync(entry){
   try{
-    supabaseClient.from('afaky_sync_log').insert([entry]).then(function(){loadAfakySyncLog();},function(){});
+    supabaseClient.from('afaky_sync_logs').insert([entry]).then(function(){loadAfakySyncLog();},function(){});
   }catch(_){}
 }
 
@@ -970,7 +1395,7 @@ window.syncAfakyNow=async function(){
 window.loadAfakySyncLog=async function(){
   var c=document.getElementById('afakySyncLogList');if(!c)return;
   try{
-    var{data,error}=await supabaseClient.from('afaky_sync_log').select('*').order('created_at',{ascending:false}).limit(20);
+    var{data,error}=await supabaseClient.from('afaky_sync_logs').select('*').order('created_at',{ascending:false}).limit(20);
     if(error)throw error;
     if(!data||!data.length){c.innerHTML='<div class="admin-empty">🔄 لا توجد عمليات مزامنة بعد</div>';return;}
     var dirNames={export:'تصدير ⬆️',import:'استيراد ⬇️'};
@@ -983,13 +1408,134 @@ window.loadAfakySyncLog=async function(){
     c.innerHTML=html;
   }catch(e){
     console.warn('loadAfakySyncLog:',e);
-    c.innerHTML='<div class="admin-empty">🔄 لا توجد بيانات — تأكد من تنفيذ جدول afaky_sync_log في Supabase</div>';
+    c.innerHTML='<div class="admin-empty">🔄 لا توجد بيانات — تأكد من تنفيذ جدول afaky_sync_logs في Supabase</div>';
   }
 };
 
-document.addEventListener('DOMContentLoaded',function(){
-  var user=localStorage.getItem('adminLoggedIn');
-  if(user){document.getElementById('loginPage').style.display='none';document.getElementById('dashboardLayout').classList.add('active');if(typeof loadProducts==='function')loadProducts();updateStats();}
+/* ========== 💳 بوابات الدفع — محمية بجلسة Supabase Auth (RLS: authenticated فقط) ========== */
+var GATEWAYS_AUTH_MSG='🔒 بوابات الدفع تتطلب الدخول بحساب الأدمن (إيميل + باسورد) — أنشئ المستخدم من Supabase Authentication ثم سجل دخول به';
+
+function maskSecret(s){
+  s=String(s||'');
+  if(!s)return '';
+  return '●●●●'+esc(s.slice(-4));
+}
+
+function gatewayCardHtml(g){
+  var code=String(g.gateway_code||'');
+  var name=String(g.gateway_name||code);
+  var active=!!g.is_active;
+  var live=g.mode==='live';
+  var masked=maskSecret(g.secret_key);
+  var h='<div class="gateway-card">';
+  h+='<div class="gateway-card-head">';
+  h+='<div><div class="gateway-name">'+esc(name)+'</div><div class="gateway-code">'+esc(code)+'</div></div>';
+  h+='<div class="gateway-badges">';
+  h+='<span class="gw-badge '+(active?'on':'off')+'">'+(active?'🟢 مفعّلة':'⚪ معطّلة')+'</span>';
+  h+='<span class="gw-badge '+(live?'live':'test')+'">'+(live?'🔴 Live':'🧪 Test')+'</span>';
+  h+='</div></div>';
+  h+='<div class="gateway-actions">';
+  h+='<button class="btn-edit" onclick="toggleGatewayForm(\''+esc(code)+'\')">⚙️ إعدادات</button>';
+  h+='<button class="btn-edit" onclick="toggleGatewayActive(\''+esc(code)+'\')">'+(active?'⛔ تعطيل':'✅ تفعيل')+'</button>';
+  h+='</div>';
+  h+='<div class="gateway-form" id="gwForm-'+esc(code)+'" style="display:none">';
+  h+='<div class="form-group"><label>Publishable Key</label><input type="text" id="gw-pub-'+esc(code)+'" value="'+esc(g.publishable_key||'')+'" dir="ltr" style="text-align:left" placeholder="pk_..."></div>';
+  h+='<div class="form-group"><label>Secret Key '+(masked?'<span class="gw-masked-hint">المحفوظ: '+masked+' — اترك الحقل فارغاً للإبقاء على القديم</span>':'')+'</label>';
+  h+='<div class="gw-secret-wrap"><input type="password" id="gw-secret-'+esc(code)+'" dir="ltr" style="text-align:left" placeholder="'+(masked||'sk_...')+'" autocomplete="new-password">';
+  h+='<button type="button" class="gw-eye" title="إظهار/إخفاء" onclick="toggleGwSecret(\''+esc(code)+'\',this)">👁</button></div></div>';
+  h+='<div class="form-group"><label>Webhook Secret</label><input type="text" id="gw-webhook-'+esc(code)+'" value="'+esc(g.webhook_secret||'')+'" dir="ltr" style="text-align:left" placeholder="whsec_..."></div>';
+  if(code==='hyperpay'){
+    h+='<div class="form-group"><label>Entity ID</label><input type="text" id="gw-entity-'+esc(code)+'" value="'+esc(g.entity_id||'')+'" dir="ltr" style="text-align:left" placeholder="8a829..."></div>';
+  }
+  h+='<div class="form-group"><label>وضع التشغيل</label><select id="gw-mode-'+esc(code)+'" onchange="onGatewayModeChange(\''+esc(code)+'\')">';
+  h+='<option value="test"'+(live?'':' selected')+'>🧪 Test — تجريبي</option>';
+  h+='<option value="live"'+(live?' selected':'')+'>🔴 Live — حقيقي</option>';
+  h+='</select></div>';
+  h+='<div class="gw-live-warning" id="gw-livewarn-'+esc(code)+'"'+(live?'':' style="display:none"')+'>⚠️ وضع Live = أموال حقيقية — تأكد من المفاتيح</div>';
+  h+='<button class="btn-save" onclick="saveGateway(\''+esc(code)+'\')">💾 حفظ إعدادات '+esc(name)+'</button>';
+  h+='</div></div>';
+  return h;
+}
+
+window.loadPaymentGateways=async function(){
+  var c=document.getElementById('gatewaysList');if(!c)return;
+  try{
+    if(!(await hasAuthSession())){c.innerHTML='<div class="gateway-auth-note">'+GATEWAYS_AUTH_MSG+'</div>';return;}
+    c.innerHTML='<div class="admin-empty">⏳ جاري التحميل...</div>';
+    var{data,error}=await supabaseClient.from('payment_gateways').select('*').order('gateway_code');
+    if(error)throw error;
+    adminState.gateways=data||[];
+    if(!data||!data.length){c.innerHTML='<div class="admin-empty">💳 لا توجد بوابات — نفّذ جدول payment_gateways في Supabase</div>';return;}
+    c.innerHTML=data.map(function(g){return gatewayCardHtml(g);}).join('');
+  }catch(e){
+    console.warn('loadPaymentGateways:',e);
+    c.innerHTML='<div class="gateway-auth-note">'+GATEWAYS_AUTH_MSG+'<div class="gw-err-detail">'+esc((e&&e.message)||String(e))+'</div></div>';
+  }
+};
+
+window.toggleGatewayForm=function(code){
+  var f=document.getElementById('gwForm-'+code);if(!f)return;
+  f.style.display=(f.style.display==='none'||!f.style.display)?'block':'none';
+};
+
+window.toggleGwSecret=function(code,btn){
+  var i=document.getElementById('gw-secret-'+code);if(!i)return;
+  i.type=(i.type==='password')?'text':'password';
+  if(btn)btn.classList.toggle('on',i.type==='text');
+};
+
+window.onGatewayModeChange=function(code){
+  var m=document.getElementById('gw-mode-'+code),w=document.getElementById('gw-livewarn-'+code);
+  if(m&&w)w.style.display=(m.value==='live')?'block':'none';
+};
+
+window.toggleGatewayActive=async function(code){
+  try{
+    if(!(await hasAuthSession())){adminToast(GATEWAYS_AUTH_MSG,'error');return;}
+    var g=(adminState.gateways||[]).find(function(x){return String(x.gateway_code)===String(code);});
+    if(!g){adminToast('⚠️ البوابة غير موجودة — حدّث القائمة','error');return;}
+    var next=!g.is_active;
+    var{error}=await supabaseClient.from('payment_gateways').update({is_active:next}).eq('gateway_code',code);
+    if(error)throw error;
+    adminToast(next?'✅ تم تفعيل البوابة':'⛔ تم تعطيل البوابة');
+    logAudit(next?'تفعيل بوابة دفع':'تعطيل بوابة دفع',String(g.gateway_name||code));
+    loadPaymentGateways();
+  }catch(e){
+    console.warn('toggleGatewayActive:',e);
+    adminToast('❌ تعذر التحديث: '+((e&&e.message)||e),'error');
+  }
+};
+
+window.saveGateway=async function(code){
+  try{
+    if(!(await hasAuthSession())){adminToast(GATEWAYS_AUTH_MSG,'error');return;}
+    var rec={
+      publishable_key:formVal('gw-pub-'+code),
+      webhook_secret:formVal('gw-webhook-'+code),
+      mode:formVal('gw-mode-'+code)||'test'
+    };
+    var secret=formVal('gw-secret-'+code);
+    if(secret)rec.secret_key=secret; /* فارغ = لا تحدّثه — حافظ على القديم */
+    if(String(code)==='hyperpay')rec.entity_id=formVal('gw-entity-'+code);
+    var{error}=await supabaseClient.from('payment_gateways').update(rec).eq('gateway_code',code);
+    if(error)throw error;
+    adminToast('✅ تم حفظ إعدادات البوابة');
+    logAudit('حفظ إعدادات بوابة دفع',String(code)+' — وضع: '+rec.mode);
+    loadPaymentGateways();
+  }catch(e){
+    console.warn('saveGateway:',e);
+    adminToast('❌ تعذر الحفظ: '+((e&&e.message)||e),'error');
+  }
+};
+
+document.addEventListener('DOMContentLoaded',async function(){
+  /* استعادة الجلسة: supabaseClient.auth.getSession() فقط — لا جلسة = صفحة الدخول بدون أي استثناء */
+  if(await hasAuthSession()){openAdminPanel();return;}
+  /* تنظيف صامت لمفاتيح localStorage القديمة (adminLoggedIn/adminLoginTime) — لا تفتح اللوحة أبداً */
+  try{
+    localStorage.removeItem('adminLoggedIn');
+    localStorage.removeItem('adminLoginTime');
+  }catch(_){}
 });
 
 })();

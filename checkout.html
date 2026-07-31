@@ -120,6 +120,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="main.js"></script>
 <script>
+// ✅ نطاق محلي (IIFE) لتجنب تعارض المتغيرات العامة مع main.js (cart / COUPONS / activeCoupon)
+// والدوال المطلوبة من onclick تُصدَّر إلى window في نهاية السكريبت
+(function() {
 var cart = JSON.parse(localStorage.getItem('doraCart') || '[]');
   // دالة الإشعارات
 function showToast(msg, type) {
@@ -145,25 +148,111 @@ var COUPONS = {
     'WELCOME': { discount: 0.15, label: 'خصم ترحيبي 15%' }
 };
 
+// ============================================================
+// 🚚 رسوم الشحن — تُقرأ من جدول shipping_rates في Supabase
+// ============================================================
+// ✏️ السعر الافتراضي الثابت (ر.س) — يُستخدم لو الجدول فاضي/محظور أو فشل الجلب
+var SHIPPING_FALLBACK_COST = 25;
+var shippingRatesCache = null; // null = لم يُجلب بعد
+var shippingCost = 0;
+
+// جلب الأسعار مرة واحدة مع try/catch شامل — الفشل = مصفوفة فارغة (بدون كسر)
+async function ensureShippingRates() {
+    if (shippingRatesCache !== null) return shippingRatesCache;
+    try {
+        if (typeof supabaseClient === 'undefined' || !supabaseClient) throw new Error('no supabase');
+        var result = await supabaseClient.from('shipping_rates').select('*');
+        if (result.error) throw result.error;
+        shippingRatesCache = result.data || [];
+    } catch (e) {
+        shippingRatesCache = [];
+    }
+    return shippingRatesCache;
+}
+
+// مطابقة المدينة مع الأسعار: سعر المدينة ← السعر الافتراضي بالجدول ← الثابت
+function calcShippingFromRates(rates, city) {
+    try {
+        if (!rates || !rates.length) return SHIPPING_FALLBACK_COST;
+        var normalized = (city || '').trim();
+        var defaultPrice = null;
+        for (var i = 0; i < rates.length; i++) {
+            var r = rates[i];
+            var rCity = String(r.to_city || r.city || r.city_name || '').trim();
+            var rawPrice = (r.price_sar != null ? r.price_sar : (r.price != null ? r.price : (r.cost != null ? r.cost : r.rate)));
+            var price = Number(rawPrice);
+            if (isNaN(price)) continue;
+            var isDefault = r.is_default === true ||
+                ['default', '*', 'افتراضي', 'الكل', 'جميع المدن', 'أخرى', 'اخرى', ''].indexOf(rCity) !== -1;
+            if (isDefault) { if (defaultPrice === null) defaultPrice = price; continue; }
+            if (normalized && rCity && (rCity === normalized || rCity.indexOf(normalized) !== -1 || normalized.indexOf(rCity) !== -1)) {
+                return price; // ✅ وُجد سعر للمدينة
+            }
+        }
+        if (defaultPrice !== null) return defaultPrice; // ✅ السعر الافتراضي من الجدول
+        return SHIPPING_FALLBACK_COST; // ✏️ الثابت الافتراضي
+    } catch (e) {
+        return SHIPPING_FALLBACK_COST;
+    }
+}
+
+// حساب رسوم الشحن الحالية (استلام من المتجر = 0)
+function currentShippingCost() {
+    if (deliveryMethod === 'pickup') return 0;
+    var cityEl = document.getElementById('custCity');
+    return calcShippingFromRates(shippingRatesCache, cityEl ? cityEl.value : '');
+}
+
+// مجاميع الطلب (مصدر واحد للحقيقة)
+function calcOrderTotals() {
+    var subtotal = cart.reduce(function(s, i) { return s + (i.price * i.qty); }, 0);
+    var tax = Math.round(subtotal * 0.15);
+    var discount = activeCoupon ? Math.round(subtotal * activeCoupon.discount) : 0;
+    return { subtotal: subtotal, tax: tax, discount: discount, finalTotal: subtotal + tax - discount + shippingCost };
+}
+
+// تحديث سطر الشحن والإجمالي ديناميكياً بدون إعادة رسم الصفحة (يحافظ على مدخلات العميل)
+async function updateShipping() {
+    try {
+        await ensureShippingRates();
+        shippingCost = currentShippingCost();
+        var t = calcOrderTotals();
+        var shipEl = document.getElementById('shippingCostValue');
+        var totalEl = document.getElementById('finalTotalValue');
+        if (shipEl) {
+            shipEl.textContent = deliveryMethod === 'pickup'
+                ? 'مجاناً (استلام من المتجر)'
+                : shippingCost.toLocaleString() + ' ر.س';
+        }
+        if (totalEl) totalEl.textContent = t.finalTotal.toLocaleString() + ' ر.س';
+        // تحديث مبالغ أزرار الدفع السريع لتشمل الشحن
+        var quickBtns = { stc: 'payWithSTC', apple: 'payWithApple', mada: 'payWithMada', tamara: 'payWithTamara' };
+        Object.keys(quickBtns).forEach(function(key) {
+            var btn = document.querySelector('.quick-pay-btn.' + key);
+            if (btn) btn.setAttribute('onclick', quickBtns[key] + '(' + t.finalTotal + ')');
+        });
+    } catch (e) { /* صمت تام — لا نكسر الصفحة */ }
+}
+
 function renderCheckout() {
     var container = document.getElementById('checkoutContent');
     if (!cart.length) return;
     
-    var subtotal = cart.reduce(function(s, i) { return s + (i.price * i.qty); }, 0);
-    var tax = Math.round(subtotal * 0.15);
-    var discount = activeCoupon ? Math.round(subtotal * activeCoupon.discount) : 0;
-    var finalTotal = subtotal + tax - discount;
+    shippingCost = currentShippingCost(); // 🚚 حساب متزامن من الكاش/الافتراضي، وتُحدَّث لاحقاً عبر updateShipping
+    var totals = calcOrderTotals();
+    var subtotal = totals.subtotal, tax = totals.tax, discount = totals.discount, finalTotal = totals.finalTotal;
     
     container.innerHTML = `
         <div class="checkout-card">
             <h3>📦 ملخص الطلب</h3>
             ${cart.map(function(item) {
-                return '<div class="cart-item"><img src="' + (item.image || 'https://via.placeholder.com/50') + '" onerror="this.style.display=\\'none\\'"><div class="cart-item-info"><h4>' + item.name + '</h4><span>الكمية: ' + item.qty + ' | ' + item.price.toLocaleString() + ' ر.س</span></div><div class="cart-item-price">' + (item.price * item.qty).toLocaleString() + ' ر.س</div></div>';
+                return '<div class="cart-item"><img src="' + (item.image || 'https://via.placeholder.com/50') + '" onerror="this.style.display=\'none\'"><div class="cart-item-info"><h4>' + item.name + '</h4><span>الكمية: ' + item.qty + ' | ' + item.price.toLocaleString() + ' ر.س</span></div><div class="cart-item-price">' + (item.price * item.qty).toLocaleString() + ' ر.س</div></div>';
             }).join('')}
             <div class="total-row"><span>المجموع الفرعي</span><span>${subtotal.toLocaleString()} ر.س</span></div>
             <div class="total-row"><span>الضريبة (15%)</span><span>${tax.toLocaleString()} ر.س</span></div>
+            <div class="total-row"><span>🚚 رسوم الشحن</span><span id="shippingCostValue">${deliveryMethod === 'pickup' ? 'مجاناً (استلام من المتجر)' : shippingCost.toLocaleString() + ' ر.س'}</span></div>
             ${discount > 0 ? '<div class="total-row" style="color:#10B981"><span>الخصم (' + activeCoupon.label + ')</span><span>-' + discount.toLocaleString() + ' ر.س</span></div>' : ''}
-            <div class="total-row final"><span>المجموع الكلي</span><span>${finalTotal.toLocaleString()} ر.س</span></div>
+            <div class="total-row final"><span>المجموع الكلي</span><span id="finalTotalValue">${finalTotal.toLocaleString()} ر.س</span></div>
         </div>
         
         <!-- 🛍️ Cross-sell: منتجات مقترحة -->
@@ -234,22 +323,59 @@ function renderCheckout() {
     
     loadPaymentMethods();
     loadUpsellProducts();
+    
+    // 🚚 تحديث الشحن عند تغيير المدينة + جلب الأسعار أول مرة
+    var cityInput = document.getElementById('custCity');
+    if (cityInput) cityInput.addEventListener('input', function() { updateShipping(); });
+    updateShipping();
 }
 
 function selectDelivery(method, el) {
     deliveryMethod = method;
     document.querySelectorAll('.delivery-option').forEach(function(o) { o.classList.remove('selected'); });
     el.classList.add('selected');
+    updateShipping(); // 🚚 استلام من المتجر = 0 / توصيل = حسب المدينة
 }
 
 async function loadPaymentMethods() {
     var grid = document.getElementById('paymentMethodsGrid');
     var result = await supabaseClient.from('payment_methods').select('*').eq('is_active', true).order('sort_order');
     var methods = result.data || [];
-    if (!methods.length) { grid.innerHTML = '<div style="text-align:center;padding:20px;grid-column:1/-1">💳 لا توجد طرق دفع</div>'; return; }
-    grid.innerHTML = methods.map(function(m) {
+
+    // 💳 البوابات الإلكترونية المفعلة — تُقرأ من الـ View العامة payment_gateways_public فقط
+    // (جدول payment_gateways محمي RLS ولا يقرأه الفرونت إطلاقاً — لا أسرار هنا)
+    var gateways = [];
+    try {
+        var gwResult = await supabaseClient.from('payment_gateways_public').select('*');
+        if (!gwResult.error && gwResult.data) gateways = gwResult.data;
+    } catch (eGw) { gateways = []; } // صمت تام — غياب البوابات لا يكسر طرق الدفع الحالية
+
+    if (!methods.length && !gateways.length) { grid.innerHTML = '<div style="text-align:center;padding:20px;grid-column:1/-1">💳 لا توجد طرق دفع</div>'; return; }
+    var html = methods.map(function(m) {
         return '<div class="payment-option" onclick="selectPayment(\'' + m.id + '\',\'' + m.name + '\', this)"><span class="icon">' + (m.icon || '💳') + '</span><span class="name">' + m.name + '</span></div>';
     }).join('');
+    html += gateways.map(function(g) {
+        // شارة 🧪 للوضع التجريبي — تنظيف النصوص من علامات الاقتباس حمايةً للـ onclick
+        var gCode = String(g.gateway_code || '').replace(/['"\\]/g, '');
+        var gName = String(g.gateway_name || 'دفع إلكتروني').replace(/['"\\]/g, '');
+        var gMode = String(g.mode || 'test').replace(/['"\\]/g, '');
+        var badge = gMode === 'test' ? ' <span style="background:rgba(245,158,11,0.2);color:#F59E0B;font-size:10px;padding:2px 6px;border-radius:6px;vertical-align:middle">🧪 تجريبي</span>' : '';
+        return '<div class="payment-option" onclick="selectGateway(\'' + gCode + '\',\'' + gName + '\',\'' + gMode + '\', this)"><span class="icon">💳</span><span class="name">دفع إلكتروني — ' + gName + badge + '</span></div>';
+    }).join('');
+    grid.innerHTML = html;
+}
+
+// 💳 اختيار بوابة دفع إلكترونية (من الـ View العامة)
+function selectGateway(code, name, mode, el) {
+    selectedPayment = {
+        id: 'gateway:' + code,
+        name: 'دفع إلكتروني — ' + name + (mode === 'test' ? ' (تجريبي)' : ''),
+        isGateway: true,
+        gatewayCode: code,
+        gatewayMode: mode
+    };
+    document.querySelectorAll('.payment-option').forEach(function(o) { o.classList.remove('selected'); });
+    el.classList.add('selected');
 }
 
 function selectPayment(id, name, el) {
@@ -328,6 +454,38 @@ function payWithTamara(amount) {
     window.open('https://wa.me/966545358773?text=' + encodeURIComponent(msg), '_blank');
     showToast('✅ تم اختيار تمارا - 4 أقساط بدون فوائد');
 }
+// ============================================================
+// 💳 مسار الدفع الإلكتروني — استدعاء Edge Function ثم تحويل العميل
+// try/catch شامل: أي فشل = فولباك للمسار العادي (واتساب) بدون كسر أو إلغاء الطلب
+// ============================================================
+async function startGatewayPayment(orderId, amount, customer, gatewayCode) {
+    try {
+        // رابط العودة بعد الدفع — يُبنى من مسار الصفحة الحالية ليعمل على أي دومين/استضافة
+        var callbackUrl = new URL('payment-return.html', window.location.href).href + '?order=' + encodeURIComponent(String(orderId));
+        var res = await fetch('https://kcbmvxuzjlaooknwhqqb.supabase.co/functions/v1/create-payment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                order_id: String(orderId),
+                amount: amount, // الإجمالي شامل الشحن
+                currency: 'SAR',
+                customer: customer,
+                callback_url: callbackUrl,
+                gateway_code: gatewayCode || undefined // اختياري — الفانكشن تختار المفعلة لو غاب
+            })
+        });
+        if (!res.ok) throw new Error('function_status_' + res.status);
+        var data = await res.json();
+        if (!data || !data.payment_url) throw new Error('no_payment_url');
+        window.location.href = data.payment_url; // 🚀 تحويل العميل لبوابة الدفع (أو المحاكي)
+        return true;
+    } catch (e) {
+        // الفانكشن غير منشورة بعد / فشلت / الشبكة — رسالة ودّية بدون كسر
+        showToast('⚠️ الدفع الإلكتروني غير متاح حالياً — اختر طريقة أخرى', 'warning');
+        return false;
+    }
+}
+
 async function placeOrder() {
     var name = document.getElementById('custName').value.trim();
     var phone = document.getElementById('custPhone').value.trim();
@@ -337,20 +495,56 @@ async function placeOrder() {
     var email = document.getElementById('custEmail').value.trim();
     var city = document.getElementById('custCity').value.trim();
     var address = document.getElementById('custAddress').value.trim();
-    var subtotal = cart.reduce(function(s, i) { return s + (i.price * i.qty); }, 0);
-    var tax = Math.round(subtotal * 0.15);
-    var discount = activeCoupon ? Math.round(subtotal * activeCoupon.discount) : 0;
-    var finalTotal = subtotal + tax - discount;
+    // 🚚 تأكيد رسوم الشحن النهائية قبل الإرسال (فشل الجلب = الافتراضي بدون كسر)
+    await ensureShippingRates();
+    shippingCost = currentShippingCost();
+    var totals = calcOrderTotals();
+    var subtotal = totals.subtotal, tax = totals.tax, discount = totals.discount, finalTotal = totals.finalTotal;
     
     var orderPayload = {
         customer_name: name, customer_phone: phone, customer_email: email,
-        items: cart, subtotal: subtotal, tax: tax, total: finalTotal,
-        status: 'new', payment_method: selectedPayment.name,
+        items: cart, subtotal: subtotal, tax: tax, shipping_cost: shippingCost, total: finalTotal,
+        // 💳 مسار البوابة: pending_payment مبدئياً (فولباك new لو العمود/القيد يرفض)
+        status: (selectedPayment.isGateway ? 'pending_payment' : 'new'), payment_method: selectedPayment.name,
         address: JSON.stringify({ city: city, address: address, delivery: deliveryMethod })
     };
     var orderResult = await supabaseClient.from('store_orders').insert([orderPayload]).select('*').single();
+    if (orderResult.error) {
+        // فولباك: لو عمود shipping_cost غير موجود بعد في جدول الطلبات — نحفظ الطلب بدونه بدون كسر
+        try {
+            var fallbackPayload = Object.assign({}, orderPayload);
+            delete fallbackPayload.shipping_cost;
+            orderResult = await supabaseClient.from('store_orders').insert([fallbackPayload]).select('*').single();
+        } catch (eOrder) {}
+    }
+    if (orderResult.error && orderPayload.status !== 'new') {
+        // فولباك إضافي: قيد على عمود status يرفض pending_payment — نحفظ الطلب كـ new
+        try {
+            var newPayload = Object.assign({}, orderPayload);
+            delete newPayload.shipping_cost;
+            newPayload.status = 'new';
+            orderResult = await supabaseClient.from('store_orders').insert([newPayload]).select('*').single();
+        } catch (eOrder2) {}
+    }
     var orderId = orderResult.data ? orderResult.data.id : null;
-    
+
+    // 💳 مسار الدفع الإلكتروني: الطلب أُنشئ أولاً — الآن نستدعي الفانكشن ونحوّل العميل
+    if (selectedPayment.isGateway) {
+        var gatewayOk = false;
+        if (orderId) {
+            showToast('⏳ جاري تجهيز الدفع الإلكتروني...');
+            gatewayOk = await startGatewayPayment(orderId, finalTotal, { name: name, email: email, phone: phone }, selectedPayment.gatewayCode);
+        } else {
+            showToast('⚠️ الدفع الإلكتروني غير متاح حالياً — اختر طريقة أخرى', 'warning');
+        }
+        if (gatewayOk) return; // التحويل لبوابة الدفع جارٍ — لا نكمل المسار العادي
+        // ⚠️ فشل المسار الإلكتروني: الطلب يبقى محفوظاً ونكمل بمسار الواتساب العادي كفولباك
+        // محاولة أفضل جهد لإرجاع حالة الطلب إلى new (كان pending_payment) — الفشل هنا غير مؤثر
+        try {
+            if (orderId) await supabaseClient.from('store_orders').update({ status: 'new' }).eq('id', orderId);
+        } catch (eRevert) {}
+    }
+
     var invoiceNumber = 'INV-' + Date.now();
     var invoiceResult = await supabaseClient.from('invoices').insert([{
         invoice_number: invoiceNumber, customer_name: name, customer_email: email,
@@ -358,7 +552,7 @@ async function placeOrder() {
     }]).select('*').single();
     var invoiceId = invoiceResult.data ? invoiceResult.data.id : null;
     
-    var msg = '*طلب جديد*\n\n*العميل:* ' + name + '\n*الجوال:* ' + phone + '\n*الدفع:* ' + selectedPayment.name + '\n*الإجمالي:* ' + finalTotal.toLocaleString() + ' ر.س';
+    var msg = '*طلب جديد*\n\n*العميل:* ' + name + '\n*الجوال:* ' + phone + '\n*الدفع:* ' + selectedPayment.name + '\n*الشحن:* ' + shippingCost.toLocaleString() + ' ر.س' + '\n*الإجمالي:* ' + finalTotal.toLocaleString() + ' ر.س';
     if (invoiceId) msg += '\n\n🧾 الفاتورة: https://alshamal-df.com/invoice.html?id=' + invoiceId;
     window.open('https://wa.me/966545358773?text=' + encodeURIComponent(msg), '_blank');
     
@@ -369,6 +563,20 @@ async function placeOrder() {
 
 // Initialize
 if (cart.length > 0) renderCheckout();
+
+// ✅ تصدير الدوال المستخدمة في onclick إلى النطاق العام
+window.selectDelivery = selectDelivery;
+window.selectPayment = selectPayment;
+window.selectGateway = selectGateway;
+window.applyCouponCode = applyCouponCode;
+window.placeOrder = placeOrder;
+window.payWithSTC = payWithSTC;
+window.payWithApple = payWithApple;
+window.payWithMada = payWithMada;
+window.payWithTamara = payWithTamara;
+window.addToCartDirect = addToCartDirect;
+window.updateShipping = updateShipping;
+})();
 </script>
 <script src="chatbot-ai.js"></script>
 <script src="site-content.js"></script>
