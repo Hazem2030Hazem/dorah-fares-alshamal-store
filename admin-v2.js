@@ -66,6 +66,8 @@ window.showTab=function(tabName){
   if(tabName==='blog')loadSiteItems('blog');
   if(tabName==='certifications')loadSiteItems('certifications');
   if(tabName==='contact')loadSiteItems('contact');
+  if(tabName==='announcements')loadSiteItems('announcements');
+  if(tabName==='afaky')loadAfakySettings();
   if(tabName==='bank_accounts')loadBankAccounts();
   if(tabName==='payment_methods')loadPaymentMethodsAdmin();
   if(tabName==='shipping')loadShippingRates();
@@ -360,11 +362,269 @@ window.saveGovDocs=async function(){adminToast('✅ تم حفظ التوثيق')
 window.saveEInvoice=async function(){adminToast('✅ تم حفظ الفوترة');};
 
 window.updateStats=async function(){
-  var pe=document.getElementById('totalProducts'),oe=document.getElementById('totalOrders'),re=document.getElementById('totalReviews'),me=document.getElementById('totalMessages');
-  if(pe){var{count}=await supabaseClient.from('store_products').select('*',{count:'exact',head:true});pe.textContent=count||0;}
-  if(oe){var{count:oc}=await supabaseClient.from('store_orders').select('*',{count:'exact',head:true}).eq('status','new');oe.textContent=oc||0;}
-  if(re){var{count:rc}=await supabaseClient.from('reviews').select('*',{count:'exact',head:true});re.textContent=rc||0;}
-  if(me){var{count:mc}=await supabaseClient.from('contact_messages').select('*',{count:'exact',head:true}).eq('status','new');me.textContent=mc||0;}
+  var setStat=function(id,val){var el=document.getElementById(id);if(el)el.textContent=val;};
+  var newOrders=0,newMessages=0;
+  try{
+    var pe=document.getElementById('totalProducts');
+    if(pe){var{count}=await supabaseClient.from('store_products').select('*',{count:'exact',head:true});pe.textContent=count||0;}
+  }catch(e){console.warn('updateStats products:',e);setStat('totalProducts',0);}
+  try{
+    var ae=document.getElementById('totalOrdersAll');
+    if(ae){var{count:ac}=await supabaseClient.from('store_orders').select('*',{count:'exact',head:true});ae.textContent=ac||0;}
+  }catch(e){console.warn('updateStats orders all:',e);setStat('totalOrdersAll',0);}
+  try{
+    var oe=document.getElementById('totalOrders');
+    var{count:oc}=await supabaseClient.from('store_orders').select('*',{count:'exact',head:true}).eq('status','new');
+    newOrders=oc||0;if(oe)oe.textContent=newOrders;
+  }catch(e){console.warn('updateStats new orders:',e);setStat('totalOrders',0);}
+  try{
+    var ce=document.getElementById('totalCustomers');
+    if(ce){var{count:cc}=await supabaseClient.from('profiles').select('*',{count:'exact',head:true});ce.textContent=cc||0;}
+  }catch(e){console.warn('updateStats customers:',e);setStat('totalCustomers',0);}
+  try{
+    var te=document.getElementById('todaySales');
+    if(te){
+      var todayStart=new Date();todayStart.setHours(0,0,0,0);
+      var{data:todayOrders}=await supabaseClient.from('store_orders').select('total').gte('created_at',todayStart.toISOString());
+      var todaySum=(todayOrders||[]).reduce(function(s,o){return s+Number(o.total||0);},0);
+      te.textContent=todaySum.toLocaleString('ar-SA')+' ر.س';
+    }
+  }catch(e){console.warn('updateStats today sales:',e);setStat('todaySales','0 ر.س');}
+  try{
+    var mse=document.getElementById('monthSales');
+    if(mse){
+      var now=new Date(),monthStart=new Date(now.getFullYear(),now.getMonth(),1);
+      var{data:monthOrders}=await supabaseClient.from('store_orders').select('total').gte('created_at',monthStart.toISOString());
+      var monthSum=(monthOrders||[]).reduce(function(s,o){return s+Number(o.total||0);},0);
+      mse.textContent=monthSum.toLocaleString('ar-SA')+' ر.س';
+    }
+  }catch(e){console.warn('updateStats month sales:',e);setStat('monthSales','0 ر.س');}
+  try{
+    var re=document.getElementById('totalReviews');
+    if(re){var{count:rc}=await supabaseClient.from('reviews').select('*',{count:'exact',head:true});re.textContent=rc||0;}
+  }catch(e){console.warn('updateStats reviews:',e);setStat('totalReviews',0);}
+  try{
+    var me=document.getElementById('totalMessages');
+    var{count:mc}=await supabaseClient.from('contact_messages').select('*',{count:'exact',head:true}).eq('status','new');
+    newMessages=mc||0;if(me)me.textContent=newMessages;
+  }catch(e){console.warn('updateStats messages:',e);setStat('totalMessages',0);}
+  var badge=document.getElementById('notifBadge');
+  if(badge)badge.textContent=newOrders+newMessages;
+};
+
+/* ========== ربط أفاقي — التكامل المحاسبي ========== */
+var afakyModeIds={api:'afakyFieldsApi',database:'afakyFieldsDatabase',csv:'afakyFieldsCsv',webhook:'afakyFieldsWebhook'};
+
+window.toggleAfakyModeFields=function(){
+  var mode=(document.getElementById('afakyMode')||{}).value||'api';
+  Object.keys(afakyModeIds).forEach(function(m){
+    var box=document.getElementById(afakyModeIds[m]);
+    if(box)box.style.display=(m===mode)?'block':'none';
+  });
+};
+
+function afakyUpdateStatusUI(s){
+  var badge=document.getElementById('afakyStatus'),note=document.getElementById('afakyStatusNote');
+  var enabled=!!(s&&s.enabled);
+  var modeNames={api:'API مباشر',database:'قاعدة بيانات SQL Server',csv:'ملفات CSV',webhook:'Webhook'};
+  if(badge){
+    badge.textContent=enabled?'🟢 مفعل':'⚪ غير مفعل';
+    badge.classList.toggle('active',enabled);
+  }
+  if(note){
+    note.textContent=enabled
+      ?'الربط مفعل حالياً بوضع: '+(modeNames[s.mode]||s.mode||'—')+' — البيانات جاهزة للتبادل مع نظام أفاقي.'
+      :'لم يتم تفعيل الربط بعد — اضبط الإعدادات بالأسفل ثم احفظ.';
+  }
+}
+
+function afakyFillForm(s){
+  s=s||{};
+  var setV=function(id,v){var el=document.getElementById(id);if(el)el.value=v==null?'':v;};
+  var en=document.getElementById('afakyEnabled');if(en)en.checked=!!s.enabled;
+  setV('afakyMode',s.mode||'api');
+  setV('afakyApiKey',s.apiKey);setV('afakyApiUrl',s.apiUrl);
+  setV('afakySqlServer',s.sqlServer);setV('afakySqlDatabase',s.sqlDatabase);
+  setV('afakySqlUser',s.sqlUser);setV('afakySqlPassword',s.sqlPassword);
+  setV('afakyWebhookUrl',s.webhookUrl);
+  toggleAfakyModeFields();
+}
+
+window.loadAfakySettings=async function(){
+  var s=null;
+  try{
+    var{data}=await supabaseClient.from('site_settings').select('settings').eq('id',1).maybeSingle();
+    s=data&&data.settings?data.settings.afaky_settings:null;
+    if(typeof s==='string'){try{s=JSON.parse(s);}catch(_){s=null;}}
+  }catch(e){console.warn('loadAfakySettings:',e);}
+  afakyFillForm(s||{});
+  afakyUpdateStatusUI(s||{});
+};
+
+window.saveAfakySettings=async function(e){
+  if(e&&e.preventDefault)e.preventDefault();
+  var getV=function(id){var el=document.getElementById(id);return el?el.value.trim():'';};
+  var settings={
+    enabled:!!(document.getElementById('afakyEnabled')||{}).checked,
+    mode:getV('afakyMode')||'api',
+    apiKey:getV('afakyApiKey'),
+    apiUrl:getV('afakyApiUrl'),
+    sqlServer:getV('afakySqlServer'),
+    sqlDatabase:getV('afakySqlDatabase'),
+    sqlUser:getV('afakySqlUser'),
+    sqlPassword:getV('afakySqlPassword'),
+    webhookUrl:getV('afakyWebhookUrl')
+  };
+  try{
+    var{data}=await supabaseClient.from('site_settings').select('settings').eq('id',1).maybeSingle();
+    var all=(data&&data.settings)||{};
+    all.afaky_settings=settings;
+    var{error}=await supabaseClient.from('site_settings').upsert([{id:1,settings:all}]);
+    if(error){adminToast('❌ خطأ: '+error.message,'error');return false;}
+    afakyUpdateStatusUI(settings);
+    adminToast('✅ تم حفظ إعدادات ربط أفاقي');
+  }catch(err){
+    console.warn('saveAfakySettings:',err);
+    adminToast('❌ تعذر حفظ الإعدادات','error');
+  }
+  return false;
+};
+
+/* ========== أدوات CSV لربط أفاقي ========== */
+function afakyCsvCell(v){
+  v=(v===null||v===undefined)?'':String(v);
+  return '"'+v.replace(/"/g,'""')+'"';
+}
+function afakyDateStamp(){
+  var d=new Date();
+  var p=function(n){return (n<10?'0':'')+n;};
+  return ''+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate());
+}
+function afakyDownloadCSV(filename,headers,rows){
+  var lines=[headers.map(afakyCsvCell).join(',')];
+  rows.forEach(function(r){lines.push(r.map(afakyCsvCell).join(','));});
+  var blob=new Blob(['\uFEFF'+lines.join('\r\n')],{type:'text/csv;charset=utf-8;'});
+  var link=document.createElement('a');
+  link.href=URL.createObjectURL(blob);
+  link.download=filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  setTimeout(function(){URL.revokeObjectURL(link.href);},1000);
+}
+
+window.exportProductsCSV=async function(){
+  try{
+    var{data,error}=await supabaseClient.from('store_products').select('id,name,category,price,old_price,stock,description').order('id');
+    if(error){adminToast('❌ خطأ: '+error.message,'error');return;}
+    if(!data||!data.length){adminToast('📦 لا توجد منتجات للتصدير');return;}
+    var rows=data.map(function(p){return [p.id,p.name,p.category,p.price,p.old_price,p.stock,p.description];});
+    afakyDownloadCSV('products-afaky-'+afakyDateStamp()+'.csv',['id','name','category','price','old_price','stock','description'],rows);
+    adminToast('✅ تم تصدير '+rows.length+' منتج');
+  }catch(e){console.warn('exportProductsCSV:',e);adminToast('❌ تعذر تصدير المنتجات','error');}
+};
+
+window.exportOrdersCSV=async function(){
+  try{
+    var{data,error}=await supabaseClient.from('store_orders').select('order_number,customer_name,customer_phone,total,status,created_at').order('created_at',{ascending:false});
+    if(error){adminToast('❌ خطأ: '+error.message,'error');return;}
+    if(!data||!data.length){adminToast('🛒 لا توجد طلبات للتصدير');return;}
+    var rows=data.map(function(o){return [o.order_number,o.customer_name,o.customer_phone,o.total,o.status,o.created_at];});
+    afakyDownloadCSV('orders-afaky-'+afakyDateStamp()+'.csv',['order_number','customer_name','customer_phone','total','status','created_at'],rows);
+    adminToast('✅ تم تصدير '+rows.length+' طلب');
+  }catch(e){console.warn('exportOrdersCSV:',e);adminToast('❌ تعذر تصدير الطلبات','error');}
+};
+
+function afakyParseCSV(text){
+  text=String(text||'').replace(/^\uFEFF/,'');
+  var rows=[],row=[],cell='',inQ=false,i,ch;
+  for(i=0;i<text.length;i++){
+    ch=text[i];
+    if(inQ){
+      if(ch==='"'){
+        if(text[i+1]==='"'){cell+='"';i++;}
+        else inQ=false;
+      }else cell+=ch;
+    }else{
+      if(ch==='"')inQ=true;
+      else if(ch===','){row.push(cell);cell='';}
+      else if(ch==='\n'||ch==='\r'){
+        if(ch==='\r'&&text[i+1]==='\n')i++;
+        row.push(cell);cell='';
+        if(row.length>1||row[0]!=='')rows.push(row);
+        row=[];
+      }else cell+=ch;
+    }
+  }
+  if(cell!==''||row.length){row.push(cell);rows.push(row);}
+  return rows;
+}
+
+window.previewAfakyImport=function(input){
+  var preview=document.getElementById('afakyImportPreview');
+  var btn=document.getElementById('afakyImportBtn');
+  adminState.afakyImport=[];
+  if(!input||!input.files||!input.files[0]){
+    if(preview)preview.style.display='none';
+    if(btn)btn.style.display='none';
+    return;
+  }
+  var reader=new FileReader();
+  reader.onload=function(){
+    try{
+      var rows=afakyParseCSV(reader.result);
+      if(rows.length<2){
+        if(preview){preview.style.display='block';preview.textContent='⚠️ الملف فارغ أو بدون صفوف بيانات.';}
+        if(btn)btn.style.display='none';
+        return;
+      }
+      var header=rows[0].map(function(h){return String(h).trim().toLowerCase();});
+      var products=[];
+      for(var i=1;i<rows.length;i++){
+        var r=rows[i],p={};
+        header.forEach(function(col,idx){p[col]=r[idx]!==undefined?String(r[idx]).trim():'';});
+        if(!p.id||isNaN(parseInt(p.id)))continue;
+        products.push({
+          id:parseInt(p.id),
+          name:p.name||'',
+          category:p.category||'',
+          price:parseFloat(p.price)||0,
+          old_price:p.old_price!==''?(parseFloat(p.old_price)||null):null,
+          stock:parseInt(p.stock)||0,
+          description:p.description||''
+        });
+      }
+      adminState.afakyImport=products;
+      var skipped=(rows.length-1)-products.length;
+      if(preview){
+        preview.style.display='block';
+        preview.textContent='📋 معاينة: تم العثور على '+(rows.length-1)+' صف في الملف — '+products.length+' منتج جاهز للاستيراد'+(skipped>0?' ('+skipped+' صف تم تجاوزه لعدم وجود id صالح)':'')+'.';
+      }
+      if(btn)btn.style.display=products.length?'inline-block':'none';
+    }catch(err){
+      console.warn('previewAfakyImport:',err);
+      if(preview){preview.style.display='block';preview.textContent='❌ تعذر قراءة الملف — تأكد أنه CSV صالح.';}
+      if(btn)btn.style.display='none';
+    }
+  };
+  reader.readAsText(input.files[0],'UTF-8');
+};
+
+window.runAfakyImport=async function(){
+  var products=adminState.afakyImport||[];
+  if(!products.length){adminToast('⚠️ لا توجد بيانات للاستيراد — اختر ملف CSV أولاً');return;}
+  if(!confirm('سيتم استيراد/تحديث '+products.length+' منتج في المتجر. متابعة؟'))return;
+  try{
+    var{error}=await supabaseClient.from('store_products').upsert(products,{onConflict:'id'});
+    if(error){adminToast('❌ خطأ: '+error.message,'error');return;}
+    adminToast('✅ تم استيراد '+products.length+' منتج بنجاح');
+    var preview=document.getElementById('afakyImportPreview');
+    if(preview)preview.textContent='✅ اكتمل الاستيراد: '+products.length+' منتج.';
+    var btn=document.getElementById('afakyImportBtn');if(btn)btn.style.display='none';
+    var file=document.getElementById('afakyImportFile');if(file)file.value='';
+    adminState.afakyImport=[];
+    if(typeof loadProducts==='function')loadProducts();
+  }catch(e){console.warn('runAfakyImport:',e);adminToast('❌ تعذر تنفيذ الاستيراد','error');}
 };
 
 document.addEventListener('DOMContentLoaded',function(){

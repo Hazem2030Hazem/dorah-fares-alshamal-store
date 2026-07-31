@@ -33,7 +33,7 @@
   <link rel="manifest" href="manifest.json?v=4.0">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20fill%3D%27%25231E88E5%27%20rx%3D%2715%27%20width%3D%27100%27%20height%3D%27100%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27white%27%3E%E2%9A%A1%3C%2Ftext%3E%3C%2Fsvg%3E">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
-  <title>الرامات | شركة درة فارس الشمال</title>
+  <title>تتبع طلبك | شركة درة فارس الشمال</title>
   
   <!-- ========== AUDIO AUTO-PLAY SCRIPT (مباشر في الصفحة) ========== -->
   
@@ -46,6 +46,50 @@
 
 
   <link rel="stylesheet" href="styles.css">
+  <style>
+  /* ===== صفحة تتبع الطلب - هوية داكنة/نيون أزرق ===== */
+  .dtrack-wrap{max-width:820px;margin:0 auto 60px;}
+  .dtrack-form{background:rgba(10,22,44,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(56,189,248,.35);border-radius:22px;padding:34px 30px;box-shadow:0 12px 45px rgba(2,10,30,.55),0 0 30px rgba(14,165,233,.12);display:flex;flex-direction:column;gap:20px;}
+  .dtrack-field label{display:block;color:#7dd3fc;font-weight:800;font-size:15px;margin-bottom:9px;}
+  .dtrack-field input{width:100%;box-sizing:border-box;background:rgba(2,12,28,.75);border:1px solid rgba(56,189,248,.35);border-radius:13px;padding:14px 18px;color:#eaf6ff;font-size:16px;font-family:'Cairo','Tajawal',sans-serif;font-weight:600;outline:none;transition:all .3s ease;}
+  .dtrack-field input:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.18),0 0 18px rgba(14,165,233,.25);}
+  .dtrack-field input::placeholder{color:rgba(180,210,235,.45);}
+  .dtrack-btn{background:linear-gradient(135deg,#0EA5E9,#2563EB);color:#fff;border:none;border-radius:13px;padding:15px;font-size:17px;font-weight:900;font-family:'Cairo','Tajawal',sans-serif;cursor:pointer;transition:all .3s ease;box-shadow:0 8px 24px rgba(14,165,233,.35);}
+  .dtrack-btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(14,165,233,.55);}
+  .dtrack-btn:disabled{opacity:.6;cursor:wait;transform:none;}
+  .dtrack-card{background:rgba(10,22,44,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(56,189,248,.3);border-radius:22px;padding:30px;margin-top:26px;box-shadow:0 12px 45px rgba(2,10,30,.5);animation:dtrackFade .5s ease;}
+  @keyframes dtrackFade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .dtrack-head{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(56,189,248,.2);padding-bottom:18px;margin-bottom:22px;}
+  .dtrack-head h3{color:#eaf6ff;font-size:20px;font-weight:900;margin:0;}
+  .dtrack-meta{display:flex;flex-wrap:wrap;gap:10px 26px;color:rgba(200,225,245,.85);font-size:14px;font-weight:700;}
+  .dtrack-meta b{color:#7dd3fc;}
+  .dtrack-timeline{display:flex;justify-content:space-between;position:relative;margin:34px 6px 30px;padding:0 4px;}
+  .dtrack-timeline::before{content:'';position:absolute;top:23px;right:8%;left:8%;height:3px;background:rgba(125,211,252,.18);border-radius:3px;}
+  .dtrack-bar{position:absolute;top:23px;right:8%;height:3px;background:linear-gradient(90deg,#38bdf8,#2563eb);border-radius:3px;box-shadow:0 0 12px rgba(56,189,248,.6);transition:width .6s ease;}
+  .dtrack-step{position:relative;z-index:2;text-align:center;width:25%;}
+  .dtrack-dot{width:46px;height:46px;margin:0 auto 10px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;background:rgba(4,16,34,.9);border:2px solid rgba(125,211,252,.3);color:rgba(190,220,240,.5);transition:all .35s ease;}
+  .dtrack-step.done .dtrack-dot{background:linear-gradient(135deg,#0EA5E9,#2563EB);border-color:#38bdf8;color:#fff;box-shadow:0 0 16px rgba(14,165,233,.45);}
+  .dtrack-step.current .dtrack-dot{background:linear-gradient(135deg,#38bdf8,#0EA5E9);border-color:#7dd3fc;color:#fff;box-shadow:0 0 0 5px rgba(56,189,248,.18),0 0 22px rgba(56,189,248,.8);animation:dtrackPulse 1.6s infinite;}
+  @keyframes dtrackPulse{0%,100%{box-shadow:0 0 0 4px rgba(56,189,248,.2),0 0 20px rgba(56,189,248,.7)}50%{box-shadow:0 0 0 9px rgba(56,189,248,.08),0 0 30px rgba(56,189,248,.9)}}
+  .dtrack-lbl{font-size:13px;font-weight:800;color:rgba(190,220,240,.55);}
+  .dtrack-step.done .dtrack-lbl{color:#9fdcff;}
+  .dtrack-step.current .dtrack-lbl{color:#fff;text-shadow:0 0 12px rgba(56,189,248,.8);}
+  .dtrack-items{margin-top:8px;}
+  .dtrack-items h4{color:#7dd3fc;font-size:16px;font-weight:900;margin:0 0 14px;}
+  .dtrack-item{display:flex;justify-content:space-between;align-items:center;gap:12px;background:rgba(2,12,28,.55);border:1px solid rgba(56,189,248,.16);border-radius:13px;padding:13px 18px;margin-bottom:10px;color:#eaf6ff;font-weight:700;font-size:14px;}
+  .dtrack-item .q{color:#38bdf8;font-weight:900;white-space:nowrap;}
+  .dtrack-total{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding:16px 18px;border-radius:13px;background:linear-gradient(135deg,rgba(14,165,233,.18),rgba(37,99,235,.14));border:1px solid rgba(56,189,248,.35);color:#fff;font-weight:900;font-size:17px;}
+  .dtrack-status-badge{display:inline-block;padding:6px 16px;border-radius:50px;background:linear-gradient(135deg,#0EA5E9,#2563EB);color:#fff;font-size:13px;font-weight:900;box-shadow:0 0 16px rgba(14,165,233,.4);}
+  .dtrack-cancel{background:rgba(80,15,25,.6);border:1px solid rgba(248,113,113,.5);color:#fecaca;border-radius:14px;padding:15px 18px;font-weight:800;text-align:center;margin-bottom:18px;}
+  .dtrack-empty{background:rgba(10,22,44,.82);backdrop-filter:blur(14px);border:1px solid rgba(251,191,36,.35);border-radius:22px;padding:36px 28px;margin-top:26px;text-align:center;animation:dtrackFade .5s ease;}
+  .dtrack-empty .ic{font-size:46px;display:block;margin-bottom:12px;}
+  .dtrack-empty p{color:#e8f2fb;font-size:17px;font-weight:800;margin:0 0 8px;}
+  .dtrack-empty small{color:rgba(200,225,245,.7);display:block;margin-bottom:20px;font-size:14px;}
+  .dtrack-wa{display:inline-block;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;text-decoration:none;padding:13px 30px;border-radius:50px;font-weight:900;font-size:15px;transition:all .3s ease;box-shadow:0 8px 22px rgba(37,211,102,.3);}
+  .dtrack-wa:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(37,211,102,.5);}
+  .dtrack-loading{text-align:center;color:#7dd3fc;font-weight:800;padding:26px;font-size:16px;}
+  @media (max-width:640px){.dtrack-form{padding:24px 18px}.dtrack-lbl{font-size:11px}.dtrack-dot{width:38px;height:38px;font-size:16px}.dtrack-timeline::before,.dtrack-bar{top:19px}}
+  </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   (function() {
@@ -357,31 +401,27 @@ function init() {
 
 <section class="page-hero">
   <div class="hero-content">
-    <h1 class="page-title">🧠 الرامات</h1>
-    <p class="page-subtitle">رامات DDR4 و DDR5 بجميع السعات والسرعات</p>
-    <p id="catCount" style="color:rgba(255,255,255,.75);font-size:16px;margin-top:12px;font-weight:700"></p>
+    <h1 class="page-title">📦 تتبع طلبك</h1>
+    <p class="page-subtitle">أدخل رقم الطلب ورقم الجوال المسجَّل لدينا لمعرفة حالة طلبك لحظة بلحظة</p>
   </div>
 </section>
 
 <section class="products" id="products" style="background:transparent;">
 <div class="container">
-<div class="products-toolbar">
-<div class="products-toolbar-left">
-<div class="filter-tabs">
-<a class="filter-tab" href="products.html">الكل</a>
-<a class="filter-tab" href="products-printers.html">طابعات</a>
-<a class="filter-tab" href="products-computers.html">كمبيوتر</a>
-<a class="filter-tab active" href="products-ram.html">رامات</a>
-<a class="filter-tab" href="products-hard-drives.html">هاردات</a>
-<a class="filter-tab" href="products-accessories.html">إكسسوارات</a>
-<a class="filter-tab" href="products-cables.html">وصلات</a>
-<a class="filter-tab" href="products-projectors.html">بروجكتور</a>
-<a class="filter-tab" href="products-ink.html">أحبار الطابعات</a>
-<a class="filter-tab" href="products-food.html">مواد غذائية</a>
+<div class="dtrack-wrap">
+<form class="dtrack-form" id="dtrackForm" onsubmit="return dtrackSearch(event)">
+<div class="dtrack-field">
+<label for="dtrackOrder">🔢 رقم الطلب</label>
+<input type="text" id="dtrackOrder" placeholder="مثال: 1023 أو DORA-1023" required autocomplete="off">
 </div>
+<div class="dtrack-field">
+<label for="dtrackPhone">📱 رقم الجوال</label>
+<input type="tel" id="dtrackPhone" placeholder="05xxxxxxxx" required autocomplete="off">
 </div>
+<button type="submit" class="dtrack-btn" id="dtrackBtn">🔍 تتبع الطلب</button>
+</form>
+<div id="dtrackResult"></div>
 </div>
-<div class="prod-grid" id="productsGrid"></div>
 </div>
 </section>
 
@@ -595,12 +635,156 @@ function init() {
 
   <script src="main.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  renderProducts('ram');
-  var n = document.querySelectorAll('#productsGrid .prod-card').length;
-  var c = document.getElementById('catCount');
-  if (c) c.textContent = n + ' منتج متاح';
-});
+/* ===== تتبع الطلبات - track.html (يستخدم supabaseClient من main.js) ===== */
+var DTRACK_STAGES = ['تم الاستلام', 'قيد التجهيز', 'تم الشحن', 'تم التسليم'];
+var DTRACK_ICONS = ['📥', '⚙️', '🚚', '✅'];
+
+function dtrackEsc(s) {
+  var d = document.createElement('div');
+  d.textContent = String(s == null ? '' : s);
+  return d.innerHTML;
+}
+
+function dtrackStageIndex(status) {
+  var s = String(status || '').toLowerCase().trim();
+  if (['delivered', 'completed', 'done', 'complete'].indexOf(s) !== -1) return 3;
+  if (['shipped', 'shipping', 'out_for_delivery', 'out-for-delivery'].indexOf(s) !== -1) return 2;
+  if (['processing', 'preparing', 'confirmed', 'in_progress'].indexOf(s) !== -1) return 1;
+  return 0; /* new وأي حالة أخرى = تم الاستلام */
+}
+
+function dtrackIsCancelled(status) {
+  var s = String(status || '').toLowerCase().trim();
+  return ['cancelled', 'canceled', 'rejected'].indexOf(s) !== -1;
+}
+
+function dtrackPhoneVariants(phone) {
+  var raw = String(phone || '').trim();
+  var digits = raw.replace(/\D/g, '');
+  var v = [raw, digits];
+  if (digits.indexOf('966') === 0) {
+    v.push('+' + digits, '0' + digits.slice(3), digits.slice(3));
+  } else if (digits.indexOf('0') === 0) {
+    v.push('966' + digits.slice(1), '+966' + digits.slice(1));
+  } else if (digits.length === 9) {
+    v.push('0' + digits, '966' + digits, '+966' + digits);
+  }
+  return v.filter(function(x, i) { return x && v.indexOf(x) === i; });
+}
+
+async function dtrackFindOrder(orderNum, phone) {
+  var variants = dtrackPhoneVariants(phone);
+  var num = String(orderNum || '').trim();
+
+  /* المحاولة 1: مطابقة تامة eq على رقم الطلب + الجوال */
+  var r1 = await supabaseClient.from('store_orders').select('*')
+    .eq('order_number', num).in('customer_phone', variants).limit(1);
+  if (r1.error) throw r1.error;
+  if (r1.data && r1.data.length) return r1.data[0];
+
+  /* المحاولة 2: مطابقة مرنة ilike (يتحمل بادئات مثل # أو DORA-) */
+  var safe = num.replace(/[%_,"']/g, '');
+  if (safe) {
+    var r2 = await supabaseClient.from('store_orders').select('*')
+      .ilike('order_number', '%' + safe + '%').in('customer_phone', variants).limit(1);
+    if (r2.error) throw r2.error;
+    if (r2.data && r2.data.length) return r2.data[0];
+  }
+
+  /* المحاولة 3: لو الإدخال رقمي، قد يكون رقم الطلب هو الـ id نفسه */
+  if (/^\d+$/.test(safe)) {
+    var r3 = await supabaseClient.from('store_orders').select('*')
+      .eq('id', Number(safe)).in('customer_phone', variants).limit(1);
+    if (r3.error) throw r3.error;
+    if (r3.data && r3.data.length) return r3.data[0];
+  }
+  return null;
+}
+
+function dtrackParseItems(items) {
+  var arr = items;
+  if (typeof arr === 'string') { try { arr = JSON.parse(arr); } catch (e) { arr = []; } }
+  return Array.isArray(arr) ? arr : [];
+}
+
+function dtrackRenderOrder(o) {
+  var res = document.getElementById('dtrackResult');
+  var cancelled = dtrackIsCancelled(o.status);
+  var stage = dtrackStageIndex(o.status);
+  var dateStr = '';
+  try {
+    var d = new Date(o.created_at);
+    dateStr = d.toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' }) +
+      ' - ' + d.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+  } catch (e) { dateStr = String(o.created_at || ''); }
+
+  var statusLabels = { 'new': 'جديد', 'processing': 'قيد التجهيز', 'preparing': 'قيد التجهيز', 'confirmed': 'مؤكد', 'shipped': 'تم الشحن', 'delivered': 'تم التسليم', 'completed': 'مكتمل', 'cancelled': 'ملغي', 'canceled': 'ملغي' };
+  var statusLabel = statusLabels[String(o.status || '').toLowerCase()] || String(o.status || '');
+
+  var html = '<div class="dtrack-card">';
+  html += '<div class="dtrack-head"><h3>📦 الطلب ' + dtrackEsc(o.order_number) + '</h3><span class="dtrack-status-badge">' + dtrackEsc(statusLabel) + '</span></div>';
+  html += '<div class="dtrack-meta"><span>👤 <b>' + dtrackEsc(o.customer_name || '') + '</b></span><span>🗓️ <b>' + dtrackEsc(dateStr) + '</b></span></div>';
+
+  if (cancelled) {
+    html += '<div class="dtrack-cancel" style="margin-top:20px">❌ عذراً، هذا الطلب ملغي — للاستفسار تواصل معنا عبر واتساب</div>';
+  } else {
+    html += '<div class="dtrack-timeline"><div class="dtrack-bar" style="width:' + (stage * 28) + '%"></div>';
+    for (var i = 0; i < DTRACK_STAGES.length; i++) {
+      var cls = i < stage ? 'done' : (i === stage ? 'current' : '');
+      html += '<div class="dtrack-step ' + cls + '"><div class="dtrack-dot">' + (i < stage ? '✓' : DTRACK_ICONS[i]) + '</div><div class="dtrack-lbl">' + DTRACK_STAGES[i] + '</div></div>';
+    }
+    html += '</div>';
+  }
+
+  var items = dtrackParseItems(o.items);
+  if (items.length) {
+    html += '<div class="dtrack-items"><h4>🛒 منتجات الطلب</h4>';
+    items.forEach(function(it) {
+      var nm = it.name || it.title || it.product_name || 'منتج';
+      var qty = Number(it.qty || it.quantity || 1);
+      var pr = Number(it.price || 0);
+      html += '<div class="dtrack-item"><span>' + dtrackEsc(nm) + '</span><span class="q">× ' + qty + '</span><span>' + (pr ? formatPrice(pr * qty) : '') + '</span></div>';
+    });
+    html += '</div>';
+  }
+  if (o.total != null && o.total !== '') {
+    html += '<div class="dtrack-total"><span>💰 الإجمالي (شامل الضريبة)</span><span>' + formatPrice(Number(o.total)) + '</span></div>';
+  }
+  html += '</div>';
+  res.innerHTML = html;
+  res.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function dtrackRenderNotFound(orderNum) {
+  var res = document.getElementById('dtrackResult');
+  res.innerHTML = '<div class="dtrack-empty"><span class="ic">🔎</span>' +
+    '<p>لم نعثر على الطلب</p>' +
+    '<small>تأكد من رقم الطلب ورقم الجوال المدخَل، أو تواصل معنا مباشرة وسنساعدك فوراً</small>' +
+    '<a class="dtrack-wa" href="https://wa.me/966545358773?text=' + encodeURIComponent('مرحباً، أريد الاستفسار عن طلبي رقم: ' + orderNum) + '" target="_blank" rel="noopener">💬 تواصل عبر واتساب</a></div>';
+}
+
+async function dtrackSearch(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  var btn = document.getElementById('dtrackBtn');
+  var res = document.getElementById('dtrackResult');
+  var orderNum = document.getElementById('dtrackOrder').value.trim();
+  var phone = document.getElementById('dtrackPhone').value.trim();
+  if (!orderNum || !phone) return false;
+  btn.disabled = true;
+  btn.textContent = '⏳ جاري البحث...';
+  res.innerHTML = '<div class="dtrack-loading">⏳ جاري البحث عن طلبك...</div>';
+  try {
+    var order = await dtrackFindOrder(orderNum, phone);
+    if (order) dtrackRenderOrder(order);
+    else dtrackRenderNotFound(orderNum);
+  } catch (err) {
+    /* فشل الاستعلام أو RLS منع القراءة — نعرض رسالة مهذبة */
+    dtrackRenderNotFound(orderNum);
+  }
+  btn.disabled = false;
+  btn.textContent = '🔍 تتبع الطلب';
+  return false;
+}
 </script>
 <script src="chatbot-ai.js"></script>
 <script src="site-content.js"></script>

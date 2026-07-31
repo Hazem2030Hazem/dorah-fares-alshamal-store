@@ -38,7 +38,7 @@
 
 // توجيه لينكات المنتجات للصفحات الجديدة المستقلة
 document.addEventListener('DOMContentLoaded', function(){
-  var map = {'printers':'products-printers.html','computers':'products-computers.html','ram':'products-ram.html','hard-drives':'products-hard-drives.html','accessories':'products-accessories.html'};
+  var map = {'printers':'products-printers.html','computers':'products-computers.html','ram':'products-ram.html','hard-drives':'products-hard-drives.html','accessories':'products-accessories.html','cables':'products-cables.html','projectors':'products-projectors.html','ink':'products-ink.html','food':'products-food.html'};
   document.querySelectorAll('a[href*="products.html"]').forEach(function(a){
     var m = (a.getAttribute('href')||'').match(/category=([a-z-]+)/);
     a.setAttribute('href', (m && map[m[1]]) ? map[m[1]] : 'products.html');
@@ -2875,4 +2875,143 @@ function updateSpeakerIcon() {
     setTimeout(() => {
         document.getElementById('welcome-popup-overlay').classList.add('show');
     }, 2000);
+})();
+
+
+// ============================================================
+// 🔔 DORA NOTIFICATIONS - نظام إشعارات الزوار
+// وحدة مستقلة تعمل على كل الصفحات — تجلب الإعلانات من
+// site_items (section_key='announcements') وتعرضها في جرس عائم
+// ============================================================
+(function() {
+    'use strict';
+    try {
+        if (typeof supabaseClient === 'undefined' || !supabaseClient) return;
+
+        var doraNotifSeen = 0;
+        try {
+            doraNotifSeen = Number(localStorage.getItem('doraNotifSeen')) || 0;
+        } catch (e0) { doraNotifSeen = 0; }
+
+        function doraNotifEsc(s) {
+            var d = document.createElement('div');
+            d.textContent = String(s == null ? '' : s);
+            return d.innerHTML;
+        }
+
+        function doraNotifInjectCSS() {
+            if (document.getElementById('doraNotifStyle')) return;
+            var st = document.createElement('style');
+            st.id = 'doraNotifStyle';
+            st.textContent = [
+                '#doraNotifBell{position:fixed;bottom:30px;left:30px;z-index:9997;width:58px;height:58px;border-radius:50%;',
+                'background:linear-gradient(135deg,rgba(14,165,233,.9),rgba(37,99,235,.9));border:1px solid rgba(125,211,252,.55);',
+                'color:#fff;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;',
+                'box-shadow:0 8px 28px rgba(14,165,233,.45),0 0 20px rgba(56,189,248,.25);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);',
+                'transition:all .3s ease;font-family:inherit;}',
+                '#doraNotifBell:hover{transform:scale(1.1) translateY(-4px);box-shadow:0 12px 36px rgba(14,165,233,.65),0 0 30px rgba(56,189,248,.4);}',
+                '#doraNotifBadge{position:absolute;top:-4px;left:-4px;min-width:22px;height:22px;border-radius:12px;background:linear-gradient(135deg,#ef4444,#dc2626);',
+                'color:#fff;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;padding:0 6px;',
+                'box-shadow:0 0 12px rgba(239,68,68,.7);border:2px solid rgba(10,20,40,.9);}',
+                '#doraNotifBadge.doraNotifHide{display:none;}',
+                '#doraNotifPanel{position:fixed;bottom:100px;left:30px;z-index:9997;width:340px;max-width:calc(100vw - 40px);max-height:440px;overflow-y:auto;',
+                'background:rgba(8,18,38,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(56,189,248,.35);border-radius:20px;',
+                'box-shadow:0 16px 50px rgba(2,10,30,.65),0 0 30px rgba(14,165,233,.15);padding:0;opacity:0;transform:translateY(14px) scale(.97);pointer-events:none;',
+                'transition:all .3s ease;direction:rtl;font-family:\'Cairo\',\'Tajawal\',sans-serif;}',
+                '#doraNotifPanel.doraNotifOpen{opacity:1;transform:none;pointer-events:auto;}',
+                '.doraNotifHead{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid rgba(56,189,248,.22);position:sticky;top:0;background:rgba(8,18,38,.97);border-radius:20px 20px 0 0;}',
+                '.doraNotifHead b{color:#7dd3fc;font-size:16px;font-weight:900;}',
+                '.doraNotifHead button{background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);color:#9fdcff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:14px;transition:all .25s ease;}',
+                '.doraNotifHead button:hover{background:rgba(56,189,248,.25);transform:rotate(90deg);}',
+                '.doraNotifItem{padding:15px 20px;border-bottom:1px solid rgba(56,189,248,.12);transition:background .25s ease;}',
+                '.doraNotifItem:last-child{border-bottom:none;border-radius:0 0 20px 20px;}',
+                '.doraNotifItem:hover{background:rgba(14,165,233,.08);}',
+                '.doraNotifItem h4{margin:0 0 6px;color:#eaf6ff;font-size:15px;font-weight:900;display:flex;align-items:center;gap:8px;}',
+                '.doraNotifItem h4 .doraNotifNew{flex:none;font-size:10px;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;padding:2px 8px;border-radius:20px;font-weight:900;}',
+                '.doraNotifItem p{margin:0;color:rgba(200,225,245,.8);font-size:13px;line-height:1.8;font-weight:600;}',
+                '@media (max-width:640px){#doraNotifBell{bottom:20px;left:16px;width:52px;height:52px;font-size:21px;}#doraNotifPanel{left:12px;bottom:84px;}}'
+            ].join('');
+            document.head.appendChild(st);
+        }
+
+        function doraNotifBuild(items) {
+            doraNotifInjectCSS();
+
+            var maxId = 0;
+            items.forEach(function(it) { var id = Number(it.id) || 0; if (id > maxId) maxId = id; });
+            var unread = items.filter(function(it) { return (Number(it.id) || 0) > doraNotifSeen; }).length;
+
+            var bell = document.createElement('button');
+            bell.id = 'doraNotifBell';
+            bell.setAttribute('aria-label', 'الإعلانات والإشعارات');
+            bell.innerHTML = '🔔<span id="doraNotifBadge"' + (unread ? '' : ' class="doraNotifHide"') + '>' + unread + '</span>';
+
+            var panel = document.createElement('div');
+            panel.id = 'doraNotifPanel';
+            var html = '<div class="doraNotifHead"><b>🔔 الإعلانات</b><button type="button" id="doraNotifClose" aria-label="إغلاق">✕</button></div>';
+            items.forEach(function(it) {
+                var isNew = (Number(it.id) || 0) > doraNotifSeen;
+                html += '<div class="doraNotifItem"><h4>' + doraNotifEsc(it.title_ar || 'إعلان') +
+                    (isNew ? '<span class="doraNotifNew">جديد</span>' : '') + '</h4>' +
+                    (it.description_ar ? '<p>' + doraNotifEsc(it.description_ar) + '</p>' : '') + '</div>';
+            });
+            panel.innerHTML = html;
+
+            function doraNotifMarkSeen() {
+                try {
+                    localStorage.setItem('doraNotifSeen', String(maxId));
+                    doraNotifSeen = maxId;
+                    var b = document.getElementById('doraNotifBadge');
+                    if (b) b.classList.add('doraNotifHide');
+                    var tags = panel.querySelectorAll('.doraNotifNew');
+                    for (var i = 0; i < tags.length; i++) tags[i].remove();
+                } catch (e1) {}
+            }
+
+            bell.addEventListener('click', function(ev) {
+                ev.stopPropagation();
+                var open = panel.classList.toggle('doraNotifOpen');
+                if (open) doraNotifMarkSeen();
+            });
+            panel.addEventListener('click', function(ev) { ev.stopPropagation(); });
+            var closeBtn = panel.querySelector('#doraNotifClose');
+            if (closeBtn) closeBtn.addEventListener('click', function(ev) {
+                ev.stopPropagation();
+                panel.classList.remove('doraNotifOpen');
+            });
+            document.addEventListener('click', function() {
+                panel.classList.remove('doraNotifOpen');
+            });
+
+            document.body.appendChild(bell);
+            document.body.appendChild(panel);
+        }
+
+        function doraNotifLoad() {
+            try {
+                supabaseClient
+                    .from('site_items')
+                    .select('id,title_ar,description_ar,sort_order')
+                    .eq('section_key', 'announcements')
+                    .eq('is_active', true)
+                    .order('sort_order', { ascending: true })
+                    .then(function(res) {
+                        try {
+                            /* الجدول فاضي أو الاستعلام فشل → الجرس لا يظهر إطلاقاً */
+                            if (!res || res.error || !res.data || !res.data.length) return;
+                            doraNotifBuild(res.data);
+                        } catch (e2) {}
+                    })
+                    .catch(function() {});
+            } catch (e3) {}
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', doraNotifLoad);
+        } else {
+            doraNotifLoad();
+        }
+    } catch (e) {
+        /* صمت تام — لا نكسر أي صفحة */
+    }
 })();

@@ -29,6 +29,10 @@
   <url><loc>https://www.alshamal-df.com/products-ram.html</loc><lastmod>2026-07-26</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.alshamal-df.com/products-hard-drives.html</loc><lastmod>2026-07-26</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.alshamal-df.com/products-accessories.html</loc><lastmod>2026-07-26</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.alshamal-df.com/products-cables.html</loc><lastmod>2026-07-31</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.alshamal-df.com/products-projectors.html</loc><lastmod>2026-07-31</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.alshamal-df.com/products-ink.html</loc><lastmod>2026-07-31</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.alshamal-df.com/products-food.html</loc><lastmod>2026-07-31</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 
   <!-- صفحات المعلومات -->
   <url><loc>https://www.alshamal-df.com/privacy.html</loc><lastmod>2026-07-26</lastmod><changefreq>yearly</changefreq><priority>0.5</priority></url>
@@ -47,5 +51,9 @@
   <url><loc>https://www.alshamal-df.com/thankyou.html</loc><lastmod>2026-07-26</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.alshamal-df.com/wishlist.html</loc><lastmod>2026-07-26</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://www.alshamal-df.com/hp-certificate.html</loc><lastmod>2026-07-26</lastmod><changefreq>yearly</changefreq><priority>0.5</priority></url>
+
+  <!-- صفحات المتجر التفاعلية -->
+  <url><loc>https://www.alshamal-df.com/track.html</loc><lastmod>2026-07-31</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.alshamal-df.com/offers.html</loc><lastmod>2026-07-31</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 
 </urlset>

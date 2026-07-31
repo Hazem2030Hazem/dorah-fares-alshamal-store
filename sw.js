@@ -1,5 +1,5 @@
 // Service Worker for Dora Fares Al Shamal
-const CACHE_NAME = 'dora-cache-v2.1';
+const CACHE_NAME = 'dora-cache-v2.2';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -50,6 +50,12 @@ self.addEventListener('fetch', function(event) {
           return response;
         }
         return fetch(event.request);
+      })
+      .catch(function() {
+        if (event.request.mode === 'navigate') {
+          return caches.match('/index.html');
+        }
+        return undefined;
       })
   );
 });
