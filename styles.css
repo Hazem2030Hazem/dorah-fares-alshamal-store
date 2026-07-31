@@ -4353,3 +4353,126 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
     .prod-grid { grid-template-columns: repeat(2, 1fr) !important; }
     #recentlyViewedGrid, #bestSellersGrid { grid-template-columns: repeat(2, 1fr) !important; }
 }
+/* ============================================================
+   📱 تجاوب الجوال الكامل (Mobile-First Enhancements)
+   ============================================================ */
+@media (max-width: 768px) {
+  /* الأساسيات */
+  body { font-size: 15px; overflow-x: hidden !important; }
+  .container { padding: 0 15px; }
+  h1 { font-size: 28px !important; } h2 { font-size: 24px !important; }
+  h3 { font-size: 20px !important; } h4 { font-size: 18px !important; }
+  .section-header { padding: 50px 0 30px; }
+  .section-header h3 { font-size: 24px !important; }
+  .section-header p { font-size: 14px !important; }
+
+  /* الهيدر وقائمة الهمبرغر */
+  .header { backdrop-filter: blur(25px) !important; }
+  .header-inner { height: 65px; padding: 0 15px; }
+  .nav-links, .search-bar, .header-controls .install-btn,
+  .header-controls .audio-toggle-wrapper, .header-controls .theme-toggle {
+    display: none !important;
+  }
+  .header-controls .cart-btn { display: flex !important; }
+  
+  .hamburger-btn {
+    display: flex !important;
+    flex-direction: column; justify-content: center; align-items: center;
+    width: 40px; height: 40px; background: transparent;
+    border: none; cursor: pointer; gap: 5px;
+    z-index: 1001; position: relative; order: -1;
+  }
+  .hamburger-btn span {
+    display: block; width: 25px; height: 3px;
+    background: #fff; border-radius: 3px; transition: all 0.3s ease;
+  }
+  
+  .nav-links.active {
+    display: flex !important;
+    position: fixed; top: 65px; right: 0;
+    width: 280px; height: calc(100vh - 65px);
+    background: rgba(15,12,41,0.98); backdrop-filter: blur(30px);
+    flex-direction: column; align-items: flex-start;
+    padding: 20px; gap: 5px; z-index: 1000;
+    border-left: 1px solid rgba(255,255,255,0.1);
+    box-shadow: -5px 0 30px rgba(0,0,0,0.5); overflow-y: auto;
+  }
+  .nav-links.active a, .nav-links.active .nav-trigger {
+    font-size: 16px !important; width: 100%;
+    padding: 12px 15px !important; color: #fff !important;
+  }
+  .nav-item { width: 100%; }
+  .dropdown-menu {
+    position: static; opacity: 1; visibility: visible; transform: none;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px; padding: 8px; margin: 5px 0; box-shadow: none;
+    display: none;
+  }
+  .nav-item:hover .dropdown-menu, .nav-item:focus-within .dropdown-menu { display: block; }
+
+  /* الهيرو */
+  .hero { min-height: auto; padding: 100px 0 40px; text-align: center; }
+  .hero-grid { grid-template-columns: 1fr; gap: 30px; }
+  .hero-visual { display: none; }
+  .hero h2 { font-size: 32px !important; }
+  .hero p { font-size: 16px !important; }
+  .hero-stats { justify-content: center; gap: 15px; flex-wrap: wrap; }
+  .hero-stat { padding: 12px 18px; }
+  .hero-stat strong { font-size: 24px !important; }
+  .hero-btns { justify-content: center; }
+  .hero-btns .btn-primary, .hero-btns .btn-secondary {
+    padding: 14px 25px; font-size: 16px; width: 100%; justify-content: center;
+  }
+
+  /* شبكات المنتجات */
+  .prod-grid, #recentlyViewedGrid, #bestSellersGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+  .prod-card { border-radius: 16px; }
+  .prod-img { height: 160px; }
+  .prod-body { padding: 15px; }
+  .prod-name { font-size: 15px !important; }
+  .prod-price { font-size: 20px !important; }
+  .add-btn, .quote-btn { padding: 8px 14px; font-size: 12px; }
+  .filter-tabs { gap: 8px; padding: 0 10px; }
+  .filter-tab { padding: 8px 16px; font-size: 13px; }
+  .products-toolbar { flex-direction: column; align-items: stretch; }
+  .products-toolbar-left, .products-toolbar-right { justify-content: center; }
+
+  /* مودال المنتج */
+  .product-modal { max-width: 100% !important; max-height: 95vh !important;
+    border-radius: 20px 20px 0 0 !important; margin-top: auto; }
+  .product-modal-content { flex-direction: column !important; }
+  .modal-image { height: 250px !important; flex: 0 0 250px !important; }
+  .modal-info { padding: 20px !important; }
+  .modal-name { font-size: 22px !important; }
+  .modal-price { font-size: 26px !important; }
+  .modal-actions { flex-direction: column; gap: 10px; }
+  .modal-btn { width: 100%; justify-content: center; }
+
+  /* السلة */
+  .cart-sidebar { width: 100% !important; max-width: 100% !important; }
+
+  /* أقسام أخرى */
+  .about-grid, .contact-grid, .footer-grid,
+  .about-mission-grid, .testimonials-grid, .projects-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .why-grid { grid-template-columns: 1fr !important; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .cat-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 10px; }
+  .cat-card { padding: 20px 10px; }
+  .cat-icon { width: 50px; height: 80px; font-size: 24px; }
+
+  /* عناصر اللمس */
+  button, .btn-primary, .btn-secondary, .add-btn, .filter-tab, .wishlist-btn {
+    min-height: 44px; cursor: pointer;
+  }
+
+  /* شريط الحالة */
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
