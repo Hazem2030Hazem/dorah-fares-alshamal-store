@@ -4485,7 +4485,7 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
 
 /* صفوف الشبكة متساوية الارتفاع والبطاقة تملأ الصف بالكامل */
 .prod-grid:not(.list-view) { grid-auto-rows: 1fr; align-items: stretch; }
-.prod-grid:not(.list-view) > .prod-card { height: 100%; min-height: 600px; }
+.prod-grid:not(.list-view) > .prod-card { height: 100%; min-height: 460px; }
 
 /* تثبيت ارتفاع اسم المنتج والوصف (سطران) لتوحيد ارتفاع البطاقات */
 .prod-card .prod-name {
@@ -4513,7 +4513,7 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
 
 /* الجوال: نفس أبعاد بطاقات المميزة في الميديا كويري الأصلية */
 @media (max-width: 768px) {
-  .prod-grid:not(.list-view) > .prod-card { min-height: 520px; }
+  .prod-grid:not(.list-view) > .prod-card { min-height: 400px; }
   .best-seller-card .prod-img,
   .best-seller-card .prod-img > div { height: 160px !important; }
   .best-seller-card .prod-body { padding: 15px !important; }
