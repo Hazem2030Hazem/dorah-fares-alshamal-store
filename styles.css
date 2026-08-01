@@ -4522,3 +4522,45 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
 }
 /* ===== END توحيد بطاقات المنتجات ===== */
 
+
+/* ============================================================
+   [dir=ltr] تعديلات وضع English (doraLangSuite)
+   تُطبّق فقط عندما يكون documentElement بـ dir=ltr —
+   لا تمس قواعد RTL الأصلية إطلاقاً.
+   ============================================================ */
+[dir=ltr] body{direction:ltr;text-align:left}
+[dir=ltr] .header-inner,[dir=ltr] .nav-links,[dir=ltr] .dropdown-menu,
+[dir=ltr] .hero,[dir=ltr] .hero-grid,[dir=ltr] .hero-btns,[dir=ltr] .hero-stats,
+[dir=ltr] .footer,[dir=ltr] .footer-grid,[dir=ltr] .footer-bottom,
+[dir=ltr] .products,[dir=ltr] .products-toolbar,[dir=ltr] .filter-tabs,
+[dir=ltr] .breadcrumb-inner,[dir=ltr] .container,[dir=ltr] section{direction:ltr}
+[dir=ltr] .dropdown-menu{right:auto;left:0}
+[dir=ltr] .section-header,[dir=ltr] .page-hero,[dir=ltr] .service-hero,[dir=ltr] .services-hero{text-align:center}
+[dir=ltr] .hero-stats,[dir=ltr] .hero-btns{direction:ltr}
+[dir=ltr] #doraHeroBar{direction:ltr}
+[dir=ltr] #dhbLangMenu{direction:ltr;text-align:left}
+[dir=ltr] #dhbLangMenu button{text-align:left}
+[dir=ltr] #doraLegalBar{direction:ltr}
+[dir=ltr] .cart-sidebar{left:auto;right:0;transform:translateX(100%);border-left:none;border-right:1px solid #E5E7EB}
+[dir=ltr] .cart-sidebar.open{transform:translateX(0)}
+[dir=ltr] .compare-bar{direction:ltr}
+[dir=ltr] #doraNotifBell{right:auto;left:30px}
+[dir=ltr] #doraNotifPanel{right:auto;left:30px;direction:ltr}
+[dir=ltr] .search-bar{direction:ltr}
+[dir=ltr] .search-results{direction:ltr;text-align:left}
+[dir=ltr] .stock-indicator,[dir=ltr] .prod-body,[dir=ltr] .prod-card{direction:ltr}
+[dir=ltr] .stock-header{direction:ltr}
+[dir=ltr] .prod-footer{direction:ltr}
+[dir=ltr] .modal-rating,[dir=ltr] .rating-text{direction:ltr}
+[dir=ltr] .product-modal,[dir=ltr] .compare-modal,[dir=ltr] .rating-modal-content{direction:ltr;text-align:left}
+[dir=ltr] .form-group,[dir=ltr] form{direction:ltr}
+[dir=ltr] input,[dir=ltr] textarea,[dir=ltr] select{direction:ltr;text-align:left}
+[dir=ltr] .toast{direction:ltr}
+[dir=ltr] .chat-widget,[dir=ltr] .chatbot,[dir=ltr] .chat-window,[dir=ltr] .chat-messages{direction:ltr;text-align:left}
+[dir=ltr] .save-badge{margin-right:0;margin-left:6px}
+[dir=ltr] .nav-item .arrow{display:inline-block;transform:none}
+@media (max-width:640px){
+  [dir=ltr] #doraNotifBell{right:auto;left:20px}
+  [dir=ltr] #doraNotifPanel{right:auto;left:12px}
+}
+/* ===== END [dir=ltr] English mode ===== */
