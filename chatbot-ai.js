@@ -112,15 +112,20 @@ window.doraChatbot = doraChatbot;
     wrapper.style.cssText = 'position:fixed;bottom:30px;left:30px;z-index:99998;display:flex;align-items:flex-end;gap:12px';
     
     var greeting = document.createElement('div');
-    greeting.innerHTML = '👋 أهلاً! اسألني أي حاجة';
+    greeting.innerHTML = 'راسلنا عبر البريد الإلكتروني';
     greeting.style.cssText = 'background:white;color:#1E293B;padding:12px 18px;border-radius:20px 20px 4px 20px;font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,0.15);white-space:nowrap;font-family:Tajawal,sans-serif';
     
     var bubble = document.createElement('div');
     bubble.id = 'doraChatBubble';
-    bubble.style.cssText = 'width:60px;height:60px;cursor:pointer;transition:0.3s;background:#1E1B4B;border:1px solid #37347A;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,0.35)';
-    bubble.innerHTML = '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>';
+    bubble.style.cssText = 'width:60px;height:60px;cursor:pointer;transition:0.3s;background:#0B7A4B;border:1px solid #0A6B42;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(11,122,75,0.4)';
+    bubble.innerHTML = '<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>';
     
-    bubble.onclick = function() { doraChatbot.toggle(); greeting.style.display = 'none'; };
+    bubble.onclick = function() {
+        greeting.style.display = 'none';
+        var email = 'info@alshamal-df.com';
+        try { if (window.getDoraSiteSettings) { var s = window.getDoraSiteSettings(); if (s && s.companyEmail) email = s.companyEmail; } } catch(_) {}
+        location.href = 'mailto:' + email + '?subject=' + encodeURIComponent('استفسار من موقع درة فارس الشمال');
+    };
     
     wrapper.appendChild(greeting);
     wrapper.appendChild(bubble);
