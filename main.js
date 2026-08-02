@@ -1968,7 +1968,7 @@ async function loadCompanyTestimonials() {
     // إنشاء عنصر الشات
     var widgetHTML = '<div class="wa-chat-widget" id="waWidget">' +
         '<div class="wa-chat-bubble" id="waBubble" onclick="toggleWaChat()">' +
-        '<span class="wa-icon">💬</span>' +
+        '<span class="wa-icon" style="display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg></span>' +
         '</div>' +
         '<div class="wa-chat-box" id="waChatBox" style="display:none">' +
         '<div class="wa-chat-header">' +
@@ -1991,11 +1991,11 @@ async function loadCompanyTestimonials() {
     });
 
     // دوال التحكم
+    // ✉️ الزرار الأخضر = تواصل عبر بريد الشركة (يُدار من إعدادات لوحة التحكم)
     window.toggleWaChat = function() {
-        var box = document.getElementById('waChatBox');
-        if (box) {
-            box.style.display = box.style.display === 'none' ? 'block' : 'none';
-        }
+        var email = 'info@alshamal-df.com';
+        try { if (window.getDoraSiteSettings) { var s = window.getDoraSiteSettings(); if (s && s.companyEmail) email = s.companyEmail; } } catch(_) {}
+        location.href = 'mailto:' + email + '?subject=' + encodeURIComponent('استفسار من موقع درة فارس الشمال');
     };
 
     window.waOpen = function(type) {
