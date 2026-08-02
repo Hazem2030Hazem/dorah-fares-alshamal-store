@@ -23,6 +23,9 @@ const state = {
   adminSeparation: false
 };
 
+let pendingSignup = null;
+let signupOtpTimer = null;
+
 const orderStatusLabels = {
   new: 'جديد', review: 'قيد المراجعة', processing: 'قيد التجهيز',
   shipped: 'تم الشحن', delivered: 'تم التسليم', completed: 'مكتمل', cancelled: 'ملغي'
@@ -459,6 +462,17 @@ function renderAuth(message, forceRecovery){
           <button type="submit" class="btn-primary account-submit">إنشاء الحساب</button>
         </form>
 
+        <form id="signupOtpForm" class="account-form account-reset-panel" style="display:none">
+          <h3 style="margin:0 0 4px">🔐 تأكيد بريدك الإلكتروني</h3>
+          <p>أرسلنا رمز تحقق مكوناً من 6 أرقام إلى <strong id="signupOtpEmailShown"></strong> من شركة درة فارس الشمال للتجارة. اكتب الرمز هنا لتفعيل حسابك.</p>
+          <label>رمز التحقق</label>
+          <input type="text" id="signupOtpCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000" required style="text-align:center;font-size:26px;letter-spacing:10px;font-weight:700;direction:ltr">
+          <div id="signupOtpMsg" style="font-size:13px;min-height:18px"></div>
+          <button type="submit" class="btn-primary account-submit">✅ تأكيد وتفعيل الحساب</button>
+          <button type="button" id="signupOtpResend" class="account-link">إعادة إرسال الرمز</button>
+          <button type="button" class="account-link" onclick="doraCancelSignupOtp()">← العودة</button>
+        </form>
+
         <div id="passwordResetPanel" class="account-reset-panel" style="display:none">
           <h3>🔑 استعادة كلمة المرور</h3>
           <p>أدخل بريدك الإلكتروني وسنرسل لك رابطاً آمناً لتعيين كلمة مرور جديدة.</p>
@@ -502,6 +516,8 @@ function renderAuth(message, forceRecovery){
   document.getElementById('accountLoginForm').addEventListener('submit', signIn);
   document.getElementById('accountRegisterForm').addEventListener('submit', signUp);
   document.getElementById('passwordResetForm').addEventListener('submit', sendPasswordReset);
+  document.getElementById('signupOtpForm').addEventListener('submit', verifySignupOtp);
+  document.getElementById('signupOtpResend').addEventListener('click', resendSignupOtp);
 }
 
 window.doraTogglePassword = function(id, button){
@@ -605,7 +621,8 @@ async function signUp(event){
   }
 
   if (!data.session) {
-    renderAuth('⚠️ تم إنشاء الحساب لكنه لم يدخل تلقائيًا لأن تأكيد البريد ما زال مفعّلًا أو لأن البريد مسجل مسبقًا. أغلق Confirm email من Supabase، وإذا كان هذا حسابًا تجريبيًا قديمًا فاحذفه من Authentication → Users ثم أعد إنشاءه.');
+    pendingSignup = { email, fullName, phone };
+    showSignupOtp(email);
     return;
   }
 
@@ -617,6 +634,102 @@ async function signUp(event){
     return;
   }
   notify('✅ تم إنشاء حسابك بنجاح');
+  state.accountReady = false;
+  await initAccountPage(true);
+}
+
+function showSignupOtp(email){
+  document.getElementById('accountAuthTabs').style.display = 'none';
+  document.getElementById('accountLoginForm').style.display = 'none';
+  document.getElementById('accountRegisterForm').style.display = 'none';
+  document.getElementById('passwordResetPanel').style.display = 'none';
+  const form = document.getElementById('signupOtpForm');
+  form.style.display = 'grid';
+  document.getElementById('signupOtpEmailShown').textContent = email;
+  const msg = document.getElementById('signupOtpMsg');
+  msg.style.color = '#0B7A4B';
+  msg.textContent = '✅ تم إرسال رمز التحقق — راجع بريدك (ولو لم تجده انظر مجلد الرسائل غير المرغوبة)';
+  startSignupResendCooldown(60);
+  setTimeout(() => document.getElementById('signupOtpCode')?.focus(), 100);
+}
+
+window.doraCancelSignupOtp = function(){
+  pendingSignup = null;
+  if (signupOtpTimer) { clearInterval(signupOtpTimer); signupOtpTimer = null; }
+  state.accountReady = false;
+  renderAuth();
+};
+
+function startSignupResendCooldown(seconds){
+  const btn = document.getElementById('signupOtpResend');
+  if (!btn) return;
+  if (signupOtpTimer) clearInterval(signupOtpTimer);
+  btn.disabled = true;
+  let remaining = seconds;
+  btn.textContent = 'إعادة الإرسال بعد ' + remaining + ' ث';
+  signupOtpTimer = setInterval(() => {
+    remaining -= 1;
+    if (remaining <= 0) {
+      clearInterval(signupOtpTimer); signupOtpTimer = null;
+      btn.disabled = false;
+      btn.textContent = 'إعادة إرسال الرمز';
+    } else {
+      btn.textContent = 'إعادة الإرسال بعد ' + remaining + ' ث';
+    }
+  }, 1000);
+}
+
+async function resendSignupOtp(){
+  if (!pendingSignup?.email) return;
+  const btn = document.getElementById('signupOtpResend');
+  btn.disabled = true; btn.textContent = '⏳ جاري الإرسال...';
+  const { error } = await supabaseClient.auth.resend({ type: 'signup', email: pendingSignup.email });
+  const msg = document.getElementById('signupOtpMsg');
+  if (error) {
+    btn.disabled = false; btn.textContent = 'إعادة إرسال الرمز';
+    msg.style.color = '#DC2626';
+    msg.textContent = '⚠️ تعذّر إرسال الرمز — حاول بعد قليل';
+    return;
+  }
+  msg.style.color = '#0B7A4B';
+  msg.textContent = '✅ تم إعادة إرسال الرمز إلى بريدك';
+  startSignupResendCooldown(60);
+}
+
+async function verifySignupOtp(event){
+  event.preventDefault();
+  const code = document.getElementById('signupOtpCode').value.trim();
+  const msg = document.getElementById('signupOtpMsg');
+  if (!/^\d{6}$/.test(code)) {
+    msg.style.color = '#DC2626';
+    msg.textContent = '⚠️ اكتب الرمز المكون من 6 أرقام كما وصلك في البريد';
+    return;
+  }
+  if (!pendingSignup?.email) return;
+  const btn = event.target.querySelector('button[type="submit"]');
+  btn.disabled = true; btn.textContent = '⏳ جاري التحقق...';
+  const { data, error } = await supabaseClient.auth.verifyOtp({
+    email: pendingSignup.email,
+    token: code,
+    type: 'signup'
+  });
+  if (error || !data?.session) {
+    btn.disabled = false; btn.textContent = '✅ تأكيد وتفعيل الحساب';
+    msg.style.color = '#DC2626';
+    msg.textContent = '❌ الرمز غير صحيح أو منتهي — تأكد من الرقم أو أعد إرسال الرمز';
+    return;
+  }
+  if (signupOtpTimer) { clearInterval(signupOtpTimer); signupOtpTimer = null; }
+  const saved = pendingSignup;
+  pendingSignup = null;
+  state.user = data.user;
+  state.profile = await ensureProfile(data.user, { full_name: saved.fullName, phone: saved.phone });
+  if (await claimStaffRole()) {
+    notify('✅ تم تفعيل حسابك كموظف — كلمة المرور التي اخترتها أصبحت الأساسية لحسابك');
+    await renderStaffSeparation(data.user);
+    return;
+  }
+  notify('✅ تم تأكيد بريدك وتفعيل حسابك بنجاح — أهلاً بك في درة فارس الشمال');
   state.accountReady = false;
   await initAccountPage(true);
 }
