@@ -82,10 +82,7 @@
         
         <!-- معلومات الشحن -->
         <div class="shipping-info">
-            <div>🚚 شركة الشحن<strong id="shippingCompany">ناقل</strong></div>
-            <div>⏱️ مدة التوصيل<strong id="shippingDays">2-5 أيام</strong></div>
-            <div>💰 تكلفة الشحن<strong id="shippingCost">مجاني</strong></div>
-            <div>📱 رقم التتبع<strong id="trackingNumber">قريباً</strong></div>
+            <div style="grid-column:1/-1;line-height:1.9">📞 <strong>سيراجع فريقنا طلبك ويتواصل معك لتأكيده وترتيب الشحن</strong><br>ستصلك تحديثات حالة الطلب على حسابك في الموقع</div>
         </div>
         
         <p id="invoiceLink" style="margin-bottom:15px"></p>
@@ -105,17 +102,6 @@
         if (invoiceId) {
             document.getElementById('invoiceLink').innerHTML = '<a href="invoice.html?id=' + invoiceId + '" class="btn btn-secondary">🧾 عرض الفاتورة</a>';
         }
-        
-        // تحديد شركة الشحن ومدة التوصيل عشوائياً (للتوضيح)
-        var companies = ['ناقل', 'أرامكس', 'سمسا'];
-        var days = ['1-3 أيام', '2-5 أيام', '3-7 أيام'];
-        var random = Math.floor(Math.random() * 3);
-        
-        document.getElementById('shippingCompany').textContent = companies[random];
-        document.getElementById('shippingDays').textContent = days[random];
-        
-        // رقم تتبع وهمي
-        document.getElementById('trackingNumber').textContent = 'TRK' + Date.now().toString().slice(-8);
     </script>
 <script src="main.js"></script>
     <script src="chatbot-ai.js"></script>
