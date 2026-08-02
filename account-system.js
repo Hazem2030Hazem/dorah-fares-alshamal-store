@@ -277,6 +277,37 @@ async function updateAccountButtonLabel(){
    ============================================================ */
 function accountApp(){ return document.getElementById('accountApp'); }
 
+
+/* ============================================================
+   👥 نظام الموظفين — تفعيل الدور بعد الدخول/التسجيل
+   ============================================================ */
+async function claimStaffRole(){
+  try {
+    const res = await supabaseClient.rpc('claim_staff_role');
+    return res.data === 'activated';
+  } catch(_) { return false; }
+}
+
+async function renderStaffSeparation(user){
+  const app = accountApp();
+  if (!app) return;
+  state.adminSeparation = true;
+  state.user = null;
+  state.profile = null;
+  await supabaseClient.auth.signOut();
+  const email = user?.email || 'حساب الموظف';
+  app.innerHTML = `
+    <div class="account-admin-separation">
+      <span class="account-admin-separation-icon">🛡️</span>
+      <h2>هذا حساب موظف</h2>
+      <p>الحساب <strong>${esc(email)}</strong> مخصص لمتابعة الطلبات وخدمة العملاء من لوحة التحكم، ولا يُستخدم كحساب عميل في صفحة الحساب العامة.</p>
+      <div class="account-admin-separation-actions">
+        <a href="admin.html" class="account-admin-panel-btn">فتح لوحة المتابعة</a>
+        <button type="button" class="account-customer-login-btn" onclick="doraBackToLogin()">تسجيل حساب عميل</button>
+      </div>
+    </div>`;
+}
+
 async function renderAdminSeparation(user){
   const app = accountApp();
   if (!app) return;
@@ -329,6 +360,7 @@ async function initAccountPage(force){
   }
 
   state.profile = await ensureProfile(state.user);
+  if (state.profile?.role === 'staff') { await renderStaffSeparation(state.user); return; }
   await loadAccountData();
   const requestedTab = getParam('tab');
   if (requestedTab) state.currentTab = requestedTab;
@@ -533,15 +565,17 @@ async function signIn(event){
   const btn = event.target.querySelector('button[type="submit"]');
   btn.disabled = true; btn.textContent = '⏳ جاري الدخول...';
   const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-  btn.disabled = false; btn.textContent = '🔐 دخول';
+  btn.disabled = false; btn.textContent = 'تسجيل الدخول';
   if (error) {
     notify(authFailureMessage(error, 'تعذر تسجيل الدخول'), 'error');
     return;
   }
 
-  if (data?.user && await isAdminAccount(data.user)) {
-    await renderAdminSeparation(data.user);
-    return;
+  if (data?.user) {
+    await claimStaffRole();
+    const role = await getUserRole(data.user);
+    if (role === 'admin') { await renderAdminSeparation(data.user); return; }
+    if (role === 'staff') { await renderStaffSeparation(data.user); return; }
   }
 
   notify('✅ تم تسجيل الدخول بنجاح');
@@ -564,7 +598,7 @@ async function signUp(event){
     options: { data: { full_name: fullName, phone } }
   });
 
-  btn.disabled = false; btn.textContent = '✨ إنشاء الحساب';
+  btn.disabled = false; btn.textContent = 'إنشاء الحساب';
   if (error) {
     notify('❌ تعذر إنشاء الحساب: ' + (error.message || 'حاول مرة أخرى'), 'error');
     return;
@@ -577,6 +611,11 @@ async function signUp(event){
 
   state.user = data.user;
   state.profile = await ensureProfile(data.user, { full_name: fullName, phone });
+  if (await claimStaffRole()) {
+    notify('✅ تم تفعيل حسابك كموظف — كلمة المرور التي اخترتها أصبحت الأساسية لحسابك');
+    await renderStaffSeparation(data.user);
+    return;
+  }
   notify('✅ تم إنشاء حسابك بنجاح');
   state.accountReady = false;
   await initAccountPage(true);
