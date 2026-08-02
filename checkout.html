@@ -424,12 +424,45 @@ function applyCouponCode() {
 }
 
     // 💳 دوال الدفع السريع
-function payWithSTC(amount) {
-    selectedPayment = { id: 'stc', name: 'STC Pay' };
-    var msg = '💰 للدفع عبر STC Pay:\n\nحول المبلغ ' + amount.toLocaleString() + ' ر.س إلى:\n\n📱 STC Pay: 0568717449\n\nبعد التحويل، ارفع الإيصال في حسابك';
-    window.open('https://wa.me/966545358773?text=' + encodeURIComponent(msg), '_blank');
-    showToast('✅ تم اختيار STC Pay - تواصل واتساب للتحويل');
+// 🏦 التحويل البنكي — الحسابات تُقرأ من Supabase (يضيفها الأدمن من لوحة التحكم ← الحسابات البنكية)
+// لا توجد أي بيانات بنكية داخل الكود — الأمان أولاً
+async function showBankAccountsBox(methodId, methodName, amount) {
+    selectedPayment = { id: methodId, name: methodName };
+    var box = document.getElementById('bankAccountsBox');
+    if (!box) {
+        box = document.createElement('div');
+        box.id = 'bankAccountsBox';
+        var sec = document.querySelector('.quick-pay-section');
+        if (sec) sec.appendChild(box); else document.body.appendChild(box);
+    }
+    box.style.cssText = 'margin-top:15px;display:grid;gap:10px';
+    box.innerHTML = '<div style="text-align:center;color:#9CA3AF;padding:10px">⏳ جاري تحميل حسابات التحويل...</div>';
+    var res = await supabaseClient.from('company_bank_accounts').select('*').eq('is_active', true).order('sort_order').order('id');
+    var accounts = res.data || [];
+    if (!accounts.length) {
+        box.innerHTML = '<div style="text-align:center;color:#F59E0B;padding:14px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:12px;font-weight:700">⚠️ لم تُضف حسابات تحويل بعد — اختر طريقة دفع أخرى</div>';
+        showToast('⚠️ لا توجد حسابات بنكية مضافة من الإدارة', 'warning');
+        return;
+    }
+    var esc = function(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); };
+    box.innerHTML = '<div style="color:#fff;font-weight:800;font-size:14px">🏦 حوّل المبلغ (<span style="color:#10B981">' + amount.toLocaleString() + ' ر.س</span>) إلى أحد الحسابات التالية، ثم ارفع الإيصال في حسابك:</div>'
+        + accounts.map(function(a) {
+            return '<div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:14px">'
+                + '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">'
+                + '<div><div style="color:#fff;font-weight:800">' + esc(a.bank_name) + '</div>'
+                + '<div style="color:#9CA3AF;font-size:12px">' + esc(a.account_name || '') + '</div></div>'
+                + '<div style="text-align:left">'
+                + (a.iban ? '<div style="color:#E5E7EB;font-size:13px;direction:ltr;font-weight:700">' + esc(a.iban) + '</div>' : '')
+                + (a.account_number ? '<div style="color:#9CA3AF;font-size:12px;direction:ltr">رقم الحساب: ' + esc(a.account_number) + '</div>' : '')
+                + '</div></div>'
+                + '<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">'
+                + (a.iban ? '<button type="button" data-copy="' + esc(a.iban) + '" onclick="navigator.clipboard.writeText(this.getAttribute(\'data-copy\'));this.textContent=\'✅ تم النسخ\'" style="flex:1;min-width:120px;padding:9px;background:rgba(16,185,129,.15);border:1px solid #10B981;color:#10B981;border-radius:10px;cursor:pointer;font-weight:700;font-family:inherit">📋 نسخ الآيبان</button>' : '')
+                + '</div></div>';
+        }).join('');
+    showToast('✅ تم اختيار ' + methodName + ' — بيانات التحويل ظاهرة بالأسفل');
 }
+
+function payWithSTC(amount) { showBankAccountsBox('stc', 'STC Pay', amount); }
 
 function payWithApple() {
     if (window.ApplePaySession && ApplePaySession.canMakePayments()) {
@@ -440,12 +473,7 @@ function payWithApple() {
     }
 }
 
-function payWithMada(amount) {
-    selectedPayment = { id: 'mada', name: 'مدى أثير' };
-    var msg = '💳 للدفع عبر مدى:\n\nالمبلغ: ' + amount.toLocaleString() + ' ر.س\n\nرقم الحساب: SA0380000000608010167519\n\nبنك الرياض - شركة درة فارس الشمال';
-    window.open('https://wa.me/966545358773?text=' + encodeURIComponent(msg), '_blank');
-    showToast('✅ تم اختيار مدى - بيانات الحساب في واتساب');
-}
+function payWithMada(amount) { showBankAccountsBox('mada', 'مدى أثير', amount); }
 
 function payWithTamara(amount) {
     selectedPayment = { id: 'tamara', name: 'تمارا - تقسيط' };
