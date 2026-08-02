@@ -379,8 +379,8 @@ function renderAuth(message, forceRecovery){
   const recoveryMode = !!forceRecovery || location.hash.includes('type=recovery') || getParam('mode') === 'reset';
   const passwordField = (id, placeholder) => `
     <div class="account-password-field">
-      <input type="password" id="${id}" required placeholder="${placeholder}" minlength="6">
-      <button type="button" class="password-toggle" onclick="doraTogglePassword('${id}', this)" aria-label="إظهار كلمة المرور" aria-pressed="false">👁</button>
+      <input type="password" id="${id}" name="${id.includes('new') || id.includes('register') ? 'new-password' : 'current-password'}" autocomplete="${id.includes('new') || id.includes('register') ? 'new-password' : 'current-password'}" required placeholder="${placeholder}" minlength="6">
+      <button type="button" class="password-toggle" onclick="doraTogglePassword('${id}', this)" aria-label="إظهار كلمة المرور" aria-pressed="false"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
     </div>
   `;
 
@@ -407,23 +407,24 @@ function renderAuth(message, forceRecovery){
 
         <form id="accountLoginForm" class="account-form" ${recoveryMode ? 'style="display:none"' : ''}>
           <label>البريد الإلكتروني</label>
-          <input type="email" id="loginEmail" required placeholder="example@email.com">
+          <input type="email" id="loginEmail" name="username" autocomplete="username email" inputmode="email" required placeholder="example@email.com">
           <label>كلمة المرور</label>
           ${passwordField('loginPassword', '••••••••')}
-          <button type="submit" class="btn-primary account-submit">🔐 دخول</button>
+          <button type="submit" class="btn-primary account-submit">تسجيل الدخول</button>
+          <p style="margin:10px 0 0;font-size:12px;color:var(--text-muted,#9CA3AF);display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#0B7A4B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> سيبقى تسجيل دخولك محفوظاً على هذا الجهاز تلقائياً</p>
           <button type="button" class="account-link" onclick="doraShowPasswordReset()">هل نسيت كلمة المرور؟</button>
         </form>
 
         <form id="accountRegisterForm" class="account-form" style="display:none">
           <label>الاسم الكامل</label>
-          <input type="text" id="registerName" required placeholder="محمد علي">
+          <input type="text" id="registerName" name="name" autocomplete="name" required placeholder="محمد علي">
           <label>رقم الجوال</label>
-          <input type="tel" id="registerPhone" required placeholder="05xxxxxxxx">
+          <input type="tel" id="registerPhone" name="tel" autocomplete="tel" inputmode="tel" required placeholder="05xxxxxxxx">
           <label>البريد الإلكتروني</label>
-          <input type="email" id="registerEmail" required placeholder="example@email.com">
+          <input type="email" id="registerEmail" name="username" autocomplete="username email" inputmode="email" required placeholder="example@email.com">
           <label>كلمة المرور</label>
           ${passwordField('registerPassword', '6 أحرف على الأقل')}
-          <button type="submit" class="btn-primary account-submit">✨ إنشاء الحساب</button>
+          <button type="submit" class="btn-primary account-submit">إنشاء الحساب</button>
         </form>
 
         <div id="passwordResetPanel" class="account-reset-panel" style="display:none">
@@ -431,7 +432,7 @@ function renderAuth(message, forceRecovery){
           <p>أدخل بريدك الإلكتروني وسنرسل لك رابطاً آمناً لتعيين كلمة مرور جديدة.</p>
           <form id="passwordResetForm" class="account-form">
             <label>البريد الإلكتروني</label>
-            <input type="email" id="resetEmail" required placeholder="example@email.com">
+            <input type="email" id="resetEmail" name="username" autocomplete="username email" inputmode="email" required placeholder="example@email.com">
             <button type="submit" class="btn-primary account-submit">📧 إرسال رابط الاستعادة</button>
           </form>
           <button type="button" class="account-link" onclick="doraBackToLogin()">← العودة لتسجيل الدخول</button>
