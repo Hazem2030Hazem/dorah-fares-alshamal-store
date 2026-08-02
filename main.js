@@ -1571,7 +1571,8 @@ function installPWA() {
             deferredPrompt = null;
         }).catch(() => { showToast('❌ حدث خطأ في التثبيت'); });
     } else {
-        showToast('⚠️ جرب تحديث الصفحة (F5) أو استخدم القائمة ⋮ → Install');
+        showToast('⏳ جاري فتح صفحة التثبيت...');
+        window.location.href = 'download.html';
     }
 }
 
