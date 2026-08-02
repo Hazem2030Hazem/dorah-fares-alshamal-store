@@ -559,7 +559,7 @@ async function startGatewayPayment(orderId, amount, customer, gatewayCode) {
     }
 }
 
-async function placeOrder() {
+async function placeOrderConfirmed() {
     var name = document.getElementById('custName').value.trim();
     var phone = document.getElementById('custPhone').value.trim();
     if (!name || !phone) { alert('❌ الاسم والجوال مطلوبين'); return; }
@@ -625,14 +625,137 @@ async function placeOrder() {
     }]).select('*').single();
     var invoiceId = invoiceResult.data ? invoiceResult.data.id : null;
     
-    var msg = '*طلب جديد*\n\n*العميل:* ' + name + '\n*الجوال:* ' + phone + '\n*الدفع:* ' + selectedPayment.name + '\n*الشحن:* ' + shippingCost.toLocaleString() + ' ر.س' + '\n*الإجمالي:* ' + finalTotal.toLocaleString() + ' ر.س';
-    if (invoiceId) msg += '\n\n🧾 الفاتورة: https://alshamal-df.com/invoice.html?id=' + invoiceId;
-    window.open('https://wa.me/966545358773?text=' + encodeURIComponent(msg), '_blank');
-    
     localStorage.removeItem('doraCart');
     var orderNumber = orderResult.data ? orderResult.data.id : '';
     window.location.href = 'thankyou.html?order=' + orderNumber + '&invoice=' + (invoiceId || '');
 }
+
+// ==================== 🔐 نظام التحقق OTP عبر البريد قبل تأكيد الطلب ====================
+var _otpEmail = null;
+var _otpResendTimer = null;
+
+(function injectOtpModal() {
+    var css = ''
+        + '#doraOtpOverlay{position:fixed;inset:0;background:rgba(10,8,30,.75);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:99999;padding:16px}'
+        + '#doraOtpOverlay.show{display:flex}'
+        + '.otp-card{background:#14122B;border:1px solid #272452;border-radius:18px;padding:28px 24px;width:100%;max-width:400px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit}'
+        + '.otp-card h3{color:#fff;font-size:19px;margin:0 0 8px;font-weight:800}'
+        + '.otp-card .otp-sub{color:#9CA3AF;font-size:13px;margin-bottom:18px;line-height:1.8}'
+        + '.otp-card .otp-sub b{color:#10B981}'
+        + '.otp-input{width:100%;padding:14px;font-size:26px;font-weight:800;text-align:center;letter-spacing:10px;background:#FFFFFF;border:2px solid #E5E7EB;border-radius:12px;color:#111827;outline:none;font-family:inherit;box-sizing:border-box;direction:ltr}'
+        + '.otp-input:focus{border-color:#0B7A4B}'
+        + '.otp-btn{width:100%;margin-top:14px;padding:14px;background:#0B7A4B;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit}'
+        + '.otp-btn:disabled{opacity:.5;cursor:not-allowed}'
+        + '.otp-resend{margin-top:12px;background:none;border:none;color:#60A5FA;font-size:13px;cursor:pointer;font-family:inherit;text-decoration:underline}'
+        + '.otp-resend:disabled{color:#6B7280;text-decoration:none;cursor:default}'
+        + '.otp-cancel{margin-top:8px;background:none;border:none;color:#6B7280;font-size:12px;cursor:pointer;font-family:inherit}'
+        + '.otp-msg{margin-top:10px;font-size:13px;min-height:18px;font-weight:700}'
+        + '.otp-msg.ok{color:#10B981}.otp-msg.err{color:#EF4444}';
+    var st = document.createElement('style');
+    st.textContent = css;
+    document.head.appendChild(st);
+
+    var ov = document.createElement('div');
+    ov.id = 'doraOtpOverlay';
+    ov.innerHTML = ''
+        + '<div class="otp-card">'
+        + '  <h3>🔐 رمز التحقق</h3>'
+        + '  <div class="otp-sub">أرسلنا رمز تحقق مكوّن من 6 أرقام إلى بريدك:<br><b id="otpEmailShown"></b><br>اكتب الرمز لإتمام طلبك بأمان</div>'
+        + '  <input id="otpCodeInput" class="otp-input" type="text" inputmode="numeric" maxlength="6" placeholder="——————" autocomplete="one-time-code">'
+        + '  <div id="otpMsg" class="otp-msg"></div>'
+        + '  <button id="otpVerifyBtn" class="otp-btn">تأكيد وإتمام الطلب</button>'
+        + '  <button id="otpResendBtn" class="otp-resend">إعادة إرسال الرمز</button><br>'
+        + '  <button id="otpCancelBtn" class="otp-cancel">إلغاء والعودة</button>'
+        + '</div>';
+    document.body.appendChild(ov);
+
+    document.getElementById('otpVerifyBtn').addEventListener('click', verifyOtpCode);
+    document.getElementById('otpResendBtn').addEventListener('click', function(){ sendOtpCode(true); });
+    document.getElementById('otpCancelBtn').addEventListener('click', closeOtpModal);
+    document.getElementById('otpCodeInput').addEventListener('keydown', function(e){ if (e.key === 'Enter') verifyOtpCode(); });
+})();
+
+function openOtpModal() {
+    document.getElementById('otpEmailShown').textContent = _otpEmail || '';
+    document.getElementById('otpCodeInput').value = '';
+    var m = document.getElementById('otpMsg'); m.textContent = ''; m.className = 'otp-msg';
+    document.getElementById('doraOtpOverlay').classList.add('show');
+    setTimeout(function(){ document.getElementById('otpCodeInput').focus(); }, 300);
+}
+function closeOtpModal() {
+    document.getElementById('doraOtpOverlay').classList.remove('show');
+}
+function otpMsg(t, ok) {
+    var m = document.getElementById('otpMsg');
+    m.textContent = t; m.className = 'otp-msg ' + (ok ? 'ok' : 'err');
+}
+function startResendCooldown(sec) {
+    var btn = document.getElementById('otpResendBtn');
+    btn.disabled = true;
+    var left = sec;
+    btn.textContent = 'إعادة الإرسال بعد ' + left + ' ث';
+    clearInterval(_otpResendTimer);
+    _otpResendTimer = setInterval(function(){
+        left--;
+        if (left <= 0) { clearInterval(_otpResendTimer); btn.disabled = false; btn.textContent = 'إعادة إرسال الرمز'; }
+        else btn.textContent = 'إعادة الإرسال بعد ' + left + ' ث';
+    }, 1000);
+}
+
+async function sendOtpCode(isResend) {
+    if (!_otpEmail) return;
+    var btn = document.getElementById('otpResendBtn');
+    btn.disabled = true;
+    try {
+        var res = await supabaseClient.auth.signInWithOtp({
+            email: _otpEmail,
+            options: { shouldCreateUser: false }
+        });
+        if (res.error) {
+            // فولباك: لو المستخدم غير مسجّل في نظام المصادقة — نسمح بالإنشاء
+            var res2 = await supabaseClient.auth.signInWithOtp({ email: _otpEmail });
+            if (res2.error) throw res2.error;
+        }
+        otpMsg(isResend ? '✅ تم إعادة إرسال الرمز — راجع بريدك' : '✅ تم إرسال الرمز — راجع بريدك', true);
+        startResendCooldown(60);
+    } catch (e) {
+        btn.disabled = false;
+        otpMsg('⚠️ تعذّر إرسال الرمز — حاول مرة أخرى', false);
+    }
+}
+
+async function verifyOtpCode() {
+    var code = document.getElementById('otpCodeInput').value.trim();
+    if (!/^\d{6,10}$/.test(code)) { otpMsg('❌ اكتب الرمز كما وصلك في البريد (أرقام فقط)', false); return; }
+    var btn = document.getElementById('otpVerifyBtn');
+    btn.disabled = true;
+    btn.textContent = '⏳ جاري التحقق...';
+    try {
+        var res = await supabaseClient.auth.verifyOtp({ email: _otpEmail, token: code, type: 'email' });
+        if (res.error) throw res.error;
+        otpMsg('✅ تم التحقق بنجاح — جاري تأكيد طلبك', true);
+        closeOtpModal();
+        await placeOrderConfirmed();
+    } catch (e) {
+        otpMsg('❌ الرمز غير صحيح أو منتهي — تأكد وأعد المحاولة', false);
+    }
+    btn.disabled = false;
+    btn.textContent = 'تأكيد وإتمام الطلب';
+}
+
+// 🚪 بوابة الطلب: التحقق من البريد أولاً ثم الإتمام
+async function placeOrder() {
+    var name = document.getElementById('custName').value.trim();
+    var phone = document.getElementById('custPhone').value.trim();
+    if (!name || !phone) { alert('❌ الاسم والجوال مطلوبين'); return; }
+    if (!selectedPayment) { alert('❌ اختر طريقة الدفع'); return; }
+    var email = document.getElementById('custEmail').value.trim();
+    if (!email) { alert('❌ اكتب بريدك الإلكتروني — سيصلك عليه رمز التحقق'); return; }
+    _otpEmail = email;
+    openOtpModal();
+    await sendOtpCode(false);
+}
+// ==================== نهاية نظام OTP ====================
 
 // Initialize
 if (cart.length > 0) renderCheckout();
