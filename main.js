@@ -620,7 +620,7 @@ function updateCartUI() {
  if (cart.length === 0) {
   itemsDiv.innerHTML = `
    <div class="cart-empty">
-    <span class="icon">🛒</span>
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
     <p>السلة فارغة</p>
     <small>أضف منتجات لبدء التسوق</small>
    </div>`;
@@ -2943,11 +2943,11 @@ function updateSpeakerIcon() {
             var bell = document.createElement('button');
             bell.id = 'doraNotifBell';
             bell.setAttribute('aria-label', 'الإعلانات والإشعارات');
-            bell.innerHTML = '🔔<span id="doraNotifBadge"' + (unread ? '' : ' class="doraNotifHide"') + '>' + unread + '</span>';
+            bell.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span id="doraNotifBadge"' + (unread ? '' : ' class="doraNotifHide"') + '>' + unread + '</span>';
 
             var panel = document.createElement('div');
             panel.id = 'doraNotifPanel';
-            var html = '<div class="doraNotifHead"><b>🔔 الإعلانات</b><button type="button" id="doraNotifClose" aria-label="إغلاق">✕</button></div>';
+            var html = '<div class="doraNotifHead"><b style="display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg> الإعلانات</b><button type="button" id="doraNotifClose" aria-label="إغلاق">✕</button></div>';
             items.forEach(function(it) {
                 var isNew = (Number(it.id) || 0) > doraNotifSeen;
                 html += '<div class="doraNotifItem"><h4>' + doraNotifEsc(it.title_ar || 'إعلان') +
@@ -3975,3 +3975,35 @@ document.addEventListener('click', function (e) {
   if (!btn || btn.tagName === 'A') return;
   location.href = 'https://wa.me/966545358773?text=' + encodeURIComponent('مرحباً، أرغب في طلب عرض سعر من شركة درة فارس الشمال');
 });
+
+/* ============================================================
+   🏦 DORA BRAND ICONS — شعارات الدفع الرسمية (SVG) بدل الإيموجي
+   طابع رسمي على غرار كبرى الشركات العالمية
+   ============================================================ */
+var DORA_BRAND_ICONS = {
+  visa: '<svg viewBox="0 0 48 32" width="44" height="30" aria-label="Visa"><rect width="48" height="32" rx="5" fill="#fff" stroke="#E5E7EB"/><text x="24" y="21.5" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="12.5" font-weight="900" font-style="italic" fill="#1A1F71" letter-spacing="1">VISA</text></svg>',
+  mastercard: '<svg viewBox="0 0 48 32" width="44" height="30" aria-label="Mastercard"><rect width="48" height="32" rx="5" fill="#fff" stroke="#E5E7EB"/><circle cx="20" cy="16" r="8" fill="#EB001B"/><circle cx="28" cy="16" r="8" fill="#F79E1B" fill-opacity="0.85"/></svg>',
+  mada: '<svg viewBox="0 0 48 32" width="44" height="30" aria-label="mada"><rect width="48" height="32" rx="5" fill="#fff" stroke="#E5E7EB"/><text x="17" y="21" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="900" fill="#006C68">مدى</text><text x="36" y="20.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="8.5" font-weight="800" font-style="italic" fill="#8DC63F">mada</text></svg>',
+  stcpay: '<svg viewBox="0 0 48 32" width="44" height="30" aria-label="STC Pay"><rect width="48" height="32" rx="5" fill="#4F008C"/><text x="24" y="15.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="10.5" font-weight="900" fill="#fff">stc</text><text x="24" y="25" text-anchor="middle" font-family="Arial,sans-serif" font-size="8" font-weight="700" fill="#FF375E">pay</text></svg>',
+  applepay: '<svg viewBox="0 0 48 32" width="44" height="30" aria-label="Apple Pay"><rect width="48" height="32" rx="5" fill="#000"/><text x="24" y="20.5" text-anchor="middle" font-family="-apple-system,Helvetica,Arial,sans-serif" font-size="11" font-weight="600" fill="#fff">&#63743; Pay</text></svg>',
+  tabby: '<svg viewBox="0 0 48 32" width="44" height="30" aria-label="Tabby"><rect width="48" height="32" rx="5" fill="#3EFFC1"/><text x="24" y="20.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="10.5" font-weight="900" fill="#0F0C29">tabby</text></svg>',
+  tamara: '<svg viewBox="0 0 48 32" width="44" height="30" aria-label="Tamara"><rect width="48" height="32" rx="5" fill="#fff" stroke="#E5E7EB"/><text x="24" y="20.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="9.5" font-weight="900" fill="#1A1A2E">tamara<tspan fill="#00C48C">.</tspan></text></svg>',
+  bank: '<svg viewBox="0 0 48 32" width="44" height="30" aria-label="تحويل بنكي"><rect width="48" height="32" rx="5" fill="#0F2B5B"/><path d="M24 7 L38 13.5 H10 Z" fill="#fff"/><rect x="13" y="15.5" width="3.6" height="8" fill="#fff"/><rect x="19.2" y="15.5" width="3.6" height="8" fill="#fff"/><rect x="25.2" y="15.5" width="3.6" height="8" fill="#fff"/><rect x="31.4" y="15.5" width="3.6" height="8" fill="#fff"/><rect x="10" y="24.8" width="28" height="2.2" fill="#fff"/></svg>',
+  cash: '<svg viewBox="0 0 48 32" width="44" height="30" aria-label="نقدي"><rect width="48" height="32" rx="5" fill="#0B7A4B"/><rect x="9" y="9.5" width="30" height="13" rx="2" fill="#fff" fill-opacity="0.16" stroke="#fff" stroke-width="1.4"/><circle cx="24" cy="16" r="4" fill="none" stroke="#fff" stroke-width="1.6"/><circle cx="13.5" cy="12.5" r="1" fill="#fff"/><circle cx="34.5" cy="19.5" r="1" fill="#fff"/></svg>',
+  card: '<svg viewBox="0 0 48 32" width="44" height="30" aria-label="بطاقة"><rect width="48" height="32" rx="5" fill="#374151"/><rect x="6" y="10" width="36" height="4.5" fill="#9CA3AF"/><rect x="6" y="19" width="14" height="3.5" rx="1.5" fill="#D1D5DB"/></svg>'
+};
+
+// 🎯 اختيار الشعار الرسمي المناسب من اسم طريقة الدفع
+function doraBrandIcon(name) {
+  var n = String(name || '').toLowerCase();
+  if (/visa|فيزا/.test(n)) return DORA_BRAND_ICONS.visa;
+  if (/master|ماستر/.test(n)) return DORA_BRAND_ICONS.mastercard;
+  if (/مدى|mada/.test(n)) return DORA_BRAND_ICONS.mada;
+  if (/stc|اس تي سي/.test(n)) return DORA_BRAND_ICONS.stcpay;
+  if (/apple|آبل|ابل/.test(n)) return DORA_BRAND_ICONS.applepay;
+  if (/tabby|تابي/.test(n)) return DORA_BRAND_ICONS.tabby;
+  if (/tamara|تمارا/.test(n)) return DORA_BRAND_ICONS.tamara;
+  if (/تحويل|بنك|حساب/.test(n)) return DORA_BRAND_ICONS.bank;
+  if (/كاش|نقد|استلام|cash/.test(n)) return DORA_BRAND_ICONS.cash;
+  return DORA_BRAND_ICONS.card;
+}

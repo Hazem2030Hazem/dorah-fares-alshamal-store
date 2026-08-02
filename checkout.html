@@ -301,19 +301,19 @@ function renderCheckout() {
             <h4>⚡ دفع سريع</h4>
             <div class="quick-pay-grid">
                 <button class="quick-pay-btn stc" onclick="payWithSTC(${finalTotal})">
-                    <span class="quick-pay-icon">💜</span>
+                    ' + DORA_BRAND_ICONS.stcpay + '
                     STC Pay
                 </button>
                 <button class="quick-pay-btn apple" onclick="payWithApple(${finalTotal})">
-                    <span class="quick-pay-icon">🍎</span>
+                    ' + DORA_BRAND_ICONS.applepay + '
                     Apple Pay
                 </button>
                 <button class="quick-pay-btn mada" onclick="payWithMada(${finalTotal})">
-                    <span class="quick-pay-icon">💚</span>
+                    ' + DORA_BRAND_ICONS.mada + '
                     مدى أثير
                 </button>
                 <button class="quick-pay-btn tamara" onclick="payWithTamara(${finalTotal})">
-                    <span class="quick-pay-icon">🧡</span>
+                    ' + DORA_BRAND_ICONS.tamara + '
                     تمارا
                 </button>
             </div>
@@ -352,7 +352,7 @@ async function loadPaymentMethods() {
 
     if (!methods.length && !gateways.length) { grid.innerHTML = '<div style="text-align:center;padding:20px;grid-column:1/-1">💳 لا توجد طرق دفع</div>'; return; }
     var html = methods.map(function(m) {
-        return '<div class="payment-option" onclick="selectPayment(\'' + m.id + '\',\'' + m.name + '\', this)"><span class="icon">' + (m.icon || '💳') + '</span><span class="name">' + m.name + '</span></div>';
+        return '<div class="payment-option" onclick="selectPayment(\'' + m.id + '\',\'' + m.name + '\', this)"><span class="icon">' + doraBrandIcon(m.name) + '</span><span class="name">' + m.name + '</span></div>';
     }).join('');
     html += gateways.map(function(g) {
         // شارة 🧪 للوضع التجريبي — تنظيف النصوص من علامات الاقتباس حمايةً للـ onclick
@@ -360,7 +360,7 @@ async function loadPaymentMethods() {
         var gName = String(g.gateway_name || 'دفع إلكتروني').replace(/['"\\]/g, '');
         var gMode = String(g.mode || 'test').replace(/['"\\]/g, '');
         var badge = gMode === 'test' ? ' <span style="background:rgba(245,158,11,0.2);color:#F59E0B;font-size:10px;padding:2px 6px;border-radius:6px;vertical-align:middle">🧪 تجريبي</span>' : '';
-        return '<div class="payment-option" onclick="selectGateway(\'' + gCode + '\',\'' + gName + '\',\'' + gMode + '\', this)"><span class="icon">💳</span><span class="name">دفع إلكتروني — ' + gName + badge + '</span></div>';
+        return '<div class="payment-option" onclick="selectGateway(\'' + gCode + '\',\'' + gName + '\',\'' + gMode + '\', this)"><span class="icon">' + DORA_BRAND_ICONS.card + '</span><span class="name">دفع إلكتروني — ' + gName + badge + '</span></div>';
     }).join('');
     grid.innerHTML = html;
 }
@@ -467,7 +467,7 @@ function payWithSTC(amount) { showBankAccountsBox('stc', 'STC Pay', amount); }
 function payWithApple() {
     if (window.ApplePaySession && ApplePaySession.canMakePayments()) {
         selectedPayment = { id: 'apple', name: 'Apple Pay' };
-        showToast('🍎 Apple Pay جاهز - أكمل الطلب');
+        showToast('Apple Pay جاهز - أكمل الطلب');
     } else {
         showToast('⚠️ Apple Pay غير متاح على هذا الجهاز', 'warning');
     }
@@ -478,7 +478,7 @@ function payWithMada(amount) { showBankAccountsBox('mada', 'مدى أثير', am
 function payWithTamara(amount) {
     selectedPayment = { id: 'tamara', name: 'تمارا - تقسيط' };
     var installment = Math.round(amount / 4);
-    var msg = '🧡 للتقسيط عبر تمارا:\n\nالمبلغ: ' + amount.toLocaleString() + ' ر.س\n4 أقساط: ' + installment.toLocaleString() + ' ر.س\n\nللتواصل واتساب لتفعيل التقسيط';
+    var msg = 'للتقسيط عبر تمارا:\n\nالمبلغ: ' + amount.toLocaleString() + ' ر.س\n4 أقساط: ' + installment.toLocaleString() + ' ر.س\n\nللتواصل واتساب لتفعيل التقسيط';
     window.open('https://wa.me/966545358773?text=' + encodeURIComponent(msg), '_blank');
     showToast('✅ تم اختيار تمارا - 4 أقساط بدون فوائد');
 }
