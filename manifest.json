@@ -1,7 +1,7 @@
 {
-  "name": "درة فارس الشمال - Dora Fares Alshamal",
+  "name": "شركة درة فارس الشمال للتجارة",
   "short_name": "درة فارس الشمال",
-  "description": "حلول تقنية متكاملة للشركات والأفراد - طابعات، كمبيوتر، كاميرات مراقبة، نقاط بيع، شبكات",
+  "description": "متجر وحلول تقنية متكاملة — طابعات، كمبيوتر، كاميرات مراقبة، نقاط بيع، شبكات",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#0F0C29",
@@ -11,10 +11,19 @@
   "lang": "ar",
   "dir": "rtl",
   "icons": [
-    { "src": "pwa-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "pwa-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "pwa-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
-    { "src": "pwa-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
   ],
-  "categories": ["business", "shopping", "electronics"]
+  "categories": ["business", "shopping", "electronics"],
+  "prefer_related_applications": false
 }
