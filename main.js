@@ -3813,7 +3813,7 @@ function updateSpeakerIcon() {
                 '#goog-gt-tt{display:none !important;}',
                 '@media (max-width:640px){',
                 '#doraHeroBar{gap:6px;padding:4px 6px;}',
-                '#doraHeroBar.dhb-abs{position:relative;top:auto;left:auto;right:auto;margin:0 auto 10px;}',
+                '#doraHeroBar.dhb-abs{position:relative;top:auto;left:auto;right:auto;margin:96px auto 10px;}',
                 '.dhb-pill{padding:7px 13px;font-size:12.5px;}',
                 '#dhbLangMenu{min-width:180px;}',
                 '}'
