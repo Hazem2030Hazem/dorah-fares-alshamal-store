@@ -3965,3 +3965,13 @@ document.addEventListener('click', function(e) {
         if (id && typeof openProductModal === 'function') openProductModal(id);
     } catch (_) {}
 });
+
+/* ============================================================
+   📋 زرار "اطلب عرض سعر" العائم — تحويل مباشر لواتساب المندوب
+   (كان زرار ميت بدون أي وظيفة في بعض الصفحات)
+   ============================================================ */
+document.addEventListener('click', function (e) {
+  var btn = e.target.closest && e.target.closest('#quoteBtn, .quote-float');
+  if (!btn || btn.tagName === 'A') return;
+  location.href = 'https://wa.me/966545358773?text=' + encodeURIComponent('مرحباً، أرغب في طلب عرض سعر من شركة درة فارس الشمال');
+});

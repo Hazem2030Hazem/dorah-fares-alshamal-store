@@ -1049,72 +1049,10 @@ window.checkout = async function(){
     return;
   }
 
-  const subtotal = cart.reduce((sum, item) => sum + (Number(item.price || 0) * Number(item.qty || 1)), 0);
-  const discount = activeCoupon ? Math.round(subtotal * activeCoupon.discount) : 0;
-  const afterDiscount = subtotal - discount;
-  const tax = calculateTax(afterDiscount);
-  const total = afterDiscount + tax;
-  const orderNumber = `DF-${new Date().getFullYear()}-${String(Date.now()).slice(-6)}`;
-  const items = cart.map(item => ({
-    product_id: item.id,
-    name: item.name,
-    price: Number(item.price || 0),
-    qty: Number(item.qty || 1),
-    image: item.image || ''
-  }));
-
-  const payload = {
-    order_number: orderNumber,
-    user_id: user.id,
-    customer_name: profile.full_name,
-    customer_phone: profile.phone,
-    customer_email: user.email || '',
-    address,
-    items,
-    subtotal,
-    discount,
-    tax,
-    total,
-    status: 'new',
-    payment_method: 'bank_transfer',
-    payment_gateway: 'manual_receipt',
-    payment_status: 'pending'
-  };
-
-  let savedOrder = null;
-  const { data, error } = await supabaseClient.from('store_orders').insert([payload]).select('*').single();
-  if (error) {
-    console.error('order save:', error);
-    notify('⚠️ سيتم فتح واتساب، لكن تعذر حفظ الطلب في الحساب: ' + (error.message || 'خطأ غير معروف'), 'warning');
-  } else {
-    savedOrder = data;
-  }
-
-  let msg = `*طلب جديد من شركة درة فارس الشمال*\n\n`;
-  msg += `*رقم الطلب:* ${savedOrder?.order_number || orderNumber}\n`;
-  msg += `*العميل:* ${profile.full_name}\n*الجوال:* ${profile.phone}\n\n*المنتجات:*\n`;
-  items.forEach((item, i) => {
-    msg += `${i+1}. ${item.name}\n  الكمية: ${item.qty}\n  السعر: ${item.price.toLocaleString()} ر.س\n  المجموع: ${(item.price*item.qty).toLocaleString()} ر.س\n\n`;
-  });
-  msg += `*المجموع الفرعي: ${subtotal.toLocaleString()} ر.س*\n`;
-  if (discount > 0) msg += `*الخصم: ${discount.toLocaleString()} ر.س*\n`;
-  msg += `*الضريبة (15%): ${tax.toLocaleString()} ر.س*\n`;
-  msg += `*المجموع الكلي: ${total.toLocaleString()} ر.س*\n\n`;
-  msg += `*العنوان:* ${address.city}${address.district ? ' — ' + address.district : ''}${address.street ? '، ' + address.street : ''}\n`;
-  msg += 'يرجى تأكيد الطلب.';
-
-  if (savedOrder) {
-    cart = [];
-    localStorage.setItem('doraCart', JSON.stringify(cart));
-    updateCartUI();
-    renderProducts(currentFilter);
-    notify(`✅ تم حفظ الطلب ${savedOrder.order_number} في حسابك`);
-  }
-
-  // 📲 كل الطلبات تذهب لرقم المندوب الأساسي مباشرة — بدون أي سؤال للعميل
-  // (نستخدم location.href وليس window.open حتى لا يحظر المتصفح النافذة المنبثقة)
-  const phone = '966545358773';
-  location.href = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(msg);
+  // 💳 بيانات العميل مكتملة ← تحويل مباشر لصفحة الدفع وإتمام الطلب
+  // (السلة محفوظة في localStorage وصفحة checkout.html تقرأها وتكمل الحفظ والدفع)
+  notify('💳 جاري تحويلك لصفحة إتمام الطلب...', 'success');
+  setTimeout(() => { location.href = 'checkout.html'; }, 400);
 };
 
 /* ============================================================

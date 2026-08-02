@@ -350,7 +350,7 @@ function init() {
             <div class="cta-box">
                 <h2>محتاج خدمة معينة؟</h2>
                 <p>تواصل معنا الآن واحصل على استشارة مجانية وعرض سعر مخصص لاحتياجاتك</p>
-                <a href="https://wa.me/966568717449?text=مرحباً%20أرغب%20في%20استشارة%20مجانية" class="btn-whatsapp" target="_blank">💬 تحدث مع خبير</a>
+                <a href="https://wa.me/966545358773?text=مرحباً%20أرغب%20في%20استشارة%20مجانية" class="btn-whatsapp" target="_blank">💬 تحدث مع خبير</a>
             </div>
         </div>
     </section>
@@ -404,8 +404,16 @@ async function submitServiceRequest(event) {
     try {
         var result = await supabaseClient.from('service_requests').insert([payload]);
         if (result.error) throw result.error;
-        alert('✅ تم إرسال طلب الخدمة بنجاح! سنتواصل معك قريباً');
-        event.target.reset();
+        // 📲 تحويل العميل لواتساب المندوب الأساسي بتفاصيل الطلب جاهزة للإرسال
+        var waMsg = '*طلب خدمة جديد — درة فارس الشمال*\n\n'
+            + '*الخدمة:* ' + payload.service_type + '\n'
+            + '*الاسم:* ' + payload.customer_name + '\n'
+            + '*الجوال:* ' + payload.customer_phone + '\n'
+            + (payload.customer_email ? '*البريد:* ' + payload.customer_email + '\n' : '')
+            + (payload.city ? '*المدينة:* ' + payload.city + '\n' : '')
+            + '\n*تفاصيل الخدمة:*\n' + payload.description;
+        alert('✅ تم تسجيل طلبك! جاري تحويلك للواتساب لإرسال التفاصيل للمندوب...');
+        location.href = 'https://wa.me/966545358773?text=' + encodeURIComponent(waMsg);
     } catch(e) {
         alert('❌ حدث خطأ: ' + (e.message || 'حاول مرة أخرى'));
     } finally {
@@ -425,7 +433,7 @@ async function submitServiceRequest(event) {
         </div>
     </footer>
 
-    <a href="https://wa.me/966568717449?text=مرحباً%20شركة%20درة%20فارس%20الشمال" class="whatsapp-float" target="_blank" rel="noopener" aria-label="تواصل عبر واتساب">
+    <a href="https://wa.me/966545358773?text=مرحباً%20شركة%20درة%20فارس%20الشمال" class="whatsapp-float" target="_blank" rel="noopener" aria-label="تواصل عبر واتساب">
         💬
         <span class="tooltip">تواصل معنا على واتساب</span>
     </a>
