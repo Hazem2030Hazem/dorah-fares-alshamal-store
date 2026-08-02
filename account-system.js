@@ -1111,9 +1111,10 @@ window.checkout = async function(){
     notify(`✅ تم حفظ الطلب ${savedOrder.order_number} في حسابك`);
   }
 
-  const choice = confirm('اضغط "موافق" للتواصل عبر الرقم الأول (+966 56 871 7449)\n\nاضغط "إلغاء" للتواصل عبر الرقم الثاني (+966 54 535 8773)');
-  const phone = choice ? '966568717449' : '966545358773';
-  window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+  // 📲 كل الطلبات تذهب لرقم المندوب الأساسي مباشرة — بدون أي سؤال للعميل
+  // (نستخدم location.href وليس window.open حتى لا يحظر المتصفح النافذة المنبثقة)
+  const phone = '966545358773';
+  location.href = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(msg);
 };
 
 /* ============================================================
