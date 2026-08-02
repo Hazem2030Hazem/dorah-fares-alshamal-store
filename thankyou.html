@@ -92,7 +92,6 @@
         
         <a href="index.html" class="btn btn-primary">🏠 العودة للرئيسية</a>
         <a href="account.html" class="btn btn-secondary">👤 حسابي</a>
-        <a href="#" class="btn btn-whatsapp" id="whatsappBtn">💬 واتساب</a>
     </div>
 
     <script>
@@ -117,9 +116,6 @@
         
         // رقم تتبع وهمي
         document.getElementById('trackingNumber').textContent = 'TRK' + Date.now().toString().slice(-8);
-        
-        // زر واتساب
-        document.getElementById('whatsappBtn').href = 'https://wa.me/966545358773?text=مرحباً، لدي استفسار عن الطلب ' + (orderId || '');
     </script>
 <script src="main.js"></script>
     <script src="chatbot-ai.js"></script>

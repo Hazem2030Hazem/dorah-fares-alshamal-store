@@ -523,9 +523,7 @@ function payWithMada(amount) { showBankAccountsBox('mada', 'مدى أثير', am
 function payWithTamara(amount) {
     selectedPayment = { id: 'tamara', name: 'تمارا - تقسيط' };
     var installment = Math.round(amount / 4);
-    var msg = 'للتقسيط عبر تمارا:\n\nالمبلغ: ' + amount.toLocaleString() + ' ر.س\n4 أقساط: ' + installment.toLocaleString() + ' ر.س\n\nللتواصل واتساب لتفعيل التقسيط';
-    window.open('https://wa.me/966545358773?text=' + encodeURIComponent(msg), '_blank');
-    showToast('✅ تم اختيار تمارا - 4 أقساط بدون فوائد');
+    showToast('✅ تم اختيار تمارا — 4 أقساط × ' + installment.toLocaleString() + ' ر.س — سيتواصل معك فريقنا لتفعيل التقسيط');
 }
 // ============================================================
 // 💳 مسار الدفع الإلكتروني — استدعاء Edge Function ثم تحويل العميل

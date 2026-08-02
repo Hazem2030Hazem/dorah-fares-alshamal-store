@@ -53,8 +53,6 @@
             var note = document.getElementById('statusNote');
             var buttons = document.getElementById('resultButtons');
 
-            var whatsappLink = 'https://wa.me/966545358773?text=' + encodeURIComponent('مرحباً، لدي استفسار عن الطلب ' + (orderId || ''));
-
             if (orderId) {
                 orderBox.style.display = 'block';
                 orderBox.textContent = 'رقم الطلب: ' + orderId;
@@ -93,7 +91,6 @@
                 buttons.innerHTML =
                     '<a href="track.html" class="btn btn-primary">📦 تتبع الطلب</a>' +
                     '<a href="account.html" class="btn btn-secondary">🧾 طلباتي وفواتيري</a>' +
-                    '<a href="' + whatsappLink + '" class="btn btn-whatsapp" target="_blank">💬 واتساب</a>' +
                     '<br><a href="index.html" class="btn btn-secondary">🏠 العودة للرئيسية</a>';
             }
 
@@ -106,7 +103,6 @@
                 if (gateway) note.textContent = 'البوابة: ' + gateway;
                 buttons.innerHTML =
                     '<a href="checkout.html" class="btn btn-retry">🔄 إعادة المحاولة</a>' +
-                    '<a href="' + whatsappLink + '" class="btn btn-whatsapp" target="_blank">💬 تواصل واتساب</a>' +
                     '<br><a href="index.html" class="btn btn-secondary">🏠 العودة للرئيسية</a>';
             }
 
