@@ -4569,3 +4569,59 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
    الخلفية بيضاء من القاعدة العامة — يبقى الخط لازم يكون غامق دائماً */
 [data-theme="dark"] .dropdown-menu a{color:#374151 !important}
 [data-theme="dark"] .dropdown-menu a:hover{background:#F3F6FB !important;color:#2C4F86 !important}
+
+/* ============================================================
+   ✨ 1) البطاقات المدمجة: صورة + اسم + تقييم + سعر فقط
+   (الوصف/المخزون/الأزرار تظهر كلها في نافذة التفاصيل بالضغط)
+   ============================================================ */
+.prod-grid:not(.list-view) .prod-card .prod-tag,
+.prod-grid:not(.list-view) .prod-card .prod-desc,
+.prod-grid:not(.list-view) .prod-card .stock-indicator,
+.prod-grid:not(.list-view) .prod-card .prod-footer > div:last-child { display: none !important; }
+
+.prod-grid:not(.list-view) > .prod-card { cursor: pointer; min-height: auto !important; height: auto !important; }
+.prod-card .prod-img > div { height: 190px !important; }
+.prod-card .prod-body { padding: 14px 16px 16px !important; }
+.prod-card .prod-name { min-height: auto !important; font-size: 15px !important; }
+.prod-card .modal-rating { margin-bottom: 6px !important; }
+.prod-card .prod-footer { margin-top: 4px; }
+
+/* الجوال: عمودين بدل واحد — كثافة أعلى وشكل أنظف */
+@media (max-width: 768px) {
+  .prod-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+  .prod-card .prod-img > div { height: 140px !important; }
+  .prod-card .prod-body { padding: 10px 12px 12px !important; }
+  .prod-card .prod-name { font-size: 13.5px !important; }
+  .prod-card .stars { font-size: 12px !important; }
+  .prod-card .rating-text { font-size: 11px !important; }
+  .prod-card .prod-price { font-size: 17px !important; }
+  .prod-card .prod-price .old-price { font-size: 12px !important; }
+}
+
+/* ============================================================
+   ✨ 2) البطاقات العائمة (التصنيفات) تظهر على الجوال — شبكة 2×3 مدمجة
+   ============================================================ */
+@media (max-width: 768px) {
+  .hero-visual {
+    display: grid !important; grid-template-columns: repeat(2, 1fr); gap: 10px;
+    height: auto !important; position: static; margin: 28px auto 0; max-width: 430px; padding: 0 10px;
+  }
+  .hero-visual .float-card {
+    position: static !important; top: auto !important; left: auto !important; right: auto !important;
+    animation: none !important; padding: 14px 10px !important; text-align: center; margin: 0 !important;
+  }
+  .hero-visual .float-card .icon { font-size: 26px !important; margin-bottom: 6px !important; }
+  .hero-visual .float-card h4 { font-size: 14px !important; margin-bottom: 3px !important; }
+  .hero-visual .float-card p { font-size: 11px !important; }
+}
+
+/* ============================================================
+   ✨ 3) تقوية نهائية: خط القوائم المنسدلة غامق على الأبيض
+   (يكسب على كل القواعد القديمة — موبايل + ديسكتوب + وضع داكن)
+   ============================================================ */
+.nav-links.active .dropdown-menu a,
+.nav-links .dropdown-menu a,
+[data-theme="dark"] .dropdown-menu a { color: #374151 !important; }
+.nav-links.active .dropdown-menu a:hover,
+.nav-links .dropdown-menu a:hover,
+[data-theme="dark"] .dropdown-menu a:hover { background: #F3F6FB !important; color: #2C4F86 !important; }

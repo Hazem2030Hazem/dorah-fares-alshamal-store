@@ -3952,3 +3952,16 @@ function updateSpeakerIcon() {
         /* صمت تام — لا نكسر أي صفحة */
     }
 })();
+
+// ===== البطاقات المدمجة: الضغط على أي مكان فاضي في البطاقة يفتح نافذة التفاصيل =====
+document.addEventListener('click', function(e) {
+    try {
+        if (!e.target.closest) return;
+        // العناصر اللي ليها وظيفة خاصة (صورة/اسم/أزرار/قلب المفضلة) تتخطى — ليها معالجاتها الأصلية
+        if (e.target.closest('button, a, .wishlist-btn, .prod-img, .prod-name')) return;
+        var card = e.target.closest('.prod-grid:not(.list-view) .prod-card');
+        if (!card) return;
+        var id = parseInt(card.getAttribute('data-id'), 10);
+        if (id && typeof openProductModal === 'function') openProductModal(id);
+    } catch (_) {}
+});
