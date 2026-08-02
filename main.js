@@ -2349,8 +2349,8 @@ renderProducts = function(filter) {
             if (oldPriceEl && !card.querySelector('.save-badge')) {
                 var saveBadge = document.createElement('span');
                 saveBadge.className = 'save-badge';
-                saveBadge.style.cssText = 'background:#10B981;color:white;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;display:inline-block;margin-right:6px;animation:pulse 2s infinite';
-                saveBadge.textContent = '💰 وفر';
+                saveBadge.style.cssText = 'background:#E8F5EE;color:#0B7A4B;border:1px solid #B9E2CC;padding:2px 9px;border-radius:10px;font-size:10.5px;font-weight:700;display:inline-block;margin-right:6px;';
+                saveBadge.textContent = 'وفر';
                 priceEl.parentNode.insertBefore(saveBadge, priceEl);
             }
         });

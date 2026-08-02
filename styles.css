@@ -4625,3 +4625,31 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
 .nav-links.active .dropdown-menu a:hover,
 .nav-links .dropdown-menu a:hover,
 [data-theme="dark"] .dropdown-menu a:hover { background: #F3F6FB !important; color: #2C4F86 !important; }
+
+/* ============================================================
+   ✨ 4) شارات صغيرة أنيقة + سعر بخط جاد (زي اسم المنتج)
+   ============================================================ */
+/* الشارات: مستطيل صغير حوالين النص بس — مش بيثّل على الصورة */
+.prod-card .prod-badge {
+  top: 6px !important; right: 6px !important; left: auto !important;
+  padding: 3px 9px !important; font-size: 10.5px !important; font-weight: 700 !important;
+  border-radius: 10px !important; box-shadow: 0 2px 8px rgba(0,0,0,.18) !important;
+  line-height: 1.5 !important; max-width: 72%; text-align: center;
+}
+
+/* السعر: خط جاد وواضح بدون ظلال أو مبالغة */
+.prod-grid .prod-card .prod-price {
+  font-family: 'Cairo','Tajawal',sans-serif !important;
+  font-weight: 800 !important; color: #1F2937 !important; text-shadow: none !important;
+}
+.prod-grid .prod-card .prod-price .old-price {
+  color: #9CA3AF !important; font-weight: 500 !important; text-shadow: none !important;
+}
+
+/* شارة "وفر": هادية ورسمية — بلا نبض وبلا بهرجة */
+.prod-card .save-badge {
+  background: #E8F5EE !important; color: #0B7A4B !important;
+  border: 1px solid #B9E2CC !important; padding: 2px 9px !important;
+  border-radius: 10px !important; font-size: 10.5px !important; font-weight: 700 !important;
+  animation: none !important; box-shadow: none !important;
+}
