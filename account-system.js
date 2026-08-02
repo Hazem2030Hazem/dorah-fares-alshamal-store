@@ -334,6 +334,43 @@ async function initAccountPage(force){
   if (requestedTab) state.currentTab = requestedTab;
   renderDashboard();
   updateAccountButtonLabel();
+  resumePendingAction();
+}
+
+/* ============================================================
+   🛒 استكمال عملية معلّقة بعد تسجيل الدخول / حفظ البيانات
+   مثال: العميل دوس السلة واتحوّل هنا يكمل بياناته (next=checkout)
+   - لو بياناته مكتملة ← يكمل الطلب تلقائياً
+   - لو ناقصة ← شريط ثابت بزرار "إكمال الطلب" يدوسه بعد الحفظ
+   ============================================================ */
+async function resumePendingAction(){
+  const pendingNext = getParam('next');
+  if (pendingNext !== 'checkout') return;
+
+  const address = await getDefaultAddress(state.user.id);
+  const profileComplete = !!(state.profile && state.profile.full_name && state.profile.phone);
+
+  if (profileComplete && address) {
+    // البيانات مكتملة ← كمّل الطلب على طول
+    history.replaceState(null, '', 'account.html');
+    notify('🛒 بياناتك مكتملة — جاري إكمال طلبك...', 'success');
+    setTimeout(() => { window.checkout(); }, 700);
+  } else {
+    // ناقص بيانات ← أظهر شريط إكمال الطلب
+    injectPendingCheckoutBar();
+  }
+}
+
+function injectPendingCheckoutBar(){
+  if (document.getElementById('pendingCheckoutBar')) return;
+  const bar = document.createElement('div');
+  bar.id = 'pendingCheckoutBar';
+  bar.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:99999;background:linear-gradient(135deg,#0F0C29,#302b63);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;box-shadow:0 -4px 20px rgba(0,0,0,.4);font-family:inherit;';
+  bar.innerHTML = `
+    <span style="font-weight:700;font-size:15px">🛒 عندك طلب منتظر! احفظ بياناتك وعنوانك ثم أكمله من هنا</span>
+    <button type="button" onclick="window.checkout()" style="background:#10B981;color:#fff;border:none;padding:12px 26px;border-radius:12px;font-weight:800;font-size:15px;cursor:pointer;font-family:inherit;box-shadow:0 4px 12px rgba(16,185,129,.4)">إكمال الطلب ←</button>
+  `;
+  document.body.appendChild(bar);
 }
 
 function renderAuth(message, forceRecovery){
