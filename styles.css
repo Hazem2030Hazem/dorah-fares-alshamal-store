@@ -4564,3 +4564,8 @@ main.main > section.section{padding:55px 20px 20px;max-width:1200px;margin:0 aut
   [dir=ltr] #doraNotifPanel{right:auto;left:12px}
 }
 /* ===== END [dir=ltr] English mode ===== */
+
+/* === إصلاح تباين القوائم المنسدلة (أبيض على أبيض في الوضع الداكن) ===
+   الخلفية بيضاء من القاعدة العامة — يبقى الخط لازم يكون غامق دائماً */
+[data-theme="dark"] .dropdown-menu a{color:#374151 !important}
+[data-theme="dark"] .dropdown-menu a:hover{background:#F3F6FB !important;color:#2C4F86 !important}

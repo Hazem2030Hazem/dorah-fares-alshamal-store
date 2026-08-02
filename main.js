@@ -3813,7 +3813,7 @@ function updateSpeakerIcon() {
                 '#goog-gt-tt{display:none !important;}',
                 '@media (max-width:640px){',
                 '#doraHeroBar{gap:6px;padding:4px 6px;}',
-                '#doraHeroBar.dhb-abs{top:96px;}',
+                '#doraHeroBar.dhb-abs{position:relative;top:auto;left:auto;right:auto;margin:0 auto 10px;}',
                 '.dhb-pill{padding:7px 13px;font-size:12.5px;}',
                 '#dhbLangMenu{min-width:180px;}',
                 '}'
@@ -3897,7 +3897,8 @@ function updateSpeakerIcon() {
             var hero = document.querySelector('.page-hero, .service-hero, .services-hero, .hero');
             if (hero) {
                 bar.classList.add('dhb-abs');
-                hero.appendChild(bar);
+                // يُدرج كأول عنصر: على الموبايل يصبح في التدفق الطبيعي فوق المحتوى (بلا تداخل)
+                hero.insertBefore(bar, hero.firstChild);
             } else {
                 var header = document.querySelector('header.header, header');
                 if (header) bar.classList.add('dhb-top');
