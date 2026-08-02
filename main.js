@@ -2904,11 +2904,11 @@ function updateSpeakerIcon() {
             st.id = 'doraNotifStyle';
             st.textContent = [
                 '#doraNotifBell{position:fixed;bottom:30px;right:30px;z-index:9997;width:58px;height:58px;border-radius:50%;',
-                'background:linear-gradient(135deg,rgba(14,165,233,.9),rgba(37,99,235,.9));border:1px solid rgba(125,211,252,.55);',
+                'background:#1E1B4B;border:1px solid #37347A;',
                 'color:#fff;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;',
-                'box-shadow:0 8px 28px rgba(14,165,233,.45),0 0 20px rgba(56,189,248,.25);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);',
+                'box-shadow:0 6px 18px rgba(0,0,0,.35);',
                 'transition:all .3s ease;font-family:inherit;}',
-                '#doraNotifBell:hover{transform:scale(1.1) translateY(-4px);box-shadow:0 12px 36px rgba(14,165,233,.65),0 0 30px rgba(56,189,248,.4);}',
+                '#doraNotifBell:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,.45);background:#2A2760;}',
                 '#doraNotifBadge{position:absolute;top:-4px;left:-4px;min-width:22px;height:22px;border-radius:12px;background:linear-gradient(135deg,#ef4444,#dc2626);',
                 'color:#fff;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;padding:0 6px;',
                 'box-shadow:0 0 12px rgba(239,68,68,.7);border:2px solid rgba(10,20,40,.9);}',

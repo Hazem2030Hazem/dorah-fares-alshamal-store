@@ -89,13 +89,58 @@
         .quick-pay-btn.tamara { border-color: #F59E0B; background: rgba(245,158,11,0.1); }
         .quick-pay-btn.tamara:hover { background: rgba(245,158,11,0.3); box-shadow: 0 8px 25px rgba(245,158,11,0.3); }
         .quick-pay-icon { font-size: 32px; display: block; margin-bottom: 6px; }
+        /* ============================================================
+           🏢 FORMAL CHECKOUT REDESIGN — طابع رسمي بمستوى الشركات العالمية
+           ============================================================ */
+        .checkout-header h1 { display: flex; align-items: center; justify-content: center; gap: 12px; letter-spacing: 0.3px; }
+        .checkout-card { background: #14122B; border: 1px solid #272452; border-radius: 14px; box-shadow: 0 3px 14px rgba(0,0,0,0.28); backdrop-filter: none; }
+        .checkout-card h3 { font-size: 17px; letter-spacing: 0.2px; padding-bottom: 12px; border-bottom: 1px solid #272452; margin-bottom: 18px; color: #F3F4F6; }
+        .checkout-card h4 { color: #C7CBE8; }
+        .form-group label { font-size: 13px; color: #B9BCE0; font-weight: 700; }
+        .form-group input, .checkout-card input, .checkout-card select { background: #0E0C22 !important; border: 1px solid #322E66 !important; border-radius: 10px !important; color: #F3F4F6 !important; transition: border-color 0.2s; }
+        .form-group input:focus, .checkout-card input:focus { border-color: #10B981 !important; outline: none; box-shadow: 0 0 0 3px rgba(16,185,129,0.15); }
+
+        /* 💳 طرق الدفع — بلاطات بيضاء رسمية بالشعارات */
+        .payment-option { background: #FFFFFF; border: 2px solid #E5E7EB; border-radius: 12px; padding: 14px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-height: 86px; position: relative; }
+        .payment-option .icon { font-size: unset; display: flex; align-items: center; justify-content: center; min-height: 32px; margin-bottom: 0; }
+        .payment-option .name { color: #111827; font-weight: 800; font-size: 12.5px; }
+        .payment-option:hover { border-color: #9CA3AF; transform: none; }
+        .payment-option.selected { border-color: #0B7A4B; background: #F0FBF5; box-shadow: 0 0 0 3px rgba(11,122,75,0.12); }
+        .payment-option.selected::after { content: ''; position: absolute; top: 6px; left: 6px; width: 18px; height: 18px; border-radius: 50%; background: #0B7A4B url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>') center/11px no-repeat; }
+
+        /* 🚚 طريقة الاستلام — بلاطات رسمية */
+        .delivery-option { display: flex; flex-direction: column; align-items: center; gap: 10px; color: #D5D8F0; border-radius: 12px; }
+        .delivery-option svg { width: 26px; height: 26px; }
+        .delivery-option span { font-weight: 800; font-size: 14px; }
+        .delivery-option.selected { color: #fff; }
+
+        /* ⚡ الدفع السريع — بلاطات بيضاء بالشعارات الرسمية */
+        .quick-pay-section { background: #14122B; border: 1px solid #272452; }
+        .quick-pay-section h4 { display: flex; align-items: center; gap: 8px; color: #F3F4F6; font-size: 15px; }
+        .quick-pay-grid { grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .quick-pay-btn { background: #FFFFFF; border: 2px solid #E5E7EB; border-radius: 12px; color: #111827; font-size: 11.5px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; padding: 13px 8px; min-height: 84px; }
+        .quick-pay-btn svg { width: 46px; height: 31px; }
+        .quick-pay-btn:hover { border-color: #9CA3AF; transform: none; box-shadow: none; }
+        .quick-pay-btn.stc, .quick-pay-btn.apple, .quick-pay-btn.mada, .quick-pay-btn.tamara { background: #FFFFFF; border-color: #E5E7EB; }
+
+        /* ✅ زرار تأكيد الطلب */
+        .btn-submit { display: flex; align-items: center; justify-content: center; gap: 10px; background: #0B7A4B; border-radius: 12px; letter-spacing: 0.4px; font-size: 17px; box-shadow: 0 4px 14px rgba(11,122,75,0.35); }
+        .btn-submit:hover { background: #096A41; }
+
+        /* 🏦 صندوق الحسابات البنكية */
+        #bankAccountsBox > div[style*="rgba(255,255,255,.05)"], #bankAccountsBox > div[style*="rgba(255,255,255,0.05)"] { background: #FFFFFF !important; border-color: #E5E7EB !important; }
+
+        @media (max-width: 640px) {
+            .quick-pay-grid { grid-template-columns: repeat(2, 1fr); }
+            .payment-grid { grid-template-columns: repeat(2, 1fr); }
+        }
     </style>
 </head>
 <body>
 
 <div class="checkout-container">
     <div class="checkout-header">
-        <h1>🛒 إتمام الشراء</h1>
+        <h1><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-4px"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> إتمام الشراء</h1>
         <p>أكمل بياناتك لتأكيد الطلب</p>
     </div>
 
@@ -257,12 +302,12 @@ function renderCheckout() {
         
         <!-- 🛍️ Cross-sell: منتجات مقترحة -->
         <div class="upsell-section">
-            <h4>🎯 قد تحتاج أيضاً</h4>
+            <h4><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-4px"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> قد تحتاج أيضاً</h4>
             <div class="upsell-grid" id="upsellGrid">⏳ جاري التحميل...</div>
         </div>
         
         <div class="checkout-card">
-            <h3>🏷️ كود خصم</h3>
+            <h3><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-4px"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg> كود خصم</h3>
             <div style="display:flex;gap:10px">
                 <input type="text" id="couponCode" placeholder="أدخل كود الخصم" style="flex:1;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:#fff;font-family:inherit">
                 <button onclick="applyCouponCode()" style="padding:12px 20px;background:#10B981;color:#fff;border:none;border-radius:12px;cursor:pointer;font-weight:700;font-family:inherit">تطبيق</button>
@@ -271,7 +316,7 @@ function renderCheckout() {
         </div>
         
         <div class="checkout-card">
-            <h3>👤 بياناتك</h3>
+            <h3><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-4px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> بياناتك</h3>
             <div class="form-row">
                 <div class="form-group"><label>الاسم الكامل *</label><input type="text" id="custName" required></div>
                 <div class="form-group"><label>رقم الجوال *</label><input type="tel" id="custPhone" required></div>
@@ -284,41 +329,41 @@ function renderCheckout() {
         </div>
         
         <div class="checkout-card">
-            <h3>🚚 طريقة الاستلام</h3>
+            <h3><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-4px"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg> طريقة الاستلام</h3>
             <div class="delivery-grid">
-                <div class="delivery-option selected" onclick="selectDelivery('delivery', this)">🚚 توصيل للمنزل</div>
-                <div class="delivery-option" onclick="selectDelivery('pickup', this)">🏬 استلام من المتجر</div>
+                <div class="delivery-option selected" onclick="selectDelivery('delivery', this)"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-4px"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><span>توصيل للمنزل</span></div>
+                <div class="delivery-option" onclick="selectDelivery('pickup', this)"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-4px"><path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/></svg><span>استلام من المتجر</span></div>
             </div>
         </div>
         
         <div class="checkout-card">
-            <h3>💳 طريقة الدفع</h3>
-            <div class="payment-grid" id="paymentMethodsGrid">⏳ جاري تحميل طرق الدفع...</div>
+            <h3><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-4px"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> طريقة الدفع</h3>
+            <div class="payment-grid" id="paymentMethodsGrid">جاري تحميل طرق الدفع...</div>
         </div>
         
               <!-- 💳 بوابات الدفع السريعة -->
         <div class="quick-pay-section">
-            <h4>⚡ دفع سريع</h4>
+            <h4><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" style="vertical-align:-3px"><path d="M13 2 L3 14 h7 l-1 8 L21 9 h-7 z"/></svg> دفع سريع</h4>
             <div class="quick-pay-grid">
                 <button class="quick-pay-btn stc" onclick="payWithSTC(${finalTotal})">
-                    ' + DORA_BRAND_ICONS.stcpay + '
+                    ${DORA_BRAND_ICONS.stcpay}
                     STC Pay
                 </button>
                 <button class="quick-pay-btn apple" onclick="payWithApple(${finalTotal})">
-                    ' + DORA_BRAND_ICONS.applepay + '
+                    ${DORA_BRAND_ICONS.applepay}
                     Apple Pay
                 </button>
                 <button class="quick-pay-btn mada" onclick="payWithMada(${finalTotal})">
-                    ' + DORA_BRAND_ICONS.mada + '
+                    ${DORA_BRAND_ICONS.mada}
                     مدى أثير
                 </button>
                 <button class="quick-pay-btn tamara" onclick="payWithTamara(${finalTotal})">
-                    ' + DORA_BRAND_ICONS.tamara + '
+                    ${DORA_BRAND_ICONS.tamara}
                     تمارا
                 </button>
             </div>
         </div>
-        <button class="btn-submit" onclick="placeOrder()">📨 تأكيد الطلب</button>
+        <button class="btn-submit" onclick="placeOrder()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px"><polyline points="20 6 9 17 4 12"/></svg> تأكيد الطلب</button>
     `;
     
     loadPaymentMethods();
@@ -350,7 +395,7 @@ async function loadPaymentMethods() {
         if (!gwResult.error && gwResult.data) gateways = gwResult.data;
     } catch (eGw) { gateways = []; } // صمت تام — غياب البوابات لا يكسر طرق الدفع الحالية
 
-    if (!methods.length && !gateways.length) { grid.innerHTML = '<div style="text-align:center;padding:20px;grid-column:1/-1">💳 لا توجد طرق دفع</div>'; return; }
+    if (!methods.length && !gateways.length) { grid.innerHTML = '<div style="text-align:center;padding:20px;grid-column:1/-1">لا توجد طرق دفع متاحة</div>'; return; }
     var html = methods.map(function(m) {
         return '<div class="payment-option" onclick="selectPayment(\'' + m.id + '\',\'' + m.name + '\', this)"><span class="icon">' + doraBrandIcon(m.name) + '</span><span class="name">' + m.name + '</span></div>';
     }).join('');
@@ -445,15 +490,15 @@ async function showBankAccountsBox(methodId, methodName, amount) {
         return;
     }
     var esc = function(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); };
-    box.innerHTML = '<div style="color:#fff;font-weight:800;font-size:14px">🏦 حوّل المبلغ (<span style="color:#10B981">' + amount.toLocaleString() + ' ر.س</span>) إلى أحد الحسابات التالية، ثم ارفع الإيصال في حسابك:</div>'
+    box.innerHTML = '<div style="color:#F3F4F6;font-weight:800;font-size:14px">حوّل المبلغ (<span style="color:#10B981">' + amount.toLocaleString() + ' ر.س</span>) إلى أحد الحسابات التالية، ثم ارفع الإيصال في حسابك:</div>'
         + accounts.map(function(a) {
-            return '<div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:14px">'
+            return '<div style="background:#FFFFFF;border:1px solid #E5E7EB;border-radius:12px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)">'
                 + '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">'
-                + '<div><div style="color:#fff;font-weight:800">' + esc(a.bank_name) + '</div>'
-                + '<div style="color:#9CA3AF;font-size:12px">' + esc(a.account_name || '') + '</div></div>'
+                + '<div><div style="color:#111827;font-weight:800">' + esc(a.bank_name) + '</div>'
+                + '<div style="color:#6B7280;font-size:12px">' + esc(a.account_name || '') + '</div></div>'
                 + '<div style="text-align:left">'
-                + (a.iban ? '<div style="color:#E5E7EB;font-size:13px;direction:ltr;font-weight:700">' + esc(a.iban) + '</div>' : '')
-                + (a.account_number ? '<div style="color:#9CA3AF;font-size:12px;direction:ltr">رقم الحساب: ' + esc(a.account_number) + '</div>' : '')
+                + (a.iban ? '<div style="color:#111827;font-size:13px;direction:ltr;font-weight:700">' + esc(a.iban) + '</div>' : '')
+                + (a.account_number ? '<div style="color:#6B7280;font-size:12px;direction:ltr">رقم الحساب: ' + esc(a.account_number) + '</div>' : '')
                 + '</div></div>'
                 + '<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">'
                 + (a.iban ? '<button type="button" data-copy="' + esc(a.iban) + '" onclick="navigator.clipboard.writeText(this.getAttribute(\'data-copy\'));this.textContent=\'✅ تم النسخ\'" style="flex:1;min-width:120px;padding:9px;background:rgba(16,185,129,.15);border:1px solid #10B981;color:#10B981;border-radius:10px;cursor:pointer;font-weight:700;font-family:inherit">📋 نسخ الآيبان</button>' : '')
