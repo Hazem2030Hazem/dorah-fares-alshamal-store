@@ -676,31 +676,14 @@ function dtrackPhoneVariants(phone) {
 }
 
 async function dtrackFindOrder(orderNum, phone) {
-  var variants = dtrackPhoneVariants(phone);
+  /* نستخدم دالة track_order الآمنة (SECURITY DEFINER) — تتجاوز RLS بأمان:
+     لا تُرجع الطلب إلا إذا تطابق رقم الطلب + آخر 9 أرقام من الجوال معاً.
+     (الاستعلام المباشر على store_orders كان محظوراً على الزوار بسياسات RLS) */
   var num = String(orderNum || '').trim();
-
-  /* المحاولة 1: مطابقة تامة eq على رقم الطلب + الجوال */
-  var r1 = await supabaseClient.from('store_orders').select('*')
-    .eq('order_number', num).in('customer_phone', variants).limit(1);
-  if (r1.error) throw r1.error;
-  if (r1.data && r1.data.length) return r1.data[0];
-
-  /* المحاولة 2: مطابقة مرنة ilike (يتحمل بادئات مثل # أو DORA-) */
-  var safe = num.replace(/[%_,"']/g, '');
-  if (safe) {
-    var r2 = await supabaseClient.from('store_orders').select('*')
-      .ilike('order_number', '%' + safe + '%').in('customer_phone', variants).limit(1);
-    if (r2.error) throw r2.error;
-    if (r2.data && r2.data.length) return r2.data[0];
-  }
-
-  /* المحاولة 3: لو الإدخال رقمي، قد يكون رقم الطلب هو الـ id نفسه */
-  if (/^\d+$/.test(safe)) {
-    var r3 = await supabaseClient.from('store_orders').select('*')
-      .eq('id', Number(safe)).in('customer_phone', variants).limit(1);
-    if (r3.error) throw r3.error;
-    if (r3.data && r3.data.length) return r3.data[0];
-  }
+  var ph = String(phone || '').trim();
+  var res = await supabaseClient.rpc('track_order', { p_order_number: num, p_phone: ph });
+  if (res.error) throw res.error;
+  if (res.data && res.data.length) return res.data[0];
   return null;
 }
 
