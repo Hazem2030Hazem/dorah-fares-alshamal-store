@@ -10,8 +10,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="درة فارس الشمال">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=5.0">
-    <link rel="manifest" href="manifest.json?v=5.0">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=6.0">
+    <link rel="manifest" href="manifest.json?v=6.0">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -146,7 +146,9 @@
                     <strong>لو لم يظهر التثبيت تلقائيًا:</strong><br>
                     1️⃣ افتح <b>alshamal-df.com</b> في متصفح Chrome أو Edge<br>
                     2️⃣ اضغط أيقونة <b>التثبيت ⬇</b> في شريط العنوان (أو قائمة ⋮ ← تثبيت التطبيق)<br>
-                    3️⃣ اضغط <b>تثبيت</b> — وسيظهر التطبيق في قائمة البرامج
+                    3️⃣ اضغط <b>تثبيت</b> — وسيظهر التطبيق في قائمة البرامج<br><br>
+                    <strong>🔄 لو كنت ثبّت التطبيق قبل كده وبيشتغل بنسخة قديمة:</strong><br>
+                    افتح <b>chrome://apps</b> ← كليك يمين على التطبيق ← <b>إزالة</b> ← ثم ثبّته من جديد
                 </div>
                 <div class="qr-label" style="min-height:0">💡 التثبيت يتم مباشرة من المتصفح — بدون الحاجة لأي كود</div>
             </div>
@@ -204,12 +206,25 @@
     </div>
 
     <script>
+        // تسجيل Service Worker من الصفحة نفسها — شرط أساسي للتثبيت
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(function(){});
+        }
+
         var deferredPrompt = null;
 
         window.addEventListener('beforeinstallprompt', function(e) {
             e.preventDefault();
             deferredPrompt = e;
+            document.getElementById('installMsg').textContent = '✅ التطبيق جاهز للتثبيت — اضغط الزرار';
         });
+
+        // هل التطبيق مثبت بالفعل على هذا الجهاز؟
+        function isAppInstalled() {
+            if (window.matchMedia('(display-mode: standalone)').matches) return true;
+            if (window.navigator.standalone === true) return true;
+            return false;
+        }
 
         function toggleSteps(id) {
             var el = document.getElementById(id);
@@ -218,6 +233,10 @@
 
         function installDesktop() {
             var msg = document.getElementById('installMsg');
+            if (isAppInstalled()) {
+                msg.textContent = '✅ التطبيق مثبت بالفعل على جهازك — افتحه من قائمة البرامج';
+                return;
+            }
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then(function(choice) {
@@ -231,8 +250,16 @@
                 });
             } else {
                 toggleSteps('desktopSteps');
+                msg.textContent = '⚠️ لو التطبيق اتثبت قبل كده لازم تمسحه الأول (شرح بالأسفل) — أو استخدم أيقونة التثبيت في شريط العنوان';
             }
         }
+
+        // عرض حالة التثبيت عند فتح الصفحة
+        window.addEventListener('load', function() {
+            if (isAppInstalled()) {
+                document.getElementById('installMsg').textContent = '✅ التطبيق مثبت بالفعل على جهازك';
+            }
+        });
 
         if (/Android|iPhone|iPad/i.test(navigator.userAgent)) {
             document.getElementById('desktopSteps').classList.add('show');
