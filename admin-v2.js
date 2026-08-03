@@ -898,7 +898,11 @@ window.updateStats=async function(){
   var newOrders=0,newMessages=0;
   try{
     var pe=document.getElementById('totalProducts');
-    if(pe){var{count}=await supabaseClient.from('store_products').select('*',{count:'exact',head:true});pe.textContent=count||0;}
+    if(pe){
+      var{count}=await supabaseClient.from('store_products').select('*',{count:'exact',head:true});
+      if(count==null){var{data:pd}=await supabaseClient.from('store_products').select('id');count=(pd||[]).length;}
+      pe.textContent=count||0;
+    }
   }catch(e){console.warn('updateStats products:',e);setStat('totalProducts',0);}
   try{
     var ae=document.getElementById('totalOrdersAll');
