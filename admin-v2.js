@@ -120,6 +120,7 @@ window.showTab=function(tabName){
   if(tabName==='why_us')loadSiteItems('why_us');
   if(tabName==='vision_mission')loadSiteItems('vision_mission');
   if(tabName==='hero_stats')loadSiteItems('hero_stats');
+  if(tabName==='home_hero')loadHomeHeroForm();
   if(tabName==='about')loadSiteItems('about');
   if(tabName==='testimonials')loadSiteItems('testimonials');
   if(tabName==='projects')loadSiteItems('projects');
@@ -140,7 +141,7 @@ window.showTab=function(tabName){
   if(tabName==='company_info')loadCompanyInfo();
   if(tabName==='gov_docs')loadGovDocs();
   if(tabName==='marketing')loadMarketing();
-  var tabTitles={dashboard:'لوحة المؤشرات',auditLog:'سجل التدقيق',einvoice:'الفوترة الإلكترونية',bank_accounts:'الحسابات البنكية',payment_methods:'طرق الدفع',gateways:'بوابات الدفع',shipping:'الشحن',settings:'الإعدادات العامة',company_info:'بيانات الشركة',gov_docs:'التوثيق الحكومي',marketing:'التسويق',files:'الملفات'};
+  var tabTitles={home_hero:'محتوى الصفحة الرئيسية',dashboard:'لوحة المؤشرات',auditLog:'سجل التدقيق',einvoice:'الفوترة الإلكترونية',bank_accounts:'الحسابات البنكية',payment_methods:'طرق الدفع',gateways:'بوابات الدفع',shipping:'الشحن',settings:'الإعدادات العامة',company_info:'بيانات الشركة',gov_docs:'التوثيق الحكومي',marketing:'التسويق',files:'الملفات'};
   document.getElementById('pageTitle').textContent=tabTitles[tabName]||tabName;
 };
 
@@ -425,6 +426,49 @@ window.saveSocialLinks=async function(e){
     logAudit('حفظ روابط السوشيال','فيسبوك: '+(all.socialFacebook?'✓':'—')+' انستقرام: '+(all.socialInstagram?'✓':'—')+' تويتر: '+(all.socialTwitter?'✓':'—')+' لينكدإن: '+(all.socialLinkedin?'✓':'—'));
     return false;
   }catch(e2){console.warn('saveSocialLinks:',e2);adminToast('❌ تعذر الحفظ','error');return false;}
+};
+
+/* ========== محتوى الصفحة الرئيسية — site_items (home_hero) قراءة حية ========== */
+window.loadHomeHeroForm=async function(){
+  try{
+    var{data}=await supabaseClient.from('site_items').select('*').eq('section_key','home_hero').order('sort_order').limit(1).maybeSingle();
+    if(!data)return;
+    var md=data.metadata||{};
+    formSet('heroBadgeInput',md.badge);
+    formSet('heroTitleInput',data.title_ar);
+    formSet('heroHighlightInput',md.title_highlight);
+    formSet('heroDescInput',data.description_ar);
+    formSet('heroCtaTextInput',md.cta_text);
+    formSet('heroCtaUrlInput',md.cta_url);
+    formSet('heroStatClientsInput',md.stat_clients);
+    formSet('heroStatClientsLabelInput',md.stat_clients_label);
+  }catch(e){console.warn('loadHomeHeroForm:',e);}
+};
+window.saveHomeHero=async function(e){
+  if(e&&e.preventDefault)e.preventDefault();
+  try{
+    var row={
+      section_key:'home_hero',sort_order:1,is_active:true,
+      title_ar:formVal('heroTitleInput'),
+      description_ar:formVal('heroDescInput'),
+      metadata:{
+        badge:formVal('heroBadgeInput'),
+        title_highlight:formVal('heroHighlightInput'),
+        cta_text:formVal('heroCtaTextInput'),
+        cta_url:formVal('heroCtaUrlInput'),
+        stat_clients:formVal('heroStatClientsInput'),
+        stat_clients_label:formVal('heroStatClientsLabelInput')
+      }
+    };
+    var{data:ex}=await supabaseClient.from('site_items').select('id').eq('section_key','home_hero').limit(1).maybeSingle();
+    var result;
+    if(ex&&ex.id)result=await supabaseClient.from('site_items').update(row).eq('id',ex.id);
+    else result=await supabaseClient.from('site_items').insert([row]);
+    if(result.error){adminToast('❌ خطأ: '+result.error.message,'error');return false;}
+    adminToast('✅ تم حفظ محتوى الصفحة الرئيسية — يظهر فورًا على الموقع');
+    logAudit('حفظ محتوى الرئيسية','العنوان: '+(row.title_ar||'—'));
+    return false;
+  }catch(e2){console.warn('saveHomeHero:',e2);adminToast('❌ تعذر الحفظ','error');return false;}
 };
 
 /* ========== حالة المتجر — تُحفظ كمفتاح مباشر storeStatus يقرأه main.js ========== */

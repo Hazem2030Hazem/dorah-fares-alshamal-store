@@ -1697,6 +1697,26 @@ function replaceDoraText(search, replacement){
   while (walker.nextNode()) { const node = walker.currentNode; if (node.parentElement && ['SCRIPT','STYLE'].includes(node.parentElement.tagName)) continue; if (node.nodeValue.includes(search)) nodes.push(node); }
   nodes.forEach(node => { node.nodeValue = node.nodeValue.split(search).join(replacement); });
 }
+// ===== محتوى الصفحة الرئيسية: قراءة حية من site_items (home_hero) — يُدار من لوحة التحكم =====
+async function loadHomeHero(){
+  if (!document.getElementById('heroBadge')) return;
+  try {
+    const { data } = await supabaseClient.from('site_items').select('*').eq('section_key','home_hero').eq('is_active',true).order('sort_order').limit(1).maybeSingle();
+    if (!data) return;
+    const md = data.metadata || {};
+    const set = function(id, val){ const el = document.getElementById(id); if (el && val) el.textContent = val; };
+    set('heroBadge', md.badge);
+    set('heroTitleText', data.title_ar);
+    set('heroTitleSpan', md.title_highlight);
+    set('heroDesc', data.description_ar);
+    set('heroCtaText', md.cta_text);
+    set('heroStatClients', md.stat_clients);
+    set('heroStatClientsLabel', md.stat_clients_label);
+    if (md.cta_url) { const cta = document.getElementById('heroCta'); if (cta) cta.href = md.cta_url; }
+  } catch(e) { console.warn('loadHomeHero:', e); }
+}
+document.addEventListener('DOMContentLoaded', loadHomeHero);
+
 // ===== صورة احتياطية تلقائية: أي صورة منتج مكسورة/مفقودة تُستبدل باللوجو الغامق الرسمي =====
 document.addEventListener('error', function(e){
   var t = e.target;
