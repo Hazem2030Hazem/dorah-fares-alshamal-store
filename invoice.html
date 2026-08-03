@@ -49,6 +49,14 @@
                 return;
             }
 
+            try {
+                var sr = await supabaseClient.from('site_settings').select('settings').eq('id', 1).maybeSingle();
+                var st = (sr.data && sr.data.settings) || {};
+                var cr = st.companyCR || (st.company && st.company.commercial_register) || '';
+                var tx = st.companyTax || (st.company && st.company.tax_number) || '';
+                if (cr) document.getElementById('invCR').textContent = cr;
+                if (tx) document.getElementById('invTax').textContent = tx;
+            } catch(_) {}
             var result = await supabaseClient.from('invoices').select('*').eq('id', invoiceId).single();
             var invoice = result.data;
 
@@ -71,10 +79,11 @@
                             <p style="color:#666;margin-top:5px">رقم: ${invoice.invoice_number}</p>
                         </div>
                         <div class="company-info">
-                            <strong>شركة درة فارس الشمال</strong><br>
-                            الرياض، المملكة العربية السعودية<br>
+                            <strong>شركة درة فارس الشمال للتجارة</strong><br>
+                            تبوك، المملكة العربية السعودية<br>
                             info@alshamal-df.com<br>
-                            +966 56 871 7449
+                            +966 56 871 7449<br>
+                            <span style="font-size:12px">سجل تجاري: <span id="invCR">—</span> | الرقم الضريبي: <span id="invTax">—</span></span>
                         </div>
                     </div>
                     <div class="invoice-details">

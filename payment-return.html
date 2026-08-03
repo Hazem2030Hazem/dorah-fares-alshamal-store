@@ -25,6 +25,50 @@
         .btn:hover { transform: translateY(-2px); }
         .btn-whatsapp { background: #25D366; color: #fff; }
     </style>
+
+    <!-- ===== تصميم ضوء القمر الرسمي — الأزرار الزجاجية المتوهجة ===== -->
+    <style>
+        .dtrack-btn, .btn-submit, .otp-btn, .quick-pay-btn, .btn.btn-primary, .btn.btn-retry {
+            display: inline-flex !important; align-items: center; justify-content: center; gap: 8px;
+            background: rgba(255,255,255,.1) !important;
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(220,232,255,.25) !important;
+            color: #EDF3FF !important;
+            border-radius: 12px !important;
+            font-weight: 800 !important;
+            transition: all .3s;
+            box-shadow: 0 0 18px rgba(168,197,255,.12), inset 0 1px 0 rgba(255,255,255,.15) !important;
+            text-shadow: 0 0 14px rgba(220,232,255,.25);
+        }
+        .dtrack-btn:hover, .btn-submit:hover, .otp-btn:hover, .quick-pay-btn:hover, .btn.btn-primary:hover, .btn.btn-retry:hover {
+            background: rgba(255,255,255,.18) !important;
+            border-color: rgba(255,255,255,.55) !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 0 28px rgba(255,255,255,.35), 0 0 60px rgba(168,197,255,.2), inset 0 1px 0 rgba(255,255,255,.25) !important;
+            transform: translateY(-2px);
+        }
+        .dtrack-btn svg, .btn-submit svg, .otp-btn svg, .quick-pay-btn svg, .btn.btn-primary svg, .btn.btn-retry svg {
+            filter: drop-shadow(0 0 4px rgba(255,255,255,.4));
+        }
+        .btn.btn-secondary, .btn-add {
+            display: inline-flex !important; align-items: center; justify-content: center; gap: 8px;
+            background: rgba(255,255,255,.06) !important;
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(220,232,255,.18) !important;
+            color: #C7D6F5 !important;
+            border-radius: 12px !important;
+            font-weight: 700 !important;
+            transition: all .3s;
+            box-shadow: 0 0 12px rgba(168,197,255,.08) !important;
+        }
+        .btn.btn-secondary:hover, .btn-add:hover {
+            background: rgba(255,255,255,.14) !important;
+            border-color: rgba(255,255,255,.45) !important;
+            box-shadow: 0 0 22px rgba(255,255,255,.3) !important;
+            color: #FFFFFF !important;
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 <body>
     <div class="result-card" id="resultCard">

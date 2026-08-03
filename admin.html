@@ -491,6 +491,23 @@
                     </div>
                     <button type="submit" class="btn-save">💾 حفظ روابط السوشيال</button>
                 </form>
+
+                <form class="afaky-form" onsubmit="return saveStoreStatus(event)" style="margin-top:24px">
+                    <h4>🛒 حالة المتجر (تشغيل / إيقاف البيع)</h4>
+                    <p style="color:var(--text-muted,#9CA3AF);font-size:13px;margin-bottom:12px">عند اختيار «مغلق للتجهيز» يستطيع الزوار تصفح المنتجات فقط، ويظهر لهم «المتجر تحت التجهيز — قريباً» بدل إتمام الشراء. عند الانتهاء من إضافة المنتجات اختر «مفتوح» واحفظ — ويتفعّل البيع فورًا في كل الأجهزة.</p>
+                    <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+                        <span id="storeStatusBadge" style="padding:6px 16px;border-radius:20px;font-weight:800;font-size:14px">...</span>
+                    </div>
+                    <div class="admin-form-grid">
+                        <div class="form-group"><label>حالة البيع</label>
+                            <select id="setStoreStatus">
+                                <option value="closed">🔴 مغلق للتجهيز — إيقاف البيع مؤقتًا</option>
+                                <option value="open">🟢 مفتوح — البيع مفعّل</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-save">💾 حفظ حالة المتجر</button>
+                </form>
             </div>
 
             <div class="tab-content" id="company_infoTab">

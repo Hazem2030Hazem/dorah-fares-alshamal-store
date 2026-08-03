@@ -384,6 +384,7 @@ window.loadSettings=async function(){
   formSet('setFreeShippingMin',g.free_shipping_min);
   formSet('setWhatsapp',g.whatsapp);
   if(typeof loadSocialLinks==='function')loadSocialLinks();
+  if(typeof loadStoreStatus==='function')loadStoreStatus();
 };
 window.saveSettings=async function(e){
   if(e&&e.preventDefault)e.preventDefault();
@@ -424,6 +425,38 @@ window.saveSocialLinks=async function(e){
     logAudit('حفظ روابط السوشيال','فيسبوك: '+(all.socialFacebook?'✓':'—')+' انستقرام: '+(all.socialInstagram?'✓':'—')+' تويتر: '+(all.socialTwitter?'✓':'—')+' لينكدإن: '+(all.socialLinkedin?'✓':'—'));
     return false;
   }catch(e2){console.warn('saveSocialLinks:',e2);adminToast('❌ تعذر الحفظ','error');return false;}
+};
+
+/* ========== حالة المتجر — تُحفظ كمفتاح مباشر storeStatus يقرأه main.js ========== */
+function storeStatusUpdateUI(st){
+  var badge=document.getElementById('storeStatusBadge');
+  if(!badge)return;
+  var open=(st==='open');
+  badge.textContent=open?'🟢 البيع مفعّل':'🔴 البيع متوقف للتجهيز';
+  badge.style.background=open?'rgba(16,185,129,.15)':'rgba(239,68,68,.15)';
+  badge.style.color=open?'#10B981':'#EF4444';
+}
+window.loadStoreStatus=async function(){
+  try{
+    var r=await siteSettingsGet('_all_');
+    var st=(r.all&&r.all.storeStatus)||'closed';
+    formSet('setStoreStatus',st);
+    storeStatusUpdateUI(st);
+  }catch(e){console.warn('loadStoreStatus:',e);}
+};
+window.saveStoreStatus=async function(e){
+  if(e&&e.preventDefault)e.preventDefault();
+  try{
+    var r=await siteSettingsGet('_all_');
+    var all=r.all||{};
+    all.storeStatus=formVal('setStoreStatus')||'closed';
+    var{error}=await supabaseClient.from('site_settings').upsert([{id:1,settings:all}]);
+    if(error){adminToast('❌ خطأ: '+error.message,'error');return false;}
+    storeStatusUpdateUI(all.storeStatus);
+    adminToast(all.storeStatus==='open'?'✅ المتجر مفتوح — البيع مفعّل الآن في كل الأجهزة':'✅ تم إيقاف البيع — الزوار يتصفحون فقط');
+    logAudit('تغيير حالة المتجر',all.storeStatus==='open'?'فتح البيع':'إيقاف البيع للتجهيز');
+    return false;
+  }catch(e2){console.warn('saveStoreStatus:',e2);adminToast('❌ تعذر الحفظ','error');return false;}
 };
 
 /* ========== بيانات الشركة — settings.company ========== */

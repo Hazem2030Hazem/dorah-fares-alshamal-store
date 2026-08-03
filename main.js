@@ -714,6 +714,18 @@ function requireAuth(action) {
     }, 1500);
 }
 async function checkout() {
+    if (window.DORA_STORE_CLOSED !== false) {
+        // إعادة التحقق من قاعدة البيانات مباشرة لضمان أحدث حالة
+        try {
+            const { data } = await supabaseClient.from('site_settings').select('settings').eq('id', 1).maybeSingle();
+            const st = data && data.settings && data.settings.storeStatus;
+            window.DORA_STORE_CLOSED = (st !== 'open');
+        } catch(_) { window.DORA_STORE_CLOSED = true; }
+    }
+    if (window.DORA_STORE_CLOSED) {
+        showToast('🔒 المتجر تحت التجهيز حالياً — البيع يبدأ قريباً بإذن الله', 'warning');
+        return;
+    }
     var isLoggedIn = await checkAuth();
     if (!isLoggedIn) {
         requireAuth('تشتري منتجات');
@@ -1685,6 +1697,15 @@ function replaceDoraText(search, replacement){
   while (walker.nextNode()) { const node = walker.currentNode; if (node.parentElement && ['SCRIPT','STYLE'].includes(node.parentElement.tagName)) continue; if (node.nodeValue.includes(search)) nodes.push(node); }
   nodes.forEach(node => { node.nodeValue = node.nodeValue.split(search).join(replacement); });
 }
+// ===== صورة احتياطية تلقائية: أي صورة منتج مكسورة/مفقودة تُستبدل باللوجو الغامق الرسمي =====
+document.addEventListener('error', function(e){
+  var t = e.target;
+  if (t && t.tagName === 'IMG' && !t.dataset.fbkDone) {
+    t.dataset.fbkDone = '1';
+    if (t.src.indexOf('default-product.png') === -1 && t.src.indexOf('logo.png') === -1) t.src = 'default-product.png';
+  }
+}, true);
+
 function applyDoraSettings(settings){
   doraSiteSettings = { ...DORA_DEFAULT_SITE_SETTINGS, ...(settings || {}) };
   localStorage.setItem('doraSettings', JSON.stringify(doraSiteSettings));
@@ -1697,10 +1718,23 @@ function applyDoraSettings(settings){
   document.querySelectorAll('a[href^="tel:"]').forEach(link => { link.href = 'tel:+' + phone1; if (/\+?\d[\d\s]{7,}/.test(link.textContent)) link.textContent = formattedPhone1; });
   document.querySelectorAll('a[href^="mailto:"]').forEach(link => { link.href = 'mailto:' + s.companyEmail; if (link.textContent.includes('@')) link.textContent = s.companyEmail; });
   // روابط السوشيال: تُطبَّق فقط لو أُدخلت من لوحة التحكم — وإلا تبقى الأيقونات بدون رابط
-  if (s.socialTwitter) document.querySelectorAll('a[data-social="twitter"]').forEach(a => { a.href = s.socialTwitter; a.target = '_blank'; a.rel = 'noopener'; });
-  if (s.socialInstagram) document.querySelectorAll('a[data-social="instagram"]').forEach(a => { a.href = s.socialInstagram; a.target = '_blank'; a.rel = 'noopener'; });
-  if (s.socialFacebook) document.querySelectorAll('a[data-social="facebook"]').forEach(a => { a.href = s.socialFacebook; a.target = '_blank'; a.rel = 'noopener'; });
-  if (s.socialLinkedin) document.querySelectorAll('a[data-social="linkedin"]').forEach(a => { a.href = s.socialLinkedin; a.target = '_blank'; a.rel = 'noopener'; });
+  // حماية: تجاهل الروابط الوهمية القديمة المحفوظة في قاعدة البيانات (dorafares)
+  function isFakeSocial(u){ return !u || /dorafares/i.test(u); }
+  if (!isFakeSocial(s.socialTwitter)) document.querySelectorAll('a[data-social="twitter"]').forEach(a => { a.href = s.socialTwitter; a.target = '_blank'; a.rel = 'noopener'; });
+  if (!isFakeSocial(s.socialInstagram)) document.querySelectorAll('a[data-social="instagram"]').forEach(a => { a.href = s.socialInstagram; a.target = '_blank'; a.rel = 'noopener'; });
+  if (!isFakeSocial(s.socialFacebook)) document.querySelectorAll('a[data-social="facebook"]').forEach(a => { a.href = s.socialFacebook; a.target = '_blank'; a.rel = 'noopener'; });
+  if (!isFakeSocial(s.socialLinkedin)) document.querySelectorAll('a[data-social="linkedin"]').forEach(a => { a.href = s.socialLinkedin; a.target = '_blank'; a.rel = 'noopener'; });
+  // السجل التجاري والرقم الضريبي: من قاعدة البيانات إلى الفوتر والفاتورة
+  var _cr = s.companyCR || (s.company && s.company.commercial_register) || '';
+  var _tax = s.companyTax || (s.company && s.company.tax_number) || '';
+  if (_cr) document.querySelectorAll('[data-company="cr"]').forEach(el => { el.textContent = _cr; });
+  if (_tax) document.querySelectorAll('[data-company="tax"]').forEach(el => { el.textContent = _tax; });
+  // حالة المتجر: مغلق للتجهيز = منع إتمام الشراء (الافتراضي مغلق حتى يتم فتحه من لوحة التحكم)
+  window.DORA_STORE_CLOSED = (s.storeStatus !== 'open');
+  document.querySelectorAll('.checkout-btn').forEach(btn => {
+    if (window.DORA_STORE_CLOSED) { btn.dataset.closedLabel = '🔒 المتجر تحت التجهيز — قريباً'; btn.dataset.origLabel = btn.dataset.origLabel || btn.innerHTML; btn.innerHTML = btn.dataset.closedLabel; }
+    else if (btn.dataset.origLabel) { btn.innerHTML = btn.dataset.origLabel; }
+  });
   replaceDoraText(DORA_DEFAULT_SITE_SETTINGS.companyAddress, s.companyAddress);
   replaceDoraText(DORA_DEFAULT_SITE_SETTINGS.companyEmail, s.companyEmail);
   replaceDoraText(formatDoraPhone(DORA_DEFAULT_SITE_SETTINGS.companyPhone1), formattedPhone1);
