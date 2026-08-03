@@ -4176,6 +4176,7 @@ function doraBrandIcon(name) {
     home: '<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>',
     grid: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect></svg>',
     cart: '<svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>',
+    user: '<svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>',
     menu: '<svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>'
   };
 
@@ -4201,11 +4202,13 @@ function doraBrandIcon(name) {
 
     var isHome = (_bnPage === 'index.html' || _bnPage === '');
     var isProducts = (_bnPage.indexOf('products') === 0) || (_bnPage === 'offers.html');
+    var isAccount = (_bnPage === 'my-account.html' || _bnPage === 'account.html');
 
     nav.innerHTML =
       '<a href="index.html" class="' + (isHome ? 'bn-active' : '') + '">' + _bnIcons.home + '<span>الرئيسية</span></a>' +
       '<a href="products.html" class="' + (isProducts ? 'bn-active' : '') + '">' + _bnIcons.grid + '<span>المنتجات</span></a>' +
       '<button type="button" id="bnCartBtn">' + _bnIcons.cart + '<span>السلة</span><span class="bn-badge bn-hide" id="bnCartBadge">0</span></button>' +
+      '<a href="my-account.html" class="' + (isAccount ? 'bn-active' : '') + '">' + _bnIcons.user + '<span>حسابي</span></a>' +
       '<button type="button" id="bnMenuBtn">' + _bnIcons.menu + '<span>القائمة</span></button>';
 
     document.body.appendChild(nav);

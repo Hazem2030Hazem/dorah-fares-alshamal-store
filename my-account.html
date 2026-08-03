@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0F0C29">
+  <meta name="robots" content="noindex">
+  <title>حسابي | شركة درة فارس الشمال للتجارة</title>
+  <link rel="icon" href="favicon.ico?v=5.0">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=5.0">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    /* إخفاء الشريط الجانبي القديم (أيقونات عائمة) — التنقل في هذه الصفحة عبر الشريط السفلي */
+    .sidebar-icons, .sidebar-icon, #sidebarWrapper, .sidebar-wrapper { display: none !important; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+      background: linear-gradient(180deg, #0F0C29 0%, #171238 60%, #0F0C29 100%);
+      color: #EDF3FF; min-height: 100vh; direction: rtl;
+    }
+    .mac-wrap { max-width: 640px; margin: 0 auto; padding: 18px 14px 110px; }
+    .mac-header { display: flex; align-items: center; gap: 12px; padding: 10px 4px 20px; }
+    .mac-header img { width: 46px; height: 46px; border-radius: 12px; }
+    .mac-header .mac-brand { font-size: 15px; font-weight: 800; color: #EDF3FF; }
+    .mac-header .mac-brand small { display: block; font-size: 11px; color: #8F9BC9; font-weight: 600; }
+    .mac-title { font-size: 26px; font-weight: 900; margin: 6px 0 4px; }
+    .mac-sub { color: #8F9BC9; font-size: 14px; margin-bottom: 22px; }
+
+    .mac-glass {
+      background: rgba(255,255,255,.07); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(220,232,255,.18); border-radius: 18px;
+      box-shadow: 0 0 18px rgba(168,197,255,.08);
+    }
+
+    /* بوابة رقم الجوال */
+    .mac-gate { padding: 26px 20px; text-align: center; }
+    .mac-gate .mac-gate-icon { font-size: 44px; margin-bottom: 10px; }
+    .mac-gate h2 { font-size: 20px; font-weight: 900; margin-bottom: 8px; }
+    .mac-gate p { color: #8F9BC9; font-size: 14px; line-height: 1.8; margin-bottom: 18px; }
+    .mac-phone-row { display: flex; gap: 10px; }
+    .mac-phone-row input {
+      flex: 1; background: rgba(255,255,255,.08); border: 1px solid rgba(220,232,255,.25);
+      border-radius: 14px; color: #EDF3FF; font-size: 17px; font-weight: 700;
+      padding: 14px 16px; text-align: center; letter-spacing: 1px; outline: none; font-family: inherit;
+      direction: ltr;
+    }
+    .mac-phone-row input:focus { border-color: rgba(168,197,255,.6); box-shadow: 0 0 16px rgba(168,197,255,.25); }
+    .mac-phone-row input::placeholder { color: #5C6890; letter-spacing: 0; }
+    .mac-btn {
+      background: rgba(255,255,255,.12); backdrop-filter: blur(12px);
+      border: 1px solid rgba(220,232,255,.30); color: #EDF3FF;
+      border-radius: 14px; padding: 14px 22px; font-size: 15px; font-weight: 800;
+      cursor: pointer; transition: all .25s ease; font-family: inherit;
+      box-shadow: 0 0 18px rgba(168,197,255,.12); white-space: nowrap;
+    }
+    .mac-btn:hover { box-shadow: 0 0 28px rgba(255,255,255,.35); transform: translateY(-2px); }
+    .mac-btn:active { transform: scale(.96); }
+    .mac-btn-full { width: 100%; margin-top: 12px; }
+    .mac-btn-wa { background: linear-gradient(135deg,#25D366,#128C7E); border: none; box-shadow: 0 8px 22px rgba(37,211,102,.3); text-decoration: none; display: inline-block; text-align: center; }
+    .mac-btn-wa:hover { box-shadow: 0 12px 30px rgba(37,211,102,.5); }
+
+    /* الترحيب */
+    .mac-hello { padding: 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 14px; }
+    .mac-avatar {
+      width: 54px; height: 54px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(255,255,255,.12); border: 1px solid rgba(220,232,255,.3);
+      display: flex; align-items: center; justify-content: center; font-size: 24px;
+      box-shadow: 0 0 16px rgba(168,197,255,.2);
+    }
+    .mac-hello h2 { font-size: 19px; font-weight: 900; }
+    .mac-hello .mac-phone-lbl { color: #8F9BC9; font-size: 13px; margin-top: 3px; direction: ltr; text-align: right; }
+    .mac-switch { margin-right: auto; background: none; border: none; color: #7dd3fc; font-size: 12px; font-weight: 700; cursor: pointer; text-decoration: underline; font-family: inherit; }
+
+    /* أزرار سريعة */
+    .mac-quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 22px; }
+    .mac-quick a {
+      text-decoration: none; color: #EDF3FF; text-align: center; padding: 14px 4px;
+      border-radius: 16px; font-size: 12px; font-weight: 800; display: flex; flex-direction: column; gap: 6px;
+      background: rgba(255,255,255,.07); border: 1px solid rgba(220,232,255,.16);
+      backdrop-filter: blur(10px); transition: all .25s ease;
+    }
+    .mac-quick a:hover { box-shadow: 0 0 22px rgba(255,255,255,.25); transform: translateY(-2px); }
+    .mac-quick a span:first-child { font-size: 22px; }
+
+    /* عناوين الأقسام */
+    .mac-sec-title { font-size: 18px; font-weight: 900; margin: 22px 0 12px; display: flex; align-items: center; gap: 8px; }
+
+    /* بطاقة طلب */
+    .mac-order { padding: 16px; margin-bottom: 12px; }
+    .mac-order-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+    .mac-order-num { font-size: 16px; font-weight: 900; }
+    .mac-badge { font-size: 11px; font-weight: 800; padding: 5px 12px; border-radius: 999px; }
+    .mac-badge.b-new { background: rgba(125,211,252,.15); color: #7dd3fc; border: 1px solid rgba(125,211,252,.35); }
+    .mac-badge.b-prog { background: rgba(250,204,21,.13); color: #FDE047; border: 1px solid rgba(250,204,21,.35); }
+    .mac-badge.b-ship { background: rgba(168,197,255,.15); color: #A8C5FF; border: 1px solid rgba(168,197,255,.35); }
+    .mac-badge.b-done { background: rgba(34,197,94,.15); color: #4ADE80; border: 1px solid rgba(34,197,94,.35); }
+    .mac-badge.b-cancel { background: rgba(248,113,113,.13); color: #F87171; border: 1px solid rgba(248,113,113,.35); }
+    .mac-order-meta { color: #8F9BC9; font-size: 13px; display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 10px; }
+    .mac-order-items { border-top: 1px dashed rgba(220,232,255,.15); padding-top: 10px; margin-bottom: 12px; }
+    .mac-order-items div { display: flex; justify-content: space-between; font-size: 13.5px; padding: 3px 0; color: #C9D4F5; }
+    .mac-order-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .mac-order-total { font-size: 17px; font-weight: 900; color: #4ADE80; }
+    .mac-order-actions { display: flex; gap: 8px; }
+    .mac-mini-btn {
+      background: rgba(255,255,255,.10); border: 1px solid rgba(220,232,255,.25); color: #EDF3FF;
+      border-radius: 10px; padding: 8px 14px; font-size: 12.5px; font-weight: 800; cursor: pointer;
+      text-decoration: none; transition: all .25s ease; font-family: inherit;
+    }
+    .mac-mini-btn:hover { box-shadow: 0 0 18px rgba(255,255,255,.3); }
+
+    .mac-empty { text-align: center; padding: 34px 20px; color: #8F9BC9; }
+    .mac-empty .big { font-size: 44px; margin-bottom: 10px; }
+    .mac-empty h3 { color: #EDF3FF; font-size: 17px; margin-bottom: 6px; }
+    .mac-loading { text-align: center; color: #7dd3fc; font-weight: 800; padding: 26px; }
+    .mac-err { text-align: center; color: #F87171; font-weight: 700; padding: 16px; }
+
+    /* خدمة العملاء */
+    .mac-support { padding: 20px; text-align: center; margin-top: 22px; }
+    .mac-support p { color: #8F9BC9; font-size: 14px; margin-bottom: 14px; }
+
+    @media (max-width: 420px) {
+      .mac-quick { grid-template-columns: repeat(2, 1fr); }
+      .mac-title { font-size: 22px; }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div class="mac-wrap">
+    <div class="mac-header">
+      <img src="logo.png" alt="شركة درة فارس الشمال">
+      <div class="mac-brand">شركة درة فارس الشمال للتجارة<small>alshamal-df.com</small></div>
+    </div>
+
+    <h1 class="mac-title">👤 حسابي</h1>
+    <p class="mac-sub">طلباتك ومشترياتك ومدفوعاتك — كلها في مكان واحد</p>
+
+    <!-- بوابة رقم الجوال -->
+    <div id="macGate" class="mac-glass mac-gate" style="display:none">
+      <div class="mac-gate-icon">📱</div>
+      <h2>أدخل رقم جوالك</h2>
+      <p>نفس الرقم اللي طلبت بيه من المتجر — وهتظهر لك كل طلباتك وفواتيرك على طول.<br>مفيش تسجيل ولا كلمة سر 👌</p>
+      <div class="mac-phone-row">
+        <input type="tel" id="macPhoneInput" placeholder="05xxxxxxxx" maxlength="13" inputmode="tel">
+        <button class="mac-btn" onclick="macLogin()">دخول</button>
+      </div>
+      <div id="macGateErr" class="mac-err" style="display:none"></div>
+    </div>
+
+    <!-- المحتوى بعد الدخول -->
+    <div id="macMain" style="display:none">
+      <div class="mac-glass mac-hello">
+        <div class="mac-avatar">👤</div>
+        <div>
+          <h2 id="macHelloName">مرحبًا بك 👋</h2>
+          <div class="mac-phone-lbl" id="macHelloPhone"></div>
+        </div>
+        <button class="mac-switch" onclick="macLogout()">تغيير الرقم</button>
+      </div>
+
+      <div class="mac-quick">
+        <a href="#macOrdersSec"><span>📦</span><span>طلباتي</span></a>
+        <a href="track.html"><span>🚚</span><span>تتبع طلب</span></a>
+        <a href="wishlist.html"><span>❤️</span><span>المفضلة</span></a>
+        <a href="products.html"><span>🛍️</span><span>تسوّق الآن</span></a>
+      </div>
+
+      <h2 class="mac-sec-title" id="macOrdersSec">📦 طلباتي ومشترياتي</h2>
+      <div id="macOrders"></div>
+
+      <div class="mac-glass mac-support">
+        <p>🎧 محتاج مساعدة في طلب أو فاتورة؟ كلمنا على طول</p>
+        <a class="mac-btn mac-btn-wa" id="macWaBtn" href="#" target="_blank" rel="noopener">تواصل واتساب</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script>
+  /* ===== صفحة حسابي — my-account.html (قيم حية من قاعدة البيانات) ===== */
+  var MAC_LS_KEY = 'doraMyPhone';
+
+  function macEsc(s) {
+    var d = document.createElement('div');
+    d.textContent = String(s == null ? '' : s);
+    return d.innerHTML;
+  }
+
+  function macFmtPrice(n) {
+    n = Number(n) || 0;
+    if (typeof formatPrice === 'function') { try { return formatPrice(n); } catch(e){} }
+    return n.toLocaleString('ar-SA') + ' ريال';
+  }
+
+  function macStatusInfo(status) {
+    var s = String(status || '').toLowerCase().trim();
+    if (['cancelled','canceled','rejected'].indexOf(s) !== -1) return { label: 'ملغي', cls: 'b-cancel' };
+    if (['delivered','completed','complete'].indexOf(s) !== -1) return { label: 'تم التسليم', cls: 'b-done' };
+    if (['shipped','shipping','out_for_delivery','out-for-delivery'].indexOf(s) !== -1) return { label: 'تم الشحن', cls: 'b-ship' };
+    if (['processing','preparing','confirmed','in_progress'].indexOf(s) !== -1) return { label: 'قيد التجهيز', cls: 'b-prog' };
+    return { label: 'جديد', cls: 'b-new' };
+  }
+
+  function macParseItems(items) {
+    var arr = items;
+    if (typeof arr === 'string') { try { arr = JSON.parse(arr); } catch (e) { arr = []; } }
+    return Array.isArray(arr) ? arr : [];
+  }
+
+  function macOrderTotal(o, items) {
+    var t = Number(o.total || o.total_amount || o.grand_total || o.amount || 0);
+    if (t > 0) return t;
+    var s = 0;
+    items.forEach(function(it){ s += (Number(it.price || 0) * Number(it.qty || it.quantity || 1)); });
+    return s;
+  }
+
+  function macLogin() {
+    var inp = document.getElementById('macPhoneInput');
+    var err = document.getElementById('macGateErr');
+    var ph = (inp.value || '').replace(/\D/g, '');
+    if (ph.length < 9) {
+      err.textContent = '⚠️ أدخل رقم جوال صحيح (9 أرقام على الأقل)';
+      err.style.display = 'block';
+      return;
+    }
+    err.style.display = 'none';
+    localStorage.setItem(MAC_LS_KEY, ph);
+    macLoadAccount(ph);
+  }
+
+  function macLogout() {
+    localStorage.removeItem(MAC_LS_KEY);
+    location.reload();
+  }
+
+  async function macLoadAccount(phone) {
+    document.getElementById('macGate').style.display = 'none';
+    document.getElementById('macMain').style.display = 'block';
+    document.getElementById('macHelloPhone').textContent = '📱 ' + phone;
+    var box = document.getElementById('macOrders');
+    box.innerHTML = '<div class="mac-loading">⏳ جاري تحميل طلباتك من قاعدة البيانات...</div>';
+
+    /* رقم واتساب خدمة العملاء من إعدادات الموقع الحية */
+    try {
+      if (typeof getDoraSiteSettings === 'function') {
+        var st = getDoraSiteSettings() || {};
+        var wa = st.whatsapp || st.whatsappNumber || st.whatsapp_number || (st.contact && st.contact.whatsapp) || '';
+        var waDigits = String(wa).replace(/\D/g, '');
+        if (waDigits) document.getElementById('macWaBtn').href = 'https://wa.me/' + waDigits;
+      }
+    } catch(e) {}
+    if (!document.getElementById('macWaBtn').href || document.getElementById('macWaBtn').href === location.href + '#') {
+      document.getElementById('macWaBtn').style.display = 'none';
+    }
+
+    try {
+      if (typeof supabaseClient === 'undefined' || !supabaseClient) throw new Error('no-db');
+      var res = await supabaseClient.rpc('customer_orders_by_phone', { p_phone: phone });
+      if (res.error) throw res.error;
+      var orders = res.data || [];
+
+      if (!orders.length) {
+        box.innerHTML = '<div class="mac-glass mac-empty"><div class="big">🛒</div><h3>لا توجد طلبات بعد على هذا الرقم</h3><p>أول ما تطلب من المتجر، طلباتك هتظهر هنا على طول</p><a class="mac-btn mac-btn-full" href="products.html" style="display:block;text-decoration:none;margin-top:14px">🛍️ ابدأ التسوّق</a></div>';
+        return;
+      }
+
+      /* اسم العميل من أحدث طلب */
+      var nm = orders[0].customer_name || orders[0].name || '';
+      if (nm) document.getElementById('macHelloName').textContent = 'مرحبًا يا ' + nm + ' 👋';
+
+      var html = '';
+      orders.forEach(function(o) {
+        var items = macParseItems(o.items);
+        var st = macStatusInfo(o.status);
+        var dateStr = '';
+        try {
+          var d = new Date(o.created_at);
+          dateStr = d.toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' });
+        } catch(e) { dateStr = String(o.created_at || ''); }
+        var total = macOrderTotal(o, items);
+        var pay = o.payment_method || o.payment_method_ar || o.payment || '';
+
+        html += '<div class="mac-glass mac-order">';
+        html += '<div class="mac-order-top"><span class="mac-order-num">📦 طلب ' + macEsc(o.order_number || '') + '</span><span class="mac-badge ' + st.cls + '">' + st.label + '</span></div>';
+        html += '<div class="mac-order-meta"><span>🗓️ ' + macEsc(dateStr) + '</span>' + (pay ? '<span>💳 ' + macEsc(pay) + '</span>' : '') + '<span>🛍️ ' + items.length + ' منتج</span></div>';
+        if (items.length) {
+          html += '<div class="mac-order-items">';
+          items.slice(0, 4).forEach(function(it) {
+            var nm2 = it.name || it.title || it.product_name || 'منتج';
+            var qty = Number(it.qty || it.quantity || 1);
+            html += '<div><span>' + macEsc(nm2) + '</span><span>× ' + qty + '</span></div>';
+          });
+          if (items.length > 4) html += '<div><span style="color:#8F9BC9">... و' + (items.length - 4) + ' منتجات أخرى</span><span></span></div>';
+          html += '</div>';
+        }
+        html += '<div class="mac-order-foot"><span class="mac-order-total">' + (total > 0 ? macFmtPrice(total) : '—') + '</span>';
+        html += '<span class="mac-order-actions"><a class="mac-mini-btn" href="track.html">🚚 تتبع</a></span></div>';
+        html += '</div>';
+      });
+      box.innerHTML = html;
+
+    } catch(e) {
+      console.error(e);
+      box.innerHTML = '<div class="mac-glass mac-err">⚠️ تعذّر تحميل الطلبات حاليًا — جرب مرة أخرى بعد قليل أو تواصل معنا واتساب</div>';
+    }
+  }
+
+  (function macInit() {
+    var saved = localStorage.getItem(MAC_LS_KEY);
+    if (saved) { macLoadAccount(saved); }
+    else { document.getElementById('macGate').style.display = 'block'; }
+  })();
+  </script>
+</body>
+</html>
