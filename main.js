@@ -4040,8 +4040,8 @@ function doraBrandIcon(name) {
         '</div>' +
         '<div class="dad-qrs">' +
           '<div class="dad-qr"><img src="qr-android.png" alt="QR تطبيق أندرويد" loading="lazy"><span>امسح لتحميل<br><b>تطبيق أندرويد</b></span></div>' +
-          '<div class="dad-qr"><img src="qr-platform.png" alt="QR تطبيق آيفون" loading="lazy"><span>امسح لتثبيت<br><b>تطبيق آيفون</b></span></div>' +
-          '<div class="dad-qr"><img src="qr-platform.png" alt="QR نسخة الكمبيوتر" loading="lazy"><span>امسح لفتح<br><b>نسخة الكمبيوتر</b></span></div>' +
+          '<div class="dad-qr"><img src="qr-apple.png" alt="QR تطبيق آيفون" loading="lazy"><span>امسح لتثبيت<br><b>تطبيق آيفون</b></span></div>' +
+          '<div class="dad-qr"><img src="qr-desktop.png" alt="QR نسخة الكمبيوتر" loading="lazy"><span>امسح لفتح<br><b>نسخة الكمبيوتر</b></span></div>' +
         '</div>' +
       '</div>';
     footer.parentNode.insertBefore(box, footer);

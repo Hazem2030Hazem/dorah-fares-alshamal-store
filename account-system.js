@@ -700,7 +700,7 @@ async function verifySignupOtp(event){
   event.preventDefault();
   const code = document.getElementById('signupOtpCode').value.trim();
   const msg = document.getElementById('signupOtpMsg');
-  if (!/^\d{6}$/.test(code)) {
+  if (!/^\d{6,10}$/.test(code)) {
     msg.style.color = '#DC2626';
     msg.textContent = '⚠️ اكتب الرمز المكون من 6 أرقام كما وصلك في البريد';
     return;
