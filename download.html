@@ -16,34 +16,39 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Cairo', sans-serif;
-            background: #0F0C29;
+            background: #0B1023;
             min-height: 100vh;
             color: #fff;
             text-align: center;
             padding: 30px 16px 60px;
+            background-image:
+                radial-gradient(ellipse 60% 40% at 50% 0%, rgba(168,197,255,.08), transparent),
+                radial-gradient(ellipse 40% 30% at 85% 90%, rgba(168,197,255,.05), transparent);
         }
         .container { max-width: 900px; margin: 0 auto; }
 
-        /* ===== الشعار المتوهج ===== */
+        /* ===== الشعار بضوء القمر ===== */
         .logo {
             width: 110px; height: 110px;
             border-radius: 26px;
             margin-bottom: 16px;
-            box-shadow: 0 0 25px rgba(11,122,75,.45), 0 0 60px rgba(11,122,75,.2);
+            box-shadow: 0 0 25px rgba(220,232,255,.25), 0 0 60px rgba(168,197,255,.12);
             transition: all .35s;
         }
-        .logo:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 0 35px rgba(11,122,75,.7), 0 0 90px rgba(11,122,75,.3); }
+        .logo:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 0 40px rgba(220,232,255,.45), 0 0 90px rgba(168,197,255,.22); }
 
-        h1 { font-size: 26px; margin-bottom: 8px; font-weight: 900; text-shadow: 0 0 30px rgba(52,211,153,.35); }
-        .sub { color: #9CA3AF; margin-bottom: 34px; font-size: 15px; }
+        h1 { font-size: 26px; margin-bottom: 8px; font-weight: 900; text-shadow: 0 0 30px rgba(220,232,255,.3); }
+        .sub { color: #AAB4CC; margin-bottom: 34px; font-size: 15px; }
 
         .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
         @media (max-width: 820px) { .cards { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; } }
 
-        /* ===== الكروت بتأثير النيون ===== */
+        /* ===== الكروت الزجاجية ===== */
         .card {
-            background: #14122B;
-            border: 1px solid #272452;
+            background: rgba(255,255,255,.045);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(220,232,255,.12);
             border-radius: 20px;
             padding: 26px 18px;
             display: flex; flex-direction: column; align-items: center; gap: 12px;
@@ -52,52 +57,60 @@
         }
         .card:hover {
             transform: translateY(-6px);
-            border-color: #0B7A4B;
-            box-shadow: 0 12px 40px rgba(0,0,0,.5), 0 0 25px rgba(11,122,75,.25), inset 0 0 20px rgba(11,122,75,.05);
+            border-color: rgba(220,232,255,.35);
+            background: rgba(255,255,255,.07);
+            box-shadow: 0 12px 40px rgba(0,0,0,.4), 0 0 30px rgba(220,232,255,.15);
         }
 
-        /* ===== أيقونات SVG المضيئة ===== */
+        /* ===== أيقونات SVG بضوء القمر ===== */
         .neon-icon {
             width: 46px; height: 46px;
-            color: #34D399;
-            filter: drop-shadow(0 0 8px rgba(52,211,153,.6));
+            color: #DCE8FF;
+            filter: drop-shadow(0 0 8px rgba(220,232,255,.55));
             transition: all .3s;
         }
         .card:hover .neon-icon {
-            color: #6EE7B7;
-            filter: drop-shadow(0 0 14px rgba(52,211,153,.95)) drop-shadow(0 0 30px rgba(52,211,153,.4));
+            color: #FFFFFF;
+            filter: drop-shadow(0 0 14px rgba(255,255,255,.9)) drop-shadow(0 0 32px rgba(168,197,255,.5));
             transform: scale(1.08);
         }
-        .card h2 { font-size: 18px; font-weight: 800; }
-        .card p { color: #9CA3AF; font-size: 13px; line-height: 1.9; min-height: 48px; }
+        .card h2 { font-size: 18px; font-weight: 800; text-shadow: 0 0 20px rgba(220,232,255,.2); }
+        .card p { color: #AAB4CC; font-size: 13px; line-height: 1.9; min-height: 48px; }
 
-        /* ===== الأزرار المتوهجة ===== */
+        /* ===== الأزرار الزجاجية المتوهجة ===== */
         .btn {
             display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-            background: #0B7A4B; color: #fff;
-            padding: 14px 22px; border: none; border-radius: 12px;
+            background: rgba(255,255,255,.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(220,232,255,.25);
+            color: #EDF3FF;
+            padding: 14px 22px; border-radius: 12px;
             font-family: inherit; font-size: 16px; font-weight: 800;
             text-decoration: none; cursor: pointer; width: 100%;
             transition: all .3s;
-            box-shadow: 0 0 18px rgba(11,122,75,.35);
+            box-shadow: 0 0 18px rgba(168,197,255,.12), inset 0 1px 0 rgba(255,255,255,.15);
         }
         .btn:hover {
-            background: #099a5f;
-            box-shadow: 0 0 28px rgba(11,122,75,.7), 0 0 60px rgba(11,122,75,.3);
+            background: rgba(255,255,255,.18);
+            border-color: rgba(255,255,255,.55);
+            color: #FFFFFF;
+            box-shadow: 0 0 28px rgba(255,255,255,.35), 0 0 60px rgba(168,197,255,.2), inset 0 1px 0 rgba(255,255,255,.25);
             transform: translateY(-2px);
         }
-        .btn svg { width: 20px; height: 20px; filter: drop-shadow(0 0 4px rgba(255,255,255,.5)); }
+        .btn svg { width: 20px; height: 20px; filter: drop-shadow(0 0 4px rgba(255,255,255,.4)); }
         .btn.outline {
-            background: transparent;
-            border: 1px solid #0B7A4B;
-            color: #34D399;
-            box-shadow: 0 0 12px rgba(11,122,75,.15);
+            background: rgba(255,255,255,.06);
+            border: 1px solid rgba(220,232,255,.18);
+            color: #C7D6F5;
+            box-shadow: 0 0 12px rgba(168,197,255,.08);
             font-size: 14px; padding: 11px 18px;
         }
         .btn.outline:hover {
-            background: rgba(11,122,75,.12);
-            box-shadow: 0 0 22px rgba(11,122,75,.5);
-            color: #6EE7B7;
+            background: rgba(255,255,255,.14);
+            border-color: rgba(255,255,255,.45);
+            box-shadow: 0 0 22px rgba(255,255,255,.3);
+            color: #FFFFFF;
         }
 
         .qr {
@@ -105,35 +118,38 @@
             background: #fff; border-radius: 14px; padding: 8px;
             margin-top: 4px;
             transition: all .35s;
-            box-shadow: 0 0 0 rgba(52,211,153,0);
+            box-shadow: 0 0 0 rgba(255,255,255,0);
         }
-        .card:hover .qr { box-shadow: 0 0 20px rgba(52,211,153,.35); transform: scale(1.03); }
-        .qr-label { font-size: 12px; color: #6B7280; }
+        .card:hover .qr { box-shadow: 0 0 22px rgba(255,255,255,.3); transform: scale(1.03); }
+        .qr-label { font-size: 12px; color: #7C88A6; }
 
         .steps {
-            text-align: right; font-size: 12.5px; color: #D1D5DB;
-            background: rgba(255,255,255,.04);
-            border: 1px solid #272452;
+            text-align: right; font-size: 12.5px; color: #C7D0E4;
+            background: rgba(255,255,255,.05);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(220,232,255,.1);
             border-radius: 12px; padding: 12px 14px; line-height: 2;
             display: none;
         }
         .steps.show { display: block; }
 
-        /* ===== شارة المميزات النيونية ===== */
+        /* ===== شارات المميزات الزجاجية ===== */
         .features { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 34px; }
         .feature {
-            background: #14122B; border: 1px solid #272452;
-            padding: 10px 18px; border-radius: 30px; font-size: 13px; color: #D1D5DB;
+            background: rgba(255,255,255,.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(220,232,255,.12);
+            padding: 10px 18px; border-radius: 30px; font-size: 13px; color: #C7D0E4;
             transition: all .3s;
         }
         .feature:hover {
-            border-color: #0B7A4B; color: #6EE7B7;
-            box-shadow: 0 0 15px rgba(11,122,75,.35);
+            border-color: rgba(255,255,255,.4); color: #FFFFFF;
+            box-shadow: 0 0 16px rgba(255,255,255,.25);
             transform: translateY(-2px);
         }
 
-        .version { margin-top: 26px; font-size: 12px; color: #6B7280; }
-        #installMsg { font-size: 13px; color: #34D399; min-height: 18px; font-weight: 700; text-shadow: 0 0 12px rgba(52,211,153,.5); }
+        .version { margin-top: 26px; font-size: 12px; color: #7C88A6; }
+        #installMsg { font-size: 13px; color: #DCE8FF; min-height: 18px; font-weight: 700; text-shadow: 0 0 12px rgba(220,232,255,.45); }
     </style>
 </head>
 <body>
