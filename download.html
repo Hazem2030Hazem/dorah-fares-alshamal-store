@@ -23,46 +23,79 @@
             padding: 30px 16px 60px;
         }
         .container { max-width: 900px; margin: 0 auto; }
+
+        /* ===== الشعار المتوهج ===== */
         .logo {
             width: 110px; height: 110px;
             border-radius: 26px;
             margin-bottom: 16px;
-            box-shadow: 0 10px 40px rgba(11,122,75,.25);
+            box-shadow: 0 0 25px rgba(11,122,75,.45), 0 0 60px rgba(11,122,75,.2);
+            transition: all .35s;
         }
-        h1 { font-size: 26px; margin-bottom: 8px; font-weight: 900; }
+        .logo:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 0 35px rgba(11,122,75,.7), 0 0 90px rgba(11,122,75,.3); }
+
+        h1 { font-size: 26px; margin-bottom: 8px; font-weight: 900; text-shadow: 0 0 30px rgba(52,211,153,.35); }
         .sub { color: #9CA3AF; margin-bottom: 34px; font-size: 15px; }
 
         .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
         @media (max-width: 820px) { .cards { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; } }
 
+        /* ===== الكروت بتأثير النيون ===== */
         .card {
             background: #14122B;
             border: 1px solid #272452;
             border-radius: 20px;
             padding: 26px 18px;
             display: flex; flex-direction: column; align-items: center; gap: 12px;
+            transition: all .35s;
+            position: relative;
         }
-        .card .icon { font-size: 38px; }
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: #0B7A4B;
+            box-shadow: 0 12px 40px rgba(0,0,0,.5), 0 0 25px rgba(11,122,75,.25), inset 0 0 20px rgba(11,122,75,.05);
+        }
+
+        /* ===== أيقونات SVG المضيئة ===== */
+        .neon-icon {
+            width: 46px; height: 46px;
+            color: #34D399;
+            filter: drop-shadow(0 0 8px rgba(52,211,153,.6));
+            transition: all .3s;
+        }
+        .card:hover .neon-icon {
+            color: #6EE7B7;
+            filter: drop-shadow(0 0 14px rgba(52,211,153,.95)) drop-shadow(0 0 30px rgba(52,211,153,.4));
+            transform: scale(1.08);
+        }
         .card h2 { font-size: 18px; font-weight: 800; }
         .card p { color: #9CA3AF; font-size: 13px; line-height: 1.9; min-height: 48px; }
 
+        /* ===== الأزرار المتوهجة ===== */
         .btn {
             display: inline-flex; align-items: center; justify-content: center; gap: 8px;
             background: #0B7A4B; color: #fff;
             padding: 14px 22px; border: none; border-radius: 12px;
             font-family: inherit; font-size: 16px; font-weight: 800;
             text-decoration: none; cursor: pointer; width: 100%;
-            transition: background .2s;
+            transition: all .3s;
+            box-shadow: 0 0 18px rgba(11,122,75,.35);
         }
-        .btn:hover { background: #099a5f; }
-        .btn.outline { background: transparent; border: 1px solid #0B7A4B; color: #34D399; }
-        .btn.outline:hover { background: rgba(11,122,75,.12); }
+        .btn:hover {
+            background: #099a5f;
+            box-shadow: 0 0 28px rgba(11,122,75,.7), 0 0 60px rgba(11,122,75,.3);
+            transform: translateY(-2px);
+        }
+        .btn svg { width: 20px; height: 20px; filter: drop-shadow(0 0 4px rgba(255,255,255,.5)); }
 
         .qr {
             width: 150px; height: 150px;
             background: #fff; border-radius: 14px; padding: 8px;
             margin-top: 4px;
+            transition: all .35s;
+            box-shadow: 0 0 0 rgba(52,211,153,0);
         }
+        .card:hover .qr { box-shadow: 0 0 20px rgba(52,211,153,.35); transform: scale(1.03); }
         .qr-label { font-size: 12px; color: #6B7280; }
 
         .steps {
@@ -74,13 +107,21 @@
         }
         .steps.show { display: block; }
 
+        /* ===== شارة المميزات النيونية ===== */
         .features { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 34px; }
         .feature {
             background: #14122B; border: 1px solid #272452;
             padding: 10px 18px; border-radius: 30px; font-size: 13px; color: #D1D5DB;
+            transition: all .3s;
         }
+        .feature:hover {
+            border-color: #0B7A4B; color: #6EE7B7;
+            box-shadow: 0 0 15px rgba(11,122,75,.35);
+            transform: translateY(-2px);
+        }
+
         .version { margin-top: 26px; font-size: 12px; color: #6B7280; }
-        #installMsg { font-size: 13px; color: #34D399; min-height: 18px; font-weight: 700; }
+        #installMsg { font-size: 13px; color: #34D399; min-height: 18px; font-weight: 700; text-shadow: 0 0 12px rgba(52,211,153,.5); }
     </style>
 </head>
 <body>
@@ -93,10 +134,13 @@
 
             <!-- 💻 سطح المكتب -->
             <div class="card">
-                <div class="icon">💻</div>
+                <svg class="neon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
                 <h2>تطبيق الكمبيوتر</h2>
                 <p>نسخة سطح المكتب تعمل على ويندوز وماك — تُثبّت مباشرة من المتصفح وتفتح كبرنامج مستقل</p>
-                <button class="btn" id="desktopInstallBtn" onclick="installDesktop()">⬇️ تثبيت على الكمبيوتر</button>
+                <button class="btn" id="desktopInstallBtn" onclick="installDesktop()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    تثبيت على الكمبيوتر
+                </button>
                 <div id="installMsg"></div>
                 <div class="steps" id="desktopSteps">
                     <strong>لو لم يظهر التثبيت تلقائيًا:</strong><br>
@@ -109,10 +153,13 @@
 
             <!-- 🤖 أندرويد -->
             <div class="card">
-                <div class="icon">🤖</div>
+                <svg class="neon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="14" height="10" rx="2"></rect><line x1="7" y1="4" x2="9" y2="8"></line><line x1="17" y1="4" x2="15" y2="8"></line><circle cx="9.5" cy="12" r="0.5" fill="currentColor"></circle><circle cx="14.5" cy="12" r="0.5" fill="currentColor"></circle><line x1="2" y1="12" x2="4" y2="12"></line><line x1="20" y1="12" x2="22" y2="12"></line><line x1="8" y1="21" x2="8" y2="18"></line><line x1="16" y1="21" x2="16" y2="18"></line></svg>
                 <h2>تطبيق أندرويد</h2>
                 <p>ملف APK الرسمي — حمّله وثبّته على أي جهاز أندرويد 6.0 أو أحدث</p>
-                <a class="btn" href="https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/releases/download/v1.0/app-release.apk" download>⬇️ تحميل APK مباشرة</a>
+                <a class="btn" href="https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/releases/download/v1.0/app-release.apk" download>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    تحميل APK مباشرة
+                </a>
                 <div class="steps show">
                     <strong>بعد التحميل:</strong><br>
                     1️⃣ افتح الملف من قائمة التنزيلات<br>
@@ -125,10 +172,13 @@
 
             <!-- 🍎 آيفون -->
             <div class="card">
-                <div class="icon">🍎</div>
+                <svg class="neon-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 12.54c-.03-2.89 2.36-4.27 2.47-4.34-1.35-1.97-3.44-2.24-4.18-2.27-1.78-.18-3.47 1.05-4.37 1.05-.9 0-2.29-1.02-3.76-1-1.93.03-3.71 1.12-4.71 2.85-2.01 3.48-.51 8.65 1.45 11.48.96 1.39 2.1 2.95 3.6 2.89 1.45-.06 2-.93 3.75-.93s2.25.93 3.78.9c1.56-.03 2.55-1.41 3.5-2.81 1.1-1.61 1.55-3.17 1.58-3.25-.03-.02-3.03-1.16-3.11-4.57zM14.16 4.06c.79-.96 1.33-2.3 1.18-3.63-1.14.05-2.53.76-3.35 1.72-.74.85-1.38 2.22-1.21 3.52 1.28.1 2.58-.65 3.38-1.61z"></path></svg>
                 <h2>تطبيق آيفون</h2>
                 <p>نسخة آيفون تعمل بنظام تطبيق الويب — تُضاف لشاشتك الرئيسية وتعمل كتطبيق كامل</p>
-                <button class="btn" onclick="toggleSteps('appleSteps')">📲 خطوات التثبيت على آيفون</button>
+                <button class="btn" onclick="toggleSteps('appleSteps')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                    خطوات التثبيت على آيفون
+                </button>
                 <div class="steps" id="appleSteps">
                     <strong>من متصفح Safari فقط:</strong><br>
                     1️⃣ افتح <b>alshamal-df.com</b> في Safari<br>
@@ -180,12 +230,10 @@
                     deferredPrompt = null;
                 });
             } else {
-                // المتصفح لا يدعم التثبيت المباشر أو التطبيق مثبت بالفعل
                 toggleSteps('desktopSteps');
             }
         }
 
-        // إخفاء زر التثبيت على الجوال — مخصص للكمبيوتر
         if (/Android|iPhone|iPad/i.test(navigator.userAgent)) {
             document.getElementById('desktopSteps').classList.add('show');
         }
