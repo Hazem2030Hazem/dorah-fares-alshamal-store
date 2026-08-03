@@ -87,6 +87,18 @@
             transform: translateY(-2px);
         }
         .btn svg { width: 20px; height: 20px; filter: drop-shadow(0 0 4px rgba(255,255,255,.5)); }
+        .btn.outline {
+            background: transparent;
+            border: 1px solid #0B7A4B;
+            color: #34D399;
+            box-shadow: 0 0 12px rgba(11,122,75,.15);
+            font-size: 14px; padding: 11px 18px;
+        }
+        .btn.outline:hover {
+            background: rgba(11,122,75,.12);
+            box-shadow: 0 0 22px rgba(11,122,75,.5);
+            color: #6EE7B7;
+        }
 
         .qr {
             width: 150px; height: 150px;
@@ -142,6 +154,10 @@
                     تثبيت على الكمبيوتر
                 </button>
                 <div id="installMsg"></div>
+                <button class="btn outline" onclick="updateApp()" id="updateBtn" style="display:none">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                    🔄 تحديث النسخة المثبتة
+                </button>
                 <div class="steps" id="desktopSteps">
                     <strong>لو لم يظهر التثبيت تلقائيًا:</strong><br>
                     1️⃣ افتح <b>alshamal-df.com</b> في متصفح Chrome أو Edge<br>
@@ -235,6 +251,7 @@
             var msg = document.getElementById('installMsg');
             if (isAppInstalled()) {
                 msg.textContent = '✅ التطبيق مثبت بالفعل على جهازك — افتحه من قائمة البرامج';
+                document.getElementById('updateBtn').style.display = 'inline-flex';
                 return;
             }
             if (deferredPrompt) {
@@ -254,10 +271,34 @@
             }
         }
 
+        // تحديث إجباري: حذف الكاش + تحديث الـ Service Worker
+        async function updateApp() {
+            var msg = document.getElementById('installMsg');
+            var btn = document.getElementById('updateBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ جاري التحديث...';
+            try {
+                if ('caches' in window) {
+                    var names = await caches.keys();
+                    await Promise.all(names.map(function(n){ return caches.delete(n); }));
+                }
+                if ('serviceWorker' in navigator) {
+                    var regs = await navigator.serviceWorker.getRegistrations();
+                    for (var i = 0; i < regs.length; i++) { await regs[i].update(); }
+                }
+                msg.textContent = '✅ تم التحديث بنجاح — افتح التطبيق من قائمة البرامج وستجد أحدث نسخة';
+            } catch (e) {
+                msg.textContent = '⚠️ أغلق التطبيق وافتحه من جديد — سيتحدث تلقائيًا';
+            }
+            btn.disabled = false;
+            btn.innerHTML = '🔄 تحديث النسخة المثبتة';
+        }
+
         // عرض حالة التثبيت عند فتح الصفحة
         window.addEventListener('load', function() {
             if (isAppInstalled()) {
                 document.getElementById('installMsg').textContent = '✅ التطبيق مثبت بالفعل على جهازك';
+                document.getElementById('updateBtn').style.display = 'inline-flex';
             }
         });
 
