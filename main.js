@@ -4144,8 +4144,33 @@ function doraBrandIcon(name) {
     '    border-radius: 999px; display: flex; align-items: center; justify-content: center; padding: 0 4px;' +
     '    box-shadow: 0 0 10px rgba(34,197,94,0.6); }' +
     '  #doraBottomNav .bn-badge.bn-hide { display: none; }' +
+    /* رفع العناصر العائمة فوق الشريط — منع التداخل (شكل فقط، بدون لمس وظائفها) */
+    '  #chat-robot-container { bottom: 96px !important; left: 14px !important; }' +
+    '  #doraChatWidget { bottom: 96px !important; left: 14px !important; }' +
+    '  #doraNotifBell { bottom: 96px !important; right: 14px !important; }' +
+    '  #doraNotifPanel { bottom: 168px !important; right: 14px !important; }' +
+    '  #customCookieBanner { bottom: 86px !important; }' +
+    '  #socialProofToast { bottom: 168px !important; }' +
+    '  .toast { bottom: 96px !important; }' +
+    '  .compare-bar { bottom: 76px !important; }' +
     '}' +
-    '@media (min-width: 769px) { #doraBottomNav { display: none; } }';
+    '@media (min-width: 769px) { #doraBottomNav { display: none; } }' +
+
+    /* ===== وضوح وتقسيم الرئيسية — عناوين كبيرة وفواصل واضحة (طابع ضوء القمر) ===== */
+    '.section-header { position: relative; padding-top: 18px; margin-bottom: 30px; }' +
+    '.section-header::before { content: ""; display: block; width: 72px; height: 4px; border-radius: 4px;' +
+    '  background: linear-gradient(90deg, #22C55E, #A8C5FF); box-shadow: 0 0 14px rgba(168,197,255,.55);' +
+    '  margin: 0 auto 16px; }' +
+    '.section-header h3 { font-size: 30px !important; font-weight: 900 !important; color: #FFFFFF !important;' +
+    '  letter-spacing: .3px; text-shadow: 0 0 18px rgba(168,197,255,.25); }' +
+    '.section-header p { font-size: 15px !important; opacity: .85; }' +
+    'section[id] { border-top: 1px solid rgba(220,232,255,.08); }' +
+    'section.hero { border-top: none; }' +
+    '@media (max-width: 768px) {' +
+    '  .section-header h3 { font-size: 23px !important; }' +
+    '  .section-header p { font-size: 13.5px !important; }' +
+    '  .section-header { padding-top: 12px; margin-bottom: 22px; }' +
+    '}';
 
   var _bnIcons = {
     home: '<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>',
@@ -4212,4 +4237,18 @@ function doraBrandIcon(name) {
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', injectDoraBottomNav);
   else injectDoraBottomNav();
+})();
+
+/* ===== قفل قائمة الجوال بالضغط في أي مكان فاضي ===== */
+(function(){
+  function doraMenuOutsideClose(e){
+    var nl = document.querySelector('.nav-links');
+    if (!nl || !nl.classList.contains('active')) return;
+    /* لو الضغطة جوه القائمة أو على زر الهمبرغر/القائمة السفلي — متقفلش */
+    if (nl.contains(e.target)) return;
+    if (e.target.closest && (e.target.closest('.hamburger-btn') || e.target.closest('#bnMenuBtn') || e.target.closest('.header-inner'))) return;
+    nl.classList.remove('active');
+  }
+  document.addEventListener('click', doraMenuOutsideClose, true);
+  document.addEventListener('touchstart', doraMenuOutsideClose, { capture: true, passive: true });
 })();
