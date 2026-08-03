@@ -1668,8 +1668,8 @@ function checkPWAInstallState() {
 const DORA_DEFAULT_SITE_SETTINGS = {
   companyName: 'شركة درة فارس الشمال', companyAddress: 'الرياض، المملكة العربية السعودية',
   companyPhone1: '966568717449', companyPhone2: '966545358773', companyEmail: 'info@alshamal-df.com',
-  socialTwitter: 'https://twitter.com/dorafares', socialInstagram: 'https://instagram.com/dorafares',
-  socialFacebook: 'https://facebook.com/dorafares', socialLinkedin: 'https://linkedin.com/company/dorafares',
+  socialTwitter: '', socialInstagram: '',
+  socialFacebook: '', socialLinkedin: '',
   whatsappMessage: 'مرحباً شركة درة فارس الشمال،\n\nأرغب في الاستفسار عن:\n- \n- \n\nوشكراً'
 };
 let doraSiteSettings = { ...DORA_DEFAULT_SITE_SETTINGS, ...(JSON.parse(localStorage.getItem('doraSettings') || '{}')) };
@@ -1696,10 +1696,11 @@ function applyDoraSettings(settings){
   });
   document.querySelectorAll('a[href^="tel:"]').forEach(link => { link.href = 'tel:+' + phone1; if (/\+?\d[\d\s]{7,}/.test(link.textContent)) link.textContent = formattedPhone1; });
   document.querySelectorAll('a[href^="mailto:"]').forEach(link => { link.href = 'mailto:' + s.companyEmail; if (link.textContent.includes('@')) link.textContent = s.companyEmail; });
-  if (s.socialTwitter) document.querySelectorAll('a[href*="twitter.com"], a[href*="x.com"]').forEach(a => a.href = s.socialTwitter);
-  if (s.socialInstagram) document.querySelectorAll('a[href*="instagram.com"]').forEach(a => a.href = s.socialInstagram);
-  if (s.socialFacebook) document.querySelectorAll('a[href*="facebook.com"]').forEach(a => a.href = s.socialFacebook);
-  if (s.socialLinkedin) document.querySelectorAll('a[href*="linkedin.com"]').forEach(a => a.href = s.socialLinkedin);
+  // روابط السوشيال: تُطبَّق فقط لو أُدخلت من لوحة التحكم — وإلا تبقى الأيقونات بدون رابط
+  if (s.socialTwitter) document.querySelectorAll('a[data-social="twitter"]').forEach(a => { a.href = s.socialTwitter; a.target = '_blank'; a.rel = 'noopener'; });
+  if (s.socialInstagram) document.querySelectorAll('a[data-social="instagram"]').forEach(a => { a.href = s.socialInstagram; a.target = '_blank'; a.rel = 'noopener'; });
+  if (s.socialFacebook) document.querySelectorAll('a[data-social="facebook"]').forEach(a => { a.href = s.socialFacebook; a.target = '_blank'; a.rel = 'noopener'; });
+  if (s.socialLinkedin) document.querySelectorAll('a[data-social="linkedin"]').forEach(a => { a.href = s.socialLinkedin; a.target = '_blank'; a.rel = 'noopener'; });
   replaceDoraText(DORA_DEFAULT_SITE_SETTINGS.companyAddress, s.companyAddress);
   replaceDoraText(DORA_DEFAULT_SITE_SETTINGS.companyEmail, s.companyEmail);
   replaceDoraText(formatDoraPhone(DORA_DEFAULT_SITE_SETTINGS.companyPhone1), formattedPhone1);

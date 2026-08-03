@@ -383,6 +383,7 @@ window.loadSettings=async function(){
   formSet('setTaxPercent',g.tax_percent!=null?g.tax_percent:15);
   formSet('setFreeShippingMin',g.free_shipping_min);
   formSet('setWhatsapp',g.whatsapp);
+  if(typeof loadSocialLinks==='function')loadSocialLinks();
 };
 window.saveSettings=async function(e){
   if(e&&e.preventDefault)e.preventDefault();
@@ -395,6 +396,34 @@ window.saveSettings=async function(e){
   };
   await siteSettingsSave('general',g,'حفظ الإعدادات العامة','الضريبة: '+g.tax_percent+'% — العملة: '+g.currency);
   return false;
+};
+
+/* ========== روابط السوشيال ميديا — تُحفظ كمفاتيح مباشرة يقرأها main.js ========== */
+window.loadSocialLinks=async function(){
+  try{
+    var r=await siteSettingsGet('_all_');
+    var all=r.all||{};
+    formSet('setSocialFacebook',all.socialFacebook);
+    formSet('setSocialInstagram',all.socialInstagram);
+    formSet('setSocialTwitter',all.socialTwitter);
+    formSet('setSocialLinkedin',all.socialLinkedin);
+  }catch(e){console.warn('loadSocialLinks:',e);}
+};
+window.saveSocialLinks=async function(e){
+  if(e&&e.preventDefault)e.preventDefault();
+  try{
+    var r=await siteSettingsGet('_all_');
+    var all=r.all||{};
+    all.socialFacebook=formVal('setSocialFacebook');
+    all.socialInstagram=formVal('setSocialInstagram');
+    all.socialTwitter=formVal('setSocialTwitter');
+    all.socialLinkedin=formVal('setSocialLinkedin');
+    var{error}=await supabaseClient.from('site_settings').upsert([{id:1,settings:all}]);
+    if(error){adminToast('❌ خطأ: '+error.message,'error');return false;}
+    adminToast('✅ تم حفظ روابط السوشيال — ستتفعّل الأيقونات في الموقع تلقائيًا');
+    logAudit('حفظ روابط السوشيال','فيسبوك: '+(all.socialFacebook?'✓':'—')+' انستقرام: '+(all.socialInstagram?'✓':'—')+' تويتر: '+(all.socialTwitter?'✓':'—')+' لينكدإن: '+(all.socialLinkedin?'✓':'—'));
+    return false;
+  }catch(e2){console.warn('saveSocialLinks:',e2);adminToast('❌ تعذر الحفظ','error');return false;}
 };
 
 /* ========== بيانات الشركة — settings.company ========== */
