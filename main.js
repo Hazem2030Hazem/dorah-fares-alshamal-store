@@ -412,9 +412,11 @@ function openProductModal(productId) {
   </div>
  `;
 
- if (relatedProducts.length > 0) {
-  document.getElementById('relatedProducts').style.display = 'block';
-  document.getElementById('relatedGrid').innerHTML = relatedProducts.map(rp => `
+ var relBox = document.getElementById('relatedProducts');
+ var relGrid = document.getElementById('relatedGrid');
+ if (relBox && relGrid && relatedProducts.length > 0) {
+  relBox.style.display = 'block';
+  relGrid.innerHTML = relatedProducts.map(rp => `
    <div class="prod-card" onclick="openProductModal(${rp.id})" style="cursor:pointer">
     <div class="prod-img" style="height:160px">
      <img src="${rp.image}" alt="${sanitizeInput(rp.name)}" loading="lazy" style="height:100%">
@@ -425,11 +427,12 @@ function openProductModal(productId) {
     </div>
    </div>
   `).join('');
- } else {
-  document.getElementById('relatedProducts').style.display = 'none';
+ } else if (relBox) {
+  relBox.style.display = 'none';
  }
 
- document.getElementById('productModalOverlay').classList.add('active');
+ var pmOverlay = document.getElementById('productModalOverlay');
+ if (pmOverlay) pmOverlay.classList.add('active');
  document.body.style.overflow = 'hidden';
 }
 
@@ -1858,7 +1861,7 @@ function openQuickView(productId) {
   const stockLabel = getStockLabel(p.stock);
   const stockPercent = getStockPercent(p.stock);
   const content = document.getElementById('quickViewContent');
-  if (!content) return;
+  if (!content) { openProductModal(productId); return; } // صفحات الأقسام: نفتح نافذة التفاصيل بدل النظرة السريعة
   content.innerHTML = `
     <div class="quick-view-image"><div style="position:relative; width:100%; height:300px; background:#f5f7fa; display:flex; align-items:center; justify-content:center; border-radius:12px; overflow:hidden;">
   <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${sanitizeInput(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null;this.src='default-product.png';"
