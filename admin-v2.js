@@ -1800,6 +1800,37 @@ window.afaqParseSheet = function(lines){
   return {items: out, negativeCount: neg, skippedRows: skipped};
 };
 
+// الوضع الثاني: ملف Excel بأعمدة حقيقية — نبحث عن صف الترويسة (الكود/اسم الصنف/الكمية)
+window.afaqParseTable = function(rows){
+  var hi = -1, map = {};
+  for (var i = 0; i < Math.min(rows.length, 30); i++) {
+    var cells = (rows[i] || []).map(function(c){ return String(c == null ? '' : c).trim(); });
+    var ci = cells.findIndex(function(c){ return c === 'الكود' || c.indexOf('الكود') === 0; });
+    var ni = cells.findIndex(function(c){ return c === 'اسم الصنف' || c.indexOf('اسم الصنف') === 0; });
+    var qi = cells.findIndex(function(c){ return c === 'الكمية' || c.indexOf('الكمية') === 0; });
+    var ui = cells.findIndex(function(c){ return c === 'الوحدة'; });
+    if (ci > -1 && ni > -1 && qi > -1) { hi = i; map = {code: ci, name: ni, qty: qi, unit: ui}; break; }
+  }
+  if (hi < 0) return null;
+  var items = [], neg = 0, skipped = 0;
+  for (var r = hi + 1; r < rows.length; r++) {
+    var row = rows[r] || [];
+    var code = String(row[map.code] == null ? '' : row[map.code]).trim();
+    var name = String(row[map.name] == null ? '' : row[map.name]).trim();
+    var qty = parseFloat(String(row[map.qty] == null ? '' : row[map.qty]).replace(/,/g, ''));
+    var unit = map.unit > -1 ? String(row[map.unit] == null ? '' : row[map.unit]).trim() : '';
+    if (!code && !name) { skipped++; continue; }
+    if (!code || !name || !isFinite(qty)) { skipped++; continue; }
+    var stock = Math.max(0, Math.round(qty));
+    if (qty < 0) neg++;
+    items.push({sku: code, name: name, stock: stock, unit: unit, negative: qty < 0});
+  }
+  var seen = {}, out = [];
+  items.forEach(function(it){ seen[it.sku] = it; });
+  Object.keys(seen).forEach(function(k){ out.push(seen[k]); });
+  return {items: out, negativeCount: neg, skippedRows: skipped};
+};
+
 window.afaqXlsPreview = function(input){
   var box = document.getElementById('afaqXlsPreviewBox');
   var btn = document.getElementById('afaqXlsImportBtn');
@@ -1815,10 +1846,20 @@ window.afaqXlsPreview = function(input){
       var wb = XLSX.read(new Uint8Array(ev.target.result), {type:'array'});
       var ws = wb.Sheets[wb.SheetNames[0]];
       var rows = XLSX.utils.sheet_to_json(ws, {header:1, raw:true, defval:''});
+      // المحاولة 1: صيغة العمود الواحد المفصول بـ«؛»
       var lines = rows.map(function(r){ return (r && r.length ? r[0] : ''); });
       var res = afaqParseSheet(lines);
+      // المحاولة 2: جدول أعمدة حقيقية بترويسة الكود/اسم الصنف/الكمية
+      if (!res.items.length) {
+        var res2 = afaqParseTable(rows);
+        if (res2 && res2.items.length) res = res2;
+      }
       window._afaqXlsItems = res.items;
-      if (!res.items.length) { box.textContent = '⚠️ لم يتم العثور على أصناف صالحة — تأكد أن الملف هو تصدير «أرصدة الأصناف» من آفاق.'; return; }
+      if (!res.items.length) {
+        var dbg = rows.slice(0, 6).map(function(r){ return (r || []).join(' | ').slice(0, 90); }).join('\n');
+        box.innerHTML = '⚠️ لم يتم العثور على أصناف صالحة في الملف (عدد الصفوف المقروءة: ' + rows.length + ').<br>أول صفوف الملف كما قرأتها الأداة — ابعتها لي لو استمرت المشكلة:<pre style="direction:ltr;text-align:left;font-size:11px;background:rgba(0,0,0,.25);padding:10px;border-radius:8px;white-space:pre-wrap">' + dbg.replace(/</g,'&lt;') + '</pre>';
+        return;
+      }
       var html = '📋 تم قراءة <b>' + res.items.length + '</b> صنف بنجاح' +
         (res.negativeCount ? ' — ' + res.negativeCount + ' صنف بكمية سالبة ستُزرع بمخزون 0' : '') +
         (res.skippedRows ? ' — تم تجاوز ' + res.skippedRows + ' صف (ترويسة/تذييل/غير صالح)' : '') + '.';
