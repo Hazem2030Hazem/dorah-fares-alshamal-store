@@ -448,3 +448,29 @@ button.btn-edit[disabled]{opacity:0.4;cursor:default}
   .gateways-grid{grid-template-columns:1fr}
 }
 
+
+
+/* ============================================================
+   📦 ضبط جدول المنتجات — أسماء طويلة تلف على سطرين بدون كسر التنسيق
+   ============================================================ */
+#productsTab table{table-layout:fixed;width:100%}
+#productsTab th,#productsTab td{overflow:hidden;vertical-align:middle}
+#productsTab th:nth-child(1),#productsTab td:nth-child(1){width:44px}
+#productsTab th:nth-child(2),#productsTab td:nth-child(2){width:58px}
+#productsTab th:nth-child(5),#productsTab td:nth-child(5){width:100px;white-space:nowrap}
+#productsTab th:nth-child(6),#productsTab td:nth-child(6){width:90px}
+#productsTab th:nth-child(7),#productsTab td:nth-child(7){width:96px;white-space:nowrap}
+#productsTab td.pt-name{font-weight:600;line-height:1.5}
+#productsTab .pt-name-in{
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  overflow:hidden;word-break:break-word;overflow-wrap:anywhere;
+  max-height:3.1em;
+}
+#productsTab td.pt-desc{
+  white-space:nowrap;text-overflow:ellipsis;overflow:hidden;
+  color:var(--text-muted,#9aa5b9);font-size:12px;
+}
+@media (max-width:768px){
+  #productsTab th:nth-child(4),#productsTab td:nth-child(4){display:none}
+  #productsTab th:nth-child(2),#productsTab td:nth-child(2){display:none}
+}

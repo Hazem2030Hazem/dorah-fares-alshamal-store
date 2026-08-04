@@ -163,9 +163,9 @@ window.loadProducts = async function() {
         <img src="${p.image}" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
         <svg style="display:none; width:24px; height:24px; margin:auto; color:#666;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
       </td>
-      <td>${esc(p.name)}</td>
-      <td>${esc((p.description || '').substring(0, 50))}</td>
-      <td>${Number(p.price).toLocaleString()} ر.س</td>
+      <td class="pt-name" title="${esc(p.name)}"><span class="pt-name-in">${esc(p.name)}</span></td>
+      <td class="pt-desc">${esc((p.description || '').substring(0, 80))}</td>
+      <td class="pt-price">${Number(p.price).toLocaleString()} ر.س</td>
       <td>${p.category}</td>
       <td>
         <button class="btn-edit" onclick="editProduct(${p.id})">✏️</button>
