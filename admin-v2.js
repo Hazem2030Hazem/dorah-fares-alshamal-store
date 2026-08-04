@@ -1781,7 +1781,7 @@ window.afaqParseSheet = function(lines){
   lines.forEach(function(raw){
     var v = (raw == null ? '' : String(raw));
     if (!v.trim()) return;
-    var p = v.split('؛');
+    var p = v.split(/[؛;]/);
     if (p.length < 3) { skipped++; return; }
     var code = (p[p.length-2] || '').trim();
     var name = (p[p.length-3] || '').trim();
@@ -1843,10 +1843,19 @@ window.afaqXlsPreview = function(input){
   var reader = new FileReader();
   reader.onload = function(ev){
     try {
-      var wb = XLSX.read(new Uint8Array(ev.target.result), {type:'array'});
-      var ws = wb.Sheets[wb.SheetNames[0]];
-      var rows = XLSX.utils.sheet_to_json(ws, {header:1, raw:true, defval:''});
-      // المحاولة 1: صيغة العمود الواحد المفصول بـ«؛»
+      var buf = new Uint8Array(ev.target.result);
+      var rows = [];
+      if (/\.csv$/i.test(f.name) || f.type === 'text/csv') {
+        // ملف CSV من آفاق — فك الترميز: UTF-8 أولاً ثم Windows-1256 للعربي القديم
+        var text = new TextDecoder('utf-8').decode(buf);
+        if (text.indexOf('\uFFFD') > -1) text = new TextDecoder('windows-1256').decode(buf);
+        rows = text.split(/\r?\n/).map(function(line){ return [line]; });
+      } else {
+        var wb = XLSX.read(buf, {type:'array'});
+        var ws = wb.Sheets[wb.SheetNames[0]];
+        rows = XLSX.utils.sheet_to_json(ws, {header:1, raw:true, defval:''});
+      }
+      // المحاولة 1: صيغة العمود الواحد المفصول بـ«؛» أو «;»
       var lines = rows.map(function(r){ return (r && r.length ? r[0] : ''); });
       var res = afaqParseSheet(lines);
       // المحاولة 2: جدول أعمدة حقيقية بترويسة الكود/اسم الصنف/الكمية

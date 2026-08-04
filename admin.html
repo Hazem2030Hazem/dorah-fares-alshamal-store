@@ -428,8 +428,8 @@
                     <h4>📥 استيراد مخزون آفاق (Excel — أرصدة الأصناف)</h4>
                     <p style="color:var(--text-muted);font-size:12px;line-height:1.9;margin:0 0 12px">ارفع ملف Excel المُصدَّر من برنامج آفاق (تقرير «أرصدة الأصناف»). الأداة تقرأ <b>الكود والاسم والكمية</b> فقط — <b>بدون أسعار</b>، تضيف الأصناف الجديدة <b>مخفية</b> حتى تسعّرها بنفسك من صفحة المنتجات، وتحدّث كميات الأصناف الموجودة بدون لمس أسعارها أو صورها.</p>
                     <div class="afaky-csv-row">
-                        <div class="csv-label">ملف آفاق (xlsx):</div>
-                        <input type="file" class="afaky-import-file" id="afaqXlsFile" accept=".xlsx,.xls" onchange="afaqXlsPreview(this)">
+                        <div class="csv-label">ملف آفاق (xlsx أو CSV):</div>
+                        <input type="file" class="afaky-import-file" id="afaqXlsFile" accept=".xlsx,.xls,.csv,text/csv" onchange="afaqXlsPreview(this)">
                     </div>
                     <label class="afaky-check" style="margin:6px 0"><input type="checkbox" id="afaqHideNew" checked> إخفاء الأصناف الجديدة عن المتجر حتى تسعيرها (يظهر سعرها 0 في لوحة المنتجات فقط)</label>
                     <label class="afaky-check" style="margin:6px 0"><input type="checkbox" id="afaqAutoCat" checked> تصنيف تلقائي بالكلمات (حبر/TONER→أحبار، CABLE→وصلات… وغير المعروف → إكسسوارات)</label>
