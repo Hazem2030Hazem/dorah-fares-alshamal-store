@@ -4163,8 +4163,8 @@ function doraBrandIcon(name) {
     '.section-header::before { content: ""; display: block; width: 72px; height: 4px; border-radius: 4px;' +
     '  background: linear-gradient(90deg, #22C55E, #A8C5FF); box-shadow: 0 0 14px rgba(168,197,255,.55);' +
     '  margin: 0 auto 16px; }' +
-    '.section-header h3 { font-size: 30px !important; font-weight: 900 !important; color: #FFFFFF !important;' +
-    '  letter-spacing: .3px; text-shadow: 0 0 18px rgba(168,197,255,.25); }' +
+    '.section-header h3 { font-size: 30px !important; font-weight: 900 !important;' +
+    '  letter-spacing: .3px; }' +
     '.section-header p { font-size: 15px !important; opacity: .85; }' +
     'section[id] { border-top: 1px solid rgba(220,232,255,.08); }' +
     'section.hero { border-top: none; }' +
