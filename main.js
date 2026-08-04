@@ -797,7 +797,9 @@ async function requestQuote(productId, event) {
 يرجى إرسال عرض السعر والتواصل معي.
 شكراً.`;
 
- window.open(doraWhatsAppLink(msg), '_blank');
+ // 📞 طلبات عرض السعر تذهب لواتساب المندوب (companyPhone1 — الرقم المنتهي بـ773) وليس رقم المدير
+ var quotePhone = (getDoraSiteSettings().companyPhone1 || '').trim();
+ window.open(doraWhatsAppLink(msg, quotePhone || undefined), '_blank');
  showToast('📋 تم فتح واتساب لطلب عرض السعر');
 }
 
@@ -1627,7 +1629,7 @@ function checkPWAInstallState() {
     var catName = (typeof catLabels !== 'undefined' && catLabels[p.category]) ? catLabels[p.category] : p.category;
     var stockTxt = (typeof p.stock === 'number') ? (p.stock > 0 ? 'متوفر (' + p.stock + ')' : 'غير متوفر') : (p.stock || 'متوفر');
     var revCount = (p.reviews && p.reviews.length) ? p.reviews.length : 0;
-    var quoteUrl = doraWhatsAppLink('مرحباً، أرغب في طلب عرض سعر لمنتج: ' + p.name);
+    var quoteUrl = doraWhatsAppLink('مرحباً، أرغب في طلب عرض سعر لمنتج: ' + p.name, (getDoraSiteSettings().companyPhone1 || '').trim() || undefined);
     var card = document.createElement('div');
     card.className = 'mdf-card';
     card.innerHTML = '<div class="mdf-specs">' +
@@ -1672,7 +1674,7 @@ function checkPWAInstallState() {
         '<div class="app-download-btns">' +
           '<a href="https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk" download class="btn-primary">📱 تحميل تطبيق Android</a>' +
           '<button type="button" onclick="installPWA()" class="btn-primary">💻 حمّل تطبيق درة فارس الشمال</button>' +
-          '<a href="' + doraWhatsAppLink('مرحباً أرغب في طلب عرض سعر من شركة درة فارس الشمال') + '" target="_blank" rel="noopener" class="btn-primary">📋 اطلب عرض سعر</a>' +
+          '<a href="' + doraWhatsAppLink('مرحباً أرغب في طلب عرض سعر من شركة درة فارس الشمال', (getDoraSiteSettings().companyPhone1 || '').trim() || undefined) + '" target="_blank" rel="noopener" class="btn-primary">📋 اطلب عرض سعر</a>' +
         '</div>' +
         '<p class="global-app-download-note">اضغط للتثبيت على الشاشة الرئيسية</p>' +
       '</div>';
