@@ -4147,8 +4147,10 @@ function doraBrandIcon(name) {
     /* رفع العناصر العائمة فوق الشريط — منع التداخل (شكل فقط، بدون لمس وظائفها) */
     '  #chat-robot-container { bottom: 96px !important; left: 14px !important; }' +
     '  #doraChatWidget { bottom: 96px !important; left: 14px !important; }' +
-    '  #doraNotifBell { bottom: 96px !important; right: 14px !important; }' +
-    '  #doraNotifPanel { bottom: 168px !important; right: 14px !important; }' +
+    '  #waWidget, .wa-chat-widget { bottom: 96px !important; }' +
+    '  .wa-chat-panel, #waPanel { bottom: 168px !important; }' +
+    '  #doraNotifBell { bottom: 172px !important; right: 14px !important; }' +
+    '  #doraNotifPanel { bottom: 246px !important; right: 14px !important; }' +
     '  #customCookieBanner { bottom: 86px !important; }' +
     '  #socialProofToast { bottom: 168px !important; }' +
     '  .toast { bottom: 96px !important; }' +
