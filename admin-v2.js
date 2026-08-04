@@ -1754,3 +1754,156 @@ window.changeMyPassword=async function(e){
   logAudit('تغيير كلمة مرور','غيّر مستخدم اللوحة كلمة مروره الخاصة');
   return false;
 };
+
+
+/* ============================================================
+   📥 استيراد مخزون آفاق — قراءة Excel «أرصدة الأصناف»
+   صيغة الملف: عمود واحد مفصول بفاصلة عربية «؛»
+   من اليمين: الفرع؛الكود؛اسم الصنف؛(فارغ)؛الوحدة؛الكمية؛المخزن؛...
+   الاستيراد بدون أسعار — الأصناف الجديدة تُزرع مخفية بسعر 0
+   ============================================================ */
+window._afaqXlsItems = null;
+
+window.afaqGuessCategory = function(name){
+  var s = (name||'').toUpperCase();
+  if (/TONER|INK|حبر|أحبار/.test(s)) return 'ink';
+  if (/CABLE|CABEL|كيبل|كابل|وصل|CONVERT|تحويلة|HDMI|VGA/.test(s)) return 'cables';
+  if (/RAM/.test(s)) return 'ram';
+  if (/HDD|SSD|HARD|هارد|تخزين/.test(s)) return 'storage';
+  if (/PROJECTOR|بروجكتر|بروجيكتر/.test(s)) return 'projectors';
+  if (/PRINTER|طابع/.test(s)) return 'printers';
+  if (/MONITOR|LAPTOP|PC\b|كمبيوتر|شاشة|CASE HARD PC/.test(s)) return 'computers';
+  return 'accessories';
+};
+
+window.afaqParseSheet = function(lines){
+  var items = [], neg = 0, skipped = 0;
+  lines.forEach(function(raw){
+    var v = (raw == null ? '' : String(raw));
+    if (!v.trim()) return;
+    var p = v.split('؛');
+    if (p.length < 3) { skipped++; return; }
+    var code = (p[p.length-2] || '').trim();
+    var name = (p[p.length-3] || '').trim();
+    var qtyRaw = p.length >= 6 ? (p[p.length-6] || '').trim() : '';
+    var unit = p.length >= 5 ? (p[p.length-5] || '').trim() : '';
+    var qty = parseFloat(qtyRaw);
+    if (!code || !name || !isFinite(qty)) { skipped++; return; }
+    var stock = Math.max(0, Math.round(qty));
+    if (qty < 0) neg++;
+    items.push({sku: code, name: name, stock: stock, unit: unit, negative: qty < 0});
+  });
+  // إزالة أي تكرار بالكود — آخر ظهور يغلب
+  var seen = {}, out = [];
+  items.forEach(function(it){ seen[it.sku] = it; });
+  Object.keys(seen).forEach(function(k){ out.push(seen[k]); });
+  return {items: out, negativeCount: neg, skippedRows: skipped};
+};
+
+window.afaqXlsPreview = function(input){
+  var box = document.getElementById('afaqXlsPreviewBox');
+  var btn = document.getElementById('afaqXlsImportBtn');
+  window._afaqXlsItems = null;
+  btn.style.display = 'none';
+  var f = input.files && input.files[0];
+  if (!f) return;
+  if (typeof XLSX === 'undefined') { box.textContent = '❌ مكتبة قراءة Excel لم تُحمّل — تأكد من الاتصال بالإنترنت وأعد فتح اللوحة.'; return; }
+  box.textContent = '⏳ جاري قراءة الملف: ' + f.name + ' ...';
+  var reader = new FileReader();
+  reader.onload = function(ev){
+    try {
+      var wb = XLSX.read(new Uint8Array(ev.target.result), {type:'array'});
+      var ws = wb.Sheets[wb.SheetNames[0]];
+      var rows = XLSX.utils.sheet_to_json(ws, {header:1, raw:true, defval:''});
+      var lines = rows.map(function(r){ return (r && r.length ? r[0] : ''); });
+      var res = afaqParseSheet(lines);
+      window._afaqXlsItems = res.items;
+      if (!res.items.length) { box.textContent = '⚠️ لم يتم العثور على أصناف صالحة — تأكد أن الملف هو تصدير «أرصدة الأصناف» من آفاق.'; return; }
+      var html = '📋 تم قراءة <b>' + res.items.length + '</b> صنف بنجاح' +
+        (res.negativeCount ? ' — ' + res.negativeCount + ' صنف بكمية سالبة ستُزرع بمخزون 0' : '') +
+        (res.skippedRows ? ' — تم تجاوز ' + res.skippedRows + ' صف (ترويسة/تذييل/غير صالح)' : '') + '.';
+      html += '<div style="max-height:220px;overflow:auto;margin-top:10px;border:1px solid rgba(255,255,255,.08);border-radius:10px"><table style="width:100%;font-size:12px"><thead><tr><th>الكود</th><th>اسم الصنف</th><th>الكمية</th><th>التصنيف المتوقع</th></tr></thead><tbody>';
+      res.items.slice(0, 15).forEach(function(it){
+        html += '<tr><td>' + it.sku + '</td><td>' + it.name.replace(/</g,'&lt;') + '</td><td>' + it.stock + (it.negative?' ⚠️':'') + '</td><td>' + afaqGuessCategory(it.name) + '</td></tr>';
+      });
+      if (res.items.length > 15) html += '<tr><td colspan="4" style="text-align:center;color:var(--text-muted)">… و' + (res.items.length - 15) + ' صنف آخر</td></tr>';
+      html += '</tbody></table></div>';
+      box.innerHTML = html;
+      btn.style.display = '';
+    } catch(e) {
+      console.warn('afaqXlsPreview:', e);
+      box.textContent = '❌ تعذّر قراءة الملف — تأكد أنه ملف Excel سليم (.xlsx).';
+    }
+  };
+  reader.readAsArrayBuffer(f);
+};
+
+window.afaqXlsRun = async function(){
+  var items = window._afaqXlsItems;
+  if (!items || !items.length) { adminToast('⚠️ اختر ملف آفاق أولاً وانتظر المعاينة', 'error'); return; }
+  var hideNew = document.getElementById('afaqHideNew').checked;
+  var autoCat = document.getElementById('afaqAutoCat').checked;
+  if (!confirm('سيتم استيراد ' + items.length + ' صنف من آفاق إلى قاعدة بيانات الموقع.\n• الأصناف الجديدة: بدون أسعار' + (hideNew ? ' ومخفية عن المتجر' : '') + '\n• الأصناف الموجودة: تحديث الكمية فقط (السعر والصورة لا يُمسّان)\nمتابعة؟')) return;
+  var btn = document.getElementById('afaqXlsImportBtn');
+  var box = document.getElementById('afaqXlsPreviewBox');
+  btn.disabled = true; btn.textContent = '⏳ جاري الاستيراد...';
+  try {
+    // جلب المنتجات الموجودة لمطابقة الكود (sku)
+    var existing = [];
+    var from = 0;
+    while (true) {
+      var q = await supabaseClient.from('store_products').select('id,sku,stock').range(from, from + 999);
+      if (q.error) throw q.error;
+      existing = existing.concat(q.data || []);
+      if (!q.data || q.data.length < 1000) break;
+      from += 1000;
+    }
+    var bySku = {};
+    existing.forEach(function(p){ if (p.sku != null && p.sku !== '') bySku[String(p.sku).trim()] = p; });
+
+    var toInsert = [], toUpdate = [];
+    items.forEach(function(it){
+      if (bySku[it.sku]) {
+        toUpdate.push({id: bySku[it.sku].id, sku: it.sku, stock: it.stock});
+      } else {
+        toInsert.push({
+          name: it.name,
+          sku: it.sku,
+          price: 0,
+          old_price: null,
+          stock: it.stock,
+          category: autoCat ? afaqGuessCategory(it.name) : 'accessories',
+          badge: 'تحت التسعير',
+          image: '',
+          description: 'مستورد من نظام آفاق — وحدة: ' + (it.unit || 'PCS'),
+          rating: 0,
+          is_active: !hideNew
+        });
+      }
+    });
+
+    var inserted = 0, updated = 0, failed = 0;
+    for (var i = 0; i < toInsert.length; i += 100) {
+      var r1 = await supabaseClient.from('store_products').insert(toInsert.slice(i, i + 100));
+      if (r1.error) { console.warn('insert chunk:', r1.error); failed += Math.min(100, toInsert.length - i); }
+      else inserted += Math.min(100, toInsert.length - i);
+    }
+    for (var j = 0; j < toUpdate.length; j += 100) {
+      var r2 = await supabaseClient.from('store_products').upsert(toUpdate.slice(j, j + 100), {onConflict: 'id'});
+      if (r2.error) { console.warn('update chunk:', r2.error); failed += Math.min(100, toUpdate.length - j); }
+      else updated += Math.min(100, toUpdate.length - j);
+    }
+
+    var msg = '✅ اكتمل استيراد آفاق: ' + inserted + ' صنف جديد + ' + updated + ' تحديث كمية' + (failed ? ' — ⚠️ فشل ' + failed : '');
+    adminToast(msg, failed ? 'error' : 'success');
+    logAudit('استيراد مخزون آفاق', 'Excel أرصدة الأصناف: ' + inserted + ' جديد / ' + updated + ' تحديث كمية / بدون أسعار');
+    box.innerHTML = msg + '<br><span style="color:var(--text-muted);font-size:12px">الخطوة التالية: افتح صفحة «المنتجات» وسعّر الأصناف الجديدة ثم فعّلها لتظهر في المتجر.</span>';
+    window._afaqXlsItems = null;
+    btn.style.display = 'none';
+    if (typeof loadProducts === 'function') loadProducts();
+  } catch(e) {
+    console.warn('afaqXlsRun:', e);
+    adminToast('❌ تعذّر الاستيراد: ' + (e.message || e), 'error');
+  }
+  btn.disabled = false; btn.textContent = '⬆️ تنفيذ الاستيراد الآن';
+};

@@ -425,6 +425,18 @@
                     <button class="btn-save" id="afakyImportBtn" style="display:none" onclick="runAfakyImport()">⬆️ تنفيذ الاستيراد</button>
                 </div>
                 <div class="afaky-csv-tools" style="margin-top:24px">
+                    <h4>📥 استيراد مخزون آفاق (Excel — أرصدة الأصناف)</h4>
+                    <p style="color:var(--text-muted);font-size:12px;line-height:1.9;margin:0 0 12px">ارفع ملف Excel المُصدَّر من برنامج آفاق (تقرير «أرصدة الأصناف»). الأداة تقرأ <b>الكود والاسم والكمية</b> فقط — <b>بدون أسعار</b>، تضيف الأصناف الجديدة <b>مخفية</b> حتى تسعّرها بنفسك من صفحة المنتجات، وتحدّث كميات الأصناف الموجودة بدون لمس أسعارها أو صورها.</p>
+                    <div class="afaky-csv-row">
+                        <div class="csv-label">ملف آفاق (xlsx):</div>
+                        <input type="file" class="afaky-import-file" id="afaqXlsFile" accept=".xlsx,.xls" onchange="afaqXlsPreview(this)">
+                    </div>
+                    <label class="afaky-check" style="margin:6px 0"><input type="checkbox" id="afaqHideNew" checked> إخفاء الأصناف الجديدة عن المتجر حتى تسعيرها (يظهر سعرها 0 في لوحة المنتجات فقط)</label>
+                    <label class="afaky-check" style="margin:6px 0"><input type="checkbox" id="afaqAutoCat" checked> تصنيف تلقائي بالكلمات (حبر/TONER→أحبار، CABLE→وصلات… وغير المعروف → إكسسوارات)</label>
+                    <div class="afaky-import-preview" id="afaqXlsPreviewBox"></div>
+                    <button class="btn-save" id="afaqXlsImportBtn" style="display:none" onclick="afaqXlsRun()">⬆️ تنفيذ الاستيراد الآن</button>
+                </div>
+                <div class="afaky-csv-tools" style="margin-top:24px">
                     <h4>🔄 المزامنة مع أفاقي</h4>
                     <div class="afaky-csv-row">
                         <div class="csv-label">مزامنة فورية حسب وضع الربط المحفوظ (Webhook: إرسال آخر 20 طلب — CSV: تصدير الطلبات — البريد: فتح رسالة تقرير):</div>
@@ -676,6 +688,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
 const SUPABASE_URL = 'https://kcbmvxuzjlaooknwhqqb.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjYm12eHV6amxhb29rbndocXFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NzkyMjAsImV4cCI6MjA5OTU1NTIyMH0.ayDpkfCKL90GcUKjbHQs7OvS5sxF1VSraWg58NHJ7ek';

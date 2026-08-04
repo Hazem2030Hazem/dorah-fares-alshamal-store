@@ -290,7 +290,7 @@ function renderProducts(filter) {
         ${isCompared ? '✓' : '⚖️'}
        </button>
        <button class="add-btn" onclick="addToCart(${p.id})" ${!canAdd ? 'disabled' : ''} aria-label="${outOfStock ? 'نفذت الكمية' : 'أضف للسلة'}">
-        ${outOfStock ? '❌ نفذت' : (canAdd ? '🛒 أضف' : '⚠️ الكمية محدودة')}
+        ${p.badge === 'تحت التسعير' ? '🔒 قيد التسعير' : (outOfStock ? '❌ نفذت' : (canAdd ? '🛒 أضف' : '⚠️ الكمية محدودة'))}
        </button>
       </div>
      </div>
@@ -553,6 +553,11 @@ async function addToCart(productId) {
     const product = productsData.find(p => p.id === productId);
     if (!product || product.stock <= 0) {
   showToast('❌ عذراً، هذا المنتج غير متوفر حالياً', 'error');
+  return;
+ }
+ // 🔒 قفل البيع المؤقت — الأصناف الموسومة «تحت التسعير» ظاهرة فقط ولا تُباع
+ if (product.badge === 'تحت التسعير') {
+  showToast('🔒 هذا المنتج قيد التسعير حالياً — البيع متوقف مؤقتاً', 'warning');
   return;
  }
 
