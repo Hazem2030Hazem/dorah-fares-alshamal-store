@@ -131,6 +131,7 @@ window.showTab=function(tabName){
   if(tabName==='afaky'){loadAfakySettings();loadAfakySyncLog();}
   if(tabName==='dashboard')renderDashboardCharts();
   if(tabName==='auditLog')loadAuditLog();
+  if(tabName==='accounting'){loadErpJournal();loadErpTrialBalance();loadErpIncome();}
   if(tabName==='einvoice'){loadZatcaSettings();loadZatcaInvoices();}
   if(tabName==='bank_accounts')loadBankAccounts();
   if(tabName==='payment_methods')loadPaymentMethodsAdmin();
@@ -141,7 +142,7 @@ window.showTab=function(tabName){
   if(tabName==='company_info')loadCompanyInfo();
   if(tabName==='gov_docs')loadGovDocs();
   if(tabName==='marketing')loadMarketing();
-  var tabTitles={home_hero:'محتوى الصفحة الرئيسية',dashboard:'لوحة المؤشرات',auditLog:'سجل التدقيق',einvoice:'الفوترة الإلكترونية',bank_accounts:'الحسابات البنكية',payment_methods:'طرق الدفع',gateways:'بوابات الدفع',shipping:'الشحن',settings:'الإعدادات العامة',company_info:'بيانات الشركة',gov_docs:'التوثيق الحكومي',marketing:'التسويق',files:'الملفات'};
+  var tabTitles={home_hero:'محتوى الصفحة الرئيسية',dashboard:'لوحة المؤشرات',accounting:'المحاسبة',auditLog:'سجل التدقيق',einvoice:'الفوترة الإلكترونية',bank_accounts:'الحسابات البنكية',payment_methods:'طرق الدفع',gateways:'بوابات الدفع',shipping:'الشحن',settings:'الإعدادات العامة',company_info:'بيانات الشركة',gov_docs:'التوثيق الحكومي',marketing:'التسويق',files:'الملفات'};
   document.getElementById('pageTitle').textContent=tabTitles[tabName]||tabName;
 };
 
@@ -1956,4 +1957,62 @@ window.afaqXlsRun = async function(){
     adminToast('❌ تعذّر الاستيراد: ' + (e.message || e), 'error');
   }
   btn.disabled = false; btn.textContent = '⬆️ تنفيذ الاستيراد الآن';
+};
+
+
+/* ============================================================
+   🏛️ المحاسبة — قيود اليومية + ميزان المراجعة + قائمة الدخل
+   كل البيانات مشتقة من erp_journal_lines (لا تعديل يدوي)
+   ============================================================ */
+window.erpPostUnposted = async function(){
+  if (!confirm('سيتم إنشاء قيد يومية لكل طلب بيع غير مرحّل (مدين: العملاء / دائن: المبيعات).\nالعملية آمنة ولن تكرر أي قيد موجود. متابعة؟')) return;
+  adminToast('⏳ جاري الترحيل...');
+  var r = await supabaseClient.rpc('erp_post_unposted_orders');
+  if (r.error) {
+    console.warn('erpPostUnposted:', r.error);
+    adminToast('❌ تعذّر الترحيل: ' + r.error.message + ' — تأكد من تشغيل ملف erp-phase1.sql في SQL Editor أولاً', 'error');
+    return;
+  }
+  adminToast('✅ تم ترحيل ' + r.data + ' قيد جديد');
+  logAudit('ترحيل محاسبي', 'إنشاء ' + r.data + ' قيد يومية من طلبات البيع');
+  loadErpJournal(); loadErpTrialBalance(); loadErpIncome();
+};
+
+window.loadErpJournal = async function(){
+  var t = document.getElementById('erpJournalTable');
+  if (!t) return;
+  var r = await supabaseClient.from('erp_journal_entries')
+    .select('entry_number, created_at, memo, erp_journal_lines(debit, credit, party, erp_accounts(code, name))')
+    .order('entry_number', {ascending: false}).limit(100);
+  if (r.error) { t.innerHTML = '<tr><td colspan="7">⚠️ ' + (r.error.message.includes('does not exist') ? 'شغّل ملف erp-phase1.sql في SQL Editor أولاً' : r.error.message) + '</td></tr>'; return; }
+  if (!r.data || !r.data.length) { t.innerHTML = '<tr><td colspan="7">📒 لا توجد قيود بعد — اضغط «ترحيل الطلبات غير المرحّلة» لإنشائها من طلبات البيع</td></tr>'; return; }
+  var rows = [];
+  r.data.forEach(function(e){
+    (e.erp_journal_lines || []).forEach(function(l){
+      rows.push('<tr><td>' + e.entry_number + '</td><td>' + new Date(e.created_at).toLocaleDateString('ar-EG') + '</td><td>' + (e.memo || '') + '</td><td>' + (l.erp_accounts ? l.erp_accounts.code + ' — ' + l.erp_accounts.name : '') + '</td><td>' + (l.party || '—') + '</td><td>' + (Number(l.debit) ? Number(l.debit).toLocaleString() : '') + '</td><td>' + (Number(l.credit) ? Number(l.credit).toLocaleString() : '') + '</td></tr>');
+    });
+  });
+  t.innerHTML = rows.join('');
+};
+
+window.loadErpTrialBalance = async function(){
+  var t = document.getElementById('erpTrialTable');
+  if (!t) return;
+  var r = await supabaseClient.from('erp_v_trial_balance').select('*');
+  if (r.error || !r.data || !r.data.length) { t.innerHTML = '<tr><td colspan="6">' + (r.error && !r.error.message.includes('does not exist') ? r.error.message : 'لا توجد حركات بعد') + '</td></tr>'; return; }
+  t.innerHTML = r.data.map(function(a){
+    var bal = Number(a.balance || 0);
+    return '<tr><td>' + a.code + '</td><td>' + a.name + '</td><td>' + a.kind + '</td><td>' + Number(a.total_debit || 0).toLocaleString() + '</td><td>' + Number(a.total_credit || 0).toLocaleString() + '</td><td style="font-weight:700;color:' + (bal >= 0 ? '#22C55E' : '#EF4444') + '">' + bal.toLocaleString() + '</td></tr>';
+  }).join('');
+};
+
+window.loadErpIncome = async function(){
+  var t = document.getElementById('erpIncomeTable');
+  if (!t) return;
+  var r = await supabaseClient.from('erp_v_income_statement').select('*');
+  if (r.error || !r.data || !r.data.length) { t.innerHTML = '<tr><td colspan="2">لا توجد بيانات بعد</td></tr>'; return; }
+  t.innerHTML = r.data.map(function(x, i){
+    var last = i === r.data.length - 1;
+    return '<tr' + (last ? ' style="font-weight:800;background:rgba(34,197,94,.08)"' : '') + '><td>' + x.line + '</td><td>' + Number(x.amount || 0).toLocaleString() + ' ر.س</td></tr>';
+  }).join('');
 };
