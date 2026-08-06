@@ -132,6 +132,7 @@ window.showTab=function(tabName){
   if(tabName==='dashboard')renderDashboardCharts();
   if(tabName==='auditLog')loadAuditLog();
   if(tabName==='accounting'){loadErpJournal();loadErpTrialBalance();loadErpIncome();}
+  if(tabName==='purchases'){loadPurchasesTab();}
   if(tabName==='einvoice'){loadZatcaSettings();loadZatcaInvoices();}
   if(tabName==='bank_accounts')loadBankAccounts();
   if(tabName==='payment_methods')loadPaymentMethodsAdmin();
@@ -142,7 +143,7 @@ window.showTab=function(tabName){
   if(tabName==='company_info')loadCompanyInfo();
   if(tabName==='gov_docs')loadGovDocs();
   if(tabName==='marketing')loadMarketing();
-  var tabTitles={home_hero:'محتوى الصفحة الرئيسية',dashboard:'لوحة المؤشرات',accounting:'المحاسبة',auditLog:'سجل التدقيق',einvoice:'الفوترة الإلكترونية',bank_accounts:'الحسابات البنكية',payment_methods:'طرق الدفع',gateways:'بوابات الدفع',shipping:'الشحن',settings:'الإعدادات العامة',company_info:'بيانات الشركة',gov_docs:'التوثيق الحكومي',marketing:'التسويق',files:'الملفات'};
+  var tabTitles={home_hero:'محتوى الصفحة الرئيسية',dashboard:'لوحة المؤشرات',accounting:'المحاسبة',purchases:'المشتريات والموردون',auditLog:'سجل التدقيق',einvoice:'الفوترة الإلكترونية',bank_accounts:'الحسابات البنكية',payment_methods:'طرق الدفع',gateways:'بوابات الدفع',shipping:'الشحن',settings:'الإعدادات العامة',company_info:'بيانات الشركة',gov_docs:'التوثيق الحكومي',marketing:'التسويق',files:'الملفات'};
   document.getElementById('pageTitle').textContent=tabTitles[tabName]||tabName;
 };
 
@@ -2014,5 +2015,154 @@ window.loadErpIncome = async function(){
   t.innerHTML = r.data.map(function(x, i){
     var last = i === r.data.length - 1;
     return '<tr' + (last ? ' style="font-weight:800;background:rgba(34,197,94,.08)"' : '') + '><td>' + x.line + '</td><td>' + Number(x.amount || 0).toLocaleString() + ' ر.س</td></tr>';
+  }).join('');
+};
+
+
+/* ============================================================
+   🛒 المرحلة 2 — المشتريات والموردون
+   فاتورة الشراء تترحّل ذرّياً عبر erp_create_purchase:
+   زيادة مخزون + قيد (مدين مخزون ← دائن موردون)
+   ============================================================ */
+var purchProductsCache = null;
+
+window.loadPurchasesTab = async function(){
+  loadSuppliers();
+  loadPurchList();
+  loadSupplierBalances();
+  if (!purchProductsCache) {
+    var r = await supabaseClient.from('store_products').select('id, name, stock').order('name');
+    purchProductsCache = (r && r.data) ? r.data : [];
+  }
+  var box = document.getElementById('purchLines');
+  if (box && !box.children.length) purchAddLine();
+};
+
+window.loadSuppliers = async function(){
+  var r = await supabaseClient.from('erp_suppliers').select('id, name').order('name');
+  var sel = document.getElementById('purchSupplier');
+  if (!sel) return;
+  if (r.error) {
+    sel.innerHTML = '<option value="">⚠️ ' + (r.error.message.includes('does not exist') ? 'شغّل erp-phase2.sql أولاً' : r.error.message) + '</option>';
+    return;
+  }
+  var cur = sel.value;
+  sel.innerHTML = '<option value="">— اختر المورد —</option>' + (r.data || []).map(function(s){
+    return '<option value="' + s.id + '">' + esc(s.name) + '</option>';
+  }).join('');
+  sel.value = cur;
+};
+
+window.purchAddSupplier = async function(){
+  var name = (document.getElementById('supName').value || '').trim();
+  if (!name) { adminToast('⚠️ اكتب اسم المورد أولاً', 'warning'); return; }
+  var r = await supabaseClient.rpc('erp_add_supplier', {
+    p_name: name,
+    p_phone: (document.getElementById('supPhone').value || '').trim() || null,
+    p_email: (document.getElementById('supEmail').value || '').trim() || null,
+    p_notes: (document.getElementById('supNotes').value || '').trim() || null
+  });
+  if (r.error) { adminToast('❌ ' + r.error.message, 'error'); return; }
+  adminToast('✅ تم حفظ المورد «' + name + '»');
+  logAudit('مورد جديد', 'إضافة المورد: ' + name);
+  document.getElementById('supName').value = ''; document.getElementById('supPhone').value = '';
+  document.getElementById('supEmail').value = ''; document.getElementById('supNotes').value = '';
+  loadSuppliers(); loadSupplierBalances();
+};
+
+window.purchAddLine = function(){
+  var box = document.getElementById('purchLines');
+  if (!box) return;
+  var row = document.createElement('div');
+  row.className = 'purch-line';
+  var opts = '<option value="">— صنف حر (اكتب الاسم) —</option>' + (purchProductsCache || []).map(function(p){
+    return '<option value="' + p.id + '" data-name="' + esc(p.name) + '">' + esc(p.name) + ' (مخزون: ' + (p.stock || 0) + ')</option>';
+  }).join('');
+  row.innerHTML =
+    '<div style="display:flex;gap:6px"><select class="erp-in pl-product" onchange="purchLineProduct(this)">' + opts + '</select>' +
+    '<input type="text" class="erp-in pl-name" placeholder="اسم الصنف *"></div>' +
+    '<input type="number" class="erp-in pl-qty" placeholder="الكمية" min="0" step="any" oninput="purchRecalc()">' +
+    '<input type="number" class="erp-in pl-cost" placeholder="سعر التكلفة" min="0" step="any" oninput="purchRecalc()">' +
+    '<span class="pl-total" style="font-weight:700;color:#22C55E">0</span>' +
+    '<button class="btn-add" style="background:#EF4444;padding:6px 10px" onclick="this.parentElement.remove();purchRecalc()">🗑️</button>';
+  box.appendChild(row);
+};
+
+window.purchLineProduct = function(sel){
+  var row = sel.closest('.purch-line');
+  var opt = sel.options[sel.selectedIndex];
+  var nameInput = row.querySelector('.pl-name');
+  if (sel.value && opt.dataset.name) { nameInput.value = opt.dataset.name; nameInput.disabled = true; }
+  else { nameInput.disabled = false; if (!sel.value) nameInput.value = ''; }
+};
+
+window.purchRecalc = function(){
+  var total = 0;
+  document.querySelectorAll('#purchLines .purch-line').forEach(function(row){
+    var q = parseFloat(row.querySelector('.pl-qty').value) || 0;
+    var c = parseFloat(row.querySelector('.pl-cost').value) || 0;
+    var lt = q * c;
+    row.querySelector('.pl-total').textContent = lt.toLocaleString();
+    total += lt;
+  });
+  document.getElementById('purchTotal').textContent = total.toLocaleString();
+};
+
+window.purchSave = async function(){
+  var supplierId = document.getElementById('purchSupplier').value;
+  if (!supplierId) { adminToast('⚠️ اختر المورد أولاً', 'warning'); return; }
+  var lines = [];
+  var bad = null;
+  document.querySelectorAll('#purchLines .purch-line').forEach(function(row){
+    var name = (row.querySelector('.pl-name').value || '').trim();
+    var q = parseFloat(row.querySelector('.pl-qty').value) || 0;
+    var c = parseFloat(row.querySelector('.pl-cost').value) || 0;
+    var pid = row.querySelector('.pl-product').value || null;
+    if (!name && q <= 0 && c <= 0) return;
+    if (!name) { bad = 'في سطر ناقص اسم الصنف'; return; }
+    if (q <= 0) { bad = 'الكمية في صنف «' + name + '» لازم تكون أكبر من صفر'; return; }
+    lines.push({ product_id: pid, item_name: name, qty: q, unit_cost: c });
+  });
+  if (bad) { adminToast('⚠️ ' + bad, 'warning'); return; }
+  if (!lines.length) { adminToast('⚠️ أضف صنف واحد على الأقل بكمية وسعر', 'warning'); return; }
+  if (!confirm('سيتم حفظ فاتورة الشراء (' + lines.length + ' صنف) وترحيلها فوراً:\n• زيادة المخزون بالكميات\n• قيد: مدين مخزون ← دائن موردون\nمتابعة؟')) return;
+  adminToast('⏳ جاري الحفظ والترحيل...');
+  var r = await supabaseClient.rpc('erp_create_purchase', {
+    p_supplier_id: supplierId,
+    p_memo: (document.getElementById('purchMemo').value || '').trim() || null,
+    p_lines: lines
+  });
+  if (r.error) {
+    adminToast('❌ ' + r.error.message + (r.error.message.includes('does not exist') ? ' — شغّل ملف erp-phase2.sql في SQL Editor أولاً' : ''), 'error');
+    return;
+  }
+  adminToast('✅ تم حفظ وترحيل فاتورة الشراء رقم ' + r.data);
+  logAudit('فاتورة شراء', 'ترحيل فاتورة شراء رقم ' + r.data + ' بعدد ' + lines.length + ' صنف');
+  purchProductsCache = null;
+  document.getElementById('purchLines').innerHTML = '';
+  document.getElementById('purchMemo').value = '';
+  purchAddLine(); purchRecalc();
+  loadPurchList(); loadSupplierBalances();
+};
+
+window.loadPurchList = async function(){
+  var t = document.getElementById('purchListTable');
+  if (!t) return;
+  var r = await supabaseClient.from('erp_purchases').select('purchase_number, created_at, supplier_name, total, memo').order('purchase_number', {ascending: false}).limit(50);
+  if (r.error) { t.innerHTML = '<tr><td colspan="5">⚠️ ' + (r.error.message.includes('does not exist') ? 'شغّل ملف erp-phase2.sql في SQL Editor أولاً' : r.error.message) + '</td></tr>'; return; }
+  if (!r.data || !r.data.length) { t.innerHTML = '<tr><td colspan="5">لا توجد فواتير شراء بعد</td></tr>'; return; }
+  t.innerHTML = r.data.map(function(p){
+    return '<tr><td>' + p.purchase_number + '</td><td>' + new Date(p.created_at).toLocaleDateString('ar-EG') + '</td><td>' + esc(p.supplier_name || '') + '</td><td style="font-weight:700">' + Number(p.total || 0).toLocaleString() + '</td><td>' + esc(p.memo || '—') + '</td></tr>';
+  }).join('');
+};
+
+window.loadSupplierBalances = async function(){
+  var t = document.getElementById('suppliersTable');
+  if (!t) return;
+  var r = await supabaseClient.from('erp_v_supplier_balances').select('*');
+  if (r.error) { t.innerHTML = '<tr><td colspan="4">⚠️ ' + (r.error.message.includes('does not exist') ? 'شغّل ملف erp-phase2.sql في SQL Editor أولاً' : r.error.message) + '</td></tr>'; return; }
+  if (!r.data || !r.data.length) { t.innerHTML = '<tr><td colspan="4">لا يوجد موردون بعد — أضف أول مورد من الأعلى</td></tr>'; return; }
+  t.innerHTML = r.data.map(function(s){
+    return '<tr><td>' + esc(s.name) + '</td><td dir="ltr">' + esc(s.phone || '—') + '</td><td>' + s.invoices_count + '</td><td style="font-weight:700;color:#8B5CF6">' + Number(s.total_purchases || 0).toLocaleString() + ' ر.س</td></tr>';
   }).join('');
 };

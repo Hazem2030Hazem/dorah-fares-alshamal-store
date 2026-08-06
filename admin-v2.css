@@ -474,3 +474,9 @@ button.btn-edit[disabled]{opacity:0.4;cursor:default}
   #productsTab th:nth-child(4),#productsTab td:nth-child(4){display:none}
   #productsTab th:nth-child(2),#productsTab td:nth-child(2){display:none}
 }
+
+/* ERP المرحلة 2 — حقول إدخال المشتريات */
+.erp-in{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(148,163,184,.25);background:rgba(15,23,42,.4);color:inherit;font-family:inherit;font-size:14px}
+.erp-in:focus{border-color:#22C55E;outline:none}
+.purch-line{display:grid;grid-template-columns:3fr 1fr 1fr 1fr auto;gap:8px;margin-bottom:8px;align-items:center}
+@media (max-width:768px){.purch-line{grid-template-columns:1fr 1fr;gap:6px}}
