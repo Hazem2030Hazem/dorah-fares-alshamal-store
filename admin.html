@@ -248,6 +248,7 @@
                 <a onclick="showTab('accounting')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V7l7-4 7 4v14"></path><line x1="9" y1="21" x2="9" y2="12"></line><line x1="15" y1="21" x2="15" y2="12"></line></svg> 🏛️ المحاسبة</a>
                 <a onclick="showTab('purchases')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> 🛒 المشتريات</a>
                 <a onclick="showTab('treasury')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="3"></circle></svg> 💰 السندات والخزينة</a>
+                <a onclick="showTab('returns')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg> 🔄 المرتجعات</a>
                 <a onclick="showTab('auditLog')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> سجل التدقيق</a>
                 <div class="nav-section">المحتوى</div>
                 <a onclick="showTab('why_us')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> لماذا تختارنا</a>
@@ -398,6 +399,33 @@
                 <!-- أرصدة الأطراف -->
                 <h4 style="margin:18px 0 10px">👥 أرصدة العملاء والموردين</h4>
                 <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>الطرف</th><th>الحساب</th><th>مدين</th><th>دائن</th><th>الرصيد</th></tr></thead><tbody id="partyBalancesTable"><tr><td colspan="5" class="admin-empty">⏳ جاري التحميل...</td></tr></tbody></table></div>
+            </div>
+            <div class="tab-content" id="returnsTab">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px"><h3>🔄 المرتجعات — بقيود عكسية وحركة مخزون تلقائية</h3><button class="btn-add" onclick="loadReturnsTab()">🔄 تحديث</button></div>
+
+                <!-- مرتجع جديد -->
+                <div class="erp-box" style="border:2px solid #F97316;border-radius:14px;padding:18px;margin-bottom:22px">
+                    <h4 style="margin:0 0 12px">↩️ مرتجع جديد</h4>
+                    <div style="display:grid;grid-template-columns:1fr 2fr 2fr;gap:10px;margin-bottom:12px">
+                        <select id="retType" class="erp-in">
+                            <option value="sales">مرتجع مبيعات (من عميل)</option>
+                            <option value="purchase">مرتجع مشتريات (إلى مورد)</option>
+                        </select>
+                        <input type="text" id="retParty" placeholder="اسم العميل / المورد *" class="erp-in">
+                        <input type="text" id="retMemo" placeholder="بيان / سبب المرتجع (اختياري)" class="erp-in">
+                    </div>
+                    <div id="retLines"></div>
+                    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px">
+                        <button class="btn-add" style="background:#64748B" onclick="retAddLine()">➕ إضافة صنف</button>
+                        <span style="font-size:18px;font-weight:700">الإجمالي: <span id="retTotal" style="color:#F97316">0</span> ر.س</span>
+                        <button class="btn-add" style="background:#F97316;margin-inline-start:auto" onclick="retSave()">↩️ حفظ وترحيل المرتجع</button>
+                    </div>
+                    <div style="margin-top:10px;font-size:12px;color:#94A3B8">💡 مرتجع المبيعات: قيد عكسي (مدين مبيعات ← دائن عميل) + البضاعة ترجع للمخزن • مرتجع المشتريات: (مدين مورد ← دائن مخزون) + البضاعة تخرج من المخزن</div>
+                </div>
+
+                <!-- المرتجعات المسجلة -->
+                <h4 style="margin:18px 0 10px">📋 المرتجعات المسجّلة</h4>
+                <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>رقم</th><th>النوع</th><th>التاريخ</th><th>الطرف</th><th>الإجمالي</th><th>البيان</th></tr></thead><tbody id="returnsTable"><tr><td colspan="6" class="admin-empty">⏳ جاري التحميل...</td></tr></tbody></table></div>
             </div>
             <div class="tab-content" id="accountingTab">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3>🏛️ المحاسبة — قيود اليومية والتقارير</h3><button class="btn-add" onclick="erpPostUnposted()">⚡ ترحيل الطلبات غير المرحّلة</button></div>

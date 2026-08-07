@@ -134,6 +134,7 @@ window.showTab=function(tabName){
   if(tabName==='accounting'){loadErpJournal();loadErpTrialBalance();loadErpIncome();}
   if(tabName==='purchases'){loadPurchasesTab();}
   if(tabName==='treasury'){loadTreasuryTab();}
+  if(tabName==='returns'){loadReturnsTab();}
   if(tabName==='einvoice'){loadZatcaSettings();loadZatcaInvoices();}
   if(tabName==='bank_accounts')loadBankAccounts();
   if(tabName==='payment_methods')loadPaymentMethodsAdmin();
@@ -144,7 +145,7 @@ window.showTab=function(tabName){
   if(tabName==='company_info')loadCompanyInfo();
   if(tabName==='gov_docs')loadGovDocs();
   if(tabName==='marketing')loadMarketing();
-  var tabTitles={home_hero:'محتوى الصفحة الرئيسية',dashboard:'لوحة المؤشرات',accounting:'المحاسبة',purchases:'المشتريات والموردون',treasury:'السندات والخزينة',auditLog:'سجل التدقيق',einvoice:'الفوترة الإلكترونية',bank_accounts:'الحسابات البنكية',payment_methods:'طرق الدفع',gateways:'بوابات الدفع',shipping:'الشحن',settings:'الإعدادات العامة',company_info:'بيانات الشركة',gov_docs:'التوثيق الحكومي',marketing:'التسويق',files:'الملفات'};
+  var tabTitles={home_hero:'محتوى الصفحة الرئيسية',dashboard:'لوحة المؤشرات',accounting:'المحاسبة',purchases:'المشتريات والموردون',treasury:'السندات والخزينة',returns:'المرتجعات',auditLog:'سجل التدقيق',einvoice:'الفوترة الإلكترونية',bank_accounts:'الحسابات البنكية',payment_methods:'طرق الدفع',gateways:'بوابات الدفع',shipping:'الشحن',settings:'الإعدادات العامة',company_info:'بيانات الشركة',gov_docs:'التوثيق الحكومي',marketing:'التسويق',files:'الملفات'};
   document.getElementById('pageTitle').textContent=tabTitles[tabName]||tabName;
 };
 
@@ -2240,5 +2241,107 @@ window.loadPartyBalances = async function(){
       ? (bal > 0 ? 'العميل مدين لنا' : bal < 0 ? 'للعميل رصيد دائن' : 'مسدّد')
       : (bal < 0 ? 'نحن مدينون للمورد' : bal > 0 ? 'دفعنا أكثر من المستحق' : 'مسدّد');
     return '<tr><td>' + erpEsc(p.party) + '</td><td>' + p.account_code + ' — ' + erpEsc(p.account_name) + '</td><td>' + Number(p.total_debit).toLocaleString() + '</td><td>' + Number(p.total_credit).toLocaleString() + '</td><td style="font-weight:700;color:' + (bal === 0 ? '#94A3B8' : (isCust ? (bal > 0 ? '#F59E0B' : '#22C55E') : (bal < 0 ? '#EF4444' : '#22C55E'))) + '">' + Math.abs(bal).toLocaleString() + ' (' + note + ')</td></tr>';
+  }).join('');
+};
+
+
+/* ============================================================
+   🔄 المرحلة 4 — المرتجعات بالقيود العكسية
+   (خارج غلاف IIFE — يستخدم erpEsc/erpToast)
+   ============================================================ */
+window.loadReturnsTab = async function(){
+  loadReturnsList();
+  if (!purchProductsCache) {
+    var r = await supabaseClient.from('store_products').select('id, name, stock').order('name');
+    purchProductsCache = (r && r.data) ? r.data : [];
+  }
+  var box = document.getElementById('retLines');
+  if (box && !box.children.length) retAddLine();
+};
+
+window.retAddLine = function(){
+  var box = document.getElementById('retLines');
+  if (!box) return;
+  var row = document.createElement('div');
+  row.className = 'purch-line';
+  var opts = '<option value="">— صنف حر (اكتب الاسم) —</option>' + (purchProductsCache || []).map(function(p){
+    return '<option value="' + p.id + '" data-name="' + erpEsc(p.name) + '">' + erpEsc(p.name) + ' (مخزون: ' + (p.stock || 0) + ')</option>';
+  }).join('');
+  row.innerHTML =
+    '<div style="display:flex;gap:6px"><select class="erp-in rl-product" onchange="retLineProduct(this)">' + opts + '</select>' +
+    '<input type="text" class="erp-in rl-name" placeholder="اسم الصنف *"></div>' +
+    '<input type="number" class="erp-in rl-qty" placeholder="الكمية" min="0" step="any" oninput="retRecalc()">' +
+    '<input type="number" class="erp-in rl-price" placeholder="السعر" min="0" step="any" oninput="retRecalc()">' +
+    '<span class="rl-total" style="font-weight:700;color:#F97316">0</span>' +
+    '<button class="btn-add" style="background:#EF4444;padding:6px 10px" onclick="this.parentElement.remove();retRecalc()">🗑️</button>';
+  box.appendChild(row);
+};
+
+window.retLineProduct = function(sel){
+  var row = sel.closest('.purch-line');
+  var opt = sel.options[sel.selectedIndex];
+  var nameInput = row.querySelector('.rl-name');
+  if (sel.value && opt.dataset.name) { nameInput.value = opt.dataset.name; nameInput.disabled = true; }
+  else { nameInput.disabled = false; if (!sel.value) nameInput.value = ''; }
+};
+
+window.retRecalc = function(){
+  var total = 0;
+  document.querySelectorAll('#retLines .purch-line').forEach(function(row){
+    var q = parseFloat(row.querySelector('.rl-qty').value) || 0;
+    var p = parseFloat(row.querySelector('.rl-price').value) || 0;
+    var lt = q * p;
+    row.querySelector('.rl-total').textContent = lt.toLocaleString();
+    total += lt;
+  });
+  document.getElementById('retTotal').textContent = total.toLocaleString();
+};
+
+window.retSave = async function(){
+  var type = document.getElementById('retType').value;
+  var party = (document.getElementById('retParty').value || '').trim();
+  var memo = (document.getElementById('retMemo').value || '').trim();
+  if (!party) { erpToast('⚠️ اكتب اسم ' + (type === 'sales' ? 'العميل' : 'المورد') + ' أولاً', 'warning'); return; }
+  var lines = [];
+  var bad = null;
+  document.querySelectorAll('#retLines .purch-line').forEach(function(row){
+    var name = (row.querySelector('.rl-name').value || '').trim();
+    var q = parseFloat(row.querySelector('.rl-qty').value) || 0;
+    var p = parseFloat(row.querySelector('.rl-price').value) || 0;
+    var pid = row.querySelector('.rl-product').value || null;
+    if (!name && q <= 0 && p <= 0) return;
+    if (!name) { bad = 'في سطر ناقص اسم الصنف'; return; }
+    if (q <= 0) { bad = 'الكمية في صنف «' + name + '» لازم تكون أكبر من صفر'; return; }
+    lines.push({ product_id: pid, item_name: name, qty: q, unit_price: p });
+  });
+  if (bad) { erpToast('⚠️ ' + bad, 'warning'); return; }
+  if (!lines.length) { erpToast('⚠️ أضف صنف واحد على الأقل بكمية وسعر', 'warning'); return; }
+  var label = type === 'sales' ? 'مرتجع مبيعات' : 'مرتجع مشتريات';
+  if (!confirm('سيتم حفظ ' + label + ' (' + lines.length + ' صنف) وترحيله فوراً:\n' +
+    (type === 'sales' ? '• قيد عكسي: مدين مبيعات ← دائن عميل\n• البضاعة ترجع للمخزن' : '• قيد عكسي: مدين مورد ← دائن مخزون\n• البضاعة تخرج من المخزن') + '\nمتابعة؟')) return;
+  var r = await supabaseClient.rpc('erp_create_return', { p_type: type, p_party: party, p_memo: memo || null, p_lines: lines });
+  if (r.error) {
+    erpToast('❌ ' + r.error.message + (r.error.message.includes('does not exist') ? ' — شغّل ملف erp-phase4.sql في SQL Editor أولاً' : ''), 'error');
+    return;
+  }
+  erpToast('✅ تم حفظ وترحيل ' + label + ' رقم ' + r.data);
+  logAudit('مرتجع', label + ' رقم ' + r.data + ' — ' + party);
+  purchProductsCache = null;
+  document.getElementById('retLines').innerHTML = '';
+  document.getElementById('retParty').value = '';
+  document.getElementById('retMemo').value = '';
+  retAddLine(); retRecalc();
+  loadReturnsList();
+};
+
+window.loadReturnsList = async function(){
+  var t = document.getElementById('returnsTable');
+  if (!t) return;
+  var r = await supabaseClient.from('erp_returns').select('return_number, return_type, party, total, memo, created_at').order('return_number', {ascending: false}).limit(50);
+  if (r.error) { t.innerHTML = '<tr><td colspan="6">⚠️ ' + (r.error.message.includes('does not exist') ? 'شغّل ملف erp-phase4.sql في SQL Editor أولاً' : r.error.message) + '</td></tr>'; return; }
+  if (!r.data || !r.data.length) { t.innerHTML = '<tr><td colspan="6">لا توجد مرتجعات بعد</td></tr>'; return; }
+  t.innerHTML = r.data.map(function(v){
+    var isS = v.return_type === 'sales';
+    return '<tr><td>' + v.return_number + '</td><td style="color:' + (isS ? '#F97316' : '#8B5CF6') + ';font-weight:700">' + (isS ? '↩️ مبيعات' : '↩️ مشتريات') + '</td><td>' + new Date(v.created_at).toLocaleDateString('ar-EG') + '</td><td>' + erpEsc(v.party) + '</td><td style="font-weight:700">' + Number(v.total).toLocaleString() + '</td><td>' + erpEsc(v.memo || '—') + '</td></tr>';
   }).join('');
 };
