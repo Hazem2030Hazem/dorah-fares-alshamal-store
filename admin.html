@@ -249,6 +249,7 @@
                 <a onclick="showTab('purchases')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> 🛒 المشتريات</a>
                 <a onclick="showTab('treasury')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="3"></circle></svg> 💰 السندات والخزينة</a>
                 <a onclick="showTab('returns')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg> 🔄 المرتجعات</a>
+                <a onclick="showTab('expenses')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"></path><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg> 🧾 المصروفات</a>
                 <a onclick="showTab('auditLog')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> سجل التدقيق</a>
                 <div class="nav-section">المحتوى</div>
                 <a onclick="showTab('why_us')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> لماذا تختارنا</a>
@@ -427,6 +428,41 @@
                 <h4 style="margin:18px 0 10px">📋 المرتجعات المسجّلة</h4>
                 <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>رقم</th><th>النوع</th><th>التاريخ</th><th>الطرف</th><th>الإجمالي</th><th>البيان</th></tr></thead><tbody id="returnsTable"><tr><td colspan="6" class="admin-empty">⏳ جاري التحميل...</td></tr></tbody></table></div>
             </div>
+            <div class="tab-content" id="expensesTab">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px"><h3>🧾 المصروفات وشجرة الحسابات</h3><button class="btn-add" onclick="loadExpensesTab()">🔄 تحديث</button></div>
+
+                <!-- سند مصروف -->
+                <div class="erp-box" style="border:2px solid #EF4444;border-radius:14px;padding:18px;margin-bottom:22px">
+                    <h4 style="margin:0 0 12px">🧾 سند مصروف جديد — القيد: مدين حساب المصروف ← دائن الخزينة/البنك</h4>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">
+                        <select id="expAccount" class="erp-in"><option value="">— حساب المصروف —</option></select>
+                        <input type="number" id="expAmount" placeholder="المبلغ *" min="0" step="any" class="erp-in">
+                        <input type="text" id="expParty" placeholder="الجهة (اختياري)" class="erp-in">
+                        <select id="expPayFrom" class="erp-in"><option value="1100">💵 من الخزينة</option><option value="1110">🏦 من البنك</option></select>
+                        <input type="text" id="expMemo" placeholder="البيان (اختياري)" class="erp-in">
+                    </div>
+                    <button class="btn-add" style="background:#EF4444;margin-top:12px" onclick="expSave()">🧾 حفظ المصروف</button>
+                </div>
+
+                <!-- إضافة حساب -->
+                <div class="erp-box" style="border:2px solid #0EA5E9;border-radius:14px;padding:18px;margin-bottom:22px">
+                    <h4 style="margin:0 0 12px">🌳 إضافة حساب جديد لشجرة الحسابات</h4>
+                    <div style="display:grid;grid-template-columns:1fr 2fr 2fr auto;gap:10px;align-items:center">
+                        <input type="text" id="accCode" placeholder="الكود (4 أرقام)" class="erp-in" dir="ltr" style="text-align:center" maxlength="4">
+                        <input type="text" id="accName" placeholder="اسم الحساب *" class="erp-in">
+                        <select id="accKind" class="erp-in">
+                            <option value="asset">أصول</option><option value="liability">التزامات</option>
+                            <option value="equity">حقوق ملكية</option><option value="revenue">إيرادات</option>
+                            <option value="expense" selected>مصروفات</option>
+                        </select>
+                        <button class="btn-add" onclick="accAdd()">➕ إضافة</button>
+                    </div>
+                </div>
+
+                <!-- المصروفات المسجلة -->
+                <h4 style="margin:18px 0 10px">📋 المصروفات المسجّلة</h4>
+                <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>رقم</th><th>التاريخ</th><th>الحساب</th><th>الجهة</th><th>المبلغ</th><th>الدفع من</th><th>البيان</th></tr></thead><tbody id="expensesTable"><tr><td colspan="7" class="admin-empty">⏳ جاري التحميل...</td></tr></tbody></table></div>
+            </div>
             <div class="tab-content" id="accountingTab">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3>🏛️ المحاسبة — قيود اليومية والتقارير</h3><button class="btn-add" onclick="erpPostUnposted()">⚡ ترحيل الطلبات غير المرحّلة</button></div>
                 <div class="zatca-note">ℹ️ كل قيد يتولد من طلب بيع موجود (مدين: العملاء / دائن: المبيعات) — القيود لا تُعدَّل ولا تُحذف، التصحيح بقيود عكسية فقط. الأرصدة مشتقة تلقائياً.</div>
@@ -436,6 +472,15 @@
                 <table><thead><tr><th>الكود</th><th>الحساب</th><th>النوع</th><th>إجمالي مدين</th><th>إجمالي دائن</th><th>الرصيد</th></tr></thead><tbody id="erpTrialTable"><tr><td colspan="6">⏳ جاري التحميل...</td></tr></tbody></table>
                 <h4 style="margin:24px 0 8px">📈 قائمة الدخل المبسطة</h4>
                 <table><thead><tr><th>البند</th><th>المبلغ</th></tr></thead><tbody id="erpIncomeTable"><tr><td colspan="2">⏳ جاري التحميل...</td></tr></tbody></table>
+                <h4 style="margin:24px 0 8px">📊 الأرباح الشهرية (إيرادات / مصروفات / صافي)</h4>
+                <table><thead><tr><th>الشهر</th><th>الإيرادات</th><th>المصروفات</th><th>صافي الربح</th></tr></thead><tbody id="erpMonthlyTable"><tr><td colspan="4">⏳ جاري التحميل...</td></tr></tbody></table>
+                <h4 style="margin:24px 0 8px">📥 تصدير التقارير — Excel</h4>
+                <div style="display:flex;gap:10px;flex-wrap:wrap">
+                    <button class="btn-add" style="background:#0EA5E9" onclick="erpExport('journal')">📒 دفتر اليومية</button>
+                    <button class="btn-add" style="background:#0EA5E9" onclick="erpExport('trial')">⚖️ ميزان المراجعة</button>
+                    <button class="btn-add" style="background:#0EA5E9" onclick="erpExport('income')">📈 قائمة الدخل</button>
+                    <button class="btn-add" style="background:#0EA5E9" onclick="erpExport('monthly')">📊 الأرباح الشهرية</button>
+                </div>
             </div>
             <div class="tab-content" id="auditLogTab">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> سجل التدقيق — آخر 100 عملية</h3><button class="btn-add" onclick="loadAuditLog()">🔄 تحديث</button></div>

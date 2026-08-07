@@ -131,10 +131,11 @@ window.showTab=function(tabName){
   if(tabName==='afaky'){loadAfakySettings();loadAfakySyncLog();}
   if(tabName==='dashboard')renderDashboardCharts();
   if(tabName==='auditLog')loadAuditLog();
-  if(tabName==='accounting'){loadErpJournal();loadErpTrialBalance();loadErpIncome();}
+  if(tabName==='accounting'){loadErpJournal();loadErpTrialBalance();loadErpIncome();if(typeof loadErpMonthly==='function')loadErpMonthly();}
   if(tabName==='purchases'){loadPurchasesTab();}
   if(tabName==='treasury'){loadTreasuryTab();}
   if(tabName==='returns'){loadReturnsTab();}
+  if(tabName==='expenses'){loadExpensesTab();}
   if(tabName==='einvoice'){loadZatcaSettings();loadZatcaInvoices();}
   if(tabName==='bank_accounts')loadBankAccounts();
   if(tabName==='payment_methods')loadPaymentMethodsAdmin();
@@ -145,7 +146,7 @@ window.showTab=function(tabName){
   if(tabName==='company_info')loadCompanyInfo();
   if(tabName==='gov_docs')loadGovDocs();
   if(tabName==='marketing')loadMarketing();
-  var tabTitles={home_hero:'محتوى الصفحة الرئيسية',dashboard:'لوحة المؤشرات',accounting:'المحاسبة',purchases:'المشتريات والموردون',treasury:'السندات والخزينة',returns:'المرتجعات',auditLog:'سجل التدقيق',einvoice:'الفوترة الإلكترونية',bank_accounts:'الحسابات البنكية',payment_methods:'طرق الدفع',gateways:'بوابات الدفع',shipping:'الشحن',settings:'الإعدادات العامة',company_info:'بيانات الشركة',gov_docs:'التوثيق الحكومي',marketing:'التسويق',files:'الملفات'};
+  var tabTitles={home_hero:'محتوى الصفحة الرئيسية',dashboard:'لوحة المؤشرات',accounting:'المحاسبة',purchases:'المشتريات والموردون',treasury:'السندات والخزينة',returns:'المرتجعات',expenses:'المصروفات',auditLog:'سجل التدقيق',einvoice:'الفوترة الإلكترونية',bank_accounts:'الحسابات البنكية',payment_methods:'طرق الدفع',gateways:'بوابات الدفع',shipping:'الشحن',settings:'الإعدادات العامة',company_info:'بيانات الشركة',gov_docs:'التوثيق الحكومي',marketing:'التسويق',files:'الملفات'};
   document.getElementById('pageTitle').textContent=tabTitles[tabName]||tabName;
 };
 
@@ -2344,4 +2345,119 @@ window.loadReturnsList = async function(){
     var isS = v.return_type === 'sales';
     return '<tr><td>' + v.return_number + '</td><td style="color:' + (isS ? '#F97316' : '#8B5CF6') + ';font-weight:700">' + (isS ? '↩️ مبيعات' : '↩️ مشتريات') + '</td><td>' + new Date(v.created_at).toLocaleDateString('ar-EG') + '</td><td>' + erpEsc(v.party) + '</td><td style="font-weight:700">' + Number(v.total).toLocaleString() + '</td><td>' + erpEsc(v.memo || '—') + '</td></tr>';
   }).join('');
+};
+
+
+/* ============================================================
+   🧾 المرحلة 5 — المصروفات + شجرة الحسابات + الأرباح الشهرية + تصدير Excel
+   (خارج غلاف IIFE — يستخدم erpEsc/erpToast)
+   ============================================================ */
+window.loadExpensesTab = async function(){
+  loadExpenseAccounts();
+  loadExpensesList();
+};
+
+window.loadExpenseAccounts = async function(){
+  var sel = document.getElementById('expAccount');
+  if (!sel) return;
+  var r = await supabaseClient.from('erp_accounts').select('code, name').eq('kind', 'expense').order('code');
+  if (r.error) { sel.innerHTML = '<option value="">⚠️ شغّل erp-phase5.sql أولاً</option>'; return; }
+  sel.innerHTML = '<option value="">— حساب المصروف —</option>' + (r.data || []).map(function(a){
+    return '<option value="' + a.code + '">' + a.code + ' — ' + erpEsc(a.name) + '</option>';
+  }).join('');
+};
+
+window.accAdd = async function(){
+  var code = (document.getElementById('accCode').value || '').trim();
+  var name = (document.getElementById('accName').value || '').trim();
+  var kind = document.getElementById('accKind').value;
+  if (!/^[0-9]{4}$/.test(code)) { erpToast('⚠️ كود الحساب لازم يكون 4 أرقام', 'warning'); return; }
+  if (!name) { erpToast('⚠️ اكتب اسم الحساب', 'warning'); return; }
+  var r = await supabaseClient.rpc('erp_add_account', { p_code: code, p_name: name, p_kind: kind });
+  if (r.error) { erpToast('❌ ' + r.error.message + (r.error.message.includes('does not exist') ? ' — شغّل erp-phase5.sql أولاً' : ''), 'error'); return; }
+  erpToast('✅ تمت إضافة الحساب ' + code + ' — ' + name);
+  logAudit('حساب جديد', 'إضافة حساب: ' + code + ' — ' + name);
+  document.getElementById('accCode').value = ''; document.getElementById('accName').value = '';
+  loadExpenseAccounts();
+};
+
+window.expSave = async function(){
+  var code = document.getElementById('expAccount').value;
+  var amount = parseFloat(document.getElementById('expAmount').value) || 0;
+  var party = (document.getElementById('expParty').value || '').trim();
+  var memo = (document.getElementById('expMemo').value || '').trim();
+  var payFrom = document.getElementById('expPayFrom').value;
+  if (!code) { erpToast('⚠️ اختر حساب المصروف', 'warning'); return; }
+  if (amount <= 0) { erpToast('⚠️ المبلغ لازم يكون أكبر من صفر', 'warning'); return; }
+  if (!confirm('سيتم تسجيل مصروف بمبلغ ' + amount.toLocaleString() + ' ر.س\nالقيد: مدين ' + code + ' ← دائن ' + (payFrom === '1100' ? 'الخزينة' : 'البنك') + '\nمتابعة؟')) return;
+  var r = await supabaseClient.rpc('erp_create_expense', { p_account_code: code, p_amount: amount, p_party: party || null, p_memo: memo || null, p_pay_from: payFrom });
+  if (r.error) { erpToast('❌ ' + r.error.message + (r.error.message.includes('does not exist') ? ' — شغّل erp-phase5.sql أولاً' : ''), 'error'); return; }
+  erpToast('✅ تم تسجيل المصروف رقم ' + r.data);
+  logAudit('مصروف', 'مصروف رقم ' + r.data + ' — ' + code + ' — ' + amount + ' ر.س');
+  document.getElementById('expAmount').value = ''; document.getElementById('expParty').value = ''; document.getElementById('expMemo').value = '';
+  loadExpensesList();
+};
+
+window.loadExpensesList = async function(){
+  var t = document.getElementById('expensesTable');
+  if (!t) return;
+  var r = await supabaseClient.from('erp_expenses').select('expense_number, account_code, party, amount, pay_from, memo, created_at').order('expense_number', {ascending: false}).limit(50);
+  if (r.error) { t.innerHTML = '<tr><td colspan="7">⚠️ ' + (r.error.message.includes('does not exist') ? 'شغّل ملف erp-phase5.sql في SQL Editor أولاً' : r.error.message) + '</td></tr>'; return; }
+  if (!r.data || !r.data.length) { t.innerHTML = '<tr><td colspan="7">لا توجد مصروفات بعد</td></tr>'; return; }
+  t.innerHTML = r.data.map(function(x){
+    return '<tr><td>' + x.expense_number + '</td><td>' + new Date(x.created_at).toLocaleDateString('ar-EG') + '</td><td>' + x.account_code + '</td><td>' + erpEsc(x.party || '—') + '</td><td style="font-weight:700;color:#EF4444">' + Number(x.amount).toLocaleString() + '</td><td>' + (x.pay_from === '1110' ? '🏦 بنك' : '💵 خزينة') + '</td><td>' + erpEsc(x.memo || '—') + '</td></tr>';
+  }).join('');
+};
+
+/* 📊 الأرباح الشهرية */
+window.loadErpMonthly = async function(){
+  var t = document.getElementById('erpMonthlyTable');
+  if (!t) return;
+  var r = await supabaseClient.from('erp_v_monthly_pl').select('*');
+  if (r.error || !r.data || !r.data.length) { t.innerHTML = '<tr><td colspan="4">' + (r.error ? (r.error.message.includes('does not exist') ? 'شغّل erp-phase5.sql لعرض الأرباح الشهرية' : r.error.message) : 'لا توجد بيانات بعد') + '</td></tr>'; return; }
+  t.innerHTML = r.data.map(function(m){
+    var net = Number(m.net_profit || 0);
+    return '<tr><td dir="ltr">' + m.month + '</td><td style="color:#22C55E">' + Number(m.revenue).toLocaleString() + '</td><td style="color:#EF4444">' + Number(m.expenses).toLocaleString() + '</td><td style="font-weight:800;color:' + (net >= 0 ? '#22C55E' : '#EF4444') + '">' + net.toLocaleString() + ' ر.س</td></tr>';
+  }).join('');
+};
+
+/* 📥 تصدير Excel */
+window.erpExport = async function(what){
+  if (typeof XLSX === 'undefined') { erpToast('⚠️ مكتبة Excel لم تُحمّل بعد — حدّث الصفحة', 'warning'); return; }
+  var cfg = {
+    journal: { name: 'دفتر_اليومية', head: ['رقم القيد','التاريخ','البيان','الحساب','الطرف','مدين','دائن'],
+      fetch: async function(){
+        var r = await supabaseClient.from('erp_journal_entries').select('entry_number, created_at, memo, erp_journal_lines(debit, credit, party, erp_accounts(code, name))').order('entry_number');
+        var rows = [];
+        (r.data || []).forEach(function(e){ (e.erp_journal_lines || []).forEach(function(l){
+          rows.push([e.entry_number, new Date(e.created_at).toLocaleDateString('ar-EG'), e.memo || '', l.erp_accounts ? l.erp_accounts.code + ' — ' + l.erp_accounts.name : '', l.party || '', Number(l.debit), Number(l.credit)]);
+        });});
+        return rows;
+      }},
+    trial: { name: 'ميزان_المراجعة', head: ['الكود','الحساب','النوع','إجمالي مدين','إجمالي دائن','الرصيد'],
+      fetch: async function(){
+        var r = await supabaseClient.from('erp_v_trial_balance').select('*');
+        return (r.data || []).map(function(a){ return [a.code, a.name, a.kind, Number(a.total_debit), Number(a.total_credit), Number(a.balance)]; });
+      }},
+    income: { name: 'قائمة_الدخل', head: ['البند','المبلغ'],
+      fetch: async function(){
+        var r = await supabaseClient.from('erp_v_income_statement').select('*');
+        return (r.data || []).map(function(x){ return [x.line, Number(x.amount)]; });
+      }},
+    monthly: { name: 'الأرباح_الشهرية', head: ['الشهر','الإيرادات','المصروفات','صافي الربح'],
+      fetch: async function(){
+        var r = await supabaseClient.from('erp_v_monthly_pl').select('*');
+        return (r.data || []).map(function(m){ return [m.month, Number(m.revenue), Number(m.expenses), Number(m.net_profit)]; });
+      }}
+  };
+  var c = cfg[what];
+  if (!c) return;
+  erpToast('⏳ جاري تجهيز ملف Excel...');
+  var rows = await c.fetch();
+  var ws = XLSX.utils.aoa_to_sheet([c.head].concat(rows));
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, c.name);
+  XLSX.writeFile(wb, c.name + '_' + new Date().toISOString().slice(0,10) + '.xlsx');
+  erpToast('✅ تم تصدير ' + c.name + ' (' + rows.length + ' صف)');
+  logAudit('تصدير Excel', 'تصدير تقرير: ' + c.name);
 };
