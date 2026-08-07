@@ -133,6 +133,7 @@ window.showTab=function(tabName){
   if(tabName==='auditLog')loadAuditLog();
   if(tabName==='accounting'){loadErpJournal();loadErpTrialBalance();loadErpIncome();}
   if(tabName==='purchases'){loadPurchasesTab();}
+  if(tabName==='treasury'){loadTreasuryTab();}
   if(tabName==='einvoice'){loadZatcaSettings();loadZatcaInvoices();}
   if(tabName==='bank_accounts')loadBankAccounts();
   if(tabName==='payment_methods')loadPaymentMethodsAdmin();
@@ -143,7 +144,7 @@ window.showTab=function(tabName){
   if(tabName==='company_info')loadCompanyInfo();
   if(tabName==='gov_docs')loadGovDocs();
   if(tabName==='marketing')loadMarketing();
-  var tabTitles={home_hero:'محتوى الصفحة الرئيسية',dashboard:'لوحة المؤشرات',accounting:'المحاسبة',purchases:'المشتريات والموردون',auditLog:'سجل التدقيق',einvoice:'الفوترة الإلكترونية',bank_accounts:'الحسابات البنكية',payment_methods:'طرق الدفع',gateways:'بوابات الدفع',shipping:'الشحن',settings:'الإعدادات العامة',company_info:'بيانات الشركة',gov_docs:'التوثيق الحكومي',marketing:'التسويق',files:'الملفات'};
+  var tabTitles={home_hero:'محتوى الصفحة الرئيسية',dashboard:'لوحة المؤشرات',accounting:'المحاسبة',purchases:'المشتريات والموردون',treasury:'السندات والخزينة',auditLog:'سجل التدقيق',einvoice:'الفوترة الإلكترونية',bank_accounts:'الحسابات البنكية',payment_methods:'طرق الدفع',gateways:'بوابات الدفع',shipping:'الشحن',settings:'الإعدادات العامة',company_info:'بيانات الشركة',gov_docs:'التوثيق الحكومي',marketing:'التسويق',files:'الملفات'};
   document.getElementById('pageTitle').textContent=tabTitles[tabName]||tabName;
 };
 
@@ -2167,5 +2168,77 @@ window.loadSupplierBalances = async function(){
   if (!r.data || !r.data.length) { t.innerHTML = '<tr><td colspan="4">لا يوجد موردون بعد — أضف أول مورد من الأعلى</td></tr>'; return; }
   t.innerHTML = r.data.map(function(s){
     return '<tr><td>' + erpEsc(s.name) + '</td><td dir="ltr">' + erpEsc(s.phone || '—') + '</td><td>' + s.invoices_count + '</td><td style="font-weight:700;color:#8B5CF6">' + Number(s.total_purchases || 0).toLocaleString() + ' ر.س</td></tr>';
+  }).join('');
+};
+
+
+/* ============================================================
+   💰 المرحلة 3 — سندات القبض والصرف والخزينة
+   (خارج غلاف IIFE — يستخدم erpEsc/erpToast)
+   ============================================================ */
+window.loadTreasuryTab = async function(){
+  loadCashBalance();
+  loadVouchers();
+  loadPartyBalances();
+};
+
+window.loadCashBalance = async function(){
+  var el = document.getElementById('cashBalance');
+  if (!el) return;
+  var r = await supabaseClient.from('erp_v_cash_balance').select('cash_balance').maybeSingle();
+  if (r.error) { el.textContent = '⚠️ ' + (r.error.message.includes('does not exist') ? 'شغّل erp-phase3.sql أولاً' : r.error.message); return; }
+  var bal = Number((r.data && r.data.cash_balance) || 0);
+  el.textContent = bal.toLocaleString() + ' ر.س';
+  el.style.color = bal >= 0 ? '#F59E0B' : '#EF4444';
+};
+
+window.voucherSave = async function(type){
+  var isReceipt = type === 'receipt';
+  var party = (document.getElementById(isReceipt ? 'receiptParty' : 'paymentParty').value || '').trim();
+  var amount = parseFloat(document.getElementById(isReceipt ? 'receiptAmount' : 'paymentAmount').value) || 0;
+  var memo = (document.getElementById(isReceipt ? 'receiptMemo' : 'paymentMemo').value || '').trim();
+  var label = isReceipt ? 'قبض' : 'صرف';
+  if (!party) { erpToast('⚠️ اكتب اسم ' + (isReceipt ? 'العميل' : 'المورد') + ' أولاً', 'warning'); return; }
+  if (amount <= 0) { erpToast('⚠️ المبلغ لازم يكون أكبر من صفر', 'warning'); return; }
+  if (!confirm('سيتم حفظ سند ' + label + ' بمبلغ ' + amount.toLocaleString() + ' ر.س — ' + party + '\n' +
+    (isReceipt ? 'القيد: مدين خزينة ← دائن عملاء (رصيد العميل ينقص)' : 'القيد: مدين موردون ← دائن خزينة (رصيد المورد ينقص)') + '\nمتابعة؟')) return;
+  var r = await supabaseClient.rpc('erp_create_voucher', { p_type: type, p_party: party, p_amount: amount, p_memo: memo || null });
+  if (r.error) {
+    erpToast('❌ ' + r.error.message + (r.error.message.includes('does not exist') ? ' — شغّل ملف erp-phase3.sql في SQL Editor أولاً' : ''), 'error');
+    return;
+  }
+  erpToast('✅ تم حفظ سند ' + label + ' رقم ' + r.data);
+  logAudit('سند ' + label, 'سند ' + label + ' رقم ' + r.data + ' — ' + party + ' — ' + amount + ' ر.س');
+  document.getElementById(isReceipt ? 'receiptParty' : 'paymentParty').value = '';
+  document.getElementById(isReceipt ? 'receiptAmount' : 'paymentAmount').value = '';
+  document.getElementById(isReceipt ? 'receiptMemo' : 'paymentMemo').value = '';
+  loadCashBalance(); loadVouchers(); loadPartyBalances();
+};
+
+window.loadVouchers = async function(){
+  var t = document.getElementById('vouchersTable');
+  if (!t) return;
+  var r = await supabaseClient.from('erp_vouchers').select('voucher_number, voucher_type, party, amount, memo, created_at').order('voucher_number', {ascending: false}).limit(50);
+  if (r.error) { t.innerHTML = '<tr><td colspan="6">⚠️ ' + (r.error.message.includes('does not exist') ? 'شغّل ملف erp-phase3.sql في SQL Editor أولاً' : r.error.message) + '</td></tr>'; return; }
+  if (!r.data || !r.data.length) { t.innerHTML = '<tr><td colspan="6">لا توجد سندات بعد</td></tr>'; return; }
+  t.innerHTML = r.data.map(function(v){
+    var isR = v.voucher_type === 'receipt';
+    return '<tr><td>' + v.voucher_number + '</td><td style="color:' + (isR ? '#22C55E' : '#EF4444') + ';font-weight:700">' + (isR ? '📥 قبض' : '📤 صرف') + '</td><td>' + new Date(v.created_at).toLocaleDateString('ar-EG') + '</td><td>' + erpEsc(v.party) + '</td><td style="font-weight:700">' + Number(v.amount).toLocaleString() + '</td><td>' + erpEsc(v.memo || '—') + '</td></tr>';
+  }).join('');
+};
+
+window.loadPartyBalances = async function(){
+  var t = document.getElementById('partyBalancesTable');
+  if (!t) return;
+  var r = await supabaseClient.from('erp_v_party_balances').select('*');
+  if (r.error) { t.innerHTML = '<tr><td colspan="5">⚠️ ' + (r.error.message.includes('does not exist') ? 'شغّل ملف erp-phase3.sql في SQL Editor أولاً' : r.error.message) + '</td></tr>'; return; }
+  if (!r.data || !r.data.length) { t.innerHTML = '<tr><td colspan="5">لا توجد أرصدة أطراف بعد</td></tr>'; return; }
+  t.innerHTML = r.data.map(function(p){
+    var bal = Number(p.balance || 0);
+    var isCust = p.account_code === '1200';
+    var note = isCust
+      ? (bal > 0 ? 'العميل مدين لنا' : bal < 0 ? 'للعميل رصيد دائن' : 'مسدّد')
+      : (bal < 0 ? 'نحن مدينون للمورد' : bal > 0 ? 'دفعنا أكثر من المستحق' : 'مسدّد');
+    return '<tr><td>' + erpEsc(p.party) + '</td><td>' + p.account_code + ' — ' + erpEsc(p.account_name) + '</td><td>' + Number(p.total_debit).toLocaleString() + '</td><td>' + Number(p.total_credit).toLocaleString() + '</td><td style="font-weight:700;color:' + (bal === 0 ? '#94A3B8' : (isCust ? (bal > 0 ? '#F59E0B' : '#22C55E') : (bal < 0 ? '#EF4444' : '#22C55E'))) + '">' + Math.abs(bal).toLocaleString() + ' (' + note + ')</td></tr>';
   }).join('');
 };
