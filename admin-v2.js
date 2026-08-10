@@ -131,12 +131,13 @@ window.showTab=function(tabName){
   if(tabName==='afaky'){loadAfakySettings();loadAfakySyncLog();}
   if(tabName==='dashboard')renderDashboardCharts();
   if(tabName==='auditLog')loadAuditLog();
-  if(tabName==='accounting'){loadErpJournal();loadErpTrialBalance();loadErpIncome();if(typeof loadErpMonthly==='function')loadErpMonthly();}
+  if(tabName==='accounting'){loadErpJournal();loadErpTrialBalance();loadErpIncome();if(typeof loadErpMonthly==='function')loadErpMonthly();if(typeof afakyDailyDefaultDates==='function')afakyDailyDefaultDates();}
   if(tabName==='purchases'){loadPurchasesTab();}
   if(tabName==='treasury'){loadTreasuryTab();}
   if(tabName==='returns'){loadReturnsTab();}
   if(tabName==='expenses'){loadExpensesTab();}
   if(tabName==='einvoice'){loadZatcaSettings();loadZatcaInvoices();}
+  if(tabName==='zatca'&&typeof loadZatcaTab==='function')loadZatcaTab();
   if(tabName==='bank_accounts')loadBankAccounts();
   if(tabName==='payment_methods')loadPaymentMethodsAdmin();
   if(tabName==='gateways')loadPaymentGateways();
@@ -146,7 +147,7 @@ window.showTab=function(tabName){
   if(tabName==='company_info')loadCompanyInfo();
   if(tabName==='gov_docs')loadGovDocs();
   if(tabName==='marketing')loadMarketing();
-  var tabTitles={home_hero:'محتوى الصفحة الرئيسية',dashboard:'لوحة المؤشرات',accounting:'المحاسبة',purchases:'المشتريات والموردون',treasury:'السندات والخزينة',returns:'المرتجعات',expenses:'المصروفات',auditLog:'سجل التدقيق',einvoice:'الفوترة الإلكترونية',bank_accounts:'الحسابات البنكية',payment_methods:'طرق الدفع',gateways:'بوابات الدفع',shipping:'الشحن',settings:'الإعدادات العامة',company_info:'بيانات الشركة',gov_docs:'التوثيق الحكومي',marketing:'التسويق',files:'الملفات'};
+  var tabTitles={home_hero:'محتوى الصفحة الرئيسية',dashboard:'لوحة المؤشرات',accounting:'المحاسبة',purchases:'المشتريات والموردون',treasury:'السندات والخزينة',returns:'المرتجعات',expenses:'المصروفات',auditLog:'سجل التدقيق',einvoice:'الفوترة الإلكترونية',zatca:'⚡ زاتكا — الربط والاعتماد',bank_accounts:'الحسابات البنكية',payment_methods:'طرق الدفع',gateways:'بوابات الدفع',shipping:'الشحن',settings:'الإعدادات العامة',company_info:'بيانات الشركة',gov_docs:'التوثيق الحكومي',marketing:'التسويق',files:'الملفات'};
   document.getElementById('pageTitle').textContent=tabTitles[tabName]||tabName;
 };
 
@@ -2460,4 +2461,197 @@ window.erpExport = async function(what){
   XLSX.writeFile(wb, c.name + '_' + new Date().toISOString().slice(0,10) + '.xlsx');
   erpToast('✅ تم تصدير ' + c.name + ' (' + rows.length + ' صف)');
   logAudit('تصدير Excel', 'تصدير تقرير: ' + c.name);
+};
+
+
+/* ============================================================
+   📤 كشف آفاق اليومي — Batch Z2
+   يصدّر فواتير اليوم/الفترة من store_orders مع حالة زاتكا من e_invoices
+   كملف Excel (.xlsx عبر مكتبة XLSX المضمّنة، أو CSV UTF-8 BOM كفولباك)
+   بأعمدة ثابتة تصلح للاستيراد في برنامج الحسابات الخارجي (آفاق)
+   ============================================================ */
+var afakyDailyState = null; /* { from, to, rows:[{...}], totals:{...} } */
+
+function afakyDailyDefaultDates(){
+  var d = new Date();
+  var iso = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  var f = document.getElementById('afakyDailyFrom'), t = document.getElementById('afakyDailyTo');
+  if (f && !f.value) f.value = iso;
+  if (t && !t.value) t.value = iso;
+}
+
+/* تصنيف طريقة الدفع لخانات التوزيع: نقدي/COD / تحويل / إلكتروني */
+function afakyDailyPayClass(method){
+  var m = String(method || '').toLowerCase();
+  if (/cod|نقد|كاش|عند الاستلام|الاستلام/.test(m)) return 'cod';
+  if (/تحويل|transfer|bank/.test(m)) return 'transfer';
+  if (m) return 'electronic';
+  return 'cod';
+}
+var AFAKY_PAY_LABELS = { cod: 'نقدي/COD', transfer: 'تحويل بنكي', electronic: 'دفع إلكتروني' };
+
+window.afakyDailyGenerate = async function(){
+  var fEl = document.getElementById('afakyDailyFrom'), tEl = document.getElementById('afakyDailyTo');
+  var tbody = document.getElementById('afakyDailyTable'), totalsBox = document.getElementById('afakyDailyTotals');
+  if (!fEl || !tEl || !tbody) return;
+  afakyDailyDefaultDates();
+  var from = fEl.value, to = tEl.value;
+  if (!from || !to) { erpToast('⚠️ اختر التاريخ أولاً', 'warning'); return; }
+  if (to < from) { erpToast('⚠️ تاريخ «إلى» قبل «من» — صحّح الفترة', 'warning'); return; }
+
+  tbody.innerHTML = '<tr><td colspan="11" class="admin-empty">⏳ جاري توليد الكشف...</td></tr>';
+  var start = new Date(from + 'T00:00:00');
+  var end = new Date(to + 'T00:00:00'); end.setDate(end.getDate() + 1); /* حصري — بداية اليوم التالي */
+
+  var r = await supabaseClient.from('store_orders').select('*')
+    .gte('created_at', start.toISOString()).lt('created_at', end.toISOString())
+    .order('created_at', { ascending: true });
+  if (r.error) {
+    tbody.innerHTML = '<tr><td colspan="11" class="admin-empty">❌ ' + erpEsc(r.error.message) + '</td></tr>';
+    return;
+  }
+  var orders = r.data || [];
+
+  /* حالة زاتكا لكل طلب من e_invoices */
+  var zatcaByOrder = {};
+  var ids = orders.map(function(o){ return o.id; }).filter(function(id){ return id != null; });
+  if (ids.length) {
+    var rz = await supabaseClient.from('e_invoices').select('order_id, uuid, status').in('order_id', ids);
+    if (!rz.error && rz.data) rz.data.forEach(function(e){ zatcaByOrder[e.order_id] = e; });
+  }
+
+  var payDist = { cod: 0, transfer: 0, electronic: 0 };
+  var payDistSum = { cod: 0, transfer: 0, electronic: 0 };
+  var totals = { sales: 0, tax: 0, shipping: 0, count: 0, zatca: 0 };
+
+  var rows = orders.map(function(o){
+    var shipping = Number(o.shipping_fee != null ? o.shipping_fee : (o.shipping_cost || 0));
+    var tax = Number(o.tax || 0);
+    var total = Number(o.total || 0);
+    var preTax = o.subtotal != null ? Number(o.subtotal) : (total - tax - shipping);
+    var itemsCount = 0;
+    if (Array.isArray(o.items)) itemsCount = o.items.reduce(function(a, it){ return a + (Number(it.qty) || 1); }, 0);
+    var payKey = afakyDailyPayClass(o.payment_method);
+    var z = zatcaByOrder[o.id] || null;
+    var row = {
+      date: new Date(o.created_at),
+      ref: String(o.order_number || o.id),
+      customer: o.customer_name || '—',
+      items: itemsCount,
+      preTax: preTax, tax: tax, shipping: shipping, total: total,
+      payKey: payKey,
+      payLabel: o.payment_method || AFAKY_PAY_LABELS[payKey],
+      payStatus: o.payment_status || '—',
+      zatcaUuid: z ? z.uuid : '',
+      zatcaOk: !!z
+    };
+    totals.sales += preTax; totals.tax += tax; totals.shipping += shipping; totals.count++;
+    if (z) totals.zatca++;
+    payDist[payKey]++; payDistSum[payKey] += total;
+    return row;
+  });
+
+  afakyDailyState = { from: from, to: to, rows: rows, totals: totals, payDist: payDist, payDistSum: payDistSum };
+
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="11" class="admin-empty">لا توجد فواتير في هذه الفترة</td></tr>';
+  } else {
+    tbody.innerHTML = rows.map(function(x){
+      return '<tr>'
+        + '<td><strong>' + erpEsc(x.ref) + '</strong></td>'
+        + '<td dir="ltr">' + x.date.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }) + '</td>'
+        + '<td>' + erpEsc(x.customer) + '</td>'
+        + '<td>' + x.items + '</td>'
+        + '<td>' + x.preTax.toLocaleString() + '</td>'
+        + '<td>' + x.tax.toLocaleString() + '</td>'
+        + '<td>' + x.shipping.toLocaleString() + '</td>'
+        + '<td style="font-weight:700">' + x.total.toLocaleString() + '</td>'
+        + '<td>' + erpEsc(x.payLabel) + '</td>'
+        + '<td>' + erpEsc(x.payStatus) + '</td>'
+        + '<td>' + (x.zatcaOk ? '✅' : '—') + '</td>'
+        + '</tr>';
+    }).join('');
+  }
+
+  var grand = totals.sales + totals.tax + totals.shipping;
+  totalsBox.innerHTML = '<div style="display:flex;gap:10px;flex-wrap:wrap">'
+    + '<span class="erp-in" style="background:rgba(34,197,94,.12);font-weight:700">🧾 عدد الفواتير: ' + totals.count + ' (زاتكا: ' + totals.zatca + ')</span>'
+    + '<span class="erp-in" style="font-weight:700">💰 المبيعات قبل الضريبة: ' + totals.sales.toLocaleString() + ' ر.س</span>'
+    + '<span class="erp-in" style="font-weight:700">🧮 الضريبة: ' + totals.tax.toLocaleString() + ' ر.س</span>'
+    + '<span class="erp-in" style="font-weight:700">🚚 الشحن: ' + totals.shipping.toLocaleString() + ' ر.س</span>'
+    + '<span class="erp-in" style="background:rgba(14,165,233,.12);font-weight:800">📊 الإجمالي: ' + grand.toLocaleString() + ' ر.س</span>'
+    + '</div><div style="margin-top:8px;font-weight:700">💳 توزيع طرق الدفع: '
+    + 'نقدي/COD: ' + payDist.cod + ' (' + payDistSum.cod.toLocaleString() + ' ر.س) — '
+    + 'تحويل: ' + payDist.transfer + ' (' + payDistSum.transfer.toLocaleString() + ' ر.س) — '
+    + 'إلكتروني: ' + payDist.electronic + ' (' + payDistSum.electronic.toLocaleString() + ' ر.س)'
+    + '</div>';
+  logAudit('كشف آفاق اليومي', 'توليد كشف للفترة ' + from + ' — ' + to + ' (' + rows.length + ' فاتورة)');
+};
+
+var AFAKY_DAILY_HEAD = ['التاريخ', 'رقم_الفاتورة', 'العميل', 'الإجمالي_قبل_الضريبة', 'الضريبة', 'الشحن', 'الإجمالي', 'طريقة_الدفع', 'الحالة', 'رقم_زاتكا_UUID'];
+
+function afakyDailyAoa(){
+  var s = afakyDailyState;
+  return [AFAKY_DAILY_HEAD].concat(s.rows.map(function(x){
+    return [
+      x.date.getFullYear() + '-' + String(x.date.getMonth() + 1).padStart(2, '0') + '-' + String(x.date.getDate()).padStart(2, '0'),
+      x.ref, x.customer,
+      Number(x.preTax.toFixed(2)), Number(x.tax.toFixed(2)), Number(x.shipping.toFixed(2)), Number(x.total.toFixed(2)),
+      x.payLabel, x.payStatus, x.zatcaUuid
+    ];
+  }));
+}
+
+window.afakyDailyExport = function(){
+  if (!afakyDailyState || !afakyDailyState.rows.length) { erpToast('⚠️ ولّد الكشف أولاً باختيار التاريخ والضغط على «توليد الكشف»', 'warning'); return; }
+  var aoa = afakyDailyAoa();
+  var fname = 'afaky-daily-' + afakyDailyState.from + '_' + afakyDailyState.to;
+  if (typeof XLSX !== 'undefined') {
+    var ws = XLSX.utils.aoa_to_sheet(aoa);
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'كشف_آفاق_اليومي');
+    XLSX.writeFile(wb, fname + '.xlsx');
+  } else {
+    /* فولباك: CSV بترميز UTF-8 BOM ليفتح العربي في Excel */
+    var lines = aoa.map(function(row){
+      return row.map(function(c){
+        c = String(c == null ? '' : c);
+        return /[",\r\n]/.test(c) ? '"' + c.replace(/"/g, '""') + '"' : c;
+      }).join(',');
+    });
+    var blob = new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = fname + '.csv';
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  }
+  erpToast('✅ تم تصدير الكشف (' + afakyDailyState.rows.length + ' فاتورة)');
+  logAudit('تصدير كشف آفاق', 'تصدير ' + afakyDailyState.rows.length + ' فاتورة للفترة ' + afakyDailyState.from + ' — ' + afakyDailyState.to);
+};
+
+window.afakyDailyPrintSummary = function(){
+  if (!afakyDailyState) { erpToast('⚠️ ولّد الكشف أولاً', 'warning'); return; }
+  var s = afakyDailyState, t = s.totals;
+  var grand = t.sales + t.tax + t.shipping;
+  var html = '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>ملخص يومي — آفاق</title>'
+    + '<style>body{font-family:Tahoma,Arial,sans-serif;padding:24px;color:#111}h1{font-size:20px}table{width:100%;border-collapse:collapse;margin-top:16px}'
+    + 'td,th{border:1px solid #999;padding:8px;text-align:right}th{background:#eee}@media print{button{display:none}}</style></head><body>'
+    + '<h1>🧾 ملخص المبيعات اليومي — للمحاسبة (آفاق)</h1>'
+    + '<p>الفترة: <strong dir="ltr">' + erpEsc(s.from) + ' — ' + erpEsc(s.to) + '</strong> &nbsp;|&nbsp; تاريخ الطباعة: ' + new Date().toLocaleString('ar-EG') + '</p>'
+    + '<table><tbody>'
+    + '<tr><th>عدد الفواتير</th><td>' + t.count + '</td></tr>'
+    + '<tr><th>فواتير زاتكا المعتمدة</th><td>' + t.zatca + '</td></tr>'
+    + '<tr><th>إجمالي المبيعات قبل الضريبة</th><td>' + t.sales.toLocaleString() + ' ر.س</td></tr>'
+    + '<tr><th>ضريبة القيمة المضافة (15%)</th><td>' + t.tax.toLocaleString() + ' ر.س</td></tr>'
+    + '<tr><th>إجمالي الشحن</th><td>' + t.shipping.toLocaleString() + ' ر.س</td></tr>'
+    + '<tr><th>الإجمالي العام</th><td><strong>' + grand.toLocaleString() + ' ر.س</strong></td></tr>'
+    + '<tr><th>توزيع طرق الدفع</th><td>نقدي/COD: ' + s.payDist.cod + ' (' + s.payDistSum.cod.toLocaleString() + ' ر.س) — تحويل: ' + s.payDist.transfer + ' (' + s.payDistSum.transfer.toLocaleString() + ' ر.س) — إلكتروني: ' + s.payDist.electronic + ' (' + s.payDistSum.electronic.toLocaleString() + ' ر.س)</td></tr>'
+    + '</tbody></table>'
+    + '<p style="margin-top:24px">توقيع المستلم: ______________________</p>'
+    + '<button onclick="window.print()">🖨️ طباعة</button>'
+    + '<script>window.onload=function(){window.print();}<\/script></body></html>';
+  var w = window.open('', '_blank');
+  if (!w) { erpToast('⚠️ المتصفح منع النافذة المنبثقة — اسمح بها وأعد المحاولة', 'warning'); return; }
+  w.document.write(html); w.document.close();
+  logAudit('ملخص يومي آفاق', 'طباعة ملخص للفترة ' + s.from + ' — ' + s.to);
 };
