@@ -102,13 +102,38 @@ const SUPABASE_URL = 'https://kcbmvxuzjlaooknwhqqb.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjYm12eHV6amxhb29rbndocXFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NzkyMjAsImV4cCI6MjA5OTU1NTIyMH0.ayDpkfCKL90GcUKjbHQs7OvS5sxF1VSraWg58NHJ7ek';
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const ADMIN_PASSWORD_HASH = 'fa0364302fd4179ccdc61954ae5547bddaeddb70a7fa410c0b19ba74da23d533';
+// ملاحظة أمنية: إدارة صلاحيات الأدمن تتم حصرياً عبر Supabase Auth + دور admin/staff في admin-v2.js.
 const TAX_RATE = 0.15;
 const COUPONS = {
  'DORA10': { discount: 0.10, label: 'خصم 10%' },
  'DORA20': { discount: 0.20, label: 'خصم 20%' },
- 'WELCOME': { discount: 0.15, label: 'خصم ترحيبي 15%' }
+ 'WELCOME': { discount: 0.15, label: 'خصم ترحيبي 15%' },
+ 'WELCOME15': { discount: 0.15, label: 'خصم ترحيبي 15%' }
 };
+
+// ============================================================
+// إعدادات الشحن (بالريال السعودي) — عدّل القيم من هنا فقط.
+// يمكن تجاوز أي قيمة من إعدادات الموقع في Supabase (md.shipping_*)
+// freeAbove: الإجمالي بعد الخصم الذي يصبح عنده الشحن مجانياً
+// default: رسوم الشحن الافتراضية لأي مدينة غير مدرجة
+// regions: رسوم شحن خاصة لكل مدينة رئيسية
+// ============================================================
+const SHIPPING = {
+ freeAbove: 300,
+ default: 35,
+ regions: {
+  'الرياض': 25,
+  'جدة': 30,
+  'الدمام': 30
+ }
+};
+
+// ============================================================
+// بوابة الدفع Moyasar — الصق مفتاحك العلني (Publishable Key)
+// من لوحة تحكم Moyasar هنا لتفعيل الدفع الإلكتروني (مدى/فيزا/Apple Pay).
+// اتركه فارغاً '' لإخفاء خيار الدفع الإلكتروني في صفحة إتمام الطلب.
+// ============================================================
+const MOYASAR_PUBLISHABLE_KEY = '';
 
 let productsData = [];
 
@@ -224,13 +249,38 @@ function getSortedProducts(filter) {
  return filtered;
 }
 
+// ============================================================
+// تحميل تدريجي للمنتجات (تحسين أداء الصفحة الرئيسية)
+// العرض الافتراضي: 24 بطاقة ثم زر «عرض المزيد» يضيف 24 كل مرة.
+// عند استخدام فلتر/تصنيف محدد: أول 48 نتيجة مع نفس الزر.
+// ============================================================
+let productsVisibleCount = 0;
+let lastRenderFilter = null;
+const PRODUCTS_PAGE_ALL = 24;
+const PRODUCTS_PAGE_FILTERED = 48;
+
+function loadMoreProducts() {
+ const step = (currentFilter === 'all') ? PRODUCTS_PAGE_ALL : PRODUCTS_PAGE_FILTERED;
+ productsVisibleCount += step;
+ renderProducts(currentFilter);
+}
+
 function renderProducts(filter) {
+ if (filter !== lastRenderFilter) {
+  // فلتر جديد: نعيد العدّاد للبداية
+  productsVisibleCount = (filter === 'all') ? PRODUCTS_PAGE_ALL : PRODUCTS_PAGE_FILTERED;
+  lastRenderFilter = filter;
+ }
  currentFilter = filter;
  const grid = document.getElementById('productsGrid');
  if (!grid) return;
  const filtered = getSortedProducts(filter);
+ if (!productsVisibleCount || productsVisibleCount < 1) {
+  productsVisibleCount = (filter === 'all') ? PRODUCTS_PAGE_ALL : PRODUCTS_PAGE_FILTERED;
+ }
+ const visible = filtered.slice(0, productsVisibleCount);
 
- grid.innerHTML = filtered.map(p => {
+ grid.innerHTML = visible.map(p => {
   const stockClass = getStockClass(p.stock);
   const stockLabel = getStockLabel(p.stock);
   const stockPercent = getStockPercent(p.stock);
@@ -298,6 +348,28 @@ function renderProducts(filter) {
    </div>
   `;
  }).join('');
+
+ // زر «عرض المزيد» + عدّاد «عرض X من Y»
+ (function() {
+  var wrap = document.getElementById('loadMoreWrap');
+  if (!wrap) {
+   wrap = document.createElement('div');
+   wrap.id = 'loadMoreWrap';
+   wrap.style.cssText = 'width:100%;text-align:center;margin:20px 0;display:flex;flex-direction:column;align-items:center;gap:10px;';
+   if (grid.parentNode) {
+    if (grid.nextSibling) grid.parentNode.insertBefore(wrap, grid.nextSibling);
+    else grid.parentNode.appendChild(wrap);
+   }
+  }
+  if (filtered.length > visible.length) {
+   wrap.style.display = 'flex';
+   wrap.innerHTML = '<div style="color:#6B7280;font-size:14px">عرض ' + visible.length + ' من ' + filtered.length + ' منتجاً</div>' +
+    '<button type="button" onclick="loadMoreProducts()" class="load-more-btn" style="background:#1D4ED8;color:#fff;border:none;padding:12px 34px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">عرض المزيد ⬇</button>';
+  } else {
+   wrap.style.display = 'none';
+   wrap.innerHTML = '';
+  }
+ })();
 
  document.querySelectorAll('.filter-tab').forEach(btn => {
   btn.classList.remove('active');

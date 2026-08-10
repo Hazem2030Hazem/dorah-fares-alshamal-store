@@ -24,6 +24,9 @@
         .invoice-footer { margin-top: 40px; border-top: 2px solid #1E88E5; padding-top: 20px; text-align: center; color: #666; font-size: 13px; }
         .invoice-status { display: inline-block; padding: 8px 20px; border-radius: 20px; font-weight: 700; font-size: 14px; margin-bottom: 20px; }
         .invoice-status.issued { background: #DCFCE7; color: #15803D; }
+        .invoice-status.paid { background: #DCFCE7; color: #15803D; }
+        .invoice-status.pending { background: #FEF3C7; color: #B45309; }
+        .invoice-status.failed { background: #FEE2E2; color: #B91C1C; }
         .no-invoice { text-align: center; padding: 80px 20px; color: #999; }
         @media print { body { background: #fff; } .invoice-container { box-shadow: none; } }
     </style>
@@ -38,6 +41,90 @@
         const SUPABASE_URL = 'https://kcbmvxuzjlaooknwhqqb.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjYm12eHV6amxhb29rbndocXFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NzkyMjAsImV4cCI6MjA5OTU1NTIyMH0.ayDpkfCKL90GcUKjbHQs7OvS5sxF1VSraWg58NHJ7ek';
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // 💳 عرض نتيجة الدفع الإلكتروني (callback من Moyasar) — يقرأ الطلب ويحدّث حالة الدفع
+        async function loadOrderPayment() {
+            var params = new URLSearchParams(window.location.search);
+            var orderId = params.get('order');
+            var container = document.getElementById('invoiceContent');
+            // Moyasar يُلحق بـ callback_url: id و status و message
+            var payStatus = params.get('status'); // paid | failed | ...
+            if (!orderId) {
+                container.innerHTML = '<div class="no-invoice">❌ رقم الطلب غير موجود</div>';
+                return;
+            }
+            var result = await supabaseClient.from('store_orders').select('*').eq('id', orderId).single();
+            var order = result.data;
+            if (!order) {
+                container.innerHTML = '<div class="no-invoice">❌ الطلب غير موجود</div>';
+                return;
+            }
+            // تحديث حالة الدفع من نتيجة البوابة (إن لم تكن محدثة مسبقاً عبر webhook)
+            var finalStatus = order.payment_status || 'pending';
+            if (payStatus === 'paid' && finalStatus !== 'paid') {
+                try {
+                    await supabaseClient.from('store_orders').update({ payment_status: 'paid', status: 'new' }).eq('id', orderId);
+                    finalStatus = 'paid';
+                } catch (eUp) {}
+            } else if (payStatus === 'failed' && finalStatus === 'pending') {
+                try {
+                    await supabaseClient.from('store_orders').update({ payment_status: 'failed' }).eq('id', orderId);
+                    finalStatus = 'failed';
+                } catch (eUp2) {}
+            }
+            var statusMap = {
+                paid: ['paid', '✅ تم الدفع بنجاح — شكراً لك'],
+                failed: ['failed', '❌ فشلت عملية الدفع — يمكنك المحاولة مجدداً أو اختيار طريقة أخرى'],
+                pending: ['pending', '⏳ بانتظار تأكيد الدفع']
+            };
+            var st = statusMap[finalStatus] || statusMap.pending;
+            var items = Array.isArray(order.items) ? order.items : [];
+            var itemsHtml = items.map(function(item, i) {
+                return '<tr><td>' + (i+1) + '</td><td>' + item.name + '</td><td>' + item.qty + '</td><td>' + Number(item.price).toLocaleString() + ' ر.س</td><td class="text-left">' + (Number(item.price) * Number(item.qty)).toLocaleString() + ' ر.س</td></tr>';
+            }).join('');
+            container.innerHTML = `
+                <div class="invoice-container">
+                    <span class="invoice-status ${st[0]}">${st[1]}</span>
+                    <div class="invoice-header">
+                        <div>
+                            <h1>🧾 حالة الطلب والدفع</h1>
+                            <p style="color:#666;margin-top:5px">رقم الطلب: ${order.id}</p>
+                        </div>
+                        <div class="company-info">
+                            <strong>شركة درة فارس الشمال للتجارة</strong><br>
+                            info@alshamal-df.com<br>
+                            +966 56 871 7449
+                        </div>
+                    </div>
+                    <div class="invoice-details">
+                        <div>
+                            <strong>العميل:</strong> ${order.customer_name || '—'}<br>
+                            <strong>طريقة الدفع:</strong> ${order.payment_method || '—'}<br>
+                            <strong>مدينة التوصيل:</strong> ${order.shipping_city || '—'}<br>
+                        </div>
+                        <div>
+                            <strong>حالة الدفع:</strong> ${st[1]}<br>
+                        </div>
+                    </div>
+                    <table class="invoice-table">
+                        <thead><tr><th>#</th><th>المنتج</th><th>الكمية</th><th>السعر</th><th class="text-left">الإجمالي</th></tr></thead>
+                        <tbody>${itemsHtml}</tbody>
+                    </table>
+                    <div class="invoice-total">
+                        <p>المجموع الفرعي: <strong>${Number(order.subtotal || 0).toLocaleString()} ر.س</strong></p>
+                        <p>الضريبة (15%): <strong>${Number(order.tax || 0).toLocaleString()} ر.س</strong></p>
+                        <p>رسوم الشحن: <strong>${Number(order.shipping_fee || order.shipping_cost || 0).toLocaleString()} ر.س</strong></p>
+                        <p style="font-size:22px;margin-top:10px">المجموع الكلي: <strong>${Number(order.total || 0).toLocaleString()} ر.س</strong></p>
+                    </div>
+                    <div style="text-align:center;margin-top:25px">
+                        <a href="index.html" style="display:inline-block;background:#1E88E5;color:#fff;padding:12px 30px;border-radius:12px;text-decoration:none;font-weight:700">🏠 العودة للمتجر</a>
+                    </div>
+                    <div class="invoice-footer">
+                        <p>شكراً لتعاملكم معنا | شركة درة فارس الشمال</p>
+                    </div>
+                </div>
+            `;
+        }
 
         async function loadInvoice() {
             var params = new URLSearchParams(window.location.search);
@@ -114,7 +201,9 @@
             `;
         }
 
-        loadInvoice();
+        // إن وُجد ?order= فهذه عودة من بوابة الدفع — نعرض حالة الدفع، وإلا نعرض الفاتورة بالمعرف id
+        if (new URLSearchParams(window.location.search).get('order')) loadOrderPayment();
+        else loadInvoice();
     </script>
 <script src="chatbot-ai.js"></script>
 <script src="site-content.js"></script>
