@@ -74,8 +74,8 @@
 <div id="staff-login">
   <div class="login-card">
     <img src="logo-icon.png" alt="درة فارس الشمال" onerror="this.style.display='none'">
-    <h1>بوابة الموظفين</h1>
-    <div class="sub">درة فارس الشمال — دخول بصلاحيات الأدوار</div>
+    <h1 id="login-title">بوابة الموظفين</h1>
+    <div class="sub" id="login-sub">درة فارس الشمال — دخول بصلاحيات الأدوار</div>
     <input type="text" id="login-user" placeholder="اسم المستخدم" dir="ltr" autocomplete="username">
     <input type="password" id="login-pass" placeholder="كلمة المرور" dir="ltr" autocomplete="current-password">
     <button id="login-btn" onclick="doLogin()">🔐 دخول</button>
@@ -243,6 +243,22 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="zatca-store.js"></script>
+<script>
+/* عنوان شاشة الدخول حسب الدور القادم من بوابة الفريق (team-login.html?role=) */
+(function () {
+  var LABELS = { manager: '👔 دخول المدير', accountant: '📒 دخول المحاسب',
+                 biller: '🧾 دخول المفوتر', hr: '👥 دخول الموارد البشرية',
+                 viewer: '👁️ دخول المتابعة والعرض' };
+  try {
+    var r = new URLSearchParams(location.search).get('role');
+    if (r && LABELS[r]) {
+      document.getElementById('login-title').textContent = LABELS[r];
+      document.getElementById('login-sub').textContent =
+        'درة فارس الشمال — ' + LABELS[r].replace(/^[^ ]+ /, '');
+    }
+  } catch (e) {}
+})();
+</script>
 <script src="staff-portal.js"></script>
 </body>
 </html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>دخول فريق العمل | درة فارس الشمال</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#12101f; --card:#1c1930; --card2:#221e38; --line:#322c4d;
+    --text:#f3f1fa; --muted:#a49dc4; --red:#B42318; --red-soft:#e4b7b2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:'Tajawal','Cairo',sans-serif;background:var(--bg);color:var(--text);
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;
+    padding:48px 20px 32px;
+  }
+  .logo{font-family:'Cairo';font-weight:900;font-size:26px;margin-bottom:6px}
+  .logo b{color:var(--red-soft)}
+  .sub{color:var(--muted);font-size:14px;margin-bottom:8px}
+  .hint{
+    color:var(--muted);font-size:12px;margin-bottom:36px;background:var(--card);
+    border:1px solid var(--line);border-radius:999px;padding:8px 18px;
+  }
+  .hint kbd{
+    background:var(--card2);border:1px solid var(--line);border-radius:6px;
+    padding:2px 8px;font-family:inherit;font-size:11px;color:var(--text);
+  }
+  .grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:18px;width:100%;max-width:860px;
+  }
+  a.card{
+    display:flex;flex-direction:column;align-items:center;gap:12px;
+    background:var(--card);border:1px solid var(--line);border-radius:18px;
+    padding:30px 18px 24px;text-decoration:none;color:var(--text);
+    transition:transform .15s ease,border-color .15s ease,background .15s ease;
+  }
+  a.card:hover{transform:translateY(-4px);border-color:var(--red);background:var(--card2)}
+  a.card:active{transform:translateY(-1px)}
+  .icon{
+    width:64px;height:64px;border-radius:16px;display:flex;align-items:center;
+    justify-content:center;font-size:30px;background:var(--card2);
+    border:1px solid var(--line);
+  }
+  a.card:hover .icon{border-color:var(--red)}
+  .name{font-weight:800;font-size:17px}
+  .desc{color:var(--muted);font-size:12px;text-align:center;line-height:1.7}
+  .tag{
+    font-size:10px;color:var(--red-soft);background:rgba(180,35,24,.12);
+    border:1px solid rgba(180,35,24,.35);border-radius:999px;padding:3px 12px;
+  }
+  footer{margin-top:44px;color:var(--muted);font-size:11px;text-align:center;line-height:2}
+  .home{color:var(--muted);text-decoration:none;border-bottom:1px dashed var(--line)}
+  .home:hover{color:var(--text)}
+</style>
+</head>
+<body>
+
+<div class="logo">⚡ درة فارس <b>الشمال</b></div>
+<div class="sub">بوابة دخول فريق العمل — اختر صفحتك</div>
+<div class="hint">الاختصار من أي صفحة في الموقع: <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>G</kbd></div>
+
+<div class="grid">
+  <a class="card" href="pos.html">
+    <div class="icon">🧾</div>
+    <div class="name">الكاشير</div>
+    <div class="desc">شاشة نقاط البيع — اسم المستخدم والرمز السري (PIN)</div>
+    <div class="tag">POS</div>
+  </a>
+  <a class="card" href="staff.html?role=manager">
+    <div class="icon">📊</div>
+    <div class="name">المدير</div>
+    <div class="desc">لوحة المؤشرات، الرواتب، سجل المراجعة، كل الصلاحيات</div>
+    <div class="tag">Manager</div>
+  </a>
+  <a class="card" href="staff.html?role=accountant">
+    <div class="icon">🧮</div>
+    <div class="name">المحاسب</div>
+    <div class="desc">السندات والقيود، المصروفات، ميزان المراجعة، أعمار الذمم</div>
+    <div class="tag">Accounting</div>
+  </a>
+  <a class="card" href="staff.html?role=biller">
+    <div class="icon">🧾</div>
+    <div class="name">المفوتر</div>
+    <div class="desc">متابعة الطلبات وإصدار وطباعة الفواتير الإلكترونية المعتمدة</div>
+    <div class="tag">E-Invoicing</div>
+  </a>
+  <a class="card" href="staff.html?role=hr">
+    <div class="icon">👥</div>
+    <div class="name">الموارد البشرية</div>
+    <div class="desc">بيانات الموظفين ومسيّرات الرواتب — عرض فقط</div>
+    <div class="tag">HR</div>
+  </a>
+  <a class="card" href="staff.html?role=viewer">
+    <div class="icon">👁️</div>
+    <div class="name">متابعة وعرض</div>
+    <div class="desc">التقارير اليومية وقائمة الدخل — قراءة فقط لأي موظف</div>
+    <div class="tag">Viewer</div>
+  </a>
+</div>
+
+<footer>
+  كل موظف يدخل باسم المستخدم وكلمة المرور اللي جهّزها له المدير.<br>
+  نسيت بياناتك؟ تواصل مع مدير النظام. —
+  <a class="home" href="index.html">العودة للمتجر</a>
+</footer>
+
+</body>
+</html>

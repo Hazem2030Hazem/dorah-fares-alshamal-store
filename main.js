@@ -177,6 +177,11 @@ document.addEventListener('keydown', function(e) {
   window.open('admin.html?secret=dora2024', '_blank');
   showToast('🔓 جاري فتح لوحة الإدارة...');
  }
+ if (e.ctrlKey && e.altKey && (e.key.toLowerCase() === 'g' || e.code === 'KeyG')) {
+  e.preventDefault();
+  window.open('team-login.html', '_blank');
+  showToast('👥 جاري فتح بوابة فريق العمل...');
+ }
  if (e.key === 'Escape') {
   closeProductModal();
   closeCompareModal();
