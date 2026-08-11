@@ -253,6 +253,10 @@
                 <a onclick="showTab('hrplus')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> 👥 الموظفون والرواتب</a>
                 <a onclick="showTab('assetsplus')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V7l7-4 7 4v14"></path><line x1="9" y1="21" x2="9" y2="12"></line><line x1="15" y1="21" x2="15" y2="12"></line></svg> 🏢 الأصول الثابتة</a>
                 <a onclick="showTab('cashiers')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg> 🧑‍💼 الكاشيرون</a>
+                <a onclick="showTab('staffUsers')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> 🔐 مستخدمو البوابات</a>
+                <a onclick="showTab('crm')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg> 🤝 CRM</a>
+                <a onclick="showTab('manufacturing')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg> 🏭 التصنيع</a>
+                <a onclick="showTab('assistant')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> 🤖 المساعد الذكي</a>
                 <a onclick="showTab('auditLog')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> سجل التدقيق</a>
                 <div class="nav-section">المحتوى</div>
                 <a onclick="showTab('why_us')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> لماذا تختارنا</a>
@@ -707,6 +711,152 @@
                 </div>
                 <div id="cashiersList"><div class="admin-empty">⏳ جاري التحميل...</div></div>
             </div>
+            <div class="tab-content" id="staffUsersTab">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+                    <h3>🔐 مستخدمو البوابات — دخول الموظفين بأدوار (staff.html)</h3>
+                    <a class="btn-add" href="staff.html" target="_blank" style="text-decoration:none">🚪 فتح بوابة الموظفين</a>
+                </div>
+                <div class="erp-box" style="border:2px solid #1D4ED8;border-radius:14px;padding:18px;margin-bottom:22px">
+                    <h4 style="margin:0 0 12px">➕ إضافة مستخدم جديد</h4>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px">
+                        <input type="text" id="suUsername" placeholder="اسم المستخدم (إنجليزي) *" class="erp-in" dir="ltr" style="text-align:right">
+                        <input type="text" id="suFullName" placeholder="الاسم الكامل" class="erp-in">
+                        <select id="suRole" class="erp-in">
+                            <option value="viewer">👤 عرض — تقارير أساسية</option>
+                            <option value="biller">🧾 مفوتر — طلبات وفواتير</option>
+                            <option value="accountant">📒 محاسب — سندات وقيود وتقارير</option>
+                            <option value="hr">👥 موارد بشرية — رواتب عرضاً</option>
+                            <option value="manager">👔 مدير — كل الصلاحيات</option>
+                        </select>
+                        <input type="password" id="suPassword" placeholder="كلمة المرور (6+) *" class="erp-in" dir="ltr" style="text-align:center">
+                    </div>
+                    <button class="btn-add" style="margin-top:12px" onclick="staffUserAdd()">💾 حفظ المستخدم</button>
+                    <div style="color:#94A3B8;font-size:12px;margin-top:8px">🔐 تُخزَّن كلمة المرور كهاش SHA-256 مع salt فقط — 5 محاولات خاطئة تقفل الحساب 5 دقائق، والجلسة 12 ساعة. الموظف يدخل من staff.html فقط ولا يملك أي صلاحية على هذه اللوحة. إدارة المستخدمين وإعدادات زاتكا تبقى حصراً هنا.</div>
+                </div>
+                <div id="staffUsersList"><div class="admin-empty">⏳ جاري التحميل...</div></div>
+                <h4 style="margin:22px 0 10px">🕒 سجل مراجعة البوابات — آخر 100 حدث</h4>
+                <div id="staffAuditList"><div class="admin-empty">⏳ جاري التحميل...</div></div>
+            </div>
+            <div class="tab-content" id="crmTab">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+                    <h3 data-i18n="crm_title">🤝 إدارة علاقات العملاء (CRM) — العملاء المحتملون</h3>
+                    <select class="erp-in store-lang-sel" style="width:auto" onchange="storeLangSet(this.value)">
+                        <option value="ar">🇸🇦 عربي</option><option value="en">🇬🇧 English</option>
+                    </select>
+                </div>
+                <div class="erp-box" style="border:1px solid rgba(148,163,184,.25);border-radius:14px;padding:18px;margin-bottom:18px">
+                    <h4 style="margin:0 0 12px" data-i18n="crm_new_lead">➕ عميل محتمل جديد</h4>
+                    <input type="hidden" id="crmLeadId">
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">
+                        <input type="text" id="crmLeadName" class="erp-in" data-i18n="crm_ph_name" data-i18n-ph placeholder="الاسم *">
+                        <input type="text" id="crmLeadPhone" class="erp-in" dir="ltr" data-i18n="crm_ph_phone" data-i18n-ph placeholder="الجوال">
+                        <input type="text" id="crmLeadSource" class="erp-in" data-i18n="crm_ph_source" data-i18n-ph placeholder="المصدر (واتساب/موقع/معرض...)">
+                        <input type="text" id="crmLeadInterest" class="erp-in" data-i18n="crm_ph_interest" data-i18n-ph placeholder="الاهتمام (منتج/خدمة)">
+                        <input type="text" id="crmLeadNotes" class="erp-in" data-i18n="crm_ph_notes" data-i18n-ph placeholder="ملاحظات">
+                    </div>
+                    <div style="margin-top:12px;display:flex;gap:8px">
+                        <button class="btn-add" onclick="crmLeadSave()" data-i18n="crm_save">💾 حفظ</button>
+                        <button class="btn-edit" onclick="crmLeadReset()" data-i18n="crm_clear">مسح</button>
+                    </div>
+                </div>
+                <div id="crmActBox" class="erp-box" style="display:none;border:1px solid rgba(139,92,246,.4);border-radius:14px;padding:18px;margin-bottom:18px">
+                    <h4 style="margin:0 0 12px"><span data-i18n="crm_act_title">📞 تسجيل نشاط متابعة</span> — <b id="crmActLeadName"></b></h4>
+                    <input type="hidden" id="crmActLeadId">
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">
+                        <select id="crmActType" class="erp-in">
+                            <option value="call">📞 مكالمة</option>
+                            <option value="message">💬 رسالة</option>
+                            <option value="meeting">🤝 اجتماع</option>
+                        </select>
+                        <input type="text" id="crmActNote" class="erp-in" placeholder="ملاحظة النشاط">
+                        <input type="date" id="crmActRemind" class="erp-in" title="تاريخ تذكير المتابعة">
+                    </div>
+                    <button class="btn-add" style="margin-top:12px" onclick="crmActSave()" data-i18n="crm_act_save">💾 حفظ النشاط</button>
+                </div>
+                <div style="display:flex;gap:8px;margin-bottom:12px">
+                    <button class="btn-edit sub-tab active" id="crmSub_board" onclick="crmSubShow('board')" data-i18n="crm_sub_board">🗂️ لوحة الحالات</button>
+                    <button class="btn-edit sub-tab" id="crmSub_followups" onclick="crmSubShow('followups')" data-i18n="crm_sub_follow">⏰ متابعات اليوم</button>
+                </div>
+                <div id="crmPaneBoard">
+                    <div id="crmCounters" style="margin-bottom:12px"></div>
+                    <div id="crmBoard"><div class="admin-empty">⏳ جاري التحميل...</div></div>
+                </div>
+                <div id="crmPaneFollowups" style="display:none">
+                    <table style="width:100%"><thead><tr>
+                        <th data-i18n="crm_fu_lead">العميل المحتمل</th><th data-i18n="crm_fu_type">النوع</th>
+                        <th data-i18n="crm_fu_note">الملاحظة</th><th data-i18n="crm_fu_date">التاريخ</th>
+                        <th data-i18n="crm_fu_state">الحالة</th><th data-i18n="crm_fu_done">إنجاز</th>
+                    </tr></thead><tbody id="crmFollowups"></tbody></table>
+                </div>
+            </div>
+            <div class="tab-content" id="manufacturingTab">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+                    <h3 data-i18n="mfg_title">🏭 التصنيع — قوائم المكونات وأوامر التصنيع</h3>
+                    <select class="erp-in store-lang-sel" style="width:auto" onchange="storeLangSet(this.value)">
+                        <option value="ar">🇸🇦 عربي</option><option value="en">🇬🇧 English</option>
+                    </select>
+                </div>
+                <div style="display:flex;gap:8px;margin-bottom:12px">
+                    <button class="btn-edit sub-tab active" id="mfgSub_bom" onclick="mfgSubShow('bom')" data-i18n="mfg_sub_bom">📋 قوائم المكونات (BOM)</button>
+                    <button class="btn-edit sub-tab" id="mfgSub_orders" onclick="mfgSubShow('orders')" data-i18n="mfg_sub_orders">🏭 أوامر التصنيع</button>
+                </div>
+                <div id="mfgPaneBom">
+                    <div class="erp-box" style="border:1px solid rgba(148,163,184,.25);border-radius:14px;padding:18px;margin-bottom:18px">
+                        <h4 style="margin:0 0 12px" data-i18n="mfg_new_bom">➕ قائمة مكونات جديدة</h4>
+                        <div class="form-group"><label data-i18n="mfg_finished">المنتج التام</label>
+                            <select id="mfgBomProduct" class="erp-in"></select></div>
+                        <div class="form-group"><label data-i18n="crm_ph_notes">ملاحظات</label>
+                            <input type="text" id="mfgBomNotes" class="erp-in"></div>
+                        <label data-i18n="mfg_components">المكونات (لكل وحدة منتج تام)</label>
+                        <div id="mfgBomLines" style="margin:8px 0"></div>
+                        <div style="display:flex;gap:8px">
+                            <button class="btn-edit" onclick="mfgBomAddLine()" data-i18n="mfg_add_line">➕ إضافة مكوّن</button>
+                            <button class="btn-add" onclick="mfgBomSave()" data-i18n="mfg_save_bom">💾 حفظ القائمة</button>
+                        </div>
+                    </div>
+                    <div id="mfgBomViewBox" class="erp-box" style="display:none;border:1px solid rgba(34,197,94,.35);border-radius:14px;padding:18px;margin-bottom:18px"></div>
+                    <table style="width:100%"><thead><tr>
+                        <th data-i18n="mfg_th_product">المنتج التام</th><th data-i18n="mfg_th_comps">المكونات</th>
+                        <th data-i18n="mfg_th_notes">ملاحظات</th><th data-i18n="mfg_th_date">التاريخ</th>
+                        <th data-i18n="mfg_th_actions">إجراءات</th>
+                    </tr></thead><tbody id="mfgBomList"><tr><td colspan="5" class="admin-empty">⏳ جاري التحميل...</td></tr></tbody></table>
+                </div>
+                <div id="mfgPaneOrders" style="display:none">
+                    <div id="mfgOrderBox" class="erp-box" style="display:none;border:1px solid rgba(139,92,246,.4);border-radius:14px;padding:18px;margin-bottom:18px">
+                        <h4 style="margin:0 0 12px"><span data-i18n="mfg_order_title">🏭 أمر تصنيع جديد</span> — <b id="mfgOrderBomName"></b></h4>
+                        <input type="hidden" id="mfgOrderBomId">
+                        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+                            <label data-i18n="mfg_qty">الكمية</label>
+                            <input type="number" id="mfgOrderQty" class="erp-in" style="width:120px" min="1" step="any" value="1">
+                            <button class="btn-edit" onclick="mfgOrderCheckNow()" data-i18n="mfg_check">🔍 تحقق من التوفر</button>
+                            <button class="btn-add" onclick="mfgOrderSave()" data-i18n="mfg_create">💾 إنشاء (مسودة)</button>
+                        </div>
+                        <div id="mfgOrderCheck" style="margin-top:10px"></div>
+                    </div>
+                    <table style="width:100%"><thead><tr>
+                        <th data-i18n="mfg_th_no">الرقم</th><th data-i18n="mfg_th_product">المنتج التام</th>
+                        <th data-i18n="mfg_th_qty">الكمية</th><th data-i18n="mfg_th_cost">التكلفة</th>
+                        <th data-i18n="mfg_th_status">الحالة</th><th data-i18n="mfg_th_entry">القيد</th>
+                        <th data-i18n="mfg_th_actions">إجراءات</th>
+                    </tr></thead><tbody id="mfgOrdersList"><tr><td colspan="7" class="admin-empty">⏳ جاري التحميل...</td></tr></tbody></table>
+                </div>
+            </div>
+            <div class="tab-content" id="assistantTab">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+                    <h3 data-i18n="asst_title">🤖 المساعد الذكي — اسأل عن أرقام متجرك</h3>
+                    <select class="erp-in store-lang-sel" style="width:auto" onchange="storeLangSet(this.value)">
+                        <option value="ar">🇸🇦 عربي</option><option value="en">🇬🇧 English</option>
+                    </select>
+                </div>
+                <div style="color:#94A3B8;font-size:12px;margin-bottom:10px" data-i18n="asst_hint">محرك قواعد محلي بالكامل — لا تُرسل أي بيانات خارج المتصفح.</div>
+                <div class="erp-box" style="border:1px solid rgba(148,163,184,.25);border-radius:14px;padding:18px">
+                    <div id="asstMessages" style="max-height:420px;overflow-y:auto;margin-bottom:12px"></div>
+                    <div style="display:flex;gap:8px">
+                        <input type="text" id="asstInput" class="erp-in" style="flex:1" data-i18n="asst_ph" data-i18n-ph placeholder="مثال: مبيعات الشهر الماضي؟ أفضل الأصناف؟ المتأخرات؟">
+                        <button class="btn-add" onclick="asstAsk()" data-i18n="asst_send">إرسال</button>
+                    </div>
+                </div>
+            </div>
             <div class="tab-content" id="auditLogTab">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> سجل التدقيق — آخر 100 عملية</h3><button class="btn-add" onclick="loadAuditLog()">🔄 تحديث</button></div>
                 <div id="auditLogList"><div class="admin-empty">⏳ جاري التحميل...</div></div>
@@ -1118,6 +1268,9 @@ window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
 <script src="admin-v2.js"></script>
 <script src="store-erp-plus.js"></script>
 <script src="pos-admin.js"></script>
+<script src="staff-admin.js"></script>
+<script src="store-lang.js"></script>
+<script src="store-crm-mfg.js"></script>
 <script src="site-content.js"></script>
 </body>
 </html>

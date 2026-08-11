@@ -141,6 +141,10 @@ window.showTab=function(tabName){
   if(tabName==='hrplus'&&typeof loadHrPlusTab==='function')loadHrPlusTab();
   if(tabName==='assetsplus'&&typeof loadAssetsPlusTab==='function')loadAssetsPlusTab();
   if(tabName==='cashiers'&&typeof loadCashiersTab==='function')loadCashiersTab();
+  if(tabName==='staffUsers'&&typeof loadStaffUsersTab==='function')loadStaffUsersTab();
+  if(tabName==='crm'&&typeof loadCrmTab==='function')loadCrmTab();
+  if(tabName==='manufacturing'&&typeof loadMfgTab==='function')loadMfgTab();
+  if(tabName==='assistant'&&typeof loadAssistantTab==='function')loadAssistantTab();
   if(tabName==='bank_accounts')loadBankAccounts();
   if(tabName==='payment_methods')loadPaymentMethodsAdmin();
   if(tabName==='gateways')loadPaymentGateways();
@@ -150,7 +154,7 @@ window.showTab=function(tabName){
   if(tabName==='company_info')loadCompanyInfo();
   if(tabName==='gov_docs')loadGovDocs();
   if(tabName==='marketing')loadMarketing();
-  var tabTitles={home_hero:'محتوى الصفحة الرئيسية',dashboard:'لوحة المؤشرات',accounting:'المحاسبة',purchases:'المشتريات والموردون',treasury:'السندات والخزينة',returns:'المرتجعات',expenses:'المصروفات',auditLog:'سجل التدقيق',einvoice:'الفوترة الإلكترونية',zatca:'⚡ زاتكا — الربط والاعتماد',bank_accounts:'الحسابات البنكية',payment_methods:'طرق الدفع',gateways:'بوابات الدفع',shipping:'الشحن',settings:'الإعدادات العامة',company_info:'بيانات الشركة',gov_docs:'التوثيق الحكومي',marketing:'التسويق',files:'الملفات'};
+  var tabTitles={home_hero:'محتوى الصفحة الرئيسية',dashboard:'لوحة المؤشرات',accounting:'المحاسبة',purchases:'المشتريات والموردون',treasury:'السندات والخزينة',returns:'المرتجعات',expenses:'المصروفات',auditLog:'سجل التدقيق',staffUsers:'مستخدمو البوابات',crm:'🤝 CRM',manufacturing:'🏭 التصنيع',assistant:'🤖 المساعد الذكي',einvoice:'الفوترة الإلكترونية',zatca:'⚡ زاتكا — الربط والاعتماد',bank_accounts:'الحسابات البنكية',payment_methods:'طرق الدفع',gateways:'بوابات الدفع',shipping:'الشحن',settings:'الإعدادات العامة',company_info:'بيانات الشركة',gov_docs:'التوثيق الحكومي',marketing:'التسويق',files:'الملفات'};
   document.getElementById('pageTitle').textContent=tabTitles[tabName]||tabName;
 };
 
