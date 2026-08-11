@@ -131,13 +131,16 @@ window.showTab=function(tabName){
   if(tabName==='afaky'){loadAfakySettings();loadAfakySyncLog();}
   if(tabName==='dashboard')renderDashboardCharts();
   if(tabName==='auditLog')loadAuditLog();
-  if(tabName==='accounting'){loadErpJournal();loadErpTrialBalance();loadErpIncome();if(typeof loadErpMonthly==='function')loadErpMonthly();if(typeof afakyDailyDefaultDates==='function')afakyDailyDefaultDates();}
+  if(tabName==='accounting'){loadErpJournal();loadErpTrialBalance();loadErpIncome();if(typeof loadErpMonthly==='function')loadErpMonthly();if(typeof afakyDailyDefaultDates==='function')afakyDailyDefaultDates();if(typeof loadReportsPlus==='function')loadReportsPlus();}
   if(tabName==='purchases'){loadPurchasesTab();}
   if(tabName==='treasury'){loadTreasuryTab();}
   if(tabName==='returns'){loadReturnsTab();}
-  if(tabName==='expenses'){loadExpensesTab();}
+  if(tabName==='expenses'){loadExpensesTab();if(typeof loadExpensesPlus==='function')loadExpensesPlus();}
   if(tabName==='einvoice'){loadZatcaSettings();loadZatcaInvoices();}
   if(tabName==='zatca'&&typeof loadZatcaTab==='function')loadZatcaTab();
+  if(tabName==='hrplus'&&typeof loadHrPlusTab==='function')loadHrPlusTab();
+  if(tabName==='assetsplus'&&typeof loadAssetsPlusTab==='function')loadAssetsPlusTab();
+  if(tabName==='cashiers'&&typeof loadCashiersTab==='function')loadCashiersTab();
   if(tabName==='bank_accounts')loadBankAccounts();
   if(tabName==='payment_methods')loadPaymentMethodsAdmin();
   if(tabName==='gateways')loadPaymentGateways();

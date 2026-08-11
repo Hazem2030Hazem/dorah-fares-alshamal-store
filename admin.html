@@ -250,6 +250,9 @@
                 <a onclick="showTab('treasury')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="3"></circle></svg> 💰 السندات والخزينة</a>
                 <a onclick="showTab('returns')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg> 🔄 المرتجعات</a>
                 <a onclick="showTab('expenses')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"></path><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg> 🧾 المصروفات</a>
+                <a onclick="showTab('hrplus')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> 👥 الموظفون والرواتب</a>
+                <a onclick="showTab('assetsplus')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V7l7-4 7 4v14"></path><line x1="9" y1="21" x2="9" y2="12"></line><line x1="15" y1="21" x2="15" y2="12"></line></svg> 🏢 الأصول الثابتة</a>
+                <a onclick="showTab('cashiers')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg> 🧑‍💼 الكاشيرون</a>
                 <a onclick="showTab('auditLog')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> سجل التدقيق</a>
                 <div class="nav-section">المحتوى</div>
                 <a onclick="showTab('why_us')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> لماذا تختارنا</a>
@@ -463,7 +466,163 @@
                 <!-- المصروفات المسجلة -->
                 <h4 style="margin:18px 0 10px">📋 المصروفات المسجّلة</h4>
                 <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>رقم</th><th>التاريخ</th><th>الحساب</th><th>الجهة</th><th>المبلغ</th><th>الدفع من</th><th>البيان</th></tr></thead><tbody id="expensesTable"><tr><td colspan="7" class="admin-empty">⏳ جاري التحميل...</td></tr></tbody></table></div>
+
+                <!-- ═══ Z3: المصروفات الموسّعة + مراكز التكلفة + المتكررة ═══ -->
+                <div id="expensesPlusArea">
+                    <hr style="border:none;border-top:1px dashed rgba(148,163,184,.3);margin:26px 0">
+                    <h4 style="margin:0 0 10px">💸 المصروفات الموسّعة — تصنيفات ومراكز تكلفة ومرفقات</h4>
+                    <div class="erp-box" style="border:2px solid #F59E0B;border-radius:14px;padding:18px;margin-bottom:22px">
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">
+                            <div class="form-group" style="margin:0"><label>التاريخ</label><input type="date" id="exp2Date" class="erp-in" dir="ltr"></div>
+                            <div class="form-group" style="margin:0"><label>البند/التصنيف *</label><input type="text" id="exp2Cat" class="erp-in" placeholder="كهرباء، إيجار، اتصالات..."></div>
+                            <div class="form-group" style="margin:0"><label>المبلغ (شامل الضريبة) *</label><input type="number" id="exp2Amount" class="erp-in" min="0" step="any" placeholder="0.00"></div>
+                            <div class="form-group" style="margin:0"><label>مركز التكلفة</label><select id="exp2Cc" class="erp-in"></select></div>
+                            <div class="form-group" style="margin:0"><label>حساب المصروف</label><select id="exp2Acc" class="erp-in"></select></div>
+                            <div class="form-group" style="margin:0"><label>الدفع من</label><select id="exp2PayFrom" class="erp-in"><option value="1100">💵 الخزينة</option><option value="1110">🏦 البنك</option></select></div>
+                            <div class="form-group" style="margin:0"><label>المورد</label><input type="text" id="exp2Vendor" class="erp-in"></div>
+                            <div class="form-group" style="margin:0"><label>البيان</label><input type="text" id="exp2Memo" class="erp-in"></div>
+                            <div class="form-group" style="margin:0;grid-column:1/-1"><label>رابط مرفق (اختياري)</label><input type="url" id="exp2Attach" class="erp-in" dir="ltr" style="text-align:left" placeholder="https://..."></div>
+                        </div>
+                        <button class="btn-add" style="background:#F59E0B;margin-top:12px" onclick="exp2Save()">💾 حفظ المصروف + ترحيل القيد</button>
+                    </div>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin-bottom:12px">
+                        <div class="form-group" style="margin:0"><label>شهر الفلترة</label><input type="month" id="exp2Month" class="erp-in" dir="ltr"></div>
+                        <div class="form-group" style="margin:0"><label>التصنيف</label><input type="text" id="exp2FilterCat" class="erp-in" placeholder="الكل"></div>
+                        <button class="btn-add" onclick="exp2Reload()">🔍 عرض</button>
+                    </div>
+                    <div style="overflow-x:auto;margin-bottom:22px"><table class="admin-table"><thead><tr><th>التاريخ</th><th>التصنيف</th><th>المبلغ</th><th>مركز التكلفة</th><th>المورد</th><th>البيان</th><th>مرفق</th><th>القيد</th></tr></thead><tbody id="exp2Table"><tr><td colspan="8" class="admin-empty">⏳ جاري التحميل...</td></tr></tbody></table></div>
+
+                    <div class="erp-box" style="border:2px solid #8B5CF6;border-radius:14px;padding:18px;margin-bottom:22px">
+                        <h4 style="margin:0 0 12px">🏷️ مراكز التكلفة</h4>
+                        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+                            <input type="text" id="ccCode" class="erp-in" style="max-width:130px" placeholder="الكود" dir="ltr">
+                            <input type="text" id="ccName" class="erp-in" style="max-width:240px" placeholder="الاسم *">
+                            <button class="btn-add" style="background:#8B5CF6" onclick="ccAdd()">➕ إضافة</button>
+                        </div>
+                    </div>
+
+                    <div class="erp-box" style="border:2px solid #22C55E;border-radius:14px;padding:18px">
+                        <h4 style="margin:0 0 6px">🔁 مصروف متكرر (شهري)</h4>
+                        <p style="margin:0 0 12px;color:#94A3B8;font-size:13px">يُولَّد قيده تلقائياً عند فتح هذه الشاشة إذا حان موعد استحقاقه.</p>
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px">
+                            <input type="text" id="recCat" class="erp-in" placeholder="البند * (إيجار مثلاً)">
+                            <input type="number" id="recAmount" class="erp-in" min="0" step="any" placeholder="المبلغ *">
+                            <input type="text" id="recVendor" class="erp-in" placeholder="المورد">
+                            <select id="recCc" class="erp-in"></select>
+                            <select id="recAcc" class="erp-in"></select>
+                            <select id="recPayFrom" class="erp-in"><option value="1100">💵 الخزينة</option><option value="1110">🏦 البنك</option></select>
+                            <div class="form-group" style="margin:0"><label>تاريخ البداية/الاستحقاق القادم</label><input type="date" id="recStart" class="erp-in" dir="ltr"></div>
+                            <button class="btn-add" style="background:#22C55E" onclick="recAdd()">➕ إضافة</button>
+                        </div>
+                        <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>البند</th><th>المبلغ</th><th>الاستحقاق القادم</th><th>عدد التوليدات</th><th>الحالة</th><th></th></tr></thead><tbody id="recTable"><tr><td colspan="6" class="admin-empty">⏳ جاري التحميل...</td></tr></tbody></table></div>
+                    </div>
+                </div>
             </div>
+            <div class="tab-content" id="hrplusTab">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+                    <h3>👥 الموظفون والرواتب (GOSI السعودي)</h3>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap">
+                        <button class="btn-add" id="hrp-sub-emps" style="background:#8B5CF6" onclick="hrpSub('emps')">👥 الموظفون</button>
+                        <button class="btn-add" id="hrp-sub-runs" style="background:rgba(148,163,184,.2)" onclick="hrpSub('runs')">🧾 مسيّرات الرواتب</button>
+                        <button class="btn-add" id="hrp-sub-eos" style="background:rgba(148,163,184,.2)" onclick="hrpSub('eos')">🏁 نهاية الخدمة</button>
+                    </div>
+                </div>
+                <div class="zatca-note">ℹ️ GOSI: سعودي = خصم موظف 10% + حصة صاحب عمل 12% على (الأساسي + بدل السكن) بسقف 45,000 ر.س — غير سعودي = 2% أخطار مهنية على صاحب العمل فقط بلا خصم من الموظف. القيد: مدين رواتب وأجور (5200) + حصة صاحب العمل (5210) / دائن رواتب مستحقة (2300) + GOSI مستحق (2310).</div>
+
+                <div id="hrp-pane-emps">
+                    <div class="erp-box" style="border:2px solid #8B5CF6;border-radius:14px;padding:18px;margin:16px 0 22px">
+                        <h4 style="margin:0 0 12px">➕ إضافة / تعديل موظف</h4>
+                        <input type="hidden" id="hrpEmpId">
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">
+                            <input type="text" id="hrpEmpName" class="erp-in" placeholder="اسم الموظف *">
+                            <select id="hrpEmpNat" class="erp-in"><option value="سعودي">🇸🇦 سعودي</option><option value="غير سعودي">🌍 غير سعودي</option></select>
+                            <input type="tel" id="hrpEmpPhone" class="erp-in" placeholder="الجوال" dir="ltr" style="text-align:right">
+                            <input type="text" id="hrpEmpJob" class="erp-in" placeholder="الوظيفة">
+                            <div class="form-group" style="margin:0"><label>الراتب الأساسي *</label><input type="number" id="hrpEmpBasic" class="erp-in" min="0" step="any"></div>
+                            <div class="form-group" style="margin:0"><label>بدل السكن</label><input type="number" id="hrpEmpHousing" class="erp-in" min="0" step="any"></div>
+                            <div class="form-group" style="margin:0"><label>بدلات أخرى</label><input type="number" id="hrpEmpOther" class="erp-in" min="0" step="any"></div>
+                            <div class="form-group" style="margin:0"><label>تاريخ التعيين</label><input type="date" id="hrpEmpHire" class="erp-in" dir="ltr"></div>
+                            <input type="text" id="hrpEmpIban" class="erp-in" placeholder="IBAN" dir="ltr" style="text-align:right">
+                        </div>
+                        <div style="display:flex;gap:10px;margin-top:12px">
+                            <button class="btn-add" id="hrpEmpSaveBtn" onclick="hrpSaveEmp()">➕ إضافة الموظف</button>
+                            <button class="btn-add" style="background:rgba(148,163,184,.3)" onclick="hrpResetEmpForm()">↩️ تفريغ</button>
+                        </div>
+                    </div>
+                    <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>الاسم</th><th>الجنسية</th><th>الجوال</th><th>الوظيفة</th><th>الأساسي</th><th>السكن</th><th>أخرى</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody id="hrpEmpsTable"><tr><td colspan="9" class="admin-empty">⏳ جاري التحميل...</td></tr></tbody></table></div>
+                </div>
+
+                <div id="hrp-pane-runs" style="display:none">
+                    <div class="erp-box" style="border:2px solid #22C55E;border-radius:14px;padding:18px;margin:16px 0 22px">
+                        <h4 style="margin:0 0 12px">🧾 توليد مسيّر رواتب شهري</h4>
+                        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end">
+                            <div class="form-group" style="margin:0"><label>الشهر</label><input type="month" id="hrpRunMonth" class="erp-in" dir="ltr"></div>
+                            <button class="btn-add" style="background:#22C55E" onclick="hrpGenerateRun()">⚙️ توليد المسيّر (لكل الموظفين النشطين)</button>
+                        </div>
+                    </div>
+                    <div style="overflow-x:auto;margin-bottom:18px"><table class="admin-table"><thead><tr><th>الشهر</th><th>الموظفون</th><th>الإجمالي</th><th>GOSI موظف</th><th>GOSI صاحب عمل</th><th>الصافي</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody id="hrpRunsTable"><tr><td colspan="8" class="admin-empty">⏳ جاري التحميل...</td></tr></tbody></table></div>
+                    <div id="hrpSlipsBox" class="erp-box" style="display:none;border:2px solid #0EA5E9;border-radius:14px;padding:18px">
+                        <h4 style="margin:0 0 12px" id="hrpSlipsTitle">📋 قسائم الرواتب</h4>
+                        <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>الموظف</th><th>الأساسي</th><th>السكن</th><th>أخرى</th><th>الإجمالي</th><th>خصم GOSI</th><th>GOSI صاحب عمل</th><th>الصافي</th><th></th></tr></thead><tbody id="hrpSlipsTable"></tbody></table></div>
+                    </div>
+                </div>
+
+                <div id="hrp-pane-eos" style="display:none">
+                    <div class="erp-box" style="border:2px solid #F59E0B;border-radius:14px;padding:18px;margin-top:16px">
+                        <h4 style="margin:0 0 6px">🏁 حاسبة مكافأة نهاية الخدمة (نظام العمل السعودي)</h4>
+                        <p style="margin:0 0 12px;color:#94A3B8;font-size:13px">نصف شهر عن كل سنة من أول 5 سنوات + شهر كامل عمّا بعدها (الأجر الشامل). الاستقالة: أقل من سنتين لا شيء، 2-5 ثلث، 5-10 ثلثان، 10+ كاملة. الإنهاء من صاحب العمل = كاملة.</p>
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">
+                            <select id="hrpEosEmp" class="erp-in" onchange="hrpEosFill()"></select>
+                            <div class="form-group" style="margin:0"><label>تاريخ التعيين</label><input type="date" id="hrpEosHire" class="erp-in" dir="ltr"></div>
+                            <div class="form-group" style="margin:0"><label>تاريخ نهاية العلاقة</label><input type="date" id="hrpEosEnd" class="erp-in" dir="ltr"></div>
+                            <div class="form-group" style="margin:0"><label>الأجر الشامل الشهري</label><input type="number" id="hrpEosWage" class="erp-in" min="0" step="any"></div>
+                            <select id="hrpEosReason" class="erp-in"><option value="termination">إنهاء من صاحب العمل</option><option value="resignation">استقالة الموظف</option></select>
+                        </div>
+                        <div style="display:flex;gap:10px;margin-top:12px">
+                            <button class="btn-add" style="background:#F59E0B" onclick="hrpEosCalc()">🧮 احسب المكافأة</button>
+                            <button class="btn-add" style="background:#22C55E" onclick="hrpEosPost()">📤 ترحيل قيد المكافأة</button>
+                        </div>
+                        <div id="hrpEosResult"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="assetsplusTab">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px"><h3>🏢 الأصول الثابتة والإهلاك</h3><button class="btn-add" onclick="loadAssetsPlusTab()">🔄 تحديث</button></div>
+                <div class="zatca-note">ℹ️ بداية الإهلاك من الشهر التالي لتاريخ الشراء. القسط الثابت: (التكلفة − الخردة)/العمر شهرياً. المتناقص: معدل سنوي 2× القسط الثابت على القيمة الدفترية بلا تجاوز الخردة. وحدات الإنتاج: حسب الاستهلاك الفعلي المُدخل عند الترحيل. قيد الشهر: مدين مصروف الإهلاك (5300) / دائن مجمع الإهلاك (1590).</div>
+
+                <div class="erp-box" style="border:2px solid #8B5CF6;border-radius:14px;padding:18px;margin:16px 0 22px">
+                    <h4 style="margin:0 0 12px">➕ إضافة أصل</h4>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">
+                        <input type="text" id="astName" class="erp-in" placeholder="اسم الأصل *">
+                        <input type="text" id="astCat" class="erp-in" placeholder="التصنيف (أجهزة، أثاث...)">
+                        <div class="form-group" style="margin:0"><label>تاريخ الشراء *</label><input type="date" id="astDate" class="erp-in" dir="ltr"></div>
+                        <div class="form-group" style="margin:0"><label>التكلفة *</label><input type="number" id="astCost" class="erp-in" min="0" step="any"></div>
+                        <div class="form-group" style="margin:0"><label>قيمة الخردة</label><input type="number" id="astSalvage" class="erp-in" min="0" step="any"></div>
+                        <div class="form-group" style="margin:0"><label>العمر الإنتاجي (سنوات)</label><input type="number" id="astLife" class="erp-in" min="1" step="1" value="5"></div>
+                        <select id="astMethod" class="erp-in" onchange="astMethodChange()"><option value="sl">قسط ثابت</option><option value="db">قسط متناقص 2×</option><option value="uop">وحدات إنتاج</option></select>
+                        <input type="number" id="astUnits" class="erp-in" min="0" step="any" placeholder="إجمالي الوحدات المقدرة" style="display:none">
+                    </div>
+                    <button class="btn-add" style="margin-top:12px" onclick="astSave()">💾 حفظ الأصل</button>
+                </div>
+
+                <div class="erp-box" style="border:2px solid #22C55E;border-radius:14px;padding:18px;margin-bottom:22px">
+                    <h4 style="margin:0 0 12px">📤 ترحيل إهلاك الشهر</h4>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end">
+                        <div class="form-group" style="margin:0"><label>الشهر</label><input type="month" id="astDepMonth" class="erp-in" dir="ltr"></div>
+                        <button class="btn-add" onclick="astPreviewDep()">🔍 معاينة المستحق</button>
+                        <button class="btn-add" id="astDepPostBtn" style="background:#22C55E;display:none" onclick="astPostDep()">📤 ترحيل القيد</button>
+                    </div>
+                    <div id="astDepPreview" style="display:none;margin-top:14px;overflow-x:auto"><table class="admin-table"><thead><tr><th>الأصل</th><th>الطريقة</th><th>وحدات الشهر (لوحدات الإنتاج)</th><th>الإهلاك</th></tr></thead><tbody id="astDepPreviewTable"></tbody></table></div>
+                </div>
+
+                <h4 style="margin:18px 0 10px">📋 سجل الأصول (القيمة الدفترية = التكلفة − الإهلاك المرحّل)</h4>
+                <div style="overflow-x:auto;margin-bottom:22px"><table class="admin-table"><thead><tr><th>الاسم</th><th>التصنيف</th><th>تاريخ الشراء</th><th>التكلفة</th><th>الخردة</th><th>العمر</th><th>الطريقة</th><th>الإهلاك المرحّل</th><th>القيمة الدفترية</th><th></th></tr></thead><tbody id="astTable"><tr><td colspan="10" class="admin-empty">⏳ جاري التحميل...</td></tr></tbody></table></div>
+
+                <h4 style="margin:18px 0 10px">🧾 الإهلاكات المرحّلة</h4>
+                <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>الفترة</th><th>الأصل</th><th>المبلغ</th><th>القيد</th></tr></thead><tbody id="astDepTable"><tr><td colspan="4" class="admin-empty">⏳ جاري التحميل...</td></tr></tbody></table></div>
+            </div>
+
             <div class="tab-content" id="accountingTab">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3>🏛️ المحاسبة — قيود اليومية والتقارير</h3><button class="btn-add" onclick="erpPostUnposted()">⚡ ترحيل الطلبات غير المرحّلة</button></div>
                 <div class="zatca-note">ℹ️ كل قيد يتولد من طلب بيع موجود (مدين: العملاء / دائن: المبيعات) — القيود لا تُعدَّل ولا تُحذف، التصحيح بقيود عكسية فقط. الأرصدة مشتقة تلقائياً.</div>
@@ -494,6 +653,59 @@
                     <button class="btn-add" style="background:#0EA5E9" onclick="erpExport('income')">📈 قائمة الدخل</button>
                     <button class="btn-add" style="background:#0EA5E9" onclick="erpExport('monthly')">📊 الأرباح الشهرية</button>
                 </div>
+
+                <!-- ═══ Z3: تقارير متقدمة ═══ -->
+                <div id="reportsPlusArea">
+                    <hr style="border:none;border-top:1px dashed rgba(148,163,184,.3);margin:26px 0">
+                    <h4 style="margin:0 0 10px">📊 تقارير متقدمة</h4>
+
+                    <div class="erp-box" style="border:2px solid #F59E0B;border-radius:14px;padding:18px;margin-bottom:22px">
+                        <h4 style="margin:0 0 6px">⏳ أعمار ذمم العملاء (0-30 / 31-60 / 61-90 / +90)</h4>
+                        <p style="margin:0 0 12px;color:#94A3B8;font-size:13px">من طلبات المتجر غير المدفوعة، مع توزيع سندات القبض FIFO على الأقدم فالأحدث — الاستحقاق = تاريخ الطلب + 30 يوماً.</p>
+                        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+                            <button class="btn-add" style="background:#F59E0B" onclick="rpAgingRun()">⚙️ تشغيل التقرير</button>
+                            <button class="btn-add" style="background:#16A34A" onclick="rpAgingExport()">📥 تصدير Excel</button>
+                        </div>
+                        <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>العميل</th><th>0-30 يوم</th><th>31-60 يوم</th><th>61-90 يوم</th><th>+90 يوم</th><th>الإجمالي</th></tr></thead><tbody id="rpAgingTable"><tr><td colspan="6" class="admin-empty">اضغط «تشغيل التقرير»</td></tr></tbody></table></div>
+                    </div>
+
+                    <div class="erp-box" style="border:2px solid #22C55E;border-radius:14px;padding:18px;margin-bottom:22px">
+                        <h4 style="margin:0 0 12px">💵 التدفق النقدي الشهري المبسط (من السندات)</h4>
+                        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin-bottom:12px">
+                            <div class="form-group" style="margin:0"><label>الشهر</label><input type="month" id="rpCfMonth" class="erp-in" dir="ltr"></div>
+                            <button class="btn-add" style="background:#22C55E" onclick="rpCashflowRun()">⚙️ عرض</button>
+                        </div>
+                        <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>الشهر</th><th>📥 المقبوضات</th><th>📤 المدفوعات</th><th>الصافي</th></tr></thead><tbody id="rpCfTable"><tr><td colspan="4" class="admin-empty">اختر الشهر واضغط «عرض»</td></tr></tbody></table></div>
+                    </div>
+
+                    <div class="erp-box" style="border:2px solid #0EA5E9;border-radius:14px;padding:18px">
+                        <h4 style="margin:0 0 12px">🧾 ملخص ضريبة القيمة المضافة 15% للفترة</h4>
+                        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end">
+                            <div class="form-group" style="margin:0"><label>من تاريخ</label><input type="date" id="rpVatFrom" class="erp-in" dir="ltr"></div>
+                            <div class="form-group" style="margin:0"><label>إلى تاريخ</label><input type="date" id="rpVatTo" class="erp-in" dir="ltr"></div>
+                            <button class="btn-add" style="background:#0EA5E9" onclick="rpVatRun()">⚙️ حساب الملخص</button>
+                        </div>
+                        <div id="rpVatResult"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content" id="cashiersTab">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+                    <h3>🧑‍💼 الكاشيرون — شاشة POS المستقلة (pos.html)</h3>
+                    <a class="btn-add" href="pos.html" target="_blank" style="text-decoration:none">🧾 فتح شاشة الكاشير</a>
+                </div>
+                <div class="erp-box" style="border:2px solid #10B981;border-radius:14px;padding:18px;margin-bottom:22px">
+                    <h4 style="margin:0 0 12px">➕ إضافة كاشير جديد</h4>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px">
+                        <input type="text" id="cashUsername" placeholder="اسم المستخدم *" class="erp-in" dir="ltr" style="text-align:right">
+                        <input type="text" id="cashFullName" placeholder="الاسم الكامل" class="erp-in">
+                        <input type="text" id="cashBranch" placeholder="الفرع" class="erp-in">
+                        <input type="password" id="cashPin" placeholder="PIN — 4-6 أرقام *" class="erp-in" dir="ltr" style="text-align:center" maxlength="6" inputmode="numeric">
+                    </div>
+                    <button class="btn-add" style="margin-top:12px" onclick="cashierAdd()">💾 حفظ الكاشير</button>
+                    <div style="color:#94A3B8;font-size:12px;margin-top:8px">🔐 يُخزَّن الرمز كهاش SHA-256 فقط — 5 محاولات خاطئة تقفل الحساب 5 دقائق. الكاشير يدخل من pos.html ولا يملك أي صلاحية على لوحة الأدمن.</div>
+                </div>
+                <div id="cashiersList"><div class="admin-empty">⏳ جاري التحميل...</div></div>
             </div>
             <div class="tab-content" id="auditLogTab">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> سجل التدقيق — آخر 100 عملية</h3><button class="btn-add" onclick="loadAuditLog()">🔄 تحديث</button></div>
@@ -904,6 +1116,8 @@ window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
 </script>
 <script src="zatca-store.js"></script>
 <script src="admin-v2.js"></script>
+<script src="store-erp-plus.js"></script>
+<script src="pos-admin.js"></script>
 <script src="site-content.js"></script>
 </body>
 </html>
