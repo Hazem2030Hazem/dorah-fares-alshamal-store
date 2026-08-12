@@ -193,6 +193,7 @@ window.editProduct = async function(id) {
   var { data } = await supabaseClient.from('store_products').select('*').eq('id', id).single();
   if (!data) return;
   document.getElementById('productId').value = data.id;
+  document.getElementById('productBarcode').value = data.barcode || '';
   document.getElementById('productName').value = data.name;
   document.getElementById('productDesc').value = data.description || '';
   document.getElementById('productPrice').value = data.price;
@@ -220,6 +221,8 @@ window.openModal = function() {
   document.getElementById('productModalTitle').textContent = '📦 إضافة منتج';
   document.getElementById('productForm').reset();
   document.getElementById('productId').value = '';
+  // جاهزية الماسح: أول ما تفتح نافذة منتج جديد يكون المؤشر على خانة الباركود
+  setTimeout(function() { var b = document.getElementById('productBarcode'); if (b) b.focus(); }, 100);
 };
 
 window.closeProductModal = function() {
@@ -231,6 +234,7 @@ window.saveProduct = async function(e) {
   var id = document.getElementById('productId').value;
 
   var product = {
+    barcode: document.getElementById('productBarcode').value.trim() || null,
     name: document.getElementById('productName').value,
     description: document.getElementById('productDesc').value,
     price: parseFloat(document.getElementById('productPrice').value),
