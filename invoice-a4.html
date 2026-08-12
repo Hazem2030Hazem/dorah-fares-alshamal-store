@@ -54,6 +54,11 @@
   table.totals td:last-child { text-align: center; font-weight: 700; min-width: 90px; }
   table.totals tr.grand td { background: var(--head); font-size: 15px; font-weight: 800; }
   .thanks { text-align: center; margin-top: 14px; font-size: 12px; color: #4B5563; }
+  .policy { text-align: center; margin-top: 10px; font-size: 12px; font-weight: 700; color: #374151;
+    border-top: 1px dashed var(--line); padding-top: 10px; }
+  .signs { display: flex; justify-content: space-between; margin-top: 26px; font-size: 12px;
+    color: #374151; text-align: center; }
+  .signs div { flex: 1; }
   .err { max-width: 640px; margin: 60px auto; background: #FEF2F2; color: #991B1B;
          padding: 20px; border-radius: 10px; text-align: center; font-size: 15px; }
   /* شريط الأدوات (لا يُطبع) */
@@ -232,6 +237,11 @@ async function main() {
   var dt = o.created_at ? new Date(o.created_at) : new Date();
   var dtStr = dt.toLocaleDateString('ar-SA') + ' ' + dt.toLocaleTimeString('ar-SA',
     { hour: '2-digit', minute: '2-digit' });
+  var hijriStr = '—';
+  try {
+    hijriStr = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura',
+      { day: '2-digit', month: '2-digit', year: 'numeric' }).format(dt);
+  } catch (eH) {}
   var payLbl = { cash: 'نقداً', card: 'شبكة/بطاقة', mada: 'مدى', stc: 'STC Pay',
     apple: 'Apple Pay', transfer: 'تحويل بنكي', cod: 'الدفع عند الاستلام' };
   var sellerName = entity.name || 'شركة درة فارس الشمال للتجارة';
@@ -256,6 +266,7 @@ async function main() {
     '<div class="row"><span>السجل التجاري</span><b dir="ltr">' + esc(entity.cr_number || '—') + '</b></div>' +
     '<div class="row"><span>رقم الفاتورة</span><b>' + esc(o.order_number || o.id) + '</b></div>' +
     '<div class="row"><span>التاريخ</span><b>' + esc(dtStr) + '</b></div>' +
+    '<div class="row"><span>التاريخ هجري</span><b>' + esc(hijriStr) + '</b></div>' +
     '<div class="row"><span>المندوب</span><b>' + esc(o.sales_rep || o.cashier_name || '—') + '</b></div>' +
     '</div>';
   html += '<div class="col"><h3>بيانات العميل</h3>' +
@@ -297,6 +308,12 @@ async function main() {
     '<tr class="grand"><td>الإجمالي النهائي</td><td>' + money(grand) + ' ر.س</td></tr>' +
     '</table></div>';
   html += '<div class="thanks">شكراً لتعاملكم معنا — هذه الفاتورة صادرة إلكترونياً ولا تحتاج توقيعاً أو ختماً</div>';
+  html += '<div class="policy">الارجاع او الاستبدال بفاتورة فقط</div>';
+  html += '<div class="signs">' +
+    '<div>أعدت بواسطة<br><br>....................</div>' +
+    '<div>المراجع<br><br>....................</div>' +
+    '<div>المستلم<br><br>....................</div>' +
+    '</div>';
   html += '</div>';
   document.getElementById('app').innerHTML = html;
 
