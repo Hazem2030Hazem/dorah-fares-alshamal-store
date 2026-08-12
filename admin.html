@@ -879,6 +879,15 @@
                 <div id="zatcaSqlWarn" class="admin-note" style="display:none;margin-bottom:16px">⚠️ جداول زاتكا غير موجودة بعد — نفّذ ملف <code>store-zatca.sql</code> في SQL Editor أولاً.</div>
                 <div id="zcStatus" class="admin-data-card" style="margin-bottom:16px">⏳ ...</div>
 
+                <div class="admin-data-card" style="margin-bottom:16px;display:flex;gap:10px;align-items:end;flex-wrap:wrap">
+                    <div class="form-group" style="flex:1;min-width:220px;margin:0">
+                        <label>🏢 الكيان الحالي (الشركة / المؤسسة)</label>
+                        <select id="zcEntity" onchange="zatcaPickEntity(this.value)"><option value="">⏳ ...</option></select>
+                    </div>
+                    <button class="btn-add" onclick="zatcaNewEntity()">➕ إضافة كيان جديد (المؤسسة)</button>
+                </div>
+                <div class="zatca-note" style="margin-bottom:16px">💡 كل كيان له بياناته وشهادته الخاصة في زاتكا. اختر الكيان من القائمة، أكمل بياناته واحفظ، ثم نفّذ خطوات الاعتماد (OTP) الخاصة به. الفواتير تُصدر باسم الكيان المختار في بوابة المفوتر.</div>
+
                 <div class="afaky-form" style="margin-bottom:24px">
                     <h4>🏢 إعدادات المنشأة</h4>
                     <div class="admin-form-grid">

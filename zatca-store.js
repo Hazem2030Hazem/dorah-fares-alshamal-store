@@ -589,6 +589,8 @@ const ENV_URLS = {
 const ONBOARD_LBL = { new: 'لم يبدأ', keys: 'تم توليد المفاتيح', compliance: 'تم الامتثال', production: 'معتمد للإنتاج ✅' };
 
 let _cfg = null; // صف zatca_config المحمّل
+let _entitiesCache = []; // كيانات zatca_entities للقائمة
+let _newEntityMode = false; // وضع إضافة كيان جديد
 
 /* ─── تحميل/حفظ إعدادات المنشأة ─── */
 // تحويل حقول zatca_config إلى أعمدة zatca_entities (org_name → name)
@@ -619,6 +621,21 @@ async function loadZatcaTab() {
       .order('is_default', { ascending: false })
       .order('created_at', { ascending: true }).limit(1);
     if (!r.error && r.data && r.data[0]) ent = r.data[0];
+  } catch (_) {}
+  // تعبئة قائمة اختيار الكيان في تبويب زاتكا
+  try {
+    const sel = $z('zcEntity');
+    if (sel) {
+      const all = await supabaseClient.from('zatca_entities').select('id, name, is_default')
+        .order('created_at', { ascending: true });
+      if (!all.error && all.data) {
+        _entitiesCache = all.data;
+        sel.innerHTML = all.data.map(function (e) {
+          return '<option value="' + e.id + '"' + (ent && e.id === ent.id ? ' selected' : '') +
+            '>' + (e.name || 'كيان') + (e.is_default ? ' ⭐' : '') + '</option>';
+        }).join('') || '<option value="">— لا كيانات —</option>';
+      }
+    }
   } catch (_) {}
   const set = (id, v) => { const el = $z(id); if (el && v != null) el.value = v; };
   if (ent) {
@@ -657,6 +674,35 @@ function renderOnboardStatus() {
     '<div class="admin-note" style="margin-top:6px">ℹ️ ابدأ بالمحاكاة، وبعد نجاح الامتثال والحصول على شهادة الإنتاج بدّل للإنتاج.</div>';
 }
 
+// اختيار كيان موجود من القائمة — تحميله في النموذج
+window.zatcaPickEntity = async function (id) {
+  if (!id) return;
+  _newEntityMode = false;
+  const { data: ent, error } = await supabaseClient.from('zatca_entities').select('*').eq('id', id).maybeSingle();
+  if (error || !ent) return _toast('❌ تعذر تحميل الكيان', false);
+  _cfg = Object.assign({}, ent, { id: 1, org_name: ent.name, _entity_id: ent.id });
+  const sel0 = $z('zcEntity'); if (sel0) sel0.value = ent.id;
+  const set = (i, v) => { const el = $z(i); if (el) el.value = v != null ? v : ''; };
+  set('zcName', _cfg.org_name); set('zcCr', _cfg.cr_number); set('zcVat', _cfg.vat_number);
+  set('zcCity', _cfg.city); set('zcDistrict', _cfg.district); set('zcStreet', _cfg.street);
+  set('zcPostal', _cfg.postal_code); set('zcBuilding', _cfg.building_no);
+  set('zcEnv', _cfg.env || 'simulation'); set('zcProxy', _cfg.proxy_url);
+  renderOnboardStatus();
+  _toast('✅ تم تحميل كيان: ' + (ent.name || ''));
+};
+
+// وضع إضافة كيان جديد (المؤسسة) — تفريغ النموذج
+window.zatcaNewEntity = function () {
+  _newEntityMode = true;
+  _cfg = { id: 1, env: 'simulation', onboarding_status: 'new' };
+  ['zcName', 'zcCr', 'zcVat', 'zcCity', 'zcDistrict', 'zcStreet', 'zcPostal', 'zcBuilding', 'zcProxy']
+    .forEach(function (i) { const el = $z(i); if (el) el.value = ''; });
+  const sel = $z('zcEntity'); if (sel) sel.value = '';
+  const env = $z('zcEnv'); if (env) env.value = 'simulation';
+  renderOnboardStatus();
+  _toast('🆕 أدخل بيانات الكيان الجديد ثم اضغط «حفظ إعدادات المنشأة»');
+};
+
 window.saveZatcaConfig = async function () {
   const vat = ($z('zcVat').value || '').trim();
   if (vat && !Z.isValidVatNumber(vat)) return _toast('❌ الرقم الضريبي غير صحيح — يجب 15 رقماً يبدأ وينتهي بـ 3', false);
@@ -670,6 +716,27 @@ window.saveZatcaConfig = async function () {
     proxy_url: $z('zcProxy').value.trim() || null,
     updated_at: new Date().toISOString(),
   };
+  // كيان جديد: إنشاء صف في zatca_entities أولاً
+  if (_newEntityMode) {
+    if (!rec.org_name || !vat) return _toast('❌ اسم الكيان والرقم الضريبي مطلوبان', false);
+    const ins = {
+      name: rec.org_name, cr_number: rec.cr_number, vat_number: rec.vat_number,
+      city: rec.city, district: rec.district, street: rec.street,
+      postal_code: rec.postal_code, building_no: rec.building_no,
+      env: rec.env, proxy_url: rec.proxy_url, is_default: false,
+      onboarding_status: 'new',
+    };
+    const r = await supabaseClient.from('zatca_entities').insert([ins]).select('id').single();
+    if (r.error) return _toast('❌ خطأ بإنشاء الكيان: ' + r.error.message + ' — هل نفّذت store-entities.sql؟', false);
+    _newEntityMode = false;
+    _cfg = Object.assign({}, ins, { id: 1, org_name: ins.name, _entity_id: r.data.id });
+    try { if (typeof logAudit === 'function') logAudit('إضافة كيان زاتكا', rec.org_name); } catch (_) {}
+    _toast('✅ تم إنشاء الكيان «' + rec.org_name + '» — أكمل خطوات الاعتماد بالأسفل');
+    renderOnboardStatus();
+    const newId = r.data.id;
+    loadZatcaTab().then(function () { zatcaPickEntity(newId); }); // تحديث القائمة ثم اختيار الكيان الجديد
+    return;
+  }
   const { error } = await supabaseClient.from('zatca_config').upsert([rec], { onConflict: 'id' });
   if (error) return _toast('❌ خطأ بالحفظ: ' + error.message + ' — هل نفّذت store-zatca.sql؟', false);
   _cfg = Object.assign({}, _cfg, rec);
