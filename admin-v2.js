@@ -205,6 +205,8 @@ window.editProduct = async function(id) {
   document.getElementById('productRating').value = data.rating || 0;
   document.getElementById('productModalTitle').textContent = '✏️ تعديل منتج';
   document.getElementById('productModal').classList.add('show');
+  // جاهزية الماسح في التعديل: المؤشر على خانة الباركود مباشرة
+  setTimeout(function() { var b = document.getElementById('productBarcode'); if (b) { b.focus(); b.select(); } }, 100);
 };
 
 window.deleteProduct = async function(id) {
