@@ -591,13 +591,53 @@ const ONBOARD_LBL = { new: 'لم يبدأ', keys: 'تم توليد المفات�
 let _cfg = null; // صف zatca_config المحمّل
 
 /* ─── تحميل/حفظ إعدادات المنشأة ─── */
+// تحويل حقول zatca_config إلى أعمدة zatca_entities (org_name → name)
+function _entityMirrorFields(o) {
+  const keys = ['cr_number', 'vat_number', 'city', 'district', 'street', 'postal_code',
+    'building_no', 'env', 'proxy_url', 'private_key_jwk', 'public_key', 'csr',
+    'compliance_csid', 'compliance_secret', 'compliance_request_id',
+    'production_csid', 'production_secret', 'last_icv', 'last_hash', 'onboarding_status'];
+  const m = {};
+  keys.forEach(k => { if (o[k] !== undefined) m[k] = o[k]; });
+  if (o.org_name !== undefined) m.name = o.org_name;
+  m.updated_at = new Date().toISOString();
+  return m;
+}
+// مزامنة الكتابات إلى صف الكيان عندما تُحمَّل الإعدادات من zatca_entities
+async function _mirrorEntity(upd) {
+  if (!_cfg || !_cfg._entity_id) return;
+  try {
+    await supabaseClient.from('zatca_entities').update(_entityMirrorFields(upd)).eq('id', _cfg._entity_id);
+  } catch (_) {}
+}
 async function loadZatcaTab() {
   const warn = $z('zatcaSqlWarn');
+  // أولاً: الكيان الافتراضي من zatca_entities (تعدد الكيانات — store-entities.sql)
+  let ent = null;
+  try {
+    const r = await supabaseClient.from('zatca_entities').select('*')
+      .order('is_default', { ascending: false })
+      .order('created_at', { ascending: true }).limit(1);
+    if (!r.error && r.data && r.data[0]) ent = r.data[0];
+  } catch (_) {}
+  const set = (id, v) => { const el = $z(id); if (el && v != null) el.value = v; };
+  if (ent) {
+    if (warn) warn.style.display = 'none';
+    // نفس صيغة zatca_config حتى لا يتغيّر أي سلوك لاحق + تتبع مصدر الكيان
+    _cfg = Object.assign({}, ent, { id: 1, org_name: ent.name, _entity_id: ent.id });
+    set('zcName', _cfg.org_name); set('zcCr', _cfg.cr_number); set('zcVat', _cfg.vat_number);
+    set('zcCity', _cfg.city); set('zcDistrict', _cfg.district); set('zcStreet', _cfg.street);
+    set('zcPostal', _cfg.postal_code); set('zcBuilding', _cfg.building_no);
+    set('zcEnv', _cfg.env || 'simulation'); set('zcProxy', _cfg.proxy_url);
+    renderOnboardStatus();
+    loadEInvoicesList();
+    return;
+  }
+  // fallback: الجدول القديم zatca_config (السلوك الأصلي كما هو)
   const { data, error } = await supabaseClient.from('zatca_config').select('*').eq('id', 1).maybeSingle();
   if (error) { if (warn) warn.style.display = 'block'; return; }
   if (warn) warn.style.display = 'none';
   _cfg = data || { id: 1 };
-  const set = (id, v) => { const el = $z(id); if (el && v != null) el.value = v; };
   set('zcName', _cfg.org_name); set('zcCr', _cfg.cr_number); set('zcVat', _cfg.vat_number);
   set('zcCity', _cfg.city); set('zcDistrict', _cfg.district); set('zcStreet', _cfg.street);
   set('zcPostal', _cfg.postal_code); set('zcBuilding', _cfg.building_no);
@@ -633,6 +673,7 @@ window.saveZatcaConfig = async function () {
   const { error } = await supabaseClient.from('zatca_config').upsert([rec], { onConflict: 'id' });
   if (error) return _toast('❌ خطأ بالحفظ: ' + error.message + ' — هل نفّذت store-zatca.sql؟', false);
   _cfg = Object.assign({}, _cfg, rec);
+  _mirrorEntity(rec);
   try { if (typeof logAudit === 'function') logAudit('حفظ إعدادات زاتكا', 'البيئة: ' + rec.env); } catch (_) {}
   _toast('✅ تم حفظ إعدادات المنشأة');
   renderOnboardStatus();
@@ -694,6 +735,7 @@ window.zatcaOnboardStep1 = async function () {
     const { error } = await supabaseClient.from('zatca_config').upsert([upd], { onConflict: 'id' });
     if (error) { say('❌ فشل حفظ الشهادة: ' + error.message); return; }
     _cfg = Object.assign({}, _cfg, upd);
+    _mirrorEntity(upd);
     say('✅ تم استلام شهادة الامتثال وحفظها.');
     _toast('✅ تم الربط الأولي — الآن أرسل فواتير الامتثال');
     renderOnboardStatus();
@@ -745,9 +787,11 @@ window.zatcaOnboardStep2 = async function () {
     }
   }
   await supabaseClient.from('zatca_config').update({ last_icv: icv, last_hash: pih }).eq('id', 1);
+  _mirrorEntity({ last_icv: icv, last_hash: pih });
   _cfg.last_icv = icv; _cfg.last_hash = pih;
   if (ok === samples.length) {
     await supabaseClient.from('zatca_config').update({ onboarding_status: 'compliance' }).eq('id', 1);
+    _mirrorEntity({ onboarding_status: 'compliance' });
     _cfg.onboarding_status = 'compliance';
     say('✅ نجحت كل فواتير الامتثال — يمكنك الآن طلب شهادة الإنتاج.');
     _toast('✅ الامتثال ناجح');
@@ -780,6 +824,8 @@ window.zatcaOnboardStep3 = async function () {
       production_csid: body.binarySecurityToken, production_secret: body.secret || '',
       onboarding_status: 'production', updated_at: new Date().toISOString(),
     }).eq('id', 1);
+    _mirrorEntity({ production_csid: body.binarySecurityToken,
+      production_secret: body.secret || '', onboarding_status: 'production' });
     _cfg = Object.assign({}, _cfg, { production_csid: body.binarySecurityToken,
       production_secret: body.secret || '', onboarding_status: 'production' });
     say('✅ صدرت شهادة الإنتاج — المتجر جاهز للفوترة المعتمدة.');
@@ -855,6 +901,7 @@ window.zatcaIssueForOrder = async function (orderId) {
     .upsert([rec], { onConflict: 'order_id' }).select('id').single();
   if (e2) return _toast('❌ فشل الحفظ: ' + e2.message + ' — هل نفّذت store-zatca.sql؟', false);
   await supabaseClient.from('zatca_config').update({ last_icv: icv, last_hash: hash }).eq('id', 1);
+  _mirrorEntity({ last_icv: icv, last_hash: hash });
   _cfg.last_icv = icv; _cfg.last_hash = hash;
   try { if (typeof logAudit === 'function') logAudit('إصدار فاتورة إلكترونية', 'طلب: ' + rec.order_ref + ' — UUID: ' + uuid); } catch (_) {}
   // إرسال فوري إن كان معتمداً

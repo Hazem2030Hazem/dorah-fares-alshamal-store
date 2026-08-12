@@ -107,9 +107,13 @@
     <!-- 🧾 الطلبات والفوترة (مفوتر/مدير) -->
     <section class="sec" id="sec-orders">
       <div class="box">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;flex-wrap:wrap">
           <h4>🧾 الطلبات — إصدار فواتير معتمدة</h4>
-          <button class="btn" onclick="loadOrders()">🔄 تحديث</button>
+          <div style="display:flex;gap:8px;align-items:center">
+            <label style="font-size:13px">الكيان المُصدِر:</label>
+            <select id="entity-picker" class="in" style="min-width:200px" onchange="pickEntity(this.value)"></select>
+            <button class="btn" onclick="loadOrders()">🔄 تحديث</button>
+          </div>
         </div>
         <div style="overflow-x:auto"><table><thead><tr>
           <th>الطلب</th><th>العميل</th><th>الإجمالي</th><th>الدفع</th><th>الحالة</th><th>التاريخ</th><th>الفاتورة</th>

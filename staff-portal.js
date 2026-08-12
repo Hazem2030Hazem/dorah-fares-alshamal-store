@@ -229,6 +229,7 @@ async function loadOrders() {
   const tb = $('orders-tb');
   tb.innerHTML = '<tr><td colspan="7">⏳ جاري التحميل...</td></tr>';
   try {
+    loadEntities();
     const rows = await rpc('staff_list_orders', { p_token: S.token, p_limit: 60 });
     tb.innerHTML = (rows || []).map(o =>
       '<tr><td><b>' + esc(o.order_number || o.id) + '</b></td>' +
@@ -238,6 +239,7 @@ async function loadOrders() {
       '<td>' + esc(o.status || '—') + '</td>' +
       '<td>' + new Date(o.created_at).toLocaleString('ar-SA') + '</td>' +
       '<td style="white-space:nowrap">' +
+        '<button class="btn" onclick="printA4(' + o.id + ', null)">🖨️ A4</button> ' +
         (o.einvoice
           ? '<span style="color:#34D399;font-weight:700">⚡ ' + esc(o.einvoice.status) + '</span> ' +
             '<button class="btn" onclick="printEinvoice(\'' + o.einvoice.id + '\')">🖨️ طباعة</button>'
@@ -248,13 +250,49 @@ async function loadOrders() {
 
 /* ─── ⚡ إصدار فاتورة معتمدة (يعيد استخدام منطق zatca-store.js النقي) ─── */
 let _zcfg = null;
+let _entities = null, _entityId = null;
+async function loadEntities() {
+  if (_entities !== null) return _entities;
+  try { _entities = await rpc('staff_list_entities', { p_token: S.token }) || []; }
+  catch (_) { _entities = []; }
+  if (_entities.length && !_entityId) {
+    const d = _entities.find(e => e.is_default) || _entities[0];
+    _entityId = d.id;
+  }
+  renderEntityPicker();
+  return _entities;
+}
+function renderEntityPicker() {
+  const sel = $('entity-picker');
+  if (!sel) return;
+  sel.innerHTML = (_entities || []).map(e =>
+    '<option value="' + e.id + '"' + (e.id === _entityId ? ' selected' : '') + '>' +
+    esc(e.name) + (e.vat_number ? ' — ' + esc(e.vat_number) : '') + '</option>'
+  ).join('') || '<option value="">الكيان الافتراضي (zatca_config)</option>';
+}
+window.pickEntity = function (id) { _entityId = id || null; };
+// إعدادات الكيان المختار بصيغة zatca_config (org_name...) — null = لا كيانات بعد
+function activeEntityCfg() {
+  const e = (_entities || []).find(x => x.id === _entityId);
+  if (!e) return null;
+  return Object.assign({}, e, { org_name: e.name, _is_entity: true });
+}
+// طباعة A4 في تبويب جديد
+function printA4(orderId, entityId) {
+  let u = 'invoice-a4.html?order=' + encodeURIComponent(orderId) + '&autoprint=1';
+  if (entityId) u += '&entity=' + encodeURIComponent(entityId);
+  const w = window.open(u, '_blank');
+  if (!w) toast('⚠️ اسمح بالنوافذ المنبثقة', false);
+}
 async function issueEinvoice(orderId) {
   const Z = window.ZATCA;
   if (!Z) return toast('❌ مكتبة زاتكا غير محمّلة', false);
   toast('⏳ جاري الإصدار...');
   try {
+    await loadEntities();
     if (!_zcfg) _zcfg = await rpc('staff_einvoice_context', { p_token: S.token });
-    if (!_zcfg || !_zcfg.vat_number) {
+    const cfg = activeEntityCfg() || _zcfg;
+    if (!cfg || !cfg.vat_number) {
       return toast('⚠️ إعدادات المنشأة غير مكتملة — أكملها من لوحة الأدمن (تبويب زاتكا)', false);
     }
     const order = await rpc('staff_order_details', { p_token: S.token, p_order_id: orderId });
@@ -270,32 +308,37 @@ async function issueEinvoice(orderId) {
 
     const dt = new Date(order.created_at || Date.now());
     const uuid = Z.uuidV4();
-    const icv = (Number(_zcfg.last_icv) || 0) + 1;
-    const pih = _zcfg.last_hash || Z.FIRST_PIH;
+    const icv = (Number(cfg.last_icv) || 0) + 1;
+    const pih = cfg.last_hash || Z.FIRST_PIH;
     const xml = Z.buildInvoiceXml({
       number: String(order.order_number || order.id), uuid,
       issueDate: dt.toISOString().slice(0, 10), issueTime: dt.toISOString().slice(11, 19),
       docType: '388', subType: 'simplified', icv, pih,
-      seller: { name: _zcfg.org_name || 'شركة درة فارس الشمال للتجارة', vat: _zcfg.vat_number,
-        cr: _zcfg.cr_number || '', city: _zcfg.city || '', district: _zcfg.district || '',
-        street: _zcfg.street || '', postal: _zcfg.postal_code || '', building: _zcfg.building_no || '' },
+      seller: { name: cfg.org_name || 'شركة درة فارس الشمال للتجارة', vat: cfg.vat_number,
+        cr: cfg.cr_number || '', city: cfg.city || '', district: cfg.district || '',
+        street: cfg.street || '', postal: cfg.postal_code || '', building: cfg.building_no || '' },
       buyer: { name: order.customer_name || 'عميل نقدي' }, lines });
     const hash = await Z.computeInvoiceHash(xml);
     let signature = null;
-    if (_zcfg.private_key_jwk) {
-      try { signature = await Z.signInvoiceHash(hash, _zcfg.private_key_jwk); } catch (_) {}
+    if (cfg.private_key_jwk) {
+      try { signature = await Z.signInvoiceHash(hash, cfg.private_key_jwk); } catch (_) {}
     }
     const tlv = Z.zatcaTLV({
-      seller: _zcfg.org_name || 'شركة درة فارس الشمال للتجارة', vat: _zcfg.vat_number,
+      seller: cfg.org_name || 'شركة درة فارس الشمال للتجارة', vat: cfg.vat_number,
       timestamp: dt.toISOString(),
       total: lines.reduce((a, l) => a + l.qty * l.price, 0).toFixed(2),
       tax: lines.reduce((a, l) => a + Z.lineTax(l.qty * l.price, l.tax_category), 0).toFixed(2),
-      hash, signature, pubkey: _zcfg.public_key });
-    const saved = await rpc('staff_save_einvoice', { p_token: S.token, p_rec: {
+      hash, signature, pubkey: cfg.public_key });
+    const saved = await rpc('staff_save_einvoice', { p_token: S.token,
+      p_entity_id: cfg._is_entity ? _entityId : null, p_rec: {
       order_id: order.id, order_ref: String(order.order_number || order.id), uuid, icv,
-      invoice_hash: hash, pih, xml, qr_tlv: tlv, signature,
-      public_key: _zcfg.public_key || null, doc_type: '388', invoice_kind: 'simplified' } });
-    _zcfg.last_icv = saved.icv; _zcfg.last_hash = hash;
+      invoice_hash: hash, pih, xml, qr_tlv: tlv, signature, entity_id: cfg._is_entity ? _entityId : null,
+      public_key: cfg.public_key || null, doc_type: '388', invoice_kind: 'simplified' } });
+    cfg.last_icv = saved.icv; cfg.last_hash = hash;
+    if (cfg._is_entity) {
+      const ent = _entities.find(x => x.id === _entityId);
+      if (ent) { ent.last_icv = saved.icv; ent.last_hash = hash; }
+    } else if (_zcfg) { _zcfg.last_icv = saved.icv; _zcfg.last_hash = hash; }
     toast('✅ صدرت الفاتورة (ICV ' + saved.icv + ') — QR مرحلة 1');
     printEinvoice(saved.id);
     loadOrders();
@@ -339,7 +382,9 @@ async function loadEInvoices() {
       '<td dir="ltr" style="font-family:monospace;font-size:11px">' + esc(String(e.uuid || '').slice(0, 13)) + '…</td>' +
       '<td>' + (e.invoice_kind === 'standard' ? 'قياسية' : 'مبسطة') + '</td>' +
       '<td><b>' + (lbl[e.status] || e.status) + '</b></td>' +
-      '<td><button class="btn" onclick="printEinvoice(\'' + e.id + '\')">🖨️ عرض/طباعة</button></td></tr>'
+      '<td style="white-space:nowrap"><button class="btn" onclick="printEinvoice(\'' + e.id + '\')">🖨️ عرض/طباعة</button> ' +
+      (e.order_id ? '<button class="btn" onclick="printA4(' + e.order_id + ', \'' + (e.entity_id || '') + '\')">🖨️ A4</button>' : '') +
+      '</td></tr>'
     ).join('') || '<tr><td colspan="6">لا توجد فواتير اليوم</td></tr>';
   } catch (e) { tb.innerHTML = '<tr><td colspan="6">❌ ' + esc(e.message) + '</td></tr>'; }
 }
@@ -550,6 +595,7 @@ window.doLogin = doLogin;
 window.doLogout = doLogout;
 window.issueEinvoice = issueEinvoice;
 window.printEinvoice = printEinvoice;
+window.printA4 = printA4;
 window.saveVoucher = saveVoucher;
 window.journalAddLine = journalAddLine;
 window.saveJournal = saveJournal;
