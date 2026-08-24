@@ -54,7 +54,8 @@ self.addEventListener('fetch', function(event) {
         return caches.match(event.request).then(function(cached) {
           if (cached) return cached;
           if (event.request.mode === 'navigate') return caches.match('/index.html');
-          return undefined;
+          return new Response('Offline', { status: 503, headers: { 'Content-Type': 'text/plain' } });
+;
         });
       })
   );
