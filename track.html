@@ -11,7 +11,7 @@
   <meta name="geo.region" content="SA">
   <meta name="geo.placename" content="حائل, عرعر, الشمال">
   <meta name="author" content="شركة درة فارس الشمال">
-  <meta name="robots" content="index, follow">
+  <meta name="robots" content="noindex,nofollow">
   <meta name="theme-color" content="#0F0C29">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
@@ -20,7 +20,7 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png?v=5.0">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://alshamal-df.com">
+  <meta property="og:url" content="https://www.alshamal-df.com/track.html">
   <meta property="og:title" content="&#x0634;&#x0631;&#x0643;&#x0629; &#x062F;&#x0631;&#x0629; &#x0641;&#x0627;&#x0631;&#x0633; &#x0627;&#x0644;&#x0634;&#x0645;&#x0627;&#x0644; | &#x062D;&#x0644;&#x0648;&#x0644; &#x062A;&#x0642;&#x0646;&#x064A;&#x0629; &#x0645;&#x062A;&#x0643;&#x0627;&#x0645;&#x0644;&#x0629;">
   <meta property="og:description" content="&#x062D;&#x0644;&#x0648;&#x0644; &#x062A;&#x0642;&#x0646;&#x064A;&#x0629; &#x0645;&#x062A;&#x0643;&#x0627;&#x0645;&#x0644;&#x0629; &#x0644;&#x0644;&#x0634;&#x0631;&#x0643;&#x0627;&#x062A; &#x0648;&#x0627;&#x0644;&#x0623;&#x0641;&#x0631;&#x0627;&#x062F;. +15 &#x0633;&#x0646;&#x0629; &#x062E;&#x0628;&#x0631;&#x0629;&#x060C; +500 &#x0639;&#x0645;&#x064A;&#x0644;&#x060C; +1000 &#x0645;&#x0634;&#x0631;&#x0648;&#x0639; &#x0645;&#x0646;&#x0641;&#x0630;. &#x0637;&#x0627;&#x0628;&#x0639;&#x0627;&#x062A;&#x060C; &#x0643;&#x0627;&#x0645;&#x064A;&#x0631;&#x0627;&#x062A; &#x0645;&#x0631;&#x0627;&#x0642;&#x0628;&#x0629;&#x060C; &#x0646;&#x0642;&#x0627;&#x0637; &#x0628;&#x064A;&#x0639;&#x060C; &#x0634;&#x0628;&#x0643;&#x0627;&#x062A;.">
   <meta property="og:site_name" content="&#x0634;&#x0631;&#x0643;&#x0629; &#x062F;&#x0631;&#x0629; &#x0641;&#x0627;&#x0631;&#x0633; &#x0627;&#x0644;&#x0634;&#x0645;&#x0627;&#x0644;">
@@ -36,7 +36,6 @@
   <meta name="twitter:image" content="https://alshamal-df.com/og-image.jpg">
   <meta http-equiv="Surrogate-Control" content="no-store">
   <meta http-equiv="Vary" content="*">
-  <link rel="canonical" href="https://alshamal-df.com">
   <link rel="manifest" href="manifest.json?v=5.0">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20fill%3D%27%25231E88E5%27%20rx%3D%2715%27%20width%3D%27100%27%20height%3D%27100%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27white%27%3E%E2%9A%A1%3C%2Ftext%3E%3C%2Fsvg%3E">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
@@ -97,7 +96,7 @@
   .dtrack-loading{text-align:center;color:#7dd3fc;font-weight:800;padding:26px;font-size:16px;}
   @media (max-width:640px){.dtrack-form{padding:24px 18px}.dtrack-lbl{font-size:11px}.dtrack-dot{width:38px;height:38px;font-size:16px}.dtrack-timeline::before,.dtrack-bar{top:19px}}
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 <script>
   (function() {
       'use strict';
@@ -116,7 +115,7 @@
           audio = new Audio(AUDIO_URL);
           audio.loop = true;
           audio.volume = 0.30;
-          audio.preload = 'auto';
+          audio.preload = 'none';
           // Expose globally
           window.doraAudio = audio;
           return audio;
@@ -178,8 +177,6 @@
 }
 function init() {
           createAudio();
-          tryPlay();
-          setTimeout(tryPlay, 1000);
           window.doraAudioPlaying = isPlaying;
           window.doraAudioMuted = isMuted;
       }
@@ -236,6 +233,35 @@ function init() {
             color: #FFFFFF !important;
             transform: translateY(-2px);
         }
+    </style>
+    <link rel="stylesheet" href="assets/sky-premium.css">
+    <style>
+        /* Sky Premium — تحويل مكونات التتبع للهوية الفاتحة (تجميل CSS فقط — النموذج والـ ids والسكربتات كما هي) */
+        .dtrack-form, .dtrack-card { background: var(--sp-glass-strong); border: 1px solid var(--sp-glass-brd); box-shadow: var(--sp-shadow); }
+        .dtrack-field label { color: var(--sp-primary-dark); }
+        .dtrack-field input { background: #fff; border: 1px solid var(--sp-glass-brd); color: var(--sp-ink); }
+        .dtrack-field input:focus { border-color: var(--sp-glow); box-shadow: 0 0 0 3px rgba(56,189,248,.18); }
+        .dtrack-field input::placeholder { color: var(--sp-muted); }
+        .dtrack-btn { background: var(--sp-primary) !important; border: 1px solid var(--sp-primary) !important; color: #fff !important; box-shadow: 0 10px 24px rgba(2,132,199,.3) !important; text-shadow: none; }
+        .dtrack-btn:hover { background: var(--sp-primary-dark) !important; border-color: var(--sp-primary-dark) !important; color: #fff !important; box-shadow: 0 14px 32px rgba(2,132,199,.42) !important; }
+        .dtrack-head { border-bottom-color: var(--sp-sky200); }
+        .dtrack-head h3 { color: var(--sp-ink); }
+        .dtrack-meta { color: var(--sp-ink2); }
+        .dtrack-meta b { color: var(--sp-primary); }
+        .dtrack-timeline::before { background: var(--sp-sky200); }
+        .dtrack-dot { background: #fff; border-color: var(--sp-sky200); color: var(--sp-muted); }
+        .dtrack-lbl { color: var(--sp-muted); }
+        .dtrack-step.done .dtrack-lbl { color: var(--sp-primary); }
+        .dtrack-step.current .dtrack-lbl { color: var(--sp-primary-dark); text-shadow: none; }
+        .dtrack-items h4 { color: var(--sp-primary-dark); }
+        .dtrack-item { background: #fff; border: 1px solid var(--sp-glass-brd); color: var(--sp-ink2); }
+        .dtrack-item .q { color: var(--sp-sky500); }
+        .dtrack-total { color: var(--sp-primary-dark); }
+        .dtrack-empty { background: var(--sp-glass-strong); border: 1px solid var(--sp-glass-brd); box-shadow: var(--sp-shadow); }
+        .dtrack-empty p { color: var(--sp-ink); }
+        .dtrack-empty small { color: var(--sp-ink2); }
+        .dtrack-cancel { background: #FEF2F2; border: 1px solid #FECACA; color: #B91C1C; }
+        .dtrack-loading { color: var(--sp-primary); }
     </style>
 </head>
 <body>
@@ -682,7 +708,7 @@ function init() {
     </div>
 </div>
 
-  <script src="main.js"></script>
+  <script src="main.js" defer></script>
 <script>
 /* ===== تتبع الطلبات - track.html (يستخدم supabaseClient من main.js) ===== */
 var DTRACK_STAGES = ['تم الاستلام', 'قيد التجهيز', 'تم الشحن', 'تم التسليم'];
@@ -818,6 +844,6 @@ async function dtrackSearch(e) {
   return false;
 }
 </script>
-<script src="chatbot-ai.js"></script>
-<script src="site-content.js"></script>
+<script src="chatbot-ai.js" defer></script>
+<script src="site-content.js" defer></script>
 </body></html>

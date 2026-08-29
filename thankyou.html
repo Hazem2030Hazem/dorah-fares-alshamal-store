@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
     <title>تم الطلب بنجاح | شركة درة فارس الشمال</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -87,8 +88,39 @@
             transform: translateY(-2px);
         }
     </style>
+    <link rel="stylesheet" href="assets/sky-premium.css">
+    <style>
+        /* Sky Premium — صفحة النجاح: بطاقة زجاجية فاتحة + تحييد الأزرار الزجاجية الداكنة (!important) */
+        body.sp-thankyou .thankyou-card {
+            background: var(--sp-glass-strong); border: 1px solid var(--sp-glass-brd);
+            box-shadow: var(--sp-shadow);
+        }
+        body.sp-thankyou .thankyou-card p { color: var(--sp-ink2); }
+        body.sp-thankyou .btn.btn-primary, body.sp-thankyou .btn.btn-retry {
+            background: var(--sp-primary) !important; border: 1px solid var(--sp-primary) !important;
+            color: #fff !important; box-shadow: 0 8px 24px rgba(2,132,199,.35) !important; text-shadow: none;
+        }
+        body.sp-thankyou .btn.btn-primary:hover, body.sp-thankyou .btn.btn-retry:hover {
+            background: var(--sp-primary-dark) !important; border-color: var(--sp-primary-dark) !important;
+            color: #fff !important; box-shadow: 0 14px 32px rgba(2,132,199,.42) !important;
+        }
+        body.sp-thankyou .btn.btn-secondary {
+            background: #fff !important; border: 1.5px solid var(--sp-glow) !important;
+            color: var(--sp-primary) !important; box-shadow: 0 4px 14px rgba(2,132,199,.10) !important; text-shadow: none;
+        }
+        body.sp-thankyou .btn.btn-secondary:hover {
+            background: var(--sp-sky100) !important; color: var(--sp-primary-dark) !important; border-color: var(--sp-glow) !important;
+        }
+        body.sp-thankyou .tracking-section { background: var(--sp-sky100); border-color: var(--sp-glass-brd); }
+        body.sp-thankyou .tracking-section h3 { color: var(--sp-primary); }
+        body.sp-thankyou .tracking-steps::before { background: var(--sp-sky200); }
+        body.sp-thankyou .tracking-step .label { color: var(--sp-ink2); }
+        body.sp-thankyou .tracking-step .label.active { color: var(--sp-primary); }
+        body.sp-thankyou .tracking-step .dot.pending { background: #CBD5E1; }
+        body.sp-thankyou .shipping-info div { color: var(--sp-ink2); }
+    </style>
 </head>
-<body>
+<body class="sp-thankyou">
     <div class="thankyou-card">
         <div class="thankyou-icon">🎉</div>
         <h1>تم الطلب بنجاح!</h1>
