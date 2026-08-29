@@ -229,10 +229,14 @@
 })();
 </script>
 <script>
-// ✅ نطاق محلي (IIFE) لتجنب تعارض المتغيرات العامة مع main.js (cart / COUPONS / activeCoupon)
+// ✅ نطاق محلي (IIFE) لتجنب تعارض المتغيرات العامة مع main.js (cart / activeCoupon)
 // والدوال المطلوبة من onclick تُصدَّر إلى window في نهاية السكريبت
 (function() {
 var cart = JSON.parse(localStorage.getItem('doraCart') || '[]');
+// 🔐 دالة إسكيب لأي قيمة تُدرج في HTML — حماية XSS
+function esc(s) {
+    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
   // دالة الإشعارات
 function showToast(msg, type) {
     var toast = document.createElement('div');
@@ -251,12 +255,7 @@ document.head.appendChild(toastStyle);
 var deliveryMethod = 'delivery';
 var selectedPayment = null;
 var activeCoupon = null;
-var COUPONS = {
-    'DORA10': { discount: 0.10, label: 'خصم 10%' },
-    'DORA20': { discount: 0.20, label: 'خصم 20%' },
-    'WELCOME': { discount: 0.15, label: 'خصم ترحيبي 15%' },
-    'WELCOME15': { discount: 0.15, label: 'خصم ترحيبي 15%' }
-};
+// 🔐 لا يوجد قاموس كوبونات محلي — التحقق سيرفري عبر RPC validate_coupon
 var activeCouponCode = null; // كود الكوبون المطبق — يُرسل للدالة السيرفرية
 
 // ============================================================
@@ -371,7 +370,7 @@ function renderCheckout() {
         <div class="checkout-card">
             <h3>📦 ملخص الطلب</h3>
             ${cart.map(function(item) {
-                return '<div class="cart-item"><img src="' + (item.image || 'https://via.placeholder.com/50') + '" onerror="this.style.display=\'none\'"><div class="cart-item-info"><h4>' + item.name + '</h4><span>الكمية: ' + item.qty + ' | ' + item.price.toLocaleString() + ' ر.س</span></div><div class="cart-item-price">' + (item.price * item.qty).toLocaleString() + ' ر.س</div></div>';
+                return '<div class="cart-item"><img src="' + esc(item.image || 'https://via.placeholder.com/50') + '" onerror="this.style.display=\'none\'"><div class="cart-item-info"><h4>' + esc(item.name) + '</h4><span>الكمية: ' + esc(item.qty) + ' | ' + Number(item.price).toLocaleString() + ' ر.س</span></div><div class="cart-item-price">' + (Number(item.price) * Number(item.qty)).toLocaleString() + ' ر.س</div></div>';
             }).join('')}
             <div class="total-row"><span>المجموع الفرعي</span><span>${subtotal.toLocaleString()} ر.س</span></div>
             <div class="total-row"><span>الضريبة (15%)</span><span>${tax.toLocaleString()} ر.س</span></div>
@@ -546,28 +545,42 @@ function loadUpsellProducts() {
     if (!related.length) { grid.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.5)">لا توجد اقتراحات حالياً</p>'; return; }
     
     grid.innerHTML = related.map(function(p) {
-        return '<div class="upsell-item"><img src="' + p.image + '" alt="' + p.name + '"><div style="font-size:12px;margin:4px 0">' + p.name.substring(0, 25) + '...</div><div class="price">' + p.price.toLocaleString() + ' ر.س</div><button class="btn-add" onclick="addToCartDirect(' + p.id + ', \'' + p.name + '\', ' + p.price + ', \'' + p.image + '\')">🛒 أضف</button></div>';
+        return '<div class="upsell-item"><img src="' + esc(p.image) + '" alt="' + esc(p.name) + '"><div style="font-size:12px;margin:4px 0">' + esc(String(p.name).substring(0, 25)) + '...</div><div class="price">' + Number(p.price).toLocaleString() + ' ر.س</div><button class="btn-add" onclick="addToCartDirect(' + Number(p.id) + ')">🛒 أضف</button></div>';
     }).join('');
 }
 
-function addToCartDirect(id, name, price, image) {
-    cart.push({ id: id, name: name, price: price, qty: 1, image: image });
+function addToCartDirect(id) {
+    // 🔐 نجلب بيانات المنتج من المصدر المحلي الموثوق بدل تمريرها عبر onclick (حماية من الحقن)
+    var p = productsData.find(function(x) { return x.id === id; });
+    if (!p) return;
+    cart.push({ id: p.id, name: p.name, price: p.price, qty: 1, image: p.image });
     localStorage.setItem('doraCart', JSON.stringify(cart));
     renderCheckout();
 }
 
-function applyCouponCode() {
+// 🔐 التحقق من الكوبون سيرفرياً — لا قبول لأي كود من المتصفح
+async function applyCouponCode() {
     var code = document.getElementById('couponCode').value.trim().toUpperCase();
-    var coupon = COUPONS[code];
-    if (coupon) {
-        activeCoupon = coupon;
-        activeCouponCode = code;
-        document.getElementById('couponMsg').innerHTML = '✅ ' + coupon.label + ' مُطبق';
-        document.getElementById('couponMsg').style.color = '#10B981';
-        renderCheckout();
-    } else {
-        document.getElementById('couponMsg').innerHTML = '❌ كود خصم غير صحيح';
-        document.getElementById('couponMsg').style.color = '#EF4444';
+    if (!code) return;
+    var msgEl = document.getElementById('couponMsg');
+    try {
+        var res = await supabaseClient.rpc('validate_coupon', { p_code: code });
+        if (res.error) throw res.error;
+        var data = res.data;
+        if (data && data.valid) {
+            var percent = Number(data.discount_percent) || 0;
+            activeCoupon = { discount: percent / 100, label: 'خصم ' + percent + '%' };
+            activeCouponCode = String(data.code || code);
+            msgEl.textContent = '✅ ' + activeCoupon.label + ' مُطبق';
+            msgEl.style.color = '#10B981';
+            renderCheckout();
+        } else {
+            msgEl.textContent = '❌ ' + ((data && data.error) || 'كود خصم غير صحيح');
+            msgEl.style.color = '#EF4444';
+        }
+    } catch (e) {
+        msgEl.textContent = '❌ تعذر التحقق من الكوبون — حاول مجدداً';
+        msgEl.style.color = '#EF4444';
     }
 }
 
@@ -703,9 +716,24 @@ async function showMoyasarForm(orderId, serverTotalHalalas, customer) {
         metadata: { order_id: String(orderId) },
         apple_pay: { label: 'درة فارس الشمال', validate_merchant_url: 'https://api.moyasar.com/v1/applepay/initiate' },
         on_completed: function(payment) {
-            // تحديث حالة الدفع عند نجاح العملية (أفضل جهد — التأكيد النهائي من callback/webhook)
+            // 🔐 التأكيد النهائي عبر Edge Function verify-payment — لا تحديث مباشر من المتصفح
             try {
-                supabaseClient.from('store_orders').update({ payment_status: 'paid' }).eq('id', orderId).then(function(){});
+                var verifyUrl = (typeof SUPABASE_URL !== 'undefined' ? SUPABASE_URL : 'https://kcbmvxuzjlaooknwhqqb.supabase.co') + '/functions/v1/verify-payment';
+                supabaseClient.auth.getSession().then(function(sr) {
+                    var headers = { 'Content-Type': 'application/json' };
+                    var tok = sr && sr.data && sr.data.session && sr.data.session.access_token;
+                    if (tok) headers['Authorization'] = 'Bearer ' + tok;
+                    return fetch(verifyUrl, {
+                        method: 'POST',
+                        headers: headers,
+                        body: JSON.stringify({ order_id: String(orderId), payment_id: payment.id, gateway: 'moyasar' })
+                    });
+                }).then(function(r) { return r ? r.json() : null; }).then(function(res) {
+                    var st = res && (res.payment_status || res.status);
+                    if (st === 'paid' || (res && res.success === true)) showToast('✅ تم تأكيد الدفع بنجاح');
+                    else if (st === 'failed') showToast('❌ فشلت عملية الدفع — لم يُخصم أي مبلغ', 'error');
+                    else showToast('⏳ الدفع قيد المعالجة — سيتم التأكيد تلقائياً', 'warning');
+                }).catch(function() {});
             } catch (ePay) {}
             return callbackUrl + '&payment=' + encodeURIComponent(payment.id);
         }
@@ -723,55 +751,36 @@ async function placeOrderConfirmed() {
     var address = document.getElementById('custAddress').value.trim();
     if (deliveryMethod === 'delivery' && !city) { alert('❌ اختر مدينة التوصيل'); return; }
 
-    // 🔐 الإجماليات الرسمية من السيرفر — إن فشل الحساب لا يُحفظ أي طلب
-    var serverTotals;
+    // 🔐 إنشاء الطلب سيرفرياً عبر RPC — الأسعار والإجماليات من قاعدة البيانات حصراً
+    // لا تُرسل أي أسعار من المتصفح: الأصناف = [{id, qty}] فقط
+    var orderData = null;
     try {
-        showToast('⏳ جاري التحقق من قيمة الطلب...');
-        serverTotals = await computeServerTotals(city);
-    } catch (eTotal) {
-        showToast('❌ حدث خطأ في حساب الطلب، حاول مجدداً', 'error');
+        showToast('⏳ جاري تأكيد الطلب...');
+        var pmCode = selectedPayment.isGateway ? selectedPayment.gatewayCode
+            : (selectedPayment.isMoyasar ? 'moyasar'
+            : (selectedPayment.id === 'cod' ? 'cod' : String(selectedPayment.id)));
+        var rpcRes = await supabaseClient.rpc('create_order_secure', {
+            p_items: cart.map(function(i) { return { id: i.id, qty: i.qty }; }),
+            p_customer: { name: name, phone: phone, email: email, city: city, address: address, delivery: deliveryMethod },
+            p_coupon: activeCouponCode || null,
+            p_payment_method: pmCode
+        });
+        if (rpcRes.error) throw rpcRes.error;
+        orderData = rpcRes.data;
+        if (!orderData || orderData.success === false) {
+            throw new Error((orderData && orderData.error) || 'تعذر إنشاء الطلب — حاول مجدداً');
+        }
+    } catch (eOrder) {
+        // ❌ فشل إنشاء الطلب: نعرض رسالة السيرفر العربية — لا مسح للسلة ولا نجاح وهمي
+        showToast('❌ ' + (eOrder && eOrder.message ? eOrder.message : 'تعذر إنشاء الطلب — حاول مجدداً'), 'error');
         return;
     }
-    var subtotal = serverTotals.subtotal, tax = serverTotals.tax,
-        discount = serverTotals.discount, finalTotal = serverTotals.total;
-    shippingCost = serverTotals.shipping_fee; // رسوم الشحن الرسمية من السيرفر
 
-    var isCod = selectedPayment.id === 'cod';
-    var orderPayload = {
-        customer_name: name, customer_phone: phone, customer_email: email,
-        items: cart, subtotal: subtotal, tax: tax, shipping_cost: shippingCost, total: finalTotal,
-        shipping_city: city, shipping_fee: shippingCost,
-        payment_method: selectedPayment.name,
-        // 💵 COD = بانتظار التأكيد | بوابة = بانتظار الدفع | غيرها = جديد
-        status: (isCod ? 'pending_confirmation' : (selectedPayment.isGateway || selectedPayment.isMoyasar ? 'pending_payment' : 'new')),
-        payment_status: 'pending',
-        address: JSON.stringify({ city: city, address: address, delivery: deliveryMethod })
-    };
-    var orderResult = await supabaseClient.from('store_orders').insert([orderPayload]).select('*').single();
-    if (orderResult.error) {
-        // فولباك: أعمدة الشحن/الدفع الجديدة قد لا تكون أُضيفت بعد — نحفظ بدونها بدون كسر
-        try {
-            var fallbackPayload = Object.assign({}, orderPayload);
-            delete fallbackPayload.shipping_cost;
-            delete fallbackPayload.shipping_city;
-            delete fallbackPayload.shipping_fee;
-            delete fallbackPayload.payment_status;
-            orderResult = await supabaseClient.from('store_orders').insert([fallbackPayload]).select('*').single();
-        } catch (eOrder) {}
-    }
-    if (orderResult.error && orderPayload.status !== 'new') {
-        // فولباك إضافي: قيد على عمود status يرفض القيمة — نحفظ الطلب كـ new
-        try {
-            var newPayload = Object.assign({}, orderPayload);
-            delete newPayload.shipping_cost;
-            delete newPayload.shipping_city;
-            delete newPayload.shipping_fee;
-            delete newPayload.payment_status;
-            newPayload.status = 'new';
-            orderResult = await supabaseClient.from('store_orders').insert([newPayload]).select('*').single();
-        } catch (eOrder2) {}
-    }
-    var orderId = orderResult.data ? orderResult.data.id : null;
+    // ✅ القيم الرسمية الراجعة من السيرفر — لا حساب محلي
+    var orderId = orderData.order_id;
+    var orderNumber = orderData.order_number || orderData.order_id;
+    var finalTotal = Number(orderData.total);
+    shippingCost = Number(orderData.shipping_fee) || 0;
 
     // 💳 مسار Moyasar: الطلب أُنشئ — نعرض نموذج الدفع بالمبلغ السيرفي (بالهللات)
     if (selectedPayment.isMoyasar) {
@@ -787,31 +796,16 @@ async function placeOrderConfirmed() {
 
     // 💳 مسار البوابة الإلكترونية (Edge Function): الطلب أُنشئ أولاً — الآن نستدعي الفانكشن ونحوّل العميل
     if (selectedPayment.isGateway) {
-        var gatewayOk = false;
-        if (orderId) {
-            showToast('⏳ جاري تجهيز الدفع الإلكتروني...');
-            gatewayOk = await startGatewayPayment(orderId, finalTotal, { name: name, email: email, phone: phone }, selectedPayment.gatewayCode);
-        } else {
-            showToast('⚠️ الدفع الإلكتروني غير متاح حالياً — اختر طريقة أخرى', 'warning');
-        }
+        showToast('⏳ جاري تجهيز الدفع الإلكتروني...');
+        var gatewayOk = await startGatewayPayment(orderId, finalTotal, { name: name, email: email, phone: phone }, selectedPayment.gatewayCode);
         if (gatewayOk) return; // التحويل لبوابة الدفع جارٍ — لا نكمل المسار العادي
-        // ⚠️ فشل المسار الإلكتروني: الطلب يبقى محفوظاً ونكمل بمسار الواتساب العادي كفولباك
-        // محاولة أفضل جهد لإرجاع حالة الطلب إلى new (كان pending_payment) — الفشل هنا غير مؤثر
-        try {
-            if (orderId) await supabaseClient.from('store_orders').update({ status: 'new' }).eq('id', orderId);
-        } catch (eRevert) {}
+        // ⚠️ فشل بدء الدفع الإلكتروني: الطلب محفوظ فعلاً في السيرفر — نُعلم العميل دون نجاح وهمي
+        showToast('⚠️ تعذر بدء الدفع الإلكتروني — طلبك محفوظ برقم ' + orderNumber + ' وسنتواصل معك لإتمام الدفع', 'warning');
     }
 
-    var invoiceNumber = 'INV-' + Date.now();
-    var invoiceResult = await supabaseClient.from('invoices').insert([{
-        invoice_number: invoiceNumber, customer_name: name, customer_email: email,
-        customer_phone: phone, items: cart, subtotal: subtotal, tax: tax, total: finalTotal, status: 'issued'
-    }]).select('*').single();
-    var invoiceId = invoiceResult.data ? invoiceResult.data.id : null;
-
+    // ✅ الطلب أُنشئ بنجاح في السيرفر — الآن فقط نمسح السلة ونحوّل لصفحة الشكر
     localStorage.removeItem('doraCart');
-    var orderNumber = orderResult.data ? orderResult.data.id : '';
-    window.location.href = 'thankyou.html?order=' + orderNumber + '&invoice=' + (invoiceId || '');
+    window.location.href = 'thankyou.html?order=' + encodeURIComponent(String(orderNumber));
 }
 
 // ==================== 🔐 نظام التحقق OTP عبر البريد قبل تأكيد الطلب ====================
@@ -927,7 +921,7 @@ async function verifyOtpCode() {
     btn.textContent = 'تأكيد وإتمام الطلب';
 }
 
-// 🚪 بوابة الطلب: التحقق من البريد أولاً ثم الإتمام
+// 🚪 بوابة الطلب: جلسة مصادقة إجبارية — OTP بالبريد إن لم توجد جلسة
 async function placeOrder() {
     var name = document.getElementById('custName').value.trim();
     var phone = document.getElementById('custPhone').value.trim();
@@ -935,6 +929,14 @@ async function placeOrder() {
     if (!selectedPayment) { alert('❌ اختر طريقة الدفع'); return; }
     var email = document.getElementById('custEmail').value.trim();
     if (!email) { alert('❌ اكتب بريدك الإلكتروني — سيصلك عليه رمز التحقق'); return; }
+    // 🔐 إن وُجدت جلسة صالحة نكمل مباشرة، وإلا نفرض رمز التحقق قبل إرسال أي طلب
+    try {
+        var sess = await supabaseClient.auth.getSession();
+        if (sess && sess.data && sess.data.session) {
+            await placeOrderConfirmed();
+            return;
+        }
+    } catch (eSess) { /* عند الشك: نطلب OTP */ }
     _otpEmail = email;
     openOtpModal();
     await sendOtpCode(false);

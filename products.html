@@ -34,7 +34,7 @@
   <meta name="twitter:image" content="https://alshamal-df.com/og-image.jpg">
   <meta http-equiv="Surrogate-Control" content="no-store">
   <meta http-equiv="Vary" content="*">
-  <link rel="canonical" href="https://alshamal-df.com/products.html">
+  <link rel="canonical" href="https://www.alshamal-df.com/products.html">
   <link rel="manifest" href="manifest.json?v=5.0">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20fill%3D%27%25231E88E5%27%20rx%3D%2715%27%20width%3D%27100%27%20height%3D%27100%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27white%27%3E%E2%9A%A1%3C%2Ftext%3E%3C%2Fsvg%3E">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
@@ -51,7 +51,7 @@
 
 
   <link rel="stylesheet" href="styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 <script>
   (function() {
       'use strict';
@@ -70,7 +70,7 @@
           audio = new Audio(AUDIO_URL);
           audio.loop = true;
           audio.volume = 0.30;
-          audio.preload = 'auto';
+          audio.preload = 'none';
           // Expose globally
           window.doraAudio = audio;
           return audio;
@@ -132,8 +132,6 @@
 }
 function init() {
           createAudio();
-          tryPlay();
-          setTimeout(tryPlay, 1000);
           window.doraAudioPlaying = isPlaying;
           window.doraAudioMuted = isMuted;
       }
@@ -610,7 +608,7 @@ function init() {
     </div>
 </div>
 
-  <script src="main.js"></script>
+  <script src="main.js" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   renderProducts('all');
@@ -619,6 +617,6 @@ document.addEventListener('DOMContentLoaded', function() {
   if (c) c.textContent = n + ' منتج متاح';
 });
 </script>
-<script src="chatbot-ai.js"></script>
-<script src="site-content.js"></script>
+<script src="chatbot-ai.js" defer></script>
+<script src="site-content.js" defer></script>
 </body></html>
