@@ -122,9 +122,58 @@
       .mac-title { font-size: 22px; }
     }
   </style>
+  <link rel="stylesheet" href="assets/sky-premium.css">
+  <style>
+    /* Sky Premium — حسابي (mac-*): تحويل الزجاج الداكن إلى هوية فاتحة (بصري بحت) */
+    body.sp-myaccount .mac-glass {
+      background: var(--sp-glass-strong); border: 1px solid var(--sp-glass-brd);
+      box-shadow: var(--sp-shadow);
+    }
+    body.sp-myaccount .mac-header .mac-brand { color: var(--sp-ink); }
+    body.sp-myaccount .mac-header .mac-brand small { color: var(--sp-muted); }
+    body.sp-myaccount .mac-sub { color: var(--sp-muted); }
+    body.sp-myaccount .mac-gate p { color: var(--sp-ink2); }
+    body.sp-myaccount .mac-phone-row input {
+      background: #fff; border: 1px solid var(--sp-glass-brd); color: var(--sp-ink);
+    }
+    body.sp-myaccount .mac-phone-row input:focus { border-color: var(--sp-glow); box-shadow: 0 0 0 3px rgba(56,189,248,.16); }
+    body.sp-myaccount .mac-phone-row input::placeholder { color: var(--sp-muted); }
+    body.sp-myaccount .mac-btn {
+      background: var(--sp-primary); border: 1px solid var(--sp-primary); color: #fff;
+      box-shadow: 0 8px 24px rgba(2,132,199,.35);
+    }
+    body.sp-myaccount .mac-btn:hover { background: var(--sp-primary-dark); border-color: var(--sp-primary-dark); box-shadow: 0 14px 32px rgba(2,132,199,.42); }
+    body.sp-myaccount .mac-btn-wa { background: linear-gradient(135deg,#25D366,#128C7E); border: none; }
+    body.sp-myaccount .mac-avatar { background: var(--sp-sky100); border-color: var(--sp-glass-brd); box-shadow: none; }
+    body.sp-myaccount .mac-hello .mac-phone-lbl { color: var(--sp-muted); }
+    body.sp-myaccount .mac-switch { color: var(--sp-primary); }
+    body.sp-myaccount .mac-quick a {
+      background: #fff; border: 1px solid var(--sp-glass-brd); color: var(--sp-ink);
+      box-shadow: var(--sp-shadow-sm);
+    }
+    body.sp-myaccount .mac-quick a:hover { border-color: var(--sp-glow); box-shadow: var(--sp-shadow-hover); }
+    body.sp-myaccount .mac-order-meta { color: var(--sp-muted); }
+    body.sp-myaccount .mac-order-items { border-top-color: var(--sp-sky200); }
+    body.sp-myaccount .mac-order-items div { color: var(--sp-ink2); }
+    body.sp-myaccount .mac-order-total { color: var(--sp-green); }
+    body.sp-myaccount .mac-mini-btn {
+      background: #fff; border: 1.5px solid var(--sp-glow); color: var(--sp-primary);
+    }
+    body.sp-myaccount .mac-mini-btn:hover { background: var(--sp-sky100); box-shadow: none; }
+    body.sp-myaccount .mac-badge.b-new { background: var(--sp-sky100); color: var(--sp-primary-dark); border-color: var(--sp-glow); }
+    body.sp-myaccount .mac-badge.b-prog { background: #FEF3C7; color: #B45309; border-color: #FCD34D; }
+    body.sp-myaccount .mac-badge.b-ship { background: var(--sp-sky100); color: var(--sp-primary); border-color: var(--sp-sky200); }
+    body.sp-myaccount .mac-badge.b-done { background: #DCFCE7; color: #15803D; border-color: #86EFAC; }
+    body.sp-myaccount .mac-badge.b-cancel { background: #FEE2E2; color: #B91C1C; border-color: #FCA5A5; }
+    body.sp-myaccount .mac-empty { color: var(--sp-muted); }
+    body.sp-myaccount .mac-empty h3 { color: var(--sp-ink); }
+    body.sp-myaccount .mac-loading { color: var(--sp-primary); }
+    body.sp-myaccount .mac-err { color: #B91C1C; }
+    body.sp-myaccount .mac-support p { color: var(--sp-ink2); }
+  </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body>
+<body class="sp-myaccount">
   <div class="mac-wrap">
     <div class="mac-header">
       <img src="logo.png" alt="شركة درة فارس الشمال">

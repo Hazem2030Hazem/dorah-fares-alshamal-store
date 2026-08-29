@@ -145,7 +145,49 @@ function init() {
   
 </script>
 <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="fbe13262-4414-4ead-b11c-8be25ec1a317" type="text/javascript" async></script>
-</head><body>
+<style>
+/* Sky Premium — توحيد الهوية الفاتحة في الوضعين (محددات مسبوقة body.sp-page، لا تغيّر أي محتوى أو سلوك) */
+body.sp-page h1,body.sp-page h2,body.sp-page h3,body.sp-page h4,body.sp-page h5,body.sp-page h6{color:var(--sp-ink) !important;text-shadow:none !important}
+body.sp-page .header{background:rgba(255,255,255,.72) !important;border-bottom:1px solid var(--sp-glass-brd) !important;box-shadow:0 4px 24px rgba(2,132,199,.10) !important;-webkit-backdrop-filter:blur(18px) !important;backdrop-filter:blur(18px) !important}
+body.sp-page .logo-text h1{color:var(--sp-ink) !important}
+body.sp-page .logo-text span{color:var(--sp-muted) !important}
+body.sp-page .nav-links a,body.sp-page .nav-trigger{color:var(--sp-ink2) !important}
+body.sp-page .nav-links a:hover,body.sp-page .nav-trigger:hover{color:var(--sp-primary) !important;background:var(--sp-sky100) !important}
+body.sp-page .dropdown-menu{background:var(--sp-glass-strong) !important;border:1px solid var(--sp-glass-brd) !important;box-shadow:var(--sp-shadow) !important;-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+body.sp-page .dropdown-menu a{color:var(--sp-ink2) !important}
+body.sp-page .dropdown-menu a:hover{background:var(--sp-sky100) !important;color:var(--sp-primary) !important}
+body.sp-page .sidebar-icon .icon-svg{stroke:var(--sp-ink2)}
+body.sp-page .sidebar-icon:hover .icon-svg{stroke:var(--sp-primary)}
+body.sp-page .search-bar input{background:#fff !important;border:1px solid var(--sp-glass-brd) !important;color:var(--sp-ink) !important}
+body.sp-page .search-bar input::placeholder{color:var(--sp-muted) !important}
+body.sp-page .search-result-item:hover{background:var(--sp-sky100) !important}
+body.sp-page .search-result-name{color:var(--sp-ink) !important;text-shadow:none !important}
+body.sp-page .search-no-results{background:var(--sp-glass-strong) !important;color:var(--sp-muted) !important}
+body.sp-page .audio-volume-popup{background:var(--sp-glass-strong);border:1px solid var(--sp-glass-brd);box-shadow:var(--sp-shadow)}
+body.sp-page .audio-volume-popup h4{color:var(--sp-ink)}
+body.sp-page .page-hero,body.sp-page .service-hero,body.sp-page .services-hero{background:linear-gradient(160deg,var(--sp-sky100) 0%,#F4FAFF 55%,#FFFFFF 100%) !important}
+body.sp-page .page-hero .page-title,body.sp-page .service-hero h1,body.sp-page .services-hero h1{color:var(--sp-ink) !important;text-shadow:none !important}
+body.sp-page .page-hero .page-subtitle,body.sp-page .service-hero p,body.sp-page .services-hero p{color:var(--sp-ink2) !important;text-shadow:none !important}
+body.sp-page .section-header h3{color:var(--sp-ink) !important}
+body.sp-page .section-header p{color:var(--sp-ink2) !important;text-shadow:none !important}
+body.sp-page .footer{background:linear-gradient(180deg,#FFFFFF 0%,var(--sp-bg) 100%) !important;border-top:1px solid var(--sp-glass-brd) !important}
+body.sp-page .footer h3,body.sp-page .footer h4,body.sp-page .footer h5{color:var(--sp-ink) !important}
+body.sp-page .footer p,body.sp-page .footer a,body.sp-page .footer-col a{color:var(--sp-ink2) !important;text-shadow:none !important}
+body.sp-page .footer li,body.sp-page .footer span{color:var(--sp-ink2) !important;text-shadow:none !important}
+body.sp-page .footer a:hover,body.sp-page .footer-col a:hover{color:var(--sp-primary) !important}
+body.sp-page .footer-bottom{border-top-color:var(--sp-border) !important}
+body.sp-page .footer-social a{color:var(--sp-ink2);border-color:var(--sp-glass-brd)}
+body.sp-page .content-card{background:var(--sp-glass) !important;border:1px solid var(--sp-glass-brd) !important;box-shadow:var(--sp-shadow) !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+body.sp-page .content-card h2{color:var(--sp-ink) !important}
+body.sp-page .content-card h3{color:var(--sp-primary) !important}
+body.sp-page .content-card p,body.sp-page .content-card li{color:var(--sp-ink2) !important;text-shadow:none !important}
+body.sp-page .feature-card,body.sp-page .team-card{background:var(--sp-glass) !important;border:1px solid var(--sp-glass-brd) !important;box-shadow:var(--sp-shadow-sm) !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+body.sp-page .feature-card:hover,body.sp-page .team-card:hover{border-color:var(--sp-glow) !important;box-shadow:var(--sp-shadow-hover) !important}
+body.sp-page .feature-card h3,body.sp-page .team-card h4{color:var(--sp-ink) !important}
+body.sp-page .feature-card p,body.sp-page .team-card span{color:var(--sp-ink2) !important;text-shadow:none !important}
+</style>
+<link rel="stylesheet" href="assets/sky-premium.css">
+</head><body class="sp-page">
     <!-- ===== SIDEBAR ICONS (exact from index.html) ===== -->
     <div class="sidebar-icons">
         <div class="sidebar-icon" title="الرئيسية" onclick="window.location.href='index.html'">

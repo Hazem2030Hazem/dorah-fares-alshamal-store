@@ -30,8 +30,18 @@
         .no-invoice { text-align: center; padding: 80px 20px; color: #999; }
         @media print { body { background: #fff; } .invoice-container { box-shadow: none; } }
     </style>
+    <link rel="stylesheet" href="assets/sky-premium.css">
+    <style>
+        /* Sky Premium — الفاتورة: مواءمة لونية فقط مع الهوية (آمنة للطباعة — لا خلفيات ولا تخطيط) */
+        body.sp-invoice .invoice-header { border-bottom-color: var(--sp-primary); }
+        body.sp-invoice .invoice-header h1 { color: var(--sp-primary); }
+        body.sp-invoice .invoice-table th { background: var(--sp-primary); }
+        body.sp-invoice .invoice-total strong { color: var(--sp-primary); }
+        body.sp-invoice .invoice-footer { border-top-color: var(--sp-primary); }
+        @media screen { body.sp-invoice .invoice-container { box-shadow: var(--sp-shadow); } }
+    </style>
 </head>
-<body>
+<body class="sp-invoice">
     <div id="invoiceContent">
         <div class="no-invoice">⏳ جاري تحميل الفاتورة...</div>
     </div>

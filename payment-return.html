@@ -69,8 +69,33 @@
             transform: translateY(-2px);
         }
     </style>
+    <link rel="stylesheet" href="assets/sky-premium.css">
+    <style>
+        /* Sky Premium — نتيجة الدفع: بطاقة زجاجية فاتحة + تحييد الأزرار الزجاجية الداكنة (!important) */
+        body.sp-payreturn .result-card {
+            background: var(--sp-glass-strong); border: 1px solid var(--sp-glass-brd);
+            box-shadow: var(--sp-shadow);
+        }
+        body.sp-payreturn .result-card p { color: var(--sp-ink2); }
+        body.sp-payreturn .status-note { color: var(--sp-muted); }
+        body.sp-payreturn .btn.btn-primary, body.sp-payreturn .btn.btn-retry {
+            background: var(--sp-primary) !important; border: 1px solid var(--sp-primary) !important;
+            color: #fff !important; box-shadow: 0 8px 24px rgba(2,132,199,.35) !important; text-shadow: none;
+        }
+        body.sp-payreturn .btn.btn-primary:hover, body.sp-payreturn .btn.btn-retry:hover {
+            background: var(--sp-primary-dark) !important; border-color: var(--sp-primary-dark) !important;
+            color: #fff !important; box-shadow: 0 14px 32px rgba(2,132,199,.42) !important;
+        }
+        body.sp-payreturn .btn.btn-secondary {
+            background: #fff !important; border: 1.5px solid var(--sp-glow) !important;
+            color: var(--sp-primary) !important; box-shadow: 0 4px 14px rgba(2,132,199,.10) !important; text-shadow: none;
+        }
+        body.sp-payreturn .btn.btn-secondary:hover {
+            background: var(--sp-sky100) !important; color: var(--sp-primary-dark) !important; border-color: var(--sp-glow) !important;
+        }
+    </style>
 </head>
-<body>
+<body class="sp-payreturn">
     <div class="result-card" id="resultCard">
         <div class="result-icon" id="resultIcon">⏳</div>
         <h1 id="resultTitle">جاري معالجة نتيجة الدفع...</h1>

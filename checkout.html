@@ -179,8 +179,51 @@
             transform: translateY(-2px);
         }
     </style>
+    <link rel="stylesheet" href="assets/sky-premium.css">
+    <style>
+        /* Sky Premium — إتمام الشراء: تحييد بقايا «ضوء القمر» الزجاجية (!important) وتوحيد البلاطات ومودال OTP */
+        body.sp-checkout .btn-submit, body.sp-checkout .otp-btn,
+        body.sp-checkout .btn.btn-primary, body.sp-checkout .btn.btn-retry, body.sp-checkout .dtrack-btn {
+            background: var(--sp-primary) !important; border: 1px solid var(--sp-primary) !important;
+            color: #fff !important; box-shadow: 0 8px 24px rgba(2,132,199,.35) !important; text-shadow: none;
+        }
+        body.sp-checkout .btn-submit:hover, body.sp-checkout .otp-btn:hover,
+        body.sp-checkout .btn.btn-primary:hover, body.sp-checkout .btn.btn-retry:hover, body.sp-checkout .dtrack-btn:hover {
+            background: var(--sp-primary-dark) !important; border-color: var(--sp-primary-dark) !important;
+            color: #fff !important; box-shadow: 0 14px 32px rgba(2,132,199,.42) !important;
+        }
+        body.sp-checkout .btn.btn-secondary, body.sp-checkout .btn-add {
+            background: #fff !important; border: 1.5px solid var(--sp-glow) !important;
+            color: var(--sp-primary) !important; box-shadow: 0 4px 14px rgba(2,132,199,.10) !important; text-shadow: none;
+        }
+        body.sp-checkout .btn.btn-secondary:hover, body.sp-checkout .btn-add:hover {
+            background: var(--sp-sky100) !important; color: var(--sp-primary-dark) !important; border-color: var(--sp-glow) !important;
+        }
+        body.sp-checkout .quick-pay-btn {
+            background: #fff !important; border: 2px solid #E5E7EB !important;
+            color: #111827 !important; box-shadow: none !important; text-shadow: none;
+        }
+        body.sp-checkout .quick-pay-btn:hover {
+            background: var(--sp-sky100) !important; border-color: var(--sp-glow) !important;
+            color: #111827 !important; box-shadow: none !important;
+        }
+        body.sp-checkout .delivery-option { background: #fff; border-color: #E5E7EB; color: var(--sp-ink2); }
+        body.sp-checkout .delivery-option:hover { border-color: var(--sp-glow); }
+        body.sp-checkout .delivery-option.selected { border-color: var(--sp-primary); background: var(--sp-sky100); color: var(--sp-primary); }
+        body.sp-checkout .payment-option:hover { border-color: var(--sp-glow); }
+        body.sp-checkout .payment-option.selected { border-color: var(--sp-primary); background: #F0F9FF; box-shadow: 0 0 0 3px rgba(2,132,199,.12); }
+        body.sp-checkout .payment-option.selected::after { background-color: var(--sp-primary); }
+        /* مودال OTP: أنماطه الداكنة تُحقن عبر JS بعد التحميل — نغلّبها بصرياً بخصوصية أعلى (بصري بحت) */
+        body.sp-checkout .otp-card { background: #fff; border: 1px solid var(--sp-glass-brd); box-shadow: 0 20px 60px rgba(11,31,58,.25); color: var(--sp-ink2); }
+        body.sp-checkout .otp-card h3 { color: var(--sp-ink); }
+        body.sp-checkout .otp-card .otp-sub { color: var(--sp-muted); }
+        body.sp-checkout .otp-card .otp-sub b { color: var(--sp-primary); }
+        body.sp-checkout .otp-input:focus { border-color: var(--sp-primary); }
+        body.sp-checkout .otp-resend { color: var(--sp-primary); }
+        body.sp-checkout .otp-cancel { color: var(--sp-muted); }
+    </style>
 </head>
-<body>
+<body class="sp-checkout">
 
 <div class="checkout-container">
     <div class="checkout-header">
