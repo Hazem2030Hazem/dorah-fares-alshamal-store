@@ -1,9 +1,0 @@
-package.json
-server.js
-.env
-node_modules/
-dist/
-*.log
-
-# Supabase CLI local artifacts
-supabase/.temp/

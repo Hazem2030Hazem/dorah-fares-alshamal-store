@@ -11,17 +11,13 @@ Disallow: /account-system.js
 Disallow: /admin-v2.js
 Disallow: /admin-v2.css
 Disallow: /dora-forms.js
+Disallow: /google-site-verification.html
 
 # منع فهرسة صفحات الشكر والمؤقتة
 Disallow: /thankyou.html
-Disallow: /invoice.html
-Disallow: /payment-return.html
-Disallow: /checkout.html
-Disallow: /track.html
-Disallow: /account.html
-Disallow: /pos.html
-Disallow: /staff-portal.html
-Disallow: /team-login.html
 
 # Sitemap
 Sitemap: https://www.alshamal-df.com/sitemap.xml
+
+# Crawl-delay (اختياري - للتخفيف على السيرفر)
+Crawl-delay: 10

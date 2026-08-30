@@ -17,7 +17,7 @@
         audio = new Audio(AUDIO_URL);
         audio.loop = true;
         audio.volume = 0.30; // 30% volume
-        audio.preload = 'none'; // لا يُحمَّل الملف إلا بعد تفاعل المستخدم
+        audio.preload = 'auto';
 
         return audio;
     }
@@ -56,10 +56,13 @@
         }
     };
 
-    // Initialize: no autoplay and no preload — audio is created/played only
-    // after explicit user interaction via window.toggleAudio (sound button)
+    // Initialize
     function init() {
-        // intentionally left without createAudio()/tryPlay()
+        createAudio();
+        tryPlay();
+
+        // Try again after 1 second
+        setTimeout(tryPlay, 1000);
     }
 
     // Run when page loads

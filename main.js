@@ -104,7 +104,12 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ملاحظة أمنية: إدارة صلاحيات الأدمن تتم حصرياً عبر Supabase Auth + دور admin/staff في admin-v2.js.
 const TAX_RATE = 0.15;
-// 🔐 لا توجد قاموس كوبونات محلي — التحقق والخصم يتمان سيرفرياً عبر RPC validate_coupon
+const COUPONS = {
+ 'DORA10': { discount: 0.10, label: 'خصم 10%' },
+ 'DORA20': { discount: 0.20, label: 'خصم 20%' },
+ 'WELCOME': { discount: 0.15, label: 'خصم ترحيبي 15%' },
+ 'WELCOME15': { discount: 0.15, label: 'خصم ترحيبي 15%' }
+};
 
 // ============================================================
 // إعدادات الشحن (بالريال السعودي) — عدّل القيم من هنا فقط.
@@ -154,13 +159,6 @@ function sanitizeInput(input) {
  return div.innerHTML;
 }
 
-// 🔐 دالة إسكيب عامة لأي قيمة تُدرج في HTML (نصوص وخصائص) — حماية XSS
-function esc(v) {
- return String(v == null ? '' : v).replace(/[&<>"']/g, function(ch) {
-  return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[ch];
- });
-}
-
 function formatPrice(price) {
  return price.toLocaleString('ar-SA') + ' ر.س';
 }
@@ -174,6 +172,16 @@ function calculateDiscount(amount, discountPercent) {
 }
 
 document.addEventListener('keydown', function(e) {
+ if (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'h') {
+  e.preventDefault();
+  window.open('admin.html?secret=dora2024', '_blank');
+  showToast('🔓 جاري فتح لوحة الإدارة...');
+ }
+ if (e.ctrlKey && e.altKey && (e.key.toLowerCase() === 'g' || e.code === 'KeyG')) {
+  e.preventDefault();
+  window.open('team-login.html', '_blank');
+  showToast('👥 جاري فتح بوابة فريق العمل...');
+ }
  if (e.key === 'Escape') {
   closeProductModal();
   closeCompareModal();
@@ -198,7 +206,7 @@ function handleSearch(query) {
  } else {
   resultsDiv.innerHTML = filtered.slice(0, 6).map(p => `
    <div class="search-result-item" onclick="openProductModal(${p.id}); document.getElementById('searchResults').classList.remove('active'); document.getElementById('searchInput').value='';">
-    <img class="search-result-img" src="${esc(p.image)}" alt="" loading="lazy">
+    <img class="search-result-img" src="${p.image}" alt="" loading="lazy">
     <div class="search-result-info">
      <div class="search-result-name">${sanitizeInput(p.name)}</div>
      <div class="search-result-price">${formatPrice(p.price)}</div>
@@ -292,12 +300,12 @@ function renderProducts(filter) {
   const stars = '★'.repeat(Math.floor(p.rating || 0)) + '☆'.repeat(5 - Math.floor(p.rating || 0));
 
   return `
-   <div class="prod-card ${isWishlisted ? 'wishlisted' : ''}" data-category="${esc(p.category)}" data-id="${p.id}">
+   <div class="prod-card ${isWishlisted ? 'wishlisted' : ''}" data-category="${p.category}" data-id="${p.id}">
     <div class="prod-img" onclick="openProductModal(${p.id})">
-     ${p.badge ? `<div class="prod-badge ${p.badge === 'جديد' ? 'new' : p.badge === 'خصم' ? 'discount' : ''}">${esc(p.badge)}${hasDiscount && p.badge === 'خصم' ? ' -' + discountPercent + '%' : ''}</div>` : ''}
+     ${p.badge ? `<div class="prod-badge ${p.badge === 'جديد' ? 'new' : p.badge === 'خصم' ? 'discount' : ''}">${p.badge}${hasDiscount && p.badge === 'خصم' ? ' -' + discountPercent + '%' : ''}</div>` : ''}
      ${hasDiscount && !p.badge ? `<div class="prod-badge discount">خصم -${discountPercent}%</div>` : ''}
      <div style="position:relative; width:100%; height:220px; background:#f5f7fa; display:flex; align-items:center; justify-content:center; overflow:hidden;">
-       <img src="${p.image && p.image.length > 0 ? esc(p.image) : ''}" alt="${esc(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null;this.src='default-product.png';">
+       <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${sanitizeInput(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null;this.src='default-product.png';">
        <svg style="display:none; width:48px; height:48px; color:#9aa5b9;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
      </div>
     </div>
@@ -444,12 +452,12 @@ function openProductModal(productId) {
  document.getElementById('productModalContent').innerHTML = `
   <div class="modal-image">
    <div style="position:relative; width:100%; height:300px; background:#f5f7fa; display:flex; align-items:center; justify-content:center; border-radius:12px; overflow:hidden;">
-  <img src="${p.image && p.image.length > 0 ? esc(p.image) : ''}" alt="${esc(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null;this.src='default-product.png';">
+  <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${sanitizeInput(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null;this.src='default-product.png';">
   <svg style="display:none; width:64px; height:64px; color:#9aa5b9;" fill="none" stroke="currentColor" viewBox="0 0 24 24">...<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
 </div>
   </div>
   <div class="modal-info">
-   <span class="modal-category">${esc(catLabels[p.category] || '')}</span>
+   <span class="modal-category">${catLabels[p.category]}</span>
    <h2 class="modal-name">${sanitizeInput(p.name)}</h2>
    <div class="modal-rating">
     <span class="stars">${stars}</span>
@@ -473,7 +481,7 @@ function openProductModal(productId) {
     <h4>📋 مراجعات العملاء</h4>
     ${reviewsHtml}
     <div class="product-rating-section">
-     <button class="product-rating-btn" data-pname="${esc(p.name)}" onclick="openProductRatingModal(${p.id}, this.getAttribute('data-pname'))">
+     <button class="product-rating-btn" onclick="openProductRatingModal(${p.id}, '${sanitizeInput(p.name)}')">
       ⭐ قيّم هذا المنتج
      </button>
     </div>
@@ -488,7 +496,7 @@ function openProductModal(productId) {
   relGrid.innerHTML = relatedProducts.map(rp => `
    <div class="prod-card" onclick="openProductModal(${rp.id})" style="cursor:pointer">
     <div class="prod-img" style="height:160px">
-     <img src="${esc(rp.image)}" alt="${esc(rp.name)}" loading="lazy" style="height:100%">
+     <img src="${rp.image}" alt="${sanitizeInput(rp.name)}" loading="lazy" style="height:100%">
     </div>
     <div class="prod-body" style="padding:15px">
      <h4 class="prod-name" style="font-size:14px">${sanitizeInput(rp.name)}</h4>
@@ -547,7 +555,7 @@ function updateCompareBar() {
   if (!p) return '';
   return `
    <div class="compare-item">
-    <img src="${esc(p.image)}" alt="" loading="lazy">
+    <img src="${p.image}" alt="" loading="lazy">
     <span class="compare-item-name">${sanitizeInput(p.name.substring(0, 20))}...</span>
     <button class="compare-item-remove" onclick="toggleCompare(${p.id})">✕</button>
    </div>
@@ -572,7 +580,7 @@ function showCompareModal() {
 
  let html = '<table class="compare-table"><thead><tr><th>المواصفة</th>';
  products.forEach(p => {
-  html += `<th><img class="compare-product-img" src="${esc(p.image)}" alt="" loading="lazy"><div class="compare-product-name">${sanitizeInput(p.name)}</div><div class="compare-product-price">${formatPrice(p.price)}</div></th>`;
+  html += `<th><img class="compare-product-img" src="${p.image}" alt="" loading="lazy"><div class="compare-product-name">${sanitizeInput(p.name)}</div><div class="compare-product-price">${formatPrice(p.price)}</div></th>`;
  });
  html += '</tr></thead><tbody>';
 
@@ -744,32 +752,24 @@ function toggleCart() {
  document.getElementById('cartSidebar').classList.toggle('open');
 }
 
-// 🔐 التحقق من الكوبون سيرفرياً عبر RPC — لا قواميس محلية
-async function applyCoupon() {
+function applyCoupon() {
  const input = document.getElementById('couponInput') || document.getElementById('couponInputAdmin');
  const code = input ? input.value.trim().toUpperCase() : '';
  if (!code) return;
 
- try {
-  const res = await supabaseClient.rpc('validate_coupon', { p_code: code });
-  if (res.error) throw res.error;
-  const data = res.data;
-  if (data && data.valid) {
-   const percent = Number(data.discount_percent) || 0;
-   activeCoupon = { discount: percent / 100, label: 'خصم ' + percent + '%' };
-   document.getElementById('couponSection').innerHTML = `
-    <div class="coupon-applied">
-     ✅ ${esc(activeCoupon.label)} مُطبق
-     <button class="remove-coupon" onclick="removeCoupon()">✕</button>
-    </div>
-   `;
-   updateCartUI();
-   showToast('✅ تم تطبيق كود الخصم: ' + activeCoupon.label);
-  } else {
-   showToast('❌ ' + ((data && data.error) || 'كود الخصم غير صحيح'), 'error');
-  }
- } catch (e) {
-  showToast('❌ تعذر التحقق من الكوبون — حاول مجدداً', 'error');
+ const coupon = COUPONS[code];
+ if (coupon) {
+  activeCoupon = coupon;
+  document.getElementById('couponSection').innerHTML = `
+   <div class="coupon-applied">
+    ✅ ${coupon.label} مُطبق
+    <button class="remove-coupon" onclick="removeCoupon()">✕</button>
+   </div>
+  `;
+  updateCartUI();
+  showToast('✅ تم تطبيق كود الخصم: ' + coupon.label);
+ } else {
+  showToast('❌ كود الخصم غير صحيح', 'error');
  }
 }
 
@@ -1943,11 +1943,11 @@ function openQuickView(productId) {
   if (!content) { openProductModal(productId); return; } // صفحات الأقسام: نفتح نافذة التفاصيل بدل النظرة السريعة
   content.innerHTML = `
     <div class="quick-view-image"><div style="position:relative; width:100%; height:300px; background:#f5f7fa; display:flex; align-items:center; justify-content:center; border-radius:12px; overflow:hidden;">
-  <img src="${p.image && p.image.length > 0 ? esc(p.image) : ''}" alt="${esc(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null;this.src='default-product.png';"
+  <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${sanitizeInput(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null;this.src='default-product.png';"
   <svg style="display:none; width:64px; height:64px; color:#9aa5b9;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
 </div>
     <div class="quick-view-info">
-      <span class="quick-view-category">${esc(catLabels[p.category] || '')}</span>
+      <span class="quick-view-category">${catLabels[p.category]}</span>
       <h3 class="quick-view-name">${sanitizeInput(p.name)}</h3>
       <div class="quick-view-rating"><span class="stars">${stars}</span><span class="rating-text">${p.rating || 0} (${p.reviews ? p.reviews.length : 0} تقييم)</span></div>
       <p class="quick-view-desc">${sanitizeInput(p.desc)}</p>
@@ -2011,7 +2011,7 @@ function renderWishlistPage() {
   container.innerHTML = `<div class="prod-grid">${wishlistProducts.map(p => {
         const stars = '★'.repeat(Math.floor(p.rating || 0)) + '☆'.repeat(5 - Math.floor(p.rating || 0));
         const hasDiscount = p.oldPrice && p.oldPrice > p.price;
-        return `<div class="prod-card wishlisted" data-id="${p.id}"><div class="prod-img" onclick="openQuickView(${p.id})">${p.badge ? `<div class="prod-badge">${esc(p.badge)}</div>` : ''}<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy"></div><button class="wishlist-btn active" onclick="toggleWishlist(${p.id}, event); renderWishlistPage();">❤️</button><div class="prod-body"><span class="prod-tag">${esc(catLabels[p.category] || '')}</span><h4 class="prod-name" onclick="openProductModal(${p.id})">${esc(p.name)}</h4><div class="modal-rating" style="margin-bottom:8px"><span class="stars">${stars}</span><span class="rating-text">${p.rating || 0}</span></div><p class="prod-desc">${esc(p.desc)}</p><div class="prod-footer"><div class="prod-price">${hasDiscount ? `<span class="old-price">${formatPrice(p.oldPrice)}</span>` : ''} ${formatPrice(p.price)}</div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"><button class="add-btn" onclick="addToCart(${p.id})">🛒 أضف للسلة</button><button class="quote-btn" onclick="requestQuote(${p.id}, event)">📋 عرض سعر</button></div></div></div></div>`;
+        return `<div class="prod-card wishlisted" data-id="${p.id}"><div class="prod-img" onclick="openQuickView(${p.id})">${p.badge ? `<div class="prod-badge">${p.badge}</div>` : ''}<img src="${p.image}" alt="${p.name}" loading="lazy"></div><button class="wishlist-btn active" onclick="toggleWishlist(${p.id}, event); renderWishlistPage();">❤️</button><div class="prod-body"><span class="prod-tag">${catLabels[p.category]}</span><h4 class="prod-name" onclick="openProductModal(${p.id})">${p.name}</h4><div class="modal-rating" style="margin-bottom:8px"><span class="stars">${stars}</span><span class="rating-text">${p.rating || 0}</span></div><p class="prod-desc">${p.desc}</p><div class="prod-footer"><div class="prod-price">${hasDiscount ? `<span class="old-price">${formatPrice(p.oldPrice)}</span>` : ''} ${formatPrice(p.price)}</div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"><button class="add-btn" onclick="addToCart(${p.id})">🛒 أضف للسلة</button><button class="quote-btn" onclick="requestQuote(${p.id}, event)">📋 عرض سعر</button></div></div></div></div>`;
       }).join('')}</div>`;
 }
 // ===== تحميل الشركاء والعملاء =====
@@ -2202,15 +2202,15 @@ function renderRecentlyViewed() {
     return `
       <div class="prod-card" data-id="${p.id}" onclick="openProductModal(${p.id})" style="cursor:pointer">
         <div class="prod-img" style="height:180px">
-          ${p.badge ? `<div class="prod-badge">${esc(p.badge)}</div>` : ''}
+          ${p.badge ? `<div class="prod-badge">${p.badge}</div>` : ''}
           ${hasDiscount && !p.badge ? `<div class="prod-badge discount">خصم</div>` : ''}
           <div style="position:relative; width:100%; height:180px; background:#f5f7fa; display:flex; align-items:center; justify-content:center; overflow:hidden;">
-            <img src="${p.image && p.image.length > 0 ? esc(p.image) : ''}" alt="${esc(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null;this.src='default-product.png';">
+            <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${sanitizeInput(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null;this.src='default-product.png';">
             <svg style="display:none; width:48px; height:48px; color:#9aa5b9;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
           </div>
         </div>
         <div class="prod-body" style="padding:12px">
-          <span class="prod-tag" style="font-size:11px">${esc(catLabels[p.category] || '')}</span>
+          <span class="prod-tag" style="font-size:11px">${catLabels[p.category]}</span>
           <h4 class="prod-name" style="font-size:13px;margin:5px 0">${sanitizeInput(p.name)}</h4>
           <div style="display:flex;align-items:center;gap:5px;margin:5px 0">
             <span style="color:#FFD700;font-size:12px">${stars}</span>
@@ -2378,15 +2378,15 @@ function renderBestSellers() {
       <div class="prod-card best-seller-card" data-id="${p.id}" onclick="openProductModal(${p.id})" style="cursor:pointer;position:relative">
         ${medal ? `<div style="position:absolute;top:10px;left:10px;font-size:30px;z-index:10">${medal}</div>` : ''}
         <div class="prod-img" style="height:180px">
-          ${p.badge ? `<div class="prod-badge">${esc(p.badge)}</div>` : ''}
+          ${p.badge ? `<div class="prod-badge">${p.badge}</div>` : ''}
           ${hasDiscount && !p.badge ? `<div class="prod-badge discount">خصم</div>` : ''}
           <div style="position:relative; width:100%; height:180px; background:#f5f7fa; display:flex; align-items:center; justify-content:center; overflow:hidden;">
-            <img src="${p.image && p.image.length > 0 ? esc(p.image) : ''}" alt="${esc(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null;this.src='default-product.png';">
+            <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${sanitizeInput(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null;this.src='default-product.png';">
             <svg style="display:none; width:48px; height:48px; color:#9aa5b9;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
           </div>
         </div>
         <div class="prod-body" style="padding:12px">
-          <span class="prod-tag" style="font-size:11px">${esc(catLabels[p.category] || '')}</span>
+          <span class="prod-tag" style="font-size:11px">${catLabels[p.category]}</span>
           <h4 class="prod-name" style="font-size:13px;margin:5px 0">${sanitizeInput(p.name)}</h4>
           <div style="display:flex;align-items:center;gap:5px;margin:5px 0">
             <span style="color:#FFD700;font-size:12px">${stars}</span>
@@ -2447,7 +2447,44 @@ document.addEventListener('DOMContentLoaded', function() {
 // 📢 DORA MARKETING ENHANCEMENTS - تحسينات تسويقية
 // ============================================================
 
-// ---------- 1. (أُزيل) تتبع الكوبونات المحلي — الكوبونات سيرفرية بالكامل عبر RPC ----------
+// ---------- 1. تتبع استخدام الكوبونات ----------
+var couponUsage = JSON.parse(localStorage.getItem('doraCouponUsage') || '{"WELCOME":0,"DORA10":0,"DORA20":0}');
+
+var originalApplyCoupon = applyCoupon;
+applyCoupon = function() {
+    var code = (document.getElementById('couponInput') || document.getElementById('couponInputAdmin')).value.trim().toUpperCase();
+    originalApplyCoupon();
+    if (COUPONS[code] && activeCoupon) {
+        couponUsage[code] = (couponUsage[code] || 0) + 1;
+        localStorage.setItem('doraCouponUsage', JSON.stringify(couponUsage));
+        try {
+            supabaseClient.from('coupon_usage').insert([{
+                coupon_code: code,
+                discount_percent: COUPONS[code].discount * 100,
+                used_at: new Date().toISOString()
+            }]).then(function(){});
+        } catch(e) {}
+    }
+};
+
+// ---------- 2. كوبونات موسمية إضافية ----------
+var SEASONAL_COUPONS = {
+    'EID2025': { discount: 0.25, label: 'خصم العيد 25%', validUntil: '2025-07-15' },
+    'RAMADAN': { discount: 0.20, label: 'خصم رمضان 20%', validUntil: '2025-04-15' },
+    'BACK2SCHOOL': { discount: 0.15, label: 'خصم العودة للمدارس 15%', validUntil: '2025-09-15' },
+    'NATIONAL': { discount: 0.30, label: 'خصم اليوم الوطني 30%', validUntil: '2025-09-23' }
+};
+
+// دمج الكوبونات الموسمية مع الأساسية
+for (var key in SEASONAL_COUPONS) {
+    if (SEASONAL_COUPONS.hasOwnProperty(key)) {
+        var sc = SEASONAL_COUPONS[key];
+        var today = new Date().toISOString().split('T')[0];
+        if (sc.validUntil >= today) {
+            COUPONS[key] = { discount: sc.discount, label: sc.label };
+        }
+    }
+}
 
 // ---------- 3. عرض سعر مخفض تلقائي في بطاقة المنتج ----------
 var originalRenderProducts = renderProducts;
@@ -2470,7 +2507,36 @@ renderProducts = function(filter) {
     }, 100);
 };
 
-// ---------- 4. (أُزيل) عرض الكوبونات المحلية — لا تُعرض أكواد الخصم من المتصفح ----------
+// ---------- 4. عرض الكوبونات المتاحة في صفحة المنتجات ----------
+function showAvailableCoupons() {
+    var container = document.getElementById('couponSection');
+    if (!container || container.querySelector('.available-coupons')) return;
+    
+    var activeCoupons = [];
+    for (var key in COUPONS) {
+        if (COUPONS.hasOwnProperty(key)) {
+            activeCoupons.push({ code: key, label: COUPONS[key].label });
+        }
+    }
+    
+    if (activeCoupons.length > 0) {
+        var html = '<div class="available-coupons" style="margin-top:10px;padding:10px;background:rgba(245,158,11,0.1);border-radius:10px;border:1px dashed rgba(245,158,11,0.3)">';
+        html += '<p style="font-size:11px;color:#F59E0B;margin-bottom:8px">🎟️ كوبونات متاحة:</p>';
+        html += '<div style="display:flex;flex-wrap:wrap;gap:6px">';
+        activeCoupons.forEach(function(c) {
+            html += '<span onclick="navigator.clipboard.writeText(\'' + c.code + '\');showToast(\'✅ تم نسخ: ' + c.code + '\')" style="cursor:pointer;background:rgba(245,158,11,0.2);color:#F59E0B;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700" title="اضغط للنسخ">' + c.code + ' (' + c.label + ')</span>';
+        });
+        html += '</div></div>';
+        container.insertAdjacentHTML('beforeend', html);
+    }
+}
+
+// استدعاء عند تحميل السلة
+var originalUpdateCartUI = updateCartUI;
+updateCartUI = function() {
+    originalUpdateCartUI();
+    setTimeout(showAvailableCoupons, 300);
+};
 
 // ---------- 5. إضافة CSS للشارات التسويقية ----------
 (function() {

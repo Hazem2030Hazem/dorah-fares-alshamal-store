@@ -22,7 +22,7 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png?v=5.0">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.alshamal-df.com/about.html">
+  <meta property="og:url" content="https://alshamal-df.com">
   <meta property="og:title" content="&#x0634;&#x0631;&#x0643;&#x0629; &#x062F;&#x0631;&#x0629; &#x0641;&#x0627;&#x0631;&#x0633; &#x0627;&#x0644;&#x0634;&#x0645;&#x0627;&#x0644; | &#x062D;&#x0644;&#x0648;&#x0644; &#x062A;&#x0642;&#x0646;&#x064A;&#x0629; &#x0645;&#x062A;&#x0643;&#x0627;&#x0645;&#x0644;&#x0629;">
   <meta property="og:description" content="&#x062D;&#x0644;&#x0648;&#x0644; &#x062A;&#x0642;&#x0646;&#x064A;&#x0629; &#x0645;&#x062A;&#x0643;&#x0627;&#x0645;&#x0644;&#x0629; &#x0644;&#x0644;&#x0634;&#x0631;&#x0643;&#x0627;&#x062A; &#x0648;&#x0627;&#x0644;&#x0623;&#x0641;&#x0631;&#x0627;&#x062F;. +15 &#x0633;&#x0646;&#x0629; &#x062E;&#x0628;&#x0631;&#x0629;&#x060C; +500 &#x0639;&#x0645;&#x064A;&#x0644;&#x060C; +1000 &#x0645;&#x0634;&#x0631;&#x0648;&#x0639; &#x0645;&#x0646;&#x0641;&#x0630;. &#x0637;&#x0627;&#x0628;&#x0639;&#x0627;&#x062A;&#x060C; &#x0643;&#x0627;&#x0645;&#x064A;&#x0631;&#x0627;&#x062A; &#x0645;&#x0631;&#x0627;&#x0642;&#x0628;&#x0629;&#x060C; &#x0646;&#x0642;&#x0627;&#x0637; &#x0628;&#x064A;&#x0639;&#x060C; &#x0634;&#x0628;&#x0643;&#x0627;&#x062A;.">
   <meta property="og:site_name" content="&#x0634;&#x0631;&#x0643;&#x0629; &#x062F;&#x0631;&#x0629; &#x0641;&#x0627;&#x0631;&#x0633; &#x0627;&#x0644;&#x0634;&#x0645;&#x0627;&#x0644;">
@@ -38,7 +38,7 @@
   <meta name="twitter:image" content="https://alshamal-df.com/og-image.jpg">
   <meta http-equiv="Surrogate-Control" content="no-store">
   <meta http-equiv="Vary" content="*">
-  <link rel="canonical" href="https://www.alshamal-df.com/about.html">
+  <link rel="canonical" href="https://alshamal-df.com">
   <link rel="manifest" href="manifest.json?v=5.0">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20fill%3D%27%25231E88E5%27%20rx%3D%2715%27%20width%3D%27100%27%20height%3D%27100%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27white%27%3E%E2%9A%A1%3C%2Ftext%3E%3C%2Fsvg%3E">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
@@ -51,7 +51,7 @@
   
 <base target="_blank">
   <link rel="stylesheet" href="styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   (function() {
       'use strict';
@@ -70,7 +70,7 @@
           audio = new Audio(AUDIO_URL);
           audio.loop = true;
           audio.volume = 0.30;
-          audio.preload = 'none';
+          audio.preload = 'auto';
           // Expose globally
           window.doraAudio = audio;
           return audio;
@@ -132,6 +132,8 @@
 }
 function init() {
           createAudio();
+          tryPlay();
+          setTimeout(tryPlay, 1000);
           window.doraAudioPlaying = isPlaying;
           window.doraAudioMuted = isMuted;
       }
@@ -145,59 +147,7 @@ function init() {
   
 </script>
 <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="fbe13262-4414-4ead-b11c-8be25ec1a317" type="text/javascript" async></script>
-<style>
-/* Sky Premium — توحيد الهوية الفاتحة في الوضعين (محددات مسبوقة body.sp-page، لا تغيّر أي محتوى أو سلوك) */
-body.sp-page h1,body.sp-page h2,body.sp-page h3,body.sp-page h4,body.sp-page h5,body.sp-page h6{color:var(--sp-ink) !important;text-shadow:none !important}
-body.sp-page .header{background:rgba(255,255,255,.72) !important;border-bottom:1px solid var(--sp-glass-brd) !important;box-shadow:0 4px 24px rgba(2,132,199,.10) !important;-webkit-backdrop-filter:blur(18px) !important;backdrop-filter:blur(18px) !important}
-body.sp-page .logo-text h1{color:var(--sp-ink) !important}
-body.sp-page .logo-text span{color:var(--sp-muted) !important}
-body.sp-page .nav-links a,body.sp-page .nav-trigger{color:var(--sp-ink2) !important}
-body.sp-page .nav-links a:hover,body.sp-page .nav-trigger:hover{color:var(--sp-primary) !important;background:var(--sp-sky100) !important}
-body.sp-page .dropdown-menu{background:var(--sp-glass-strong) !important;border:1px solid var(--sp-glass-brd) !important;box-shadow:var(--sp-shadow) !important;-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
-body.sp-page .dropdown-menu a{color:var(--sp-ink2) !important}
-body.sp-page .dropdown-menu a:hover{background:var(--sp-sky100) !important;color:var(--sp-primary) !important}
-body.sp-page .sidebar-icon .icon-svg{stroke:var(--sp-ink2)}
-body.sp-page .sidebar-icon:hover .icon-svg{stroke:var(--sp-primary)}
-body.sp-page .search-bar input{background:#fff !important;border:1px solid var(--sp-glass-brd) !important;color:var(--sp-ink) !important}
-body.sp-page .search-bar input::placeholder{color:var(--sp-muted) !important}
-body.sp-page .search-result-item:hover{background:var(--sp-sky100) !important}
-body.sp-page .search-result-name{color:var(--sp-ink) !important;text-shadow:none !important}
-body.sp-page .search-no-results{background:var(--sp-glass-strong) !important;color:var(--sp-muted) !important}
-body.sp-page .audio-volume-popup{background:var(--sp-glass-strong);border:1px solid var(--sp-glass-brd);box-shadow:var(--sp-shadow)}
-body.sp-page .audio-volume-popup h4{color:var(--sp-ink)}
-body.sp-page .page-hero,body.sp-page .service-hero,body.sp-page .services-hero{background:linear-gradient(160deg,var(--sp-sky100) 0%,#F4FAFF 55%,#FFFFFF 100%) !important}
-body.sp-page .page-hero .page-title,body.sp-page .service-hero h1,body.sp-page .services-hero h1{color:var(--sp-ink) !important;text-shadow:none !important}
-body.sp-page .page-hero .page-subtitle,body.sp-page .service-hero p,body.sp-page .services-hero p{color:var(--sp-ink2) !important;text-shadow:none !important}
-body.sp-page .section-header h3{color:var(--sp-ink) !important}
-body.sp-page .section-header p{color:var(--sp-ink2) !important;text-shadow:none !important}
-body.sp-page .footer{background:linear-gradient(180deg,#FFFFFF 0%,var(--sp-bg) 100%) !important;border-top:1px solid var(--sp-glass-brd) !important}
-body.sp-page .footer h3,body.sp-page .footer h4,body.sp-page .footer h5{color:var(--sp-ink) !important}
-body.sp-page .footer p,body.sp-page .footer a,body.sp-page .footer-col a{color:var(--sp-ink2) !important;text-shadow:none !important}
-body.sp-page .footer li,body.sp-page .footer span{color:var(--sp-ink2) !important;text-shadow:none !important}
-body.sp-page .footer a:hover,body.sp-page .footer-col a:hover{color:var(--sp-primary) !important}
-body.sp-page .footer-bottom{border-top-color:var(--sp-border) !important}
-body.sp-page .footer-social a{color:var(--sp-ink2);border-color:var(--sp-glass-brd)}
-body.sp-page .content-card{background:var(--sp-glass) !important;border:1px solid var(--sp-glass-brd) !important;box-shadow:var(--sp-shadow) !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
-body.sp-page .content-card h2{color:var(--sp-ink) !important}
-body.sp-page .content-card h3{color:var(--sp-primary) !important}
-body.sp-page .content-card p,body.sp-page .content-card li{color:var(--sp-ink2) !important;text-shadow:none !important}
-body.sp-page .feature-card,body.sp-page .team-card{background:var(--sp-glass) !important;border:1px solid var(--sp-glass-brd) !important;box-shadow:var(--sp-shadow-sm) !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
-body.sp-page .feature-card:hover,body.sp-page .team-card:hover{border-color:var(--sp-glow) !important;box-shadow:var(--sp-shadow-hover) !important}
-body.sp-page .feature-card h3,body.sp-page .team-card h4{color:var(--sp-ink) !important}
-body.sp-page .feature-card p,body.sp-page .team-card span{color:var(--sp-ink2) !important;text-shadow:none !important}
-body.sp-page .about-text{background:var(--sp-glass) !important;border:1px solid var(--sp-glass-brd) !important;box-shadow:var(--sp-shadow) !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
-body.sp-page .about-text h2 span{color:var(--sp-primary) !important}
-body.sp-page .about-text p{color:var(--sp-ink2) !important;text-shadow:none !important}
-body.sp-page .stat-box{background:var(--sp-glass) !important;border:1px solid var(--sp-glass-brd) !important;box-shadow:var(--sp-shadow-sm) !important;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
-body.sp-page .stat-box .num{color:var(--sp-primary) !important;text-shadow:none !important}
-body.sp-page .stat-box .label{color:var(--sp-ink2) !important;text-shadow:none !important}
-body.sp-page .cta-box{background:linear-gradient(135deg,var(--sp-primary),var(--sp-sky500)) !important;box-shadow:var(--sp-shadow) !important}
-body.sp-page .cta-box h2{color:#fff !important}
-body.sp-page .cta-box p{color:rgba(255,255,255,.92) !important}
-body.sp-page .cta-box a{background:#fff !important;color:var(--sp-primary) !important}
-</style>
-<link rel="stylesheet" href="assets/sky-premium.css">
-</head><body class="sp-page">
+</head><body>
     <!-- ===== SIDEBAR ICONS (exact from index.html) ===== -->
     <div class="sidebar-icons">
         <div class="sidebar-icon" title="الرئيسية" onclick="window.location.href='index.html'">
@@ -519,8 +469,8 @@ body.sp-page .cta-box a{background:#fff !important;color:var(--sp-primary) !impo
     </div>
 
     
-  <script src="main.js" defer></script>
-<script src="chatbot-ai.js" defer></script>
-<script src="site-content.js" defer></script>
+  <script src="main.js"></script>
+<script src="chatbot-ai.js"></script>
+<script src="site-content.js"></script>
 </body>
 </html>
