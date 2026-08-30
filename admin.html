@@ -210,48 +210,6 @@
         .stats-grid { grid-template-columns: repeat(2,1fr); } 
     }
 </style>
-    <!-- ═══ Sky Premium — تجميل بصري بحت: هوية فاتحة دون تغيير التخطيط أو أي وظيفة ═══ -->
-    <style>
-    /* إعادة معايرة متغيرات admin-v2 نفسها — كل استخدامات var() تتحول تلقائياً للفاتح */
-    :root{ --admin-text:#0B1F3A; --admin-muted:#33506E; --text:#0B1F3A; --text-muted:#33506E; }
-    /* الأصل: admin-v2.css يفرض الخلفية الداكنة ولون النص بـ !important — !important هنا ضرورية لنفس السبب */
-    body{ background:linear-gradient(180deg,#F4FAFF 0%,#FFFFFF 90%) fixed !important; color:#33506E !important; }
-    /* الأسطح الزجاجية الداكنة → زجاج فاتح (الأصل rgba(255,255,255,.03) على خلفية داكنة) */
-    .login-box,.stat-card,.content-card,.table-container,.admin-data-card,
-    .gateway-card,.afaky-status-card,.afaky-form,.afaky-guide-card,.afaky-csv-tools,.dash-chart-card{
-        background:rgba(255,255,255,.78) !important; border:1px solid rgba(56,189,248,.35) !important;
-        box-shadow:0 1px 2px rgba(2,132,199,.06),0 8px 24px rgba(2,132,199,.10);
-    }
-    .sidebar,.header,.modal-content{ background:rgba(255,255,255,.88) !important; border-color:rgba(56,189,248,.35) !important; }
-    /* عناوين وأرقام كانت بيضاء على الداكن (بعضها أنماط inline — !important بصرية ضرورية) */
-    .stat-num,.table-header h3,.gateway-name,.afaky-form h4,.afaky-guide-card h5,
-    .afaky-csv-tools h4,.dash-chart-card h4,.admin-data-card .admin-card-title strong,
-    .modal-content h3{ color:#0B1F3A !important; }
-    /* أزرار التبويبات والتنقل الجانبي */
-    .tab-btn{ color:#33506E; background:#fff; }
-    .tab-btn:hover{ background:#E0F2FE; }
-    .sidebar-nav a:hover,.sidebar-nav a.active{ color:#0284C7; background:#E0F2FE; }
-    .btn-edit{ color:#0284C7; }
-    .btn-view{ color:#059669; }
-    .btn-delete{ color:#DC2626; }
-    /* عنوانا الدخول والشعار: تدرج ذهبي → تدرج سماوي (الهوية) */
-    .login-box h2,.sidebar-logo h2{ background:linear-gradient(135deg,#0284C7,#38BDF8); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
-    /* مدخلات كانت داكنة (بما فيها عناصر بأنماط inline داكنة) */
-    .login-box input,.erp-in,.afaky-import-file,input[style*="rgba(255,255,255,.05)"]{
-        background:#fff !important; color:#0B1F3A !important; border:1px solid rgba(56,189,248,.35) !important;
-    }
-    label[style*="#B9BCE0"]{ color:#33506E !important; }
-    /* أزرار إغلاق المودالات (أنماط inline داكنة) */
-    .modal-content button[style*="color:white"]{ background:#fff !important; color:#33506E !important; border:1px solid rgba(56,189,248,.35) !important; }
-    /* نصوص سماوية/كهرمانية فاتحة كانت مصممة للداكن */
-    .gateway-auth-note{ color:#075985; }
-    .afaky-import-preview,.afaky-mode-fields .mode-title{ color:#0284C7; }
-    .gw-masked-hint{ color:#B45309; }
-    .header-notif{ background:#fff; border-color:rgba(56,189,248,.35); }
-    .table-header,.sidebar-logo{ border-bottom-color:rgba(2,132,199,.16); }
-    .sidebar-footer{ border-top-color:rgba(2,132,199,.16); }
-    </style>
-    <link rel="stylesheet" href="assets/sky-premium.css">
 </head>
 <body>
 

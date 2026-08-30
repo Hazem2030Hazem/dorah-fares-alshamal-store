@@ -30,18 +30,8 @@
         .no-invoice { text-align: center; padding: 80px 20px; color: #999; }
         @media print { body { background: #fff; } .invoice-container { box-shadow: none; } }
     </style>
-    <link rel="stylesheet" href="assets/sky-premium.css">
-    <style>
-        /* Sky Premium — الفاتورة: مواءمة لونية فقط مع الهوية (آمنة للطباعة — لا خلفيات ولا تخطيط) */
-        body.sp-invoice .invoice-header { border-bottom-color: var(--sp-primary); }
-        body.sp-invoice .invoice-header h1 { color: var(--sp-primary); }
-        body.sp-invoice .invoice-table th { background: var(--sp-primary); }
-        body.sp-invoice .invoice-total strong { color: var(--sp-primary); }
-        body.sp-invoice .invoice-footer { border-top-color: var(--sp-primary); }
-        @media screen { body.sp-invoice .invoice-container { box-shadow: var(--sp-shadow); } }
-    </style>
 </head>
-<body class="sp-invoice">
+<body>
     <div id="invoiceContent">
         <div class="no-invoice">⏳ جاري تحميل الفاتورة...</div>
     </div>
@@ -52,18 +42,13 @@
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjYm12eHV6amxhb29rbndocXFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NzkyMjAsImV4cCI6MjA5OTU1NTIyMH0.ayDpkfCKL90GcUKjbHQs7OvS5sxF1VSraWg58NHJ7ek';
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // 🔐 دالة إسكيب لأي قيمة تُدرج في HTML — حماية XSS
-        function esc(s) {
-            return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
-        }
-
-        // 💳 عرض نتيجة الدفع الإلكتروني (callback من Moyasar) — عرض فقط من قاعدة البيانات.
-        // 🔐 لا نثق بمعاملات الرابط (?status=paid) ولا نكتب شيئاً من المتصفح —
-        // تأكيد الدفع يتم سيرفرياً عبر Edge Function verify-payment.
+        // 💳 عرض نتيجة الدفع الإلكتروني (callback من Moyasar) — يقرأ الطلب ويحدّث حالة الدفع
         async function loadOrderPayment() {
             var params = new URLSearchParams(window.location.search);
             var orderId = params.get('order');
             var container = document.getElementById('invoiceContent');
+            // Moyasar يُلحق بـ callback_url: id و status و message
+            var payStatus = params.get('status'); // paid | failed | ...
             if (!orderId) {
                 container.innerHTML = '<div class="no-invoice">❌ رقم الطلب غير موجود</div>';
                 return;
@@ -74,8 +59,19 @@
                 container.innerHTML = '<div class="no-invoice">❌ الطلب غير موجود</div>';
                 return;
             }
-            // الحالة المعروضة هي المسجلة في قاعدة البيانات فقط (يحدّثها السيرفر)
+            // تحديث حالة الدفع من نتيجة البوابة (إن لم تكن محدثة مسبقاً عبر webhook)
             var finalStatus = order.payment_status || 'pending';
+            if (payStatus === 'paid' && finalStatus !== 'paid') {
+                try {
+                    await supabaseClient.from('store_orders').update({ payment_status: 'paid', status: 'new' }).eq('id', orderId);
+                    finalStatus = 'paid';
+                } catch (eUp) {}
+            } else if (payStatus === 'failed' && finalStatus === 'pending') {
+                try {
+                    await supabaseClient.from('store_orders').update({ payment_status: 'failed' }).eq('id', orderId);
+                    finalStatus = 'failed';
+                } catch (eUp2) {}
+            }
             var statusMap = {
                 paid: ['paid', '✅ تم الدفع بنجاح — شكراً لك'],
                 failed: ['failed', '❌ فشلت عملية الدفع — يمكنك المحاولة مجدداً أو اختيار طريقة أخرى'],
@@ -84,7 +80,7 @@
             var st = statusMap[finalStatus] || statusMap.pending;
             var items = Array.isArray(order.items) ? order.items : [];
             var itemsHtml = items.map(function(item, i) {
-                return '<tr><td>' + (i+1) + '</td><td>' + esc(item.name) + '</td><td>' + esc(item.qty) + '</td><td>' + Number(item.price).toLocaleString() + ' ر.س</td><td class="text-left">' + (Number(item.price) * Number(item.qty)).toLocaleString() + ' ر.س</td></tr>';
+                return '<tr><td>' + (i+1) + '</td><td>' + item.name + '</td><td>' + item.qty + '</td><td>' + Number(item.price).toLocaleString() + ' ر.س</td><td class="text-left">' + (Number(item.price) * Number(item.qty)).toLocaleString() + ' ر.س</td></tr>';
             }).join('');
             container.innerHTML = `
                 <div class="invoice-container">
@@ -92,7 +88,7 @@
                     <div class="invoice-header">
                         <div>
                             <h1>🧾 حالة الطلب والدفع</h1>
-                            <p style="color:#666;margin-top:5px">رقم الطلب: ${esc(order.id)}</p>
+                            <p style="color:#666;margin-top:5px">رقم الطلب: ${order.id}</p>
                         </div>
                         <div class="company-info">
                             <strong>شركة درة فارس الشمال للتجارة</strong><br>
@@ -102,9 +98,9 @@
                     </div>
                     <div class="invoice-details">
                         <div>
-                            <strong>العميل:</strong> ${esc(order.customer_name || '—')}<br>
-                            <strong>طريقة الدفع:</strong> ${esc(order.payment_method || '—')}<br>
-                            <strong>مدينة التوصيل:</strong> ${esc(order.shipping_city || '—')}<br>
+                            <strong>العميل:</strong> ${order.customer_name || '—'}<br>
+                            <strong>طريقة الدفع:</strong> ${order.payment_method || '—'}<br>
+                            <strong>مدينة التوصيل:</strong> ${order.shipping_city || '—'}<br>
                         </div>
                         <div>
                             <strong>حالة الدفع:</strong> ${st[1]}<br>
@@ -158,7 +154,7 @@
 
             var items = Array.isArray(invoice.items) ? invoice.items : [];
             var itemsHtml = items.map(function(item, i) {
-                return '<tr><td>' + (i+1) + '</td><td>' + esc(item.name) + '</td><td>' + esc(item.qty) + '</td><td>' + Number(item.price).toLocaleString() + ' ر.س</td><td class="text-left">' + (Number(item.price) * Number(item.qty)).toLocaleString() + ' ر.س</td></tr>';
+                return '<tr><td>' + (i+1) + '</td><td>' + item.name + '</td><td>' + item.qty + '</td><td>' + Number(item.price).toLocaleString() + ' ر.س</td><td class="text-left">' + (Number(item.price) * Number(item.qty)).toLocaleString() + ' ر.س</td></tr>';
             }).join('');
 
             container.innerHTML = `
@@ -167,7 +163,7 @@
                     <div class="invoice-header">
                         <div>
                             <h1>🧾 فاتورة</h1>
-                            <p style="color:#666;margin-top:5px">رقم: ${esc(invoice.invoice_number)}</p>
+                            <p style="color:#666;margin-top:5px">رقم: ${invoice.invoice_number}</p>
                         </div>
                         <div class="company-info">
                             <strong>شركة درة فارس الشمال للتجارة</strong><br>
@@ -179,9 +175,9 @@
                     </div>
                     <div class="invoice-details">
                         <div>
-                            <strong>العميل:</strong> ${esc(invoice.customer_name || '—')}<br>
-                            <strong>الإيميل:</strong> ${esc(invoice.customer_email || '—')}<br>
-                            <strong>الجوال:</strong> ${esc(invoice.customer_phone || '—')}<br>
+                            <strong>العميل:</strong> ${invoice.customer_name || '—'}<br>
+                            <strong>الإيميل:</strong> ${invoice.customer_email || '—'}<br>
+                            <strong>الجوال:</strong> ${invoice.customer_phone || '—'}<br>
                         </div>
                         <div>
                             <strong>التاريخ:</strong> ${new Date(invoice.created_at).toLocaleDateString('ar-SA')}<br>
