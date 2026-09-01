@@ -1,106 +1,6 @@
-// توجيه لينكات المنتجات للصفحات الجديدة المستقلة
-// ============================================================
-// 📊 Google Analytics 4 - مع دعم Cookiebot
-// ============================================================
-(function() {
-    var gaScript = document.createElement('script');
-    gaScript.async = true;
-    gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-5J1QD56BN0';
-    gaScript.setAttribute('data-cookieconsent', 'statistics');
-    document.head.appendChild(gaScript);
-    
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    
-    gtag('consent', 'default', {
-        'analytics_storage': 'denied',
-        'ad_storage': 'denied',
-        'wait_for_update': 500
-    });
-    
-    gtag('config', 'G-5J1QD56BN0');
-    
-    window.addEventListener('CookiebotOnAccept', function() {
-        gtag('consent', 'update', {
-            'analytics_storage': 'granted',
-            'ad_storage': 'granted'
-        });
-    });
-    
-    window.addEventListener('CookiebotOnDecline', function() {
-        gtag('consent', 'update', {
-            'analytics_storage': 'denied',
-            'ad_storage': 'denied'
-        });
-    });
-})();
-
-// توجيه لينكات المنتجات للصفحات الجديدة المستقلة
-document.addEventListener('DOMContentLoaded', function(){
-  var map = {'printers':'products-printers.html','computers':'products-computers.html','ram':'products-ram.html','hard-drives':'products-hard-drives.html','accessories':'products-accessories.html','cables':'products-cables.html','projectors':'products-projectors.html','ink':'products-ink.html','food':'products-food.html'};
-  document.querySelectorAll('a[href*="products.html"]').forEach(function(a){
-    var m = (a.getAttribute('href')||'').match(/category=([a-z-]+)/);
-    a.setAttribute('href', (m && map[m[1]]) ? map[m[1]] : 'products.html');
-  });
-});
-// ============================================================
-// LIVING BANNER — لوجوهات الشركة بتطفو وتتحرك جوه البانر
-// ============================================================
-(function(){
-  function spawnFloatingLogos(hero){
-    if (!hero || hero.querySelector('.floating-logos')) return;
-    var layer = document.createElement('div');
-    layer.className = 'floating-logos';
-    var count = window.innerWidth < 768 ? 8 : 14;
-    for (var i = 0; i < count; i++){
-      var img = document.createElement('img');
-      img.src = 'logo-icon.png';
-      img.alt = '';
-      img.className = 'float-logo fl' + (1 + (i % 4));
-      var size = 50 + Math.random() * 120;
-      img.style.width = size.toFixed(0) + 'px';
-      var lx = Math.random() * 92, ty = Math.random() * 82;
-      img.style.left = lx.toFixed(1) + '%';
-      img.style.top = ty.toFixed(1) + '%';
-      var inCenter = (lx > 28 && lx < 62 && ty > 25 && ty < 72);
-      img.style.opacity = inCenter ? (0.12 + Math.random() * 0.13).toFixed(2)
-                                   : (0.38 + Math.random() * 0.4).toFixed(2);
-      img.style.animationDuration = (3.5 + Math.random() * 5.5).toFixed(1) + 's';
-      img.style.animationDelay = (-Math.random() * 8).toFixed(1) + 's';
-      var f=''; if (Math.random()<0.3) f+='blur('+(1+Math.random()*1.6).toFixed(1)+'px) ';
-      f+='drop-shadow(0 0 16px rgba(90,145,255,.6))'; img.style.filter=f;
-      layer.appendChild(img);
-    }
-    hero.insertBefore(layer, hero.firstChild);
-  }
-  function initFloating(){
-    document.querySelectorAll('.hero, .page-hero, .service-hero, .services-hero').forEach(spawnFloatingLogos);
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initFloating);
-  else initFloating();
-})();
-// لينك "الرئيسية": لو في صفحة داخلية يرجع لـ index.html بدل #home الفاضي
-document.addEventListener('click', function(e){
-  var a = e.target.closest('a[href="#home"]');
-  if (!a) return;
-  var path = window.location.pathname;
-  var isHome = path === '/' || path === '' || /index\.html?$/.test(path);
-  if (!isHome) {
-    e.preventDefault();
-    window.location.href = 'index.html';
-  }
-});
-// إزالة وسم <base target="_blank"> عشان كل اللينكات تفتح في نفس التاب
-(function(){
-  function killBase(){ var b = document.querySelector('base[target]'); if (b) b.remove(); }
-  killBase();
-  document.addEventListener('DOMContentLoaded', killBase);
-})();
 // Supabase Configuration
-const SUPABASE_URL = 'https://kcbmvxuzjlaooknwhqqb.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjYm12eHV6amxhb29rbndocXFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NzkyMjAsImV4cCI6MjA5OTU1NTIyMH0.ayDpkfCKL90GcUKjbHQs7OvS5sxF1VSraWg58NHJ7ek';
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// استخدام الإعدادات المشتركة من config.js
+const supabaseClient = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
 
 // ملاحظة أمنية: إدارة صلاحيات الأدمن تتم حصرياً عبر Supabase Auth + دور admin/staff في admin-v2.js.
 const TAX_RATE = 0.15;
@@ -153,30 +53,11 @@ const catLabels = {
  ink: 'أحبار الطابعات', food: 'المواد الغذائية'
 };
 
-function sanitizeInput(input) {
- const div = document.createElement('div');
- div.textContent = input;
- return div.innerHTML;
-}
-
-function formatPrice(price) {
- return price.toLocaleString('ar-SA') + ' ر.س';
-}
-
-function calculateTax(amount) {
- return Math.round(amount * TAX_RATE);
-}
-
-function calculateDiscount(amount, discountPercent) {
- return Math.round(amount * (1 - discountPercent));
-}
+// استخدام الدوال المشتركة من core-utils.js (sanitizeInput, formatPrice, calculateTax, calculateDiscount)
 
 document.addEventListener('keydown', function(e) {
- if (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'h') {
-  e.preventDefault();
-  window.open('admin.html?secret=dora2024', '_blank');
-  showToast('🔓 جاري فتح لوحة الإدارة...');
- }
+ // ⚠️ تمت إزالة اختصار الأدمن المخفي (Ctrl+Alt+H) لأسباب أمنية.
+ // يجب الدخول إلى لوحة الإدارة عبر admin.html مع Supabase Auth.
  if (e.ctrlKey && e.altKey && (e.key.toLowerCase() === 'g' || e.code === 'KeyG')) {
   e.preventDefault();
   window.open('team-login.html', '_blank');
@@ -223,23 +104,7 @@ document.addEventListener('click', function(e) {
  }
 });
 
-function getStockClass(stock) {
- if (stock <= 0) return 'stock-out';
- if (stock <= 5) return 'stock-low';
- if (stock <= 15) return 'stock-medium';
- return 'stock-high';
-}
-
-function getStockLabel(stock) {
- if (stock <= 0) return 'نفذت الكمية';
- if (stock <= 5) return 'الكمية محدودة (' + stock + ' متبقي)';
- if (stock <= 15) return 'متوفر (' + stock + ' قطعة)';
- return 'متوفر بكثرة (' + stock + ' قطعة)';
-}
-
-function getStockPercent(stock) {
- return Math.min((stock / 50) * 100, 100);
-}
+// استخدام دوال المخزون المشتركة من core-utils.js (getStockClass, getStockLabel, getStockPercent)
 
 function getSortedProducts(filter) {
  let filtered = filter === 'all' ? [...productsData] : productsData.filter(p => p.category === filter);
@@ -822,37 +687,6 @@ async function checkout() {
     }
     window.location.href = 'checkout.html';
 }
-function toggleTheme() {
-  const html = document.documentElement;
-  const current = html.getAttribute('data-theme');
-  const next = current === 'dark' ? 'light' : 'dark';
-  html.setAttribute('data-theme', next);
-  localStorage.setItem('doraTheme', next);
-
-  // تحديث أيقونة الزر فقط
-  const themeIcon = document.getElementById('themeIcon');
-  if (themeIcon) {
-    if (next === 'dark') {
-      themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
-    } else {
-      themeIcon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
-    }
-  }
-}
-function initTheme() {
-  const saved = localStorage.getItem('doraTheme') || 'light';
-  document.documentElement.setAttribute('data-theme', saved);
-
-  // تحديث أيقونة الزر فقط
-  const themeIcon = document.getElementById('themeIcon');
-  if (themeIcon) {
-    if (saved === 'dark') {
-      themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
-    } else {
-      themeIcon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
-    }
-  }
-}
 async function requestQuote(productId, event) {
  if (event) event.stopPropagation();
  var isLoggedIn = await checkAuth();
@@ -1076,139 +910,6 @@ function initHeaderScroll() {
  }
 }
 
-// ===== AUDIO VOLUME CONTROL =====
-let currentVolume = 0.30;
-let audioVolumePopupOpen = false;
-let isDraggingVolume = false;
-
-function getAudioElement() {
-  if (window.doraAudio) return window.doraAudio;
-  const audios = document.querySelectorAll('audio');
-  if (audios.length > 0) return audios[0];
-  const AUDIO_URL = 'https://raw.githubusercontent.com/Hazem2030Hazem/dorah-fares-alshamal-store/refs/heads/main/music.mp3';
-  const newAudio = new Audio(AUDIO_URL);
-  newAudio.loop = true;
-  newAudio.volume = 0.30;
-  newAudio.preload = 'auto';
-  window.doraAudio = newAudio;
-  return newAudio;
-}
-
-function setAudioVolume(percentage) {
-  const normalizedVolume = percentage / 100;
-  const gainValue = Math.min(2.0, normalizedVolume * normalizedVolume * 2);
-  const audio = getAudioElement();
-  if (audio) {
-    audio.volume = Math.min(1.0, gainValue);
-  }
-}
-
-function toggleAudioVolumePopup(e) {
-  if (e) e.stopPropagation();
-  const popup = document.getElementById('audioVolumePopup');
-  if (!popup) return;
-  audioVolumePopupOpen = !audioVolumePopupOpen;
-  if (audioVolumePopupOpen) {
-    popup.classList.add('show');
-    const audio = getAudioElement();
-    if (audio) {
-      const vol = audio.volume * 100;
-      document.getElementById('volumeSliderFill').style.width = vol + '%';
-      document.getElementById('volumeValue').textContent = Math.round(vol) + '%';
-    }
-  } else {
-    popup.classList.remove('show');
-  }
-}
-
-function setVolumeFromClick(e) {
-  if (e) e.stopPropagation();
-  const slider = document.getElementById('volumeSlider');
-  if (!slider) return;
-  const rect = slider.getBoundingClientRect();
-  const sliderWidth = rect.width;
-  const clickX = e.clientX - rect.left;
-  let percentage = 100 - ((clickX / sliderWidth) * 100);
-  percentage = Math.max(0, Math.min(100, percentage));
-  currentVolume = percentage / 100;
-  const fill = document.getElementById('volumeSliderFill');
-  const thumb = document.getElementById('volumeSliderThumb');
-  const value = document.getElementById('volumeValue');
-  if (fill) fill.style.width = percentage + '%';
-  if (thumb) {
-    thumb.style.left = 'auto';
-    thumb.style.right = (percentage - 1) + '%';
-  }
-  if (value) value.textContent = Math.round(percentage) + '%';
-  setAudioVolume(percentage);
-}
-
-function toggleMute() {
-  const audio = getAudioElement();
-  if (!audio) {
-    showToast('❌ الصوت غير متاح حالياً');
-    return;
-  }
-  if (currentVolume > 0) {
-    audio._lastVolume = currentVolume;
-    currentVolume = 0;
-    window.doraAudioMuted = true;
-    audio.volume = 0;
-    audio.muted = true;
-    const fill = document.getElementById('volumeSliderFill');
-    const thumb = document.getElementById('volumeSliderThumb');
-    const value = document.getElementById('volumeValue');
-    if (fill) fill.style.width = '0%';
-    if (thumb) thumb.style.right = '0%';
-    if (value) value.textContent = '0%';
-    showToast('🔇 تم كتم الصوت');
-  } else {
-    currentVolume = audio._lastVolume || 0.30;
-    window.doraAudioMuted = false;
-    audio.volume = currentVolume;
-    audio.muted = false;
-    const fill = document.getElementById('volumeSliderFill');
-    const thumb = document.getElementById('volumeSliderThumb');
-    const value = document.getElementById('volumeValue');
-    if (fill) fill.style.width = (currentVolume * 100) + '%';
-    if (thumb) thumb.style.right = ((currentVolume * 100) - 1) + '%';
-    if (value) value.textContent = Math.round(currentVolume * 100) + '%';
-    showToast('🔊 تم تشغيل الصوت');
-  }
-  updateSpeakerIcon();
-}
-
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.audio-toggle-wrapper')) {
-    const popup = document.getElementById('audioVolumePopup');
-    if (popup) {
-      popup.classList.remove('show');
-      audioVolumePopupOpen = false;
-    }
-  }
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-  const slider = document.getElementById('volumeSlider');
-  if (slider) {
-    slider.addEventListener('mousedown', function(e) {
-      isDraggingVolume = true;
-      setVolumeFromClick(e);
-    });
-  }
-  document.addEventListener('mousemove', function(e) {
-    if (isDraggingVolume) { setVolumeFromClick(e); }
-  });
-  document.addEventListener('mouseup', function() { isDraggingVolume = false; });
-  document.addEventListener('touchmove', function(e) {
-    if (isDraggingVolume && e.touches[0]) {
-      const touch = e.touches[0];
-      const mouseEvent = { clientX: touch.clientX, clientY: touch.clientY, stopPropagation: function() {} };
-      setVolumeFromClick(mouseEvent);
-    }
-  });
-  document.addEventListener('touchend', function() { isDraggingVolume = false; });
-});
 
 async function loadProductsFromSupabase() {
     try {
@@ -1379,7 +1080,6 @@ function initRealtimeUpdates() {
 // كود Realtime هنا
 
 document.addEventListener('DOMContentLoaded', () => {
- initTheme();
     // ===== زرار تحميل صغير جنب إحصائيات البانر =====
 setTimeout(function() {
   var heroStats = document.querySelector('.hero-stats');
@@ -1761,111 +1461,6 @@ function checkPWAInstallState() {
   });
 })();
 
-// ============================================================
-// SITE SETTINGS RUNTIME
-// ============================================================
-const DORA_DEFAULT_SITE_SETTINGS = {
-  companyName: 'شركة درة فارس الشمال', companyAddress: 'الرياض، المملكة العربية السعودية',
-  companyPhone1: '966568717449', companyPhone2: '966545358773', companyEmail: 'info@alshamal-df.com',
-  socialTwitter: '', socialInstagram: '',
-  socialFacebook: '', socialLinkedin: '',
-  whatsappMessage: 'مرحباً شركة درة فارس الشمال،\n\nأرغب في الاستفسار عن:\n- \n- \n\nوشكراً'
-};
-let doraSiteSettings = { ...DORA_DEFAULT_SITE_SETTINGS, ...(JSON.parse(localStorage.getItem('doraSettings') || '{}')) };
-
-function normalizeDoraPhone(phone){ let p = String(phone || '').replace(/\D/g, ''); if (p.startsWith('05')) p = '966' + p.slice(1); return p || DORA_DEFAULT_SITE_SETTINGS.companyPhone1; }
-function formatDoraPhone(phone){ const p = normalizeDoraPhone(phone); if (p.length === 12 && p.startsWith('966')) return `+966 ${p.slice(3,5)} ${p.slice(5,8)} ${p.slice(8)}`; return '+' + p; }
-function getDoraSiteSettings(){ return { ...DORA_DEFAULT_SITE_SETTINGS, ...doraSiteSettings }; }
-function doraWhatsAppLink(message, phone){ const settings = getDoraSiteSettings(); return 'https://wa.me/' + normalizeDoraPhone(phone || settings.companyPhone2) + '?text=' + encodeURIComponent(message || settings.whatsappMessage); }
-function replaceDoraText(search, replacement){
-  if (!search || !replacement || search === replacement) return;
-  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-  const nodes = [];
-  while (walker.nextNode()) { const node = walker.currentNode; if (node.parentElement && ['SCRIPT','STYLE'].includes(node.parentElement.tagName)) continue; if (node.nodeValue.includes(search)) nodes.push(node); }
-  nodes.forEach(node => { node.nodeValue = node.nodeValue.split(search).join(replacement); });
-}
-// ===== محتوى الصفحة الرئيسية: قراءة حية من site_items (home_hero) — يُدار من لوحة التحكم =====
-async function loadHomeHero(){
-  if (!document.getElementById('heroBadge')) return;
-  try {
-    const { data } = await supabaseClient.from('site_items').select('*').eq('section_key','home_hero').eq('is_active',true).order('sort_order').limit(1).maybeSingle();
-    if (!data) return;
-    const md = data.metadata || {};
-    const set = function(id, val){ const el = document.getElementById(id); if (el && val) el.textContent = val; };
-    set('heroBadge', md.badge);
-    set('heroTitleText', data.title_ar);
-    set('heroTitleSpan', md.title_highlight);
-    set('heroDesc', data.description_ar);
-    set('heroCtaText', md.cta_text);
-    set('heroStatClients', md.stat_clients);
-    set('heroStatClientsLabel', md.stat_clients_label);
-    if (md.cta_url) { const cta = document.getElementById('heroCta'); if (cta) cta.href = md.cta_url; }
-  } catch(e) { console.warn('loadHomeHero:', e); }
-}
-document.addEventListener('DOMContentLoaded', loadHomeHero);
-
-// ===== صورة احتياطية تلقائية: أي صورة منتج مكسورة/مفقودة تُستبدل باللوجو الغامق الرسمي =====
-document.addEventListener('error', function(e){
-  var t = e.target;
-  if (t && t.tagName === 'IMG' && !t.dataset.fbkDone) {
-    t.dataset.fbkDone = '1';
-    if (t.src.indexOf('default-product.png') === -1 && t.src.indexOf('logo.png') === -1) t.src = 'default-product.png';
-  }
-}, true);
-
-function applyDoraSettings(settings){
-  doraSiteSettings = { ...DORA_DEFAULT_SITE_SETTINGS, ...(settings || {}) };
-  localStorage.setItem('doraSettings', JSON.stringify(doraSiteSettings));
-  const s = getDoraSiteSettings();
-  const phone1 = normalizeDoraPhone(s.companyPhone1);
-  const formattedPhone1 = formatDoraPhone(phone1);
-  document.querySelectorAll('a[href*="wa.me/"]').forEach(link => {
-    try { const url = new URL(link.href); url.pathname = '/' + phone1; const text = url.searchParams.get('text'); if (text && !text.includes('عرض سعر') && !text.includes('استشارة') && !text.includes('منتج:')) { url.searchParams.set('text', s.whatsappMessage); } link.href = url.toString(); } catch(_) {}
-  });
-  document.querySelectorAll('a[href^="tel:"]').forEach(link => { link.href = 'tel:+' + phone1; if (/\+?\d[\d\s]{7,}/.test(link.textContent)) link.textContent = formattedPhone1; });
-  document.querySelectorAll('a[href^="mailto:"]').forEach(link => { link.href = 'mailto:' + s.companyEmail; if (link.textContent.includes('@')) link.textContent = s.companyEmail; });
-  // روابط السوشيال: تُطبَّق فقط لو أُدخلت من لوحة التحكم — وإلا تبقى الأيقونات بدون رابط
-  // حماية: تجاهل الروابط الوهمية القديمة المحفوظة في قاعدة البيانات (dorafares)
-  function isFakeSocial(u){ return !u || /dorafares/i.test(u); }
-  if (!isFakeSocial(s.socialTwitter)) document.querySelectorAll('a[data-social="twitter"]').forEach(a => { a.href = s.socialTwitter; a.target = '_blank'; a.rel = 'noopener'; });
-  if (!isFakeSocial(s.socialInstagram)) document.querySelectorAll('a[data-social="instagram"]').forEach(a => { a.href = s.socialInstagram; a.target = '_blank'; a.rel = 'noopener'; });
-  if (!isFakeSocial(s.socialFacebook)) document.querySelectorAll('a[data-social="facebook"]').forEach(a => { a.href = s.socialFacebook; a.target = '_blank'; a.rel = 'noopener'; });
-  if (!isFakeSocial(s.socialLinkedin)) document.querySelectorAll('a[data-social="linkedin"]').forEach(a => { a.href = s.socialLinkedin; a.target = '_blank'; a.rel = 'noopener'; });
-  // السجل التجاري والرقم الضريبي: من قاعدة البيانات إلى الفوتر والفاتورة
-  var _cr = s.companyCR || (s.company && s.company.commercial_register) || '';
-  var _tax = s.companyTax || (s.company && s.company.tax_number) || '';
-  if (_cr) document.querySelectorAll('[data-company="cr"]').forEach(el => { el.textContent = _cr; });
-  if (_tax) document.querySelectorAll('[data-company="tax"]').forEach(el => { el.textContent = _tax; });
-  // تحديث الشريط القانوني السفلي بالأرقام الحية بعد وصول الإعدادات
-  var _bar = document.getElementById('doraLegalBar');
-  if (_bar && (_cr || _tax)) {
-    _bar.innerHTML = _bar.innerHTML
-      .replace(/سجل تجاري: [^<]*/, 'سجل تجاري: ' + (_cr || '—'))
-      .replace(/الرقم الضريبي: [^<]*/, 'الرقم الضريبي: ' + (_tax || '—'));
-  }
-  // حالة المتجر: مغلق للتجهيز = منع إتمام الشراء (الافتراضي مغلق حتى يتم فتحه من لوحة التحكم)
-  window.DORA_STORE_CLOSED = (s.storeStatus !== 'open');
-  document.querySelectorAll('.checkout-btn').forEach(btn => {
-    if (window.DORA_STORE_CLOSED) { btn.dataset.closedLabel = '🔒 المتجر تحت التجهيز — قريباً'; btn.dataset.origLabel = btn.dataset.origLabel || btn.innerHTML; btn.innerHTML = btn.dataset.closedLabel; }
-    else if (btn.dataset.origLabel) { btn.innerHTML = btn.dataset.origLabel; }
-  });
-  replaceDoraText(DORA_DEFAULT_SITE_SETTINGS.companyAddress, s.companyAddress);
-  replaceDoraText(DORA_DEFAULT_SITE_SETTINGS.companyEmail, s.companyEmail);
-  replaceDoraText(formatDoraPhone(DORA_DEFAULT_SITE_SETTINGS.companyPhone1), formattedPhone1);
-  replaceDoraText(DORA_DEFAULT_SITE_SETTINGS.companyPhone1, phone1);
-}
-async function loadDoraSiteSettings(){
-  applyDoraSettings(doraSiteSettings);
-  try {
-    const { data, error } = await supabaseClient.from('site_settings').select('settings').eq('id', 1).maybeSingle();
-    if (!error && data?.settings) applyDoraSettings(data.settings);
-  } catch (error) { console.warn('تعذر تحميل إعدادات الموقع العامة:', error); }
-}
-window.getDoraSiteSettings = getDoraSiteSettings;
-window.doraWhatsAppLink = doraWhatsAppLink;
-window.addEventListener('storage', function(event){ if (event.key === 'doraSettings') applyDoraSettings(JSON.parse(event.newValue || '{}')); });
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadDoraSiteSettings);
-else loadDoraSiteSettings();
 
 // ============================================================
 // ACCOUNT SYSTEM LOADER
@@ -2885,19 +2480,6 @@ var icon = doraIcon('contact', meta);
 })();
 })();
 // إصلاح خطأ تحديث أيقونة السماعة
-function updateSpeakerIcon() {
-    const svg = document.getElementById('speakerIconSvg');
-    const audio = window.doraAudio;
-    if (svg && audio) {
-        if (!audio.paused && !audio.muted) {
-            svg.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>';
-            svg.style.filter = 'drop-shadow(0 0 8px rgba(16,185,129,0.8))';
-        } else {
-            svg.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line>';
-            svg.style.filter = 'none';
-        }
-    }
-}
 // ============================================================
 //  1. روبوت 2D متحرك (يظهر في كل الصفحات)
 // ============================================================

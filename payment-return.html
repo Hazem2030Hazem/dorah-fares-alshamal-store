@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نتيجة الدفع | شركة درة فارس الشمال</title>
+  <script src="analytics.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -81,7 +82,14 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="main.js"></script>
+    <script src="config.js"></script>
+<script src="core-utils.js"></script>
+<script src="nav-fixes.js"></script>
+<script src="floating-logos.js"></script>
+<script src="theme.js"></script>
+<script src="audio-volume.js"></script>
+<script src="site-settings.js"></script>
+<script src="main.js"></script>
     <script>
         (function() {
             var params = new URLSearchParams(window.location.search);
@@ -102,34 +110,17 @@
                 orderBox.textContent = 'رقم الطلب: ' + orderId;
             }
 
-            // ✅ حالة النجاح: تحديث الطلب في Supabase + عرض التأكيد
-            async function handleSuccess() {
+            // ✅ حالة النجاح: عرض رسالة التأكيد
+            function handleSuccess(verified) {
                 card.className = 'result-card success';
                 icon.textContent = '🎉';
-                title.textContent = 'تم الدفع بنجاح!';
-                msg.textContent = 'شكراً لك — تم استلام دفعتك' + (gateway ? ' عبر ' + gateway : '') + ' وسيتم تجهيز طلبك قريباً.';
+                title.textContent = verified ? 'تم التحقق من الدفع!' : 'تم استلام عملية الدفع!';
+                msg.textContent = 'شكراً لك — ' + (verified
+                    ? 'تم التحقق من الدفع' + (gateway ? ' عبر ' + gateway : '') + ' وسيتم تجهيز طلبك فوراً.'
+                    : 'تم استلام إثبات الدفع' + (gateway ? ' عبر ' + gateway : '') + '. سيتم التحقق والتأكيد خلال لحظات، وسيتم تجهيز طلبك فوراً بعد ذلك.');
+                note.textContent = verified ? '✅ تم تحديث حالة الطلب من الخادم.' : '⏳ جاري التحقق النهائي من البوابة.';
 
-                // تحديث حالة الطلب في قاعدة البيانات — try/catch شامل ولا يكسر العرض
-                var updateNote = '';
-                try {
-                    if (orderId && typeof supabaseClient !== 'undefined' && supabaseClient) {
-                        var upd = await supabaseClient.from('store_orders')
-                            .update({ status: 'paid', payment_status: 'paid' })
-                            .eq('id', orderId);
-                        if (upd.error) {
-                            // فولباك: عمود payment_status قد لا يكون موجوداً — نحدّث status فقط
-                            var upd2 = await supabaseClient.from('store_orders')
-                                .update({ status: 'paid' })
-                                .eq('id', orderId);
-                            if (upd2.error) updateNote = 'تعذر تحديث حالة الطلب تلقائياً — سيتم التأكيد يدوياً';
-                        }
-                    }
-                } catch (e) {
-                    updateNote = 'تعذر تحديث حالة الطلب تلقائياً — سيتم التأكيد يدوياً';
-                }
-                if (updateNote) note.textContent = updateNote;
-
-                // 🧹 إفراغ السلة بعد الدفع الناجح
+                // 🧹 إفراغ السلة بعد الدفع الناجح (يعتمد على ثقة المستخدم المحلي)
                 try { localStorage.removeItem('doraCart'); } catch (e) {}
 
                 buttons.innerHTML =
@@ -150,9 +141,37 @@
                     '<br><a href="index.html" class="btn btn-secondary">🏠 العودة للرئيسية</a>';
             }
 
-            // توجيه حسب الحالة — أي قيمة غير success تعامل كفشل
+            // 🔐 التحقق من حالة الدفع عبر Edge Function (بدون exposing أسرار البوابة)
+            async function verifyWithServer() {
+                try {
+                    var r = await fetch(window.SUPABASE_URL + '/functions/v1/verify-payment', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            order_id: orderId,
+                            gateway: gateway,
+                            transaction_id: transactionId
+                        })
+                    });
+                    var data = await r.json();
+                    if (data.ok && data.verified) {
+                        handleSuccess(true);
+                    } else {
+                        handleSuccess(false);
+                    }
+                } catch (e) {
+                    handleSuccess(false);
+                }
+            }
+
+            // توجيه حسب الحالة
             if (status === 'success') {
-                handleSuccess();
+                if (orderId) {
+                    title.textContent = 'جاري التحقق من الدفع...';
+                    verifyWithServer();
+                } else {
+                    handleSuccess(false);
+                }
             } else {
                 handleFailed();
             }

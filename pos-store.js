@@ -125,9 +125,8 @@ if (typeof document === 'undefined') { Object.assign(g, { POS_STORE: pureExports
 
 /* ═══════════════ واجهات المتصفح ═══════════════ */
 
-const SUPABASE_URL = 'https://kcbmvxuzjlaooknwhqqb.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjYm12eHV6amxhb29rbndocXFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NzkyMjAsImV4cCI6MjA5OTU1NTIyMH0.ayDpkfCKL90GcUKjbHQs7OvS5sxF1VSraWg58NHJ7ek';
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// استخدام الإعدادات المشتركة من config.js
+const sb = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
 
 const $ = (s) => document.querySelector(s);
 const $$ = (s) => Array.from(document.querySelectorAll(s));

@@ -1,7 +1,7 @@
 // Supabase Configuration
-const SUPABASE_URL = 'https://kcbmvxuzjlaooknwhqqb.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjYm12eHV6amxhb29rbndocXFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NzkyMjAsImV4cCI6MjA5OTU1NTIyMH0.ayDpkfCKL90GcUKjbHQs7OvS5sxF1VSraWg58NHJ7ek';
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// يستخدم هذا الملف عميل Supabase المشترك من main.js (متغير supabaseClient).
+// لا يتم تخزين أي مفتاح في هذا الملف.
+const supabaseClient = (typeof window.supabaseClient !== 'undefined') ? window.supabaseClient : null;
 
 
 // ===== REVIEW & MESSAGE SYSTEM =====
@@ -227,7 +227,8 @@ async function submitReview(e) {
     }
 
     // Save to Supabase
-    const { error } = await supabase.from('reviews').insert([{
+    if (!supabaseClient) { showToast('❌ خدمة غير متاحة', 'error'); return false; }
+    const { error } = await supabaseClient.from('reviews').insert([{
         name,
         rating,
         product: product || 'منتج عام',
@@ -262,7 +263,8 @@ async function submitMessage(e) {
     // Save to Supabase
     // ملاحظة توافق: حُذف حقل date لأن عمود date غير موجود في جدول messages الفعلي
     // وكان يتسبب في فشل إرسال كل رسالة — يُستخدم created_at الافتراضي في القاعدة بدلاً منه.
-    const { error } = await supabase.from('messages').insert([{
+    if (!supabaseClient) { showToast('❌ خدمة غير متاحة', 'error'); return false; }
+    const { error } = await supabaseClient.from('messages').insert([{
         name,
         phone,
         email,
@@ -288,169 +290,7 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// ===== ADMIN SHORTCUT =====
-// Press Ctrl+Shift+A to show admin button
-let adminButtonVisible = false;
+// ===== ADMIN SHORTCUT (REMOVED) =====
+// تم حذف اختصار الأدمن المخفي (Ctrl+Shift+A) ونافذة تسجيل الدخول القديمة
+// لأسباب أمنية. يجب الدخول إلى لوحة الإدارة عبر admin.html مع Supabase Auth.
 
-document.addEventListener('keydown', function(e) {
-    // Check for Ctrl+Shift+A
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') {
-        e.preventDefault();
-        toggleAdminButton();
-    }
-});
-
-function toggleAdminButton() {
-    let adminBtn = document.getElementById('doraAdminBtn');
-
-    if (!adminBtn) {
-        // Create admin button
-        adminBtn = document.createElement('button');
-        adminBtn.id = 'doraAdminBtn';
-        adminBtn.innerHTML = '⚙️';
-        adminBtn.title = 'لوحة الإدارة';
-        adminBtn.style.cssText = `
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 9999;
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, #EF4444, #DC2626);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(239,68,68,0.4);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Cairo', 'Tajawal', sans-serif;
-        `;
-        adminBtn.onclick = openAdminLoginModal;
-        document.body.appendChild(adminBtn);
-
-        // Add tooltip
-        const tooltip = document.createElement('div');
-        tooltip.id = 'doraAdminTooltip';
-        tooltip.textContent = 'لوحة الإدارة';
-        tooltip.style.cssText = `
-            position: fixed;
-            top: 70px;
-            left: 20px;
-            z-index: 9999;
-            background: rgba(15,12,41,0.95);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 700;
-            font-family: 'Cairo', 'Tajawal', sans-serif;
-            border: 1px solid rgba(239,68,68,0.3);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        `;
-        document.body.appendChild(tooltip);
-
-        adminBtn.onmouseenter = function() {
-            this.style.transform = 'scale(1.1)';
-            this.style.boxShadow = '0 6px 20px rgba(239,68,68,0.6)';
-            tooltip.style.opacity = '1';
-            tooltip.style.visibility = 'visible';
-        };
-        adminBtn.onmouseleave = function() {
-            this.style.transform = 'scale(1)';
-            this.style.boxShadow = '0 4px 15px rgba(239,68,68,0.4)';
-            tooltip.style.opacity = '0';
-            tooltip.style.visibility = 'hidden';
-        };
-    }
-
-    // Toggle visibility
-    adminButtonVisible = !adminButtonVisible;
-    adminBtn.style.display = adminButtonVisible ? 'flex' : 'none';
-
-    if (adminButtonVisible) {
-        showToast('⚙️ زر الإدارة ظاهر! اضغط عليه للدخول', 'success');
-    }
-}
-
-// Admin Login Modal
-function openAdminLoginModal() {
-    const existing = document.getElementById('doraAdminLoginModal');
-    if (existing) existing.remove();
-
-    const modal = document.createElement('div');
-    modal.id = 'doraAdminLoginModal';
-    modal.className = 'dora-modal active';
-    modal.innerHTML = `
-        <div class="dora-modal-content" style="max-width:400px;">
-            <div class="dora-modal-header">
-                <h3>🔐 تسجيل الدخول</h3>
-                <button class="dora-modal-close" onclick="closeAdminLoginModal()">✕</button>
-            </div>
-            <form id="adminLoginForm" onsubmit="return handleAdminLogin(event)">
-                <div class="dora-form-group">
-                    <label>👤 اسم المستخدم</label>
-                    <input type="text" id="adminLoginUser" placeholder="admin" required>
-                </div>
-                <div class="dora-form-group">
-                    <label>🔒 كلمة المرور</label>
-                    <input type="password" id="adminLoginPass" placeholder="••••••" required>
-                </div>
-                <div id="adminLoginError" style="color:#EF4444;font-size:13px;text-align:center;margin-bottom:10px;display:none;">
-                    ❌ اسم المستخدم أو كلمة المرور غير صحيحة
-                </div>
-                <button type="submit" class="dora-btn-submit">🔓 دخول</button>
-            </form>
-            <p style="text-align:center;color:rgba(255,255,255,0.5);font-size:12px;margin-top:15px;">
-                اضغط Ctrl+Shift+A لإخفاء الزر
-            </p>
-        </div>
-    `;
-    document.body.appendChild(modal);
-}
-
-function closeAdminLoginModal() {
-    const modal = document.getElementById('doraAdminLoginModal');
-    if (modal) modal.remove();
-}
-
-async function handleAdminLogin(e) {
-    e.preventDefault();
-
-    // ⚠️ تعطيل أمني: هذا المسار القديم كان يتحقق من اسم المستخدم وكلمة المرور
-    // بمقارنة نصية عبر استعلام anon على جدول admins — أي زائر يستطيع قراءة
-    // بيانات الدخول من الجدول، وهذا غير آمن إطلاقاً.
-    // تم تعطيل المسار بدون حذف الكود الأصلي (محفوظ بالأسفل للمرجعية) —
-    // تسجيل دخول الإدارة يتم حصرياً من صفحة admin.html عبر Supabase Auth.
-    showToast('⚠️ هذا المسار لم يعد متاحاً — استخدم صفحة الإدارة', 'error');
-    return false;
-
-    const user = document.getElementById('adminLoginUser').value;
-    const pass = document.getElementById('adminLoginPass').value;
-
-    // Verify admin credentials from Supabase
-    const { data, error } = await supabase
-        .from('admins')
-        .select('*')
-        .eq('username', user)
-        .eq('password', pass)
-        .single();
-
-    if (error || !data) {
-        document.getElementById('adminLoginError').style.display = 'block';
-        return false;
-    }
-
-    localStorage.setItem('adminLoggedIn', 'true');
-    localStorage.setItem('adminLoginTime', Date.now());
-    closeAdminLoginModal();
-    window.open('admin.html?secret=' + pass, '_blank');
-    showToast('✅ تم تسجيل الدخول! جاري فتح لوحة الإدارة...', 'success');
-    return false;
-}

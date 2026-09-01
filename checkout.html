@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إتمام الشراء | شركة درة فارس الشمال</title>
+  <script src="analytics.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <style>
@@ -207,17 +208,26 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="core-utils.js"></script>
+<script src="nav-fixes.js"></script>
+<script src="floating-logos.js"></script>
+<script src="theme.js"></script>
+<script src="audio-volume.js"></script>
+<script src="site-settings.js"></script>
 <script src="main.js"></script>
 <script>
 // ===== حارس حالة المتجر: إيقاف البيع = منع الوصول لصفحة الدفع =====
+// يستخدم Edge Function get-site-settings بدلاً من REST API المباشر لعدم exposing الـ anon key.
 (async function() {
     try {
-        var r = await fetch('https://kcbmvxuzjlaooknwhqqb.supabase.co/rest/v1/site_settings?id=eq.1&select=settings', {
-            headers: { 'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjYm12eHV6amxhb29rbndocXFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NzkyMjAsImV4cCI6MjA5OTU1NTIyMH0.ayDpkfCKL90GcUKjbHQs7OvS5sxF1VSraWg58NHJ7ek' }
+        var r = await fetch(window.SUPABASE_URL + '/functions/v1/get-site-settings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({})
         });
-        var rows = await r.json();
-        var st = rows && rows[0] && rows[0].settings && rows[0].settings.storeStatus;
-        if (st === 'open') return; // البيع مفعّل — أكمل عادي
+        var data = await r.json();
+        if (data.ok && data.settings && data.settings.storeStatus === 'open') return; // البيع مفعّل — أكمل عادي
     } catch(_) { /* عند الشك: امنع */ }
     document.body.innerHTML = '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;font-family:inherit">'
         + '<div style="font-size:64px;margin-bottom:16px">🔒</div>'
@@ -621,7 +631,7 @@ async function startGatewayPayment(orderId, amount, customer, gatewayCode) {
     try {
         // رابط العودة بعد الدفع — يُبنى من مسار الصفحة الحالية ليعمل على أي دومين/استضافة
         var callbackUrl = new URL('payment-return.html', window.location.href).href + '?order=' + encodeURIComponent(String(orderId));
-        var res = await fetch('https://kcbmvxuzjlaooknwhqqb.supabase.co/functions/v1/create-payment', {
+        var res = await fetch(window.SUPABASE_URL + '/functions/v1/create-payment', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

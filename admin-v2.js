@@ -9,6 +9,27 @@ if (typeof supabaseClient === 'undefined' || !supabaseClient) {
   return;
 }
 
+/* ========== أدوات مشتركة من admin-utils.js ========== */
+const esc = window.adminUtils ? window.adminUtils.esc : function(v){ return String(v??'').replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch];}); };
+const dateAr = window.adminUtils ? window.adminUtils.dateAr : function(v){ if(!v)return'—';try{return new Date(v).toLocaleString('ar-SA',{dateStyle:'medium',timeStyle:'short'})}catch(_){return String(v)} };
+const money = window.adminUtils ? window.adminUtils.money : function(v){ return Number(v||0).toLocaleString('ar-SA')+' ر.س'; };
+const adminToast = window.adminUtils ? window.adminUtils.adminToast : function(m,t){ if(typeof showToast==='function')showToast(m,t);else alert(m); };
+const options = window.adminUtils ? window.adminUtils.options : function(map,cur){ return Object.entries(map).map(([v,l])=>`<option value="${v}" ${v===cur?'selected':''}>${l}</option>`).join(''); };
+const formVal = window.adminUtils ? window.adminUtils.formVal : function(id){var el=document.getElementById(id);return el?el.value.trim():'';};
+const formSet = window.adminUtils ? window.adminUtils.formSet : function(id,v){var el=document.getElementById(id);if(el)el.value=(v===null||v===undefined?'':v);};
+const loadAdminScript = window.adminUtils ? window.adminUtils.loadAdminScript : function(src,globalName){
+  if(globalName&&window[globalName])return Promise.resolve();
+  if(!window.__adminScriptsLoaded)window.__adminScriptsLoaded={};
+  if(window.__adminScriptsLoaded[src])return window.__adminScriptsLoaded[src];
+  window.__adminScriptsLoaded[src]=new Promise(function(resolve,reject){
+    var s=document.createElement('script');s.src=src;s.async=true;
+    s.onload=function(){resolve();};
+    s.onerror=function(){window.__adminScriptsLoaded[src]=null;reject(new Error('تعذر تحميل: '+src));};
+    document.head.appendChild(s);
+  });
+  return window.__adminScriptsLoaded[src];
+};
+
 const adminState = { user: null, orders: [], services: [], customers: [], receipts: [], reviews: [], messages: [], settings: null };
 
 const orderStatuses = { new:'جديد', review:'قيد المراجعة', processing:'قيد التجهيز', shipped:'تم الشحن', delivered:'تم التسليم', completed:'مكتمل', cancelled:'ملغي' };
@@ -18,32 +39,12 @@ const receiptStatuses = { pending:'بانتظار المراجعة', approved:'�
 const reviewStatuses = { pending:'بانتظار المراجعة', published:'منشور', hidden:'مخفي' };
 const messageStatuses = { new:'جديدة', read:'مقروءة', replied:'تم الرد', archived:'مؤرشفة' };
 
-function esc(v){ return String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch])); }
-function dateAr(v){ if(!v)return'—';try{return new Date(v).toLocaleString('ar-SA',{dateStyle:'medium',timeStyle:'short'})}catch(_){return String(v)} }
-function money(v){ return Number(v||0).toLocaleString('ar-SA')+' ر.س'; }
-function adminToast(m,t){ if(typeof showToast==='function')showToast(m,t);else alert(m); }
-
 /* ========== سجل التدقيق — تسجيل صامت لا يكسر شيئاً لو الجدول غير موجود ========== */
 window.logAudit=function(action,details){
   try{
     supabaseClient.from('audit_logs').insert([{action:String(action||''),details:String(details||'')}]).then(function(){},function(){});
   }catch(_){}
 };
-
-/* ========== تحميل مكتبات خارجية ديناميكياً عند الحاجة فقط ========== */
-var adminScriptsLoaded={};
-function loadAdminScript(src,globalName){
-  if(globalName&&window[globalName])return Promise.resolve();
-  if(adminScriptsLoaded[src])return adminScriptsLoaded[src];
-  adminScriptsLoaded[src]=new Promise(function(resolve,reject){
-    var s=document.createElement('script');s.src=src;s.async=true;
-    s.onload=function(){resolve();};
-    s.onerror=function(){adminScriptsLoaded[src]=null;reject(new Error('تعذر تحميل: '+src));};
-    document.head.appendChild(s);
-  });
-  return adminScriptsLoaded[src];
-}
-function options(map,cur){ return Object.entries(map).map(([v,l])=>`<option value="${v}" ${v===cur?'selected':''}>${l}</option>`).join(''); }
 
 async function currentUser(){ const {data}=await supabaseClient.auth.getUser();return data.user||null; }
 async function isAdminUser(user){ if(!user)return false;const{data}=await supabaseClient.from('profiles').select('role').eq('id',user.id).maybeSingle();return data?.role==='admin'; }
@@ -369,8 +370,6 @@ window.loadMessages=async function(){
 };
 
 /* ========== مساعدات site_settings — قراءة/دمج/حفظ بدون مسح باقي المفاتيح ========== */
-function formVal(id){var el=document.getElementById(id);return el?el.value.trim():'';}
-function formSet(id,v){var el=document.getElementById(id);if(el)el.value=(v===null||v===undefined?'':v);}
 async function siteSettingsGet(key){
   try{
     var{data}=await supabaseClient.from('site_settings').select('settings').eq('id',1).maybeSingle();
@@ -1671,7 +1670,7 @@ window.saveGateway=async function(code){
         secret_key:secret
       };
       if(String(code)==='hyperpay')payload.entity_id=formVal('gw-entity-'+code);
-      var res=await fetch('https://kcbmvxuzjlaooknwhqqb.supabase.co/functions/v1/manage-gateway',{
+      var res=await fetch(window.SUPABASE_URL + '/functions/v1/manage-gateway',{
         method:'POST',
         headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
         body:JSON.stringify(payload)

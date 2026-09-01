@@ -84,9 +84,13 @@ var doraChatbot = {
     
     addMessage: function(sender, text, type) {
         var container = document.getElementById('doraChatMessages');
+        if (!container) return;
         var div = document.createElement('div');
         div.className = 'dora-chat-msg ' + type;
-        div.innerHTML = '<strong>' + sender + ':</strong> ' + text;
+        var strong = document.createElement('strong');
+        strong.textContent = sender + ': ';
+        div.appendChild(strong);
+        div.appendChild(document.createTextNode(text));
         container.appendChild(div);
         container.scrollTop = container.scrollHeight;
     },
