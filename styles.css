@@ -55,14 +55,6 @@ html@keyframes gradientBG{0%{background-position:0% 50%}25%{background-position:
   }
 
 
-   --bg-size:400% 400%;
-   --bg-animation:gradientBG 15s ease infinite;
-   --body-bg:linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e, #16213e, #0f3460, #e94560, #0f0c29);
-
-  html--body-bg:linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e, #16213e, #0f3460, #e94560, #0f0c29);--bg-size:400% 400%;--bg-animation:gradientBG 15s ease infinite;
-   --body-bg:linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e, #16213e, #0f3460, #e94560, #0f0c29);--bg-size:400% 400%;--bg-animation:gradientBG 15s ease infinite;
-   --body-bg:linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e, #16213e, #0f3460, #e94560, #0f0c29);--bg-size:400% 400%;--bg-animation:gradientBG 15s ease infinite;
-
   html[data-theme="light"]{--body-bg:linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e, #16213e, #0f3460, #e94560, #0f0c29);--bg-size:400% 400%;--bg-animation:gradientBG 15s ease infinite}
 
   .header{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(15,12,41,0.3) !important;backdrop-filter:blur(20px) !important;-webkit-backdrop-filter:blur(20px) !important;border-bottom:1px solid rgba(233,69,96,0.3) !important;transition:var(--transition-normal);box-shadow:0 4px 30px rgba(0,0,0,.3)}

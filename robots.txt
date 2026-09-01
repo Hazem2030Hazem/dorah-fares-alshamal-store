@@ -17,7 +17,7 @@ Disallow: /google-site-verification.html
 Disallow: /thankyou.html
 
 # Sitemap
-Sitemap: https://www.alshamal-df.com/sitemap.xml
+Sitemap: https://alshamal-df.com/sitemap.xml
 
 # Crawl-delay (اختياري - للتخفيف على السيرفر)
 Crawl-delay: 10
