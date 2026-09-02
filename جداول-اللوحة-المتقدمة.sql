@@ -29,14 +29,14 @@ create index if not exists audit_log_created_at_idx on public.audit_log (created
 alter table public.audit_log enable row level security;
 
 drop policy if exists audit_log_select_anon on public.audit_log;
-create policy audit_log_select_anon on public.audit_log
-for select to anon, authenticated
-using (true);
+create policy audit_log_select_admin on public.audit_log
+for select to authenticated
+using (public.is_admin());
 
 drop policy if exists audit_log_insert_anon on public.audit_log;
-create policy audit_log_insert_anon on public.audit_log
-for insert to anon, authenticated
-with check (true);
+create policy audit_log_insert_admin on public.audit_log
+for insert to authenticated
+with check (public.is_admin());
 
 -- ============================================================
 -- 2) zatca_log — سجل توليد رموز QR للفوترة الإلكترونية (TLV Base64)
@@ -61,14 +61,14 @@ create index if not exists zatca_log_created_at_idx on public.zatca_log (created
 alter table public.zatca_log enable row level security;
 
 drop policy if exists zatca_log_select_anon on public.zatca_log;
-create policy zatca_log_select_anon on public.zatca_log
-for select to anon, authenticated
-using (true);
+create policy zatca_log_select_admin on public.zatca_log
+for select to authenticated
+using (public.is_admin());
 
 drop policy if exists zatca_log_insert_anon on public.zatca_log;
-create policy zatca_log_insert_anon on public.zatca_log
-for insert to anon, authenticated
-with check (true);
+create policy zatca_log_insert_admin on public.zatca_log
+for insert to authenticated
+with check (public.is_admin());
 
 -- ============================================================
 -- 3) afaky_sync_log — سجل عمليات المزامنة مع نظام أفاقي
@@ -95,14 +95,14 @@ create index if not exists afaky_sync_log_created_at_idx on public.afaky_sync_lo
 alter table public.afaky_sync_log enable row level security;
 
 drop policy if exists afaky_sync_log_select_anon on public.afaky_sync_log;
-create policy afaky_sync_log_select_anon on public.afaky_sync_log
-for select to anon, authenticated
-using (true);
+create policy afaky_sync_log_select_admin on public.afaky_sync_log
+for select to authenticated
+using (public.is_admin());
 
 drop policy if exists afaky_sync_log_insert_anon on public.afaky_sync_log;
-create policy afaky_sync_log_insert_anon on public.afaky_sync_log
-for insert to anon, authenticated
-with check (true);
+create policy afaky_sync_log_insert_admin on public.afaky_sync_log
+for insert to authenticated
+with check (public.is_admin());
 
 -- ============================================================
 -- ملاحظة: لوحة الإدارة تتعامل مع هذه الجداول بشكل صامت —

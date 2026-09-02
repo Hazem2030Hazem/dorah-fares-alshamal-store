@@ -6,17 +6,33 @@
 create extension if not exists pgcrypto;
 
 -- ============================================================
+-- تهيئة/هجرة: إذا كان الجدول القديم 'orders' موجوداً والجدول 'store_orders' غير موجود،
+-- نقوم بإعادة تسميته لتوحيد التسمية مع كود التطبيق.
+-- ============================================================
+DO $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'orders')
+     AND NOT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'store_orders') THEN
+    ALTER TABLE public.orders RENAME TO store_orders;
+  END IF;
+END $$;
+
+-- ============================================================
 -- 1) المستخدمون والملفات الشخصية
 -- ============================================================
 create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   full_name text,
   phone text,
-  role text not null default 'customer' check (role in ('customer','admin')),
+  role text not null default 'customer' check (role in ('customer','staff','admin')),
   avatar_url text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+-- تحديث قيد الدور ليشمل staff إذا كان الجدول موجوداً مسبقاً
+alter table public.profiles drop constraint if exists profiles_role_check;
+alter table public.profiles add constraint profiles_role_check check (role in ('customer','staff','admin'));
 
 alter table public.profiles add column if not exists full_name text;
 alter table public.profiles add column if not exists phone text;
@@ -162,7 +178,7 @@ for each row execute function public.ensure_single_default_address();
 -- ============================================================
 create sequence if not exists public.order_number_seq start 1001;
 
-create table if not exists public.orders (
+create table if not exists public.store_orders (
   id uuid primary key default gen_random_uuid(),
   order_number text unique,
   user_id uuid not null references public.profiles(id) on delete cascade,
@@ -188,25 +204,25 @@ create table if not exists public.orders (
   updated_at timestamptz not null default now()
 );
 
-alter table public.orders add column if not exists order_number text;
-alter table public.orders add column if not exists customer_email text;
-alter table public.orders add column if not exists address jsonb;
-alter table public.orders add column if not exists items jsonb default '[]'::jsonb;
-alter table public.orders add column if not exists subtotal numeric(12,2) default 0;
-alter table public.orders add column if not exists discount numeric(12,2) default 0;
-alter table public.orders add column if not exists tax numeric(12,2) default 0;
-alter table public.orders add column if not exists total numeric(12,2) default 0;
-alter table public.orders add column if not exists status text default 'new';
-alter table public.orders add column if not exists payment_method text default 'bank_transfer';
-alter table public.orders add column if not exists payment_status text default 'pending';
-alter table public.orders add column if not exists payment_reference text;
-alter table public.orders add column if not exists payment_gateway text;
-alter table public.orders add column if not exists payment_transaction_id text;
-alter table public.orders add column if not exists receipt_path text;
-alter table public.orders add column if not exists notes text;
-alter table public.orders add column if not exists admin_notes text;
-alter table public.orders add column if not exists created_at timestamptz default now();
-alter table public.orders add column if not exists updated_at timestamptz default now();
+alter table public.store_orders add column if not exists order_number text;
+alter table public.store_orders add column if not exists customer_email text;
+alter table public.store_orders add column if not exists address jsonb;
+alter table public.store_orders add column if not exists items jsonb default '[]'::jsonb;
+alter table public.store_orders add column if not exists subtotal numeric(12,2) default 0;
+alter table public.store_orders add column if not exists discount numeric(12,2) default 0;
+alter table public.store_orders add column if not exists tax numeric(12,2) default 0;
+alter table public.store_orders add column if not exists total numeric(12,2) default 0;
+alter table public.store_orders add column if not exists status text default 'new';
+alter table public.store_orders add column if not exists payment_method text default 'bank_transfer';
+alter table public.store_orders add column if not exists payment_status text default 'pending';
+alter table public.store_orders add column if not exists payment_reference text;
+alter table public.store_orders add column if not exists payment_gateway text;
+alter table public.store_orders add column if not exists payment_transaction_id text;
+alter table public.store_orders add column if not exists receipt_path text;
+alter table public.store_orders add column if not exists notes text;
+alter table public.store_orders add column if not exists admin_notes text;
+alter table public.store_orders add column if not exists created_at timestamptz default now();
+alter table public.store_orders add column if not exists updated_at timestamptz default now();
 
 create or replace function public.generate_order_number()
 returns trigger
@@ -220,14 +236,14 @@ begin
 end;
 $$;
 
-drop trigger if exists orders_generate_number on public.orders;
-create trigger orders_generate_number
-before insert on public.orders
+drop trigger if exists store_orders_generate_number on public.store_orders;
+create trigger store_orders_generate_number
+before insert on public.store_orders
 for each row execute function public.generate_order_number();
 
-drop trigger if exists orders_set_updated_at on public.orders;
-create trigger orders_set_updated_at
-before update on public.orders
+drop trigger if exists store_orders_set_updated_at on public.store_orders;
+create trigger store_orders_set_updated_at
+before update on public.store_orders
 for each row execute function public.set_updated_at();
 
 -- ============================================================
@@ -294,7 +310,7 @@ alter table public.contact_messages add column if not exists created_at timestam
 create table if not exists public.payment_receipts (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references public.profiles(id) on delete cascade,
-  order_id uuid not null references public.orders(id) on delete cascade,
+  order_id uuid not null references public.store_orders(id) on delete cascade,
   file_path text not null,
   status text not null default 'pending' check (status in ('pending','approved','rejected')),
   admin_notes text,
@@ -317,7 +333,7 @@ security definer
 set search_path = public
 as $$
 begin
-  update public.orders
+  update public.store_orders
   set receipt_path = p_file_path,
       payment_status = 'review'
   where id = p_order_id
@@ -347,7 +363,7 @@ create table if not exists public.reviews (
 
 alter table public.reviews add column if not exists user_id uuid references public.profiles(id) on delete set null;
 alter table public.reviews add column if not exists product_id integer;
-alter table public.reviews add column if not exists order_id uuid references public.orders(id) on delete set null;
+alter table public.reviews add column if not exists order_id uuid references public.store_orders(id) on delete set null;
 alter table public.reviews add column if not exists verified_purchase boolean not null default false;
 alter table public.reviews add column if not exists status text default 'pending';
 alter table public.reviews add column if not exists updated_at timestamptz default now();
@@ -362,7 +378,7 @@ for each row execute function public.set_updated_at();
 -- ============================================================
 alter table public.profiles enable row level security;
 alter table public.addresses enable row level security;
-alter table public.orders enable row level security;
+alter table public.store_orders enable row level security;
 alter table public.service_requests enable row level security;
 alter table public.contact_messages enable row level security;
 alter table public.payment_receipts enable row level security;
@@ -423,24 +439,24 @@ for delete to authenticated
 using (auth.uid() = user_id or public.is_admin());
 
 -- orders
-drop policy if exists orders_select_own_or_admin on public.orders;
-create policy orders_select_own_or_admin on public.orders
+drop policy if exists orders_select_own_or_admin on public.store_orders;
+create policy orders_select_own_or_admin on public.store_orders
 for select to authenticated
 using (auth.uid() = user_id or public.is_admin());
 
-drop policy if exists orders_insert_own on public.orders;
-create policy orders_insert_own on public.orders
+drop policy if exists orders_insert_own on public.store_orders;
+create policy orders_insert_own on public.store_orders
 for insert to authenticated
 with check (auth.uid() = user_id);
 
-drop policy if exists orders_update_admin on public.orders;
-create policy orders_update_admin on public.orders
+drop policy if exists orders_update_admin on public.store_orders;
+create policy orders_update_admin on public.store_orders
 for update to authenticated
 using (public.is_admin())
 with check (public.is_admin());
 
-drop policy if exists orders_delete_admin on public.orders;
-create policy orders_delete_admin on public.orders
+drop policy if exists orders_delete_admin on public.store_orders;
+create policy orders_delete_admin on public.store_orders
 for delete to authenticated
 using (public.is_admin());
 
@@ -500,7 +516,7 @@ for insert to authenticated
 with check (
   auth.uid() = user_id
   and exists (
-    select 1 from public.orders
+    select 1 from public.store_orders
     where id = order_id and user_id = auth.uid()
   )
 );
@@ -530,7 +546,7 @@ with check (
   and (
     order_id is null
     or exists (
-      select 1 from public.orders
+      select 1 from public.store_orders
       where id = order_id
         and user_id = auth.uid()
         and status in ('delivered','completed')
@@ -589,6 +605,45 @@ using (bucket_id = 'payment-receipts' and public.is_admin());
 -- من Supabase: Authentication → Users → Add user
 -- أنشئ حساب الأدمن بالبريد وكلمة المرور، ثم ضع UUID الخاص به هنا:
 -- update public.profiles set role = 'admin' where id = 'ضع-UUID-الأدمن-هنا';
+
+-- ============================================================
+-- 11) جدول transactions الخاصة ببوابات الدفع (Edge Functions)
+-- ============================================================
+create table if not exists public.payment_transactions (
+  id uuid primary key default gen_random_uuid(),
+  order_id uuid references public.store_orders(id) on delete set null,
+  gateway_code text not null default 'demo',
+  gateway_transaction_id text,
+  amount numeric(12,2) not null default 0,
+  currency text not null default 'SAR',
+  status text not null default 'pending' check (status in ('pending','paid','failed','refunded','cancelled')),
+  raw_response jsonb default '{}'::jsonb,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.payment_transactions add column if not exists order_id uuid;
+alter table public.payment_transactions add column if not exists gateway_code text default 'demo';
+alter table public.payment_transactions add column if not exists gateway_transaction_id text;
+alter table public.payment_transactions add column if not exists amount numeric(12,2) default 0;
+alter table public.payment_transactions add column if not exists currency text default 'SAR';
+alter table public.payment_transactions add column if not exists status text default 'pending';
+alter table public.payment_transactions add column if not exists raw_response jsonb default '{}'::jsonb;
+alter table public.payment_transactions add column if not exists created_at timestamptz default now();
+alter table public.payment_transactions add column if not exists updated_at timestamptz default now();
+
+alter table public.payment_transactions enable row level security;
+
+drop policy if exists payment_transactions_admin_only on public.payment_transactions;
+create policy payment_transactions_admin_only on public.payment_transactions
+for all to authenticated
+using (public.is_admin())
+with check (public.is_admin());
+
+drop trigger if exists payment_transactions_set_updated_at on public.payment_transactions;
+create trigger payment_transactions_set_updated_at
+before update on public.payment_transactions
+for each row execute function public.set_updated_at();
 
 -- ملاحظة مهمة: لتسجيل العملاء بسرعة من الموقع:
 -- Authentication → Providers → Email → فعّل Email

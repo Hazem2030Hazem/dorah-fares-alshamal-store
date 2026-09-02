@@ -40,11 +40,7 @@ BEGIN
         o.customer_name::TEXT,
         o.created_at
     FROM store_orders o
-    WHERE (
-            o.order_number::TEXT = p_order_number
-            OR o.order_number::TEXT ILIKE '%' || p_order_number || '%'
-            OR (p_order_number ~ '^\d+$' AND o.id = p_order_number::BIGINT)
-          )
+    WHERE o.order_number::TEXT = p_order_number
       AND right(regexp_replace(coalesce(o.customer_phone, ''), '\D', '', 'g'), 9) = v_digits
     LIMIT 1;
 END;
