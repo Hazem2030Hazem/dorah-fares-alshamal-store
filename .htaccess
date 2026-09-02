@@ -18,7 +18,10 @@
     Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
     # CSP تدريجي — المرحلة الأولى: السماح بـ self + المصادر الموثوقة + unsafe-inline مؤقتاً.
     # المرحلة التالية: نقل كل inline JS/CSS إلى ملفات خارجية ثم إزالة 'unsafe-inline'.
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdn.moyasar.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://kcbmvxuzjlaooknwhqqb.supabase.co https://kcbmvxuzjlaooknwhqqb.functions.supabase.co https://api.moyasar.com; frame-src 'self' https://api.moyasar.com; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'"
+    # CSP — تمت إزالة unsafe-eval لأن الكود لا يستخدم eval/Function.
+    # unsafe-inline للـ script لا يزال مطلوباً مؤقتاً بسبب أحداث HTML inline (onclick/onsubmit...).
+    # الخطوة التالية: تحويل أحداث HTML inline إلى addEventListener في JS لإزالة unsafe-inline بالكامل.
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.moyasar.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://kcbmvxuzjlaooknwhqqb.supabase.co https://kcbmvxuzjlaooknwhqqb.functions.supabase.co https://api.moyasar.com; frame-src 'self' https://api.moyasar.com; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
 </IfModule>
 
 # منع تصفح المجلدات
