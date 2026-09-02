@@ -1,15 +1,15 @@
 // ============================================================
-// verify-payment — التحقق من حالة الدفع بأمان (webhook/callback موقّع)
+// verify-payment — التحقق من حالة الدفع بأمان (Moyasar callback/webhook)
 // ============================================================
 // يُرسل من العميل بعد العودة من البوابة: POST {
-//   order_id, gateway, transaction_id, signature?
+//   order_id, gateway, transaction_id, payment_id?
 // }
-// يرجع: { ok: true, status: 'paid'|'failed', order_id } أو { ok: false, error }
+// يرجع: { ok: true, status: 'paid'|'failed', order_id, verified } أو { ok: false, error }
 //
 // أضف الأسرار التالية في Supabase:
 //   SUPABASE_SERVICE_ROLE_KEY
 //   SUPABASE_URL
-//   MOYASAR_SECRET_KEY (لو تستخدم Moyasar)
+//   MOYASAR_SECRET_KEY
 //
 // للنشر:
 //   supabase functions deploy verify-payment --no-verify-jwt
@@ -37,38 +37,80 @@ Deno.serve(async (req: Request) => {
     if (!supabaseUrl || !serviceKey) throw new Error('Missing Supabase environment configuration');
 
     const body = await req.json();
-    const { order_id, gateway, transaction_id, signature } = body;
+    const { order_id, gateway, transaction_id, payment_id } = body;
     if (!order_id) throw new Error('order_id مطلوب');
 
     const supabase = createClient(supabaseUrl, serviceKey);
-
-    // TODO: بالإنتاج — تحقق من توقيع البوابة (signature) أو استعلم عن حالة transaction من API البوابة.
-    // في الوضع الحالي: نتحقق من وجود transaction بـ status='paid' في payment_transactions.
+    const moyasarSecret = Deno.env.get('MOYASAR_SECRET_KEY');
+    const isDemo = !moyasarSecret || gateway === 'demo';
 
     let isPaid = false;
-    if (transaction_id) {
+    let verified = false;
+    let upstreamResponse: unknown = null;
+
+    if (!isDemo && payment_id) {
+      // استعلام عن حالة الدفع من Moyasar
+      const moyasarRes = await fetch('https://api.moyasar.com/v1/payments/' + encodeURIComponent(payment_id), {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Basic ' + btoa(moyasarSecret + ':'),
+          'Content-Type': 'application/json',
+        },
+      });
+      upstreamResponse = await moyasarRes.json();
+
+      if (moyasarRes.ok && (upstreamResponse as any)?.status === 'paid') {
+        isPaid = true;
+        verified = true;
+      }
+    } else if (!isDemo && transaction_id) {
+      // محاولة البحث عن transaction محلياً وتحديثها
       const { data: txn } = await supabase
         .from('payment_transactions')
-        .select('status')
+        .select('*')
         .eq('id', transaction_id)
         .maybeSingle();
-      isPaid = txn?.status === 'paid';
+
+      if (txn?.gateway_transaction_id && moyasarSecret) {
+        const moyasarRes = await fetch('https://api.moyasar.com/v1/payments/' + encodeURIComponent(txn.gateway_transaction_id), {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Basic ' + btoa(moyasarSecret + ':'),
+            'Content-Type': 'application/json',
+          },
+        });
+        upstreamResponse = await moyasarRes.json();
+        if (moyasarRes.ok && (upstreamResponse as any)?.status === 'paid') {
+          isPaid = true;
+          verified = true;
+        }
+      }
+    } else if (isDemo) {
+      // الوضع التوضيحي: نعتبر الدفع ناجحاً لكن غير موثّق
+      isPaid = true;
+      verified = false;
     }
 
-    // TODO: Webhook: إذا أرسلت البوابة إشارة موقّعة بحالة paid، حدّث الطلب هنا.
-
+    // تحديث حالة الطلب والمعاملة
     if (isPaid) {
       await supabase
         .from('store_orders')
-        .update({ status: 'paid', payment_status: 'paid' })
+        .update({ status: 'processing', payment_status: 'paid' })
         .eq('id', order_id);
+
+      if (transaction_id) {
+        await supabase
+          .from('payment_transactions')
+          .update({ status: 'paid', raw_response: upstreamResponse || { demo: true } })
+          .eq('id', transaction_id);
+      }
     }
 
     return new Response(JSON.stringify({
       ok: true,
       order_id,
       status: isPaid ? 'paid' : 'pending',
-      verified: isPaid,
+      verified,
     }), {
       status: 200, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
     });
