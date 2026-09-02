@@ -38,6 +38,8 @@ function applyDoraSettings(settings){
   if (!isFakeSocial(s.socialInstagram)) document.querySelectorAll('a[data-social="instagram"]').forEach(a => { a.href = s.socialInstagram; a.target = '_blank'; a.rel = 'noopener'; });
   if (!isFakeSocial(s.socialFacebook)) document.querySelectorAll('a[data-social="facebook"]').forEach(a => { a.href = s.socialFacebook; a.target = '_blank'; a.rel = 'noopener'; });
   if (!isFakeSocial(s.socialLinkedin)) document.querySelectorAll('a[data-social="linkedin"]').forEach(a => { a.href = s.socialLinkedin; a.target = '_blank'; a.rel = 'noopener'; });
+  document.querySelectorAll('a[data-social]').forEach(a => { if (a.getAttribute('href') === '#' || !a.getAttribute('href')) { a.style.opacity = '0.5'; a.style.pointerEvents = 'none'; a.title = 'غير متوفر حالياً'; } });
+  document.querySelectorAll('.dora-year').forEach(el => { el.textContent = new Date().getFullYear(); });
   var _cr = s.companyCR || (s.company && s.company.commercial_register) || '';
   var _tax = s.companyTax || (s.company && s.company.tax_number) || '';
   if (_cr) document.querySelectorAll('[data-company="cr"]').forEach(el => { el.textContent = _cr; });
