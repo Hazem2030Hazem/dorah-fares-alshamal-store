@@ -350,8 +350,7 @@ create policy pos_devices_no_direct on public.pos_devices for all to authenticat
 -- 5) منح الصلاحيات
 -- ============================================================
 grant execute on function public.pos_cashier_login(text, text, text, text) to anon;
-grant execute on all functions in schema public
-where routine_name like 'pos_%' to anon, authenticated;
+grant execute on all functions in schema public to anon, authenticated;
 
 
 -- ============================================================

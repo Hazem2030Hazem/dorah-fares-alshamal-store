@@ -14,3 +14,22 @@
 
 window.SUPABASE_URL = 'https://kcbmvxuzjlaooknwhqqb.supabase.co';
 window.SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjYm12eHV6amxhb29rbndocXFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NzkyMjAsImV4cCI6MjA5OTU1NTIyMH0.ayDpkfCKL90GcUKjbHQs7OvS5sxF1VSraWg58NHJ7ek';
+
+// تهيئة عميل Supabase المشترك بعد تحميل مكتبة Supabase
+if (typeof window.supabase !== 'undefined' && window.supabase && window.SUPABASE_URL && window.SUPABASE_KEY) {
+  window.supabaseClient = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
+}
+
+// إعدادات الشحن (بالريال السعودي)
+window.DORA_SHIPPING = {
+  freeAbove: 300,
+  default: 35,
+  regions: {
+    'الرياض': 25,
+    'جدة': 30,
+    'الدمام': 30
+  }
+};
+
+// مفتاح Moyasar العلني (اتركه فارغاً لإخفاء خيار الدفع الإلكتروني)
+window.MOYASAR_PUBLISHABLE_KEY = '';

@@ -66,253 +66,6 @@ create index if not exists idx_staff_audit_staff_id on public.staff_audit_log(st
 create index if not exists idx_staff_audit_created_at on public.staff_audit_log(created_at desc);
 
 -- ============================================================
--- 4) الجداول والدوال المتقدمة (المالية والمحاسبية)
--- ============================================================
-
--- 4.1) سجل زاتكا
--- ------------------------------------------------------------
-create table if not exists public.zatca_log (
-  id uuid primary key default gen_random_uuid(),
-  invoice_number text,
-  total numeric(12,2) default 0,
-  tax numeric(12,2) default 0,
-  qr_code text,
-  xml_payload text,
-  response jsonb default '{}'::jsonb,
-  created_at timestamptz not null default now()
-);
-
-alter table public.zatca_log enable row level security;
-
-create policy zatca_log_admin_only on public.zatca_log
-for all to authenticated
-using (public.is_admin())
-with check (public.is_admin());
-
--- indexes
-create index if not exists idx_zatca_invoice_number on public.zatca_log(invoice_number);
-create index if not exists idx_zatca_created_at on public.zatca_log(created_at desc);
-
--- 4.2) الفواتير الإلكترونية
--- ------------------------------------------------------------
-create table if not exists public.einvoices (
-  id uuid primary key default gen_random_uuid(),
-  order_id uuid references public.store_orders(id) on delete set null,
-  invoice_number text unique,
-  seller_name text not null default 'شركة درة فارس الشمال',
-  vat_number text not null default '300000000000003',
-  total numeric(12,2) not null default 0,
-  tax numeric(12,2) not null default 0,
-  qr_code text,
-  xml_payload text,
-  status text not null default 'new' check (status in ('new','reported','cleared','failed','cancelled')),
-  created_by bigint references public.staff_users(id) on delete set null,
-  created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
-);
-
-alter table public.einvoices enable row level security;
-
-drop trigger if exists einvoices_set_updated_at on public.einvoices;
-create trigger einvoices_set_updated_at
-before update on public.einvoices
-for each row execute function public.set_updated_at();
-
-create policy einvoices_admin_only on public.einvoices
-for all to authenticated
-using (public.is_admin())
-with check (public.is_admin());
-
-create index if not exists idx_einvoices_order_id on public.einvoices(order_id);
-create index if not exists idx_einvoices_invoice_number on public.einvoices(invoice_number);
-create index if not exists idx_einvoices_created_by on public.einvoices(created_by);
-
--- 4.3) الكيانات (عملاء/موردون)
--- ------------------------------------------------------------
-create table if not exists public.entities (
-  id uuid primary key default gen_random_uuid(),
-  type text not null check (type in ('customer','supplier','both')),
-  name text not null,
-  phone text,
-  email text,
-  vat_number text,
-  cr_number text,
-  address text,
-  credit_limit numeric(12,2) default 0,
-  balance numeric(12,2) default 0,
-  is_active boolean not null default true,
-  created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
-);
-
-alter table public.entities enable row level security;
-
-drop trigger if exists entities_set_updated_at on public.entities;
-create trigger entities_set_updated_at
-before update on public.entities
-for each row execute function public.set_updated_at();
-
-create policy entities_admin_only on public.entities
-for all to authenticated
-using (public.is_admin())
-with check (public.is_admin());
-
-create index if not exists idx_entities_name on public.entities(name);
-create index if not exists idx_entities_phone on public.entities(phone);
-
--- 4.4) شجرة الحسابات
--- ------------------------------------------------------------
-create table if not exists public.chart_of_accounts (
-  id uuid primary key default gen_random_uuid(),
-  code text unique not null,
-  name_ar text not null,
-  name_en text,
-  account_type text not null check (account_type in ('asset','liability','equity','revenue','expense')),
-  parent_code text references public.chart_of_accounts(code) on delete set null,
-  is_active boolean not null default true,
-  created_at timestamptz not null default now()
-);
-
-alter table public.chart_of_accounts enable row level security;
-
-create policy chart_of_accounts_admin_only on public.chart_of_accounts
-for all to authenticated
-using (public.is_admin())
-with check (public.is_admin());
-
--- حسابات افتراضية
-insert into public.chart_of_accounts (code, name_ar, name_en, account_type)
-values
-  ('1000', 'النقدية', 'Cash', 'asset'),
-  ('1100', 'المخزون', 'Inventory', 'asset'),
-  ('1200', 'ذمم العملاء', 'Accounts Receivable', 'asset'),
-  ('2000', 'ذمم الموردين', 'Accounts Payable', 'liability'),
-  ('3000', 'رأس المال', 'Capital', 'equity'),
-  ('4000', 'المبيعات', 'Sales', 'revenue'),
-  ('4100', 'إيرادات الشحن', 'Shipping Revenue', 'revenue'),
-  ('5000', 'تكلفة البضاعة المباعة', 'Cost of Goods Sold', 'expense'),
-  ('6000', 'مصاريف التشغيل', 'Operating Expenses', 'expense'),
-  ('6100', 'مصاريف الرواتب', 'Payroll Expenses', 'expense')
-on conflict (code) do nothing;
-
--- 4.5) القيود اليومية
--- ------------------------------------------------------------
-create table if not exists public.journal_entries (
-  id uuid primary key default gen_random_uuid(),
-  entry_number text unique,
-  memo text not null,
-  source text,
-  total_debit numeric(12,2) not null default 0,
-  total_credit numeric(12,2) not null default 0,
-  created_by bigint references public.staff_users(id) on delete set null,
-  created_at timestamptz not null default now()
-);
-
-alter table public.journal_entries enable row level security;
-
-create table if not exists public.journal_lines (
-  id uuid primary key default gen_random_uuid(),
-  entry_id uuid not null references public.journal_entries(id) on delete cascade,
-  account_code text not null references public.chart_of_accounts(code),
-  debit numeric(12,2) not null default 0,
-  credit numeric(12,2) not null default 0,
-  description text
-);
-
-alter table public.journal_lines enable row level security;
-
-create policy journal_entries_admin_only on public.journal_entries
-for all to authenticated
-using (public.is_admin())
-with check (public.is_admin());
-
-create policy journal_lines_admin_only on public.journal_lines
-for all to authenticated
-using (public.is_admin())
-with check (public.is_admin());
-
-create index if not exists idx_journal_entries_entry_number on public.journal_entries(entry_number);
-create index if not exists idx_journal_lines_entry_id on public.journal_lines(entry_id);
-create index if not exists idx_journal_lines_account_code on public.journal_lines(account_code);
-
--- 4.6) السندات (قبض/صرف)
--- ------------------------------------------------------------
-create table if not exists public.vouchers (
-  id uuid primary key default gen_random_uuid(),
-  voucher_number text unique,
-  type text not null check (type in ('receipt','payment')),
-  amount numeric(12,2) not null,
-  party text not null,
-  description text,
-  account_code text references public.chart_of_accounts(code),
-  created_by bigint references public.staff_users(id) on delete set null,
-  created_at timestamptz not null default now()
-);
-
-alter table public.vouchers enable row level security;
-
-create policy vouchers_admin_only on public.vouchers
-for all to authenticated
-using (public.is_admin())
-with check (public.is_admin());
-
-create index if not exists idx_vouchers_voucher_number on public.vouchers(voucher_number);
-create index if not exists idx_vouchers_created_by on public.vouchers(created_by);
-
--- 4.7) المصروفات
--- ------------------------------------------------------------
-create table if not exists public.expenses (
-  id uuid primary key default gen_random_uuid(),
-  amount numeric(12,2) not null,
-  category text not null,
-  description text,
-  account_code text references public.chart_of_accounts(code) default '6000',
-  created_by bigint references public.staff_users(id) on delete set null,
-  created_at timestamptz not null default now()
-);
-
-alter table public.expenses enable row level security;
-
-create policy expenses_admin_only on public.expenses
-for all to authenticated
-using (public.is_admin())
-with check (public.is_admin());
-
-create index if not exists idx_expenses_category on public.expenses(category);
-create index if not exists idx_expenses_created_by on public.expenses(created_by);
-
--- 4.8) الرواتب
--- ------------------------------------------------------------
-create table if not exists public.payroll (
-  id uuid primary key default gen_random_uuid(),
-  staff_user_id bigint references public.staff_users(id) on delete set null,
-  month date not null,
-  basic_salary numeric(12,2) not null default 0,
-  allowances numeric(12,2) not null default 0,
-  deductions numeric(12,2) not null default 0,
-  net_salary numeric(12,2) not null default 0,
-  status text not null default 'draft' check (status in ('draft','approved','paid')),
-  created_by bigint references public.staff_users(id) on delete set null,
-  created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
-);
-
-alter table public.payroll enable row level security;
-
-drop trigger if exists payroll_set_updated_at on public.payroll;
-create trigger payroll_set_updated_at
-before update on public.payroll
-for each row execute function public.set_updated_at();
-
-create policy payroll_admin_only on public.payroll
-for all to authenticated
-using (public.is_admin())
-with check (public.is_admin());
-
-create index if not exists idx_payroll_month on public.payroll(month);
-create index if not exists idx_payroll_staff_user_id on public.payroll(staff_user_id);
-
--- ============================================================
 -- 2) دوال مساعدة
 -- ============================================================
 create or replace function public.staff_hash_password(p_password text)
@@ -1274,6 +1027,253 @@ begin
   );
 end;
 $$;
+
+-- ============================================================
+-- 4) الجداول والدوال المتقدمة (المالية والمحاسبية)
+-- ============================================================
+
+-- 4.1) سجل زاتكا
+-- ------------------------------------------------------------
+create table if not exists public.zatca_log (
+  id uuid primary key default gen_random_uuid(),
+  invoice_number text,
+  total numeric(12,2) default 0,
+  tax numeric(12,2) default 0,
+  qr_code text,
+  xml_payload text,
+  response jsonb default '{}'::jsonb,
+  created_at timestamptz not null default now()
+);
+
+alter table public.zatca_log enable row level security;
+
+create policy zatca_log_admin_only on public.zatca_log
+for all to authenticated
+using (public.is_admin())
+with check (public.is_admin());
+
+-- indexes
+create index if not exists idx_zatca_invoice_number on public.zatca_log(invoice_number);
+create index if not exists idx_zatca_created_at on public.zatca_log(created_at desc);
+
+-- 4.2) الفواتير الإلكترونية
+-- ------------------------------------------------------------
+create table if not exists public.einvoices (
+  id uuid primary key default gen_random_uuid(),
+  order_id uuid references public.store_orders(id) on delete set null,
+  invoice_number text unique,
+  seller_name text not null default 'شركة درة فارس الشمال',
+  vat_number text not null default '300000000000003',
+  total numeric(12,2) not null default 0,
+  tax numeric(12,2) not null default 0,
+  qr_code text,
+  xml_payload text,
+  status text not null default 'new' check (status in ('new','reported','cleared','failed','cancelled')),
+  created_by bigint references public.staff_users(id) on delete set null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.einvoices enable row level security;
+
+drop trigger if exists einvoices_set_updated_at on public.einvoices;
+create trigger einvoices_set_updated_at
+before update on public.einvoices
+for each row execute function public.set_updated_at();
+
+create policy einvoices_admin_only on public.einvoices
+for all to authenticated
+using (public.is_admin())
+with check (public.is_admin());
+
+create index if not exists idx_einvoices_order_id on public.einvoices(order_id);
+create index if not exists idx_einvoices_invoice_number on public.einvoices(invoice_number);
+create index if not exists idx_einvoices_created_by on public.einvoices(created_by);
+
+-- 4.3) الكيانات (عملاء/موردون)
+-- ------------------------------------------------------------
+create table if not exists public.entities (
+  id uuid primary key default gen_random_uuid(),
+  type text not null check (type in ('customer','supplier','both')),
+  name text not null,
+  phone text,
+  email text,
+  vat_number text,
+  cr_number text,
+  address text,
+  credit_limit numeric(12,2) default 0,
+  balance numeric(12,2) default 0,
+  is_active boolean not null default true,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.entities enable row level security;
+
+drop trigger if exists entities_set_updated_at on public.entities;
+create trigger entities_set_updated_at
+before update on public.entities
+for each row execute function public.set_updated_at();
+
+create policy entities_admin_only on public.entities
+for all to authenticated
+using (public.is_admin())
+with check (public.is_admin());
+
+create index if not exists idx_entities_name on public.entities(name);
+create index if not exists idx_entities_phone on public.entities(phone);
+
+-- 4.4) شجرة الحسابات
+-- ------------------------------------------------------------
+create table if not exists public.chart_of_accounts (
+  id uuid primary key default gen_random_uuid(),
+  code text unique not null,
+  name_ar text not null,
+  name_en text,
+  account_type text not null check (account_type in ('asset','liability','equity','revenue','expense')),
+  parent_code text references public.chart_of_accounts(code) on delete set null,
+  is_active boolean not null default true,
+  created_at timestamptz not null default now()
+);
+
+alter table public.chart_of_accounts enable row level security;
+
+create policy chart_of_accounts_admin_only on public.chart_of_accounts
+for all to authenticated
+using (public.is_admin())
+with check (public.is_admin());
+
+-- حسابات افتراضية
+insert into public.chart_of_accounts (code, name_ar, name_en, account_type)
+values
+  ('1000', 'النقدية', 'Cash', 'asset'),
+  ('1100', 'المخزون', 'Inventory', 'asset'),
+  ('1200', 'ذمم العملاء', 'Accounts Receivable', 'asset'),
+  ('2000', 'ذمم الموردين', 'Accounts Payable', 'liability'),
+  ('3000', 'رأس المال', 'Capital', 'equity'),
+  ('4000', 'المبيعات', 'Sales', 'revenue'),
+  ('4100', 'إيرادات الشحن', 'Shipping Revenue', 'revenue'),
+  ('5000', 'تكلفة البضاعة المباعة', 'Cost of Goods Sold', 'expense'),
+  ('6000', 'مصاريف التشغيل', 'Operating Expenses', 'expense'),
+  ('6100', 'مصاريف الرواتب', 'Payroll Expenses', 'expense')
+on conflict (code) do nothing;
+
+-- 4.5) القيود اليومية
+-- ------------------------------------------------------------
+create table if not exists public.journal_entries (
+  id uuid primary key default gen_random_uuid(),
+  entry_number text unique,
+  memo text not null,
+  source text,
+  total_debit numeric(12,2) not null default 0,
+  total_credit numeric(12,2) not null default 0,
+  created_by bigint references public.staff_users(id) on delete set null,
+  created_at timestamptz not null default now()
+);
+
+alter table public.journal_entries enable row level security;
+
+create table if not exists public.journal_lines (
+  id uuid primary key default gen_random_uuid(),
+  entry_id uuid not null references public.journal_entries(id) on delete cascade,
+  account_code text not null references public.chart_of_accounts(code),
+  debit numeric(12,2) not null default 0,
+  credit numeric(12,2) not null default 0,
+  description text
+);
+
+alter table public.journal_lines enable row level security;
+
+create policy journal_entries_admin_only on public.journal_entries
+for all to authenticated
+using (public.is_admin())
+with check (public.is_admin());
+
+create policy journal_lines_admin_only on public.journal_lines
+for all to authenticated
+using (public.is_admin())
+with check (public.is_admin());
+
+create index if not exists idx_journal_entries_entry_number on public.journal_entries(entry_number);
+create index if not exists idx_journal_lines_entry_id on public.journal_lines(entry_id);
+create index if not exists idx_journal_lines_account_code on public.journal_lines(account_code);
+
+-- 4.6) السندات (قبض/صرف)
+-- ------------------------------------------------------------
+create table if not exists public.vouchers (
+  id uuid primary key default gen_random_uuid(),
+  voucher_number text unique,
+  type text not null check (type in ('receipt','payment')),
+  amount numeric(12,2) not null,
+  party text not null,
+  description text,
+  account_code text references public.chart_of_accounts(code),
+  created_by bigint references public.staff_users(id) on delete set null,
+  created_at timestamptz not null default now()
+);
+
+alter table public.vouchers enable row level security;
+
+create policy vouchers_admin_only on public.vouchers
+for all to authenticated
+using (public.is_admin())
+with check (public.is_admin());
+
+create index if not exists idx_vouchers_voucher_number on public.vouchers(voucher_number);
+create index if not exists idx_vouchers_created_by on public.vouchers(created_by);
+
+-- 4.7) المصروفات
+-- ------------------------------------------------------------
+create table if not exists public.expenses (
+  id uuid primary key default gen_random_uuid(),
+  amount numeric(12,2) not null,
+  category text not null,
+  description text,
+  account_code text references public.chart_of_accounts(code) default '6000',
+  created_by bigint references public.staff_users(id) on delete set null,
+  created_at timestamptz not null default now()
+);
+
+alter table public.expenses enable row level security;
+
+create policy expenses_admin_only on public.expenses
+for all to authenticated
+using (public.is_admin())
+with check (public.is_admin());
+
+create index if not exists idx_expenses_category on public.expenses(category);
+create index if not exists idx_expenses_created_by on public.expenses(created_by);
+
+-- 4.8) الرواتب
+-- ------------------------------------------------------------
+create table if not exists public.payroll (
+  id uuid primary key default gen_random_uuid(),
+  staff_user_id bigint references public.staff_users(id) on delete set null,
+  month date not null,
+  basic_salary numeric(12,2) not null default 0,
+  allowances numeric(12,2) not null default 0,
+  deductions numeric(12,2) not null default 0,
+  net_salary numeric(12,2) not null default 0,
+  status text not null default 'draft' check (status in ('draft','approved','paid')),
+  created_by bigint references public.staff_users(id) on delete set null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.payroll enable row level security;
+
+drop trigger if exists payroll_set_updated_at on public.payroll;
+create trigger payroll_set_updated_at
+before update on public.payroll
+for each row execute function public.set_updated_at();
+
+create policy payroll_admin_only on public.payroll
+for all to authenticated
+using (public.is_admin())
+with check (public.is_admin());
+
+create index if not exists idx_payroll_month on public.payroll(month);
+create index if not exists idx_payroll_staff_user_id on public.payroll(staff_user_id);
 
 -- ============================================================
 -- 5) صلاحيات RLS
