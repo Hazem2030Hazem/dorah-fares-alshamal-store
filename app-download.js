@@ -33,7 +33,7 @@
                 '<p class="global-app-download-title">📲 حمّل تطبيق درة فارس الشمال على جوالك أو الكمبيوتر، أو اطلب عرض سعر الآن!</p>' +
                 '<div class="app-download-btns">' +
                 '<a href="https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/raw/main/app-release.apk" download class="btn-primary">📱 تحميل تطبيق Android</a>' +
-                '<button type="button" onclick="window.installPWA()" class="btn-primary">💻 حمّل تطبيق درة فارس الشمال</button>' +
+                '<button type="button" data-dora-action="installPWA" class="btn-primary">💻 حمّل تطبيق درة فارس الشمال</button>' +
                 '<a href="' + window.doraWhatsAppLink('مرحباً أرغب في طلب عرض سعر من شركة درة فارس الشمال', (window.getDoraSiteSettings().companyPhone1 || '').trim() || undefined) + '" target="_blank" rel="noopener" class="btn-primary">📋 اطلب عرض سعر</a>' +
                 '</div>' +
                 '<p class="global-app-download-note">اضغط للتثبيت على الشاشة الرئيسية</p>' +

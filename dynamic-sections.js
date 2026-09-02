@@ -176,7 +176,7 @@
                             '<h4>' + window.esc(item.title_ar || 'عميل') + '</h4>' +
                             '<p>"' + window.esc(item.description_ar || '') + '"</p>' +
                             '<div class="client-name">' +
-                            (meta.client_logo ? '<img src="' + window.esc(meta.client_logo) + '" alt="logo" loading="lazy" style="width:20px;height:20px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-left:4px" onerror="this.style.display=\'none\'">' : '<svg style="width:14px;height:14px;vertical-align:middle;margin-left:4px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>') +
+                            (meta.client_logo ? '<img src="' + window.esc(meta.client_logo) + '" alt="logo" loading="lazy" style="width:20px;height:20px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-left:4px" data-dora-error="hide">' : '<svg style="width:14px;height:14px;vertical-align:middle;margin-left:4px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>') +
                             window.esc(meta.client_name || meta.company_name || 'جهة معتمدة') +
                             '</div>' +
                             '</div>';
@@ -198,7 +198,7 @@
                 loadSection('blog', 'blogGridList', function(container, items) {
                     container.innerHTML = items.map(function(item) {
                         var meta = item.metadata || {};
-                        return '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + window.esc(meta.link_url || '#') + '\',\'_blank\')">' +
+                        return '<div class="why-card" style="cursor:pointer" data-href="' + window.esc(meta.link_url || '#') + '" data-dora-call="doraOpenWindow:$element">' +
                             '<div class="why-icon">' + doraIcon('blog', meta) + '</div>' +
                             '<h4>' + window.esc(item.title_ar || '') + '</h4>' +
                             '<p>' + window.esc(item.description_ar || '') + '</p>' +
@@ -212,7 +212,7 @@
                     container.innerHTML = items.map(function(item) {
                         var meta = item.metadata || {};
                         var icon = doraIcon('contact', meta);
-                        return '<div class="why-card" style="cursor:pointer" onclick="window.open(\'' + window.esc(meta.link_url || '#') + '\',\'_blank\')">' +
+                        return '<div class="why-card" style="cursor:pointer" data-href="' + window.esc(meta.link_url || '#') + '" data-dora-call="doraOpenWindow:$element">' +
                             '<div class="why-icon">' + icon + '</div>' +
                             '<h4>' + window.esc(item.title_ar || '') + '</h4>' +
                             '<p>' + window.esc(item.description_ar || '') + '</p>' +
@@ -239,20 +239,20 @@
     // ============================================================
     (function() {
         var widgetHTML = '<div class="wa-chat-widget" id="waWidget">' +
-            '<div class="wa-chat-bubble" id="waBubble" onclick="toggleWaChat()">' +
+            '<div class="wa-chat-bubble" id="waBubble" data-dora-call="toggleWaChat">' +
             '<span class="wa-icon" style="display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg></span>' +
             '</div>' +
             '<div class="wa-chat-box" id="waChatBox" style="display:none">' +
             '<div class="wa-chat-header">' +
             '<span>👋 مرحباً! كيف نقدر نساعدك؟</span>' +
-            '<button onclick="toggleWaChat()" style="background:none;border:none;color:white;font-size:20px;cursor:pointer">✕</button>' +
+            '<button data-dora-call="toggleWaChat" style="background:none;border:none;color:white;font-size:20px;cursor:pointer">✕</button>' +
             '</div>' +
             '<div class="wa-chat-body">' +
             '<p>اختر نوع الاستفسار:</p>' +
-            '<button onclick="waOpen(\'استفسار عن منتج\')">📦 استفسار عن منتج</button>' +
-            '<button onclick="waOpen(\'طلب خدمة\')">🔧 طلب خدمة</button>' +
-            '<button onclick="waOpen(\'طلب عرض سعر\')">📋 طلب عرض سعر</button>' +
-            '<button onclick="waOpen(\'استفسار عام\')">💬 استفسار عام</button>' +
+            '<button data-dora-action="waOpen:استفسار عن منتج">📦 استفسار عن منتج</button>' +
+            '<button data-dora-action="waOpen:طلب خدمة">🔧 طلب خدمة</button>' +
+            '<button data-dora-action="waOpen:طلب عرض سعر">📋 طلب عرض سعر</button>' +
+            '<button data-dora-action="waOpen:استفسار عام">💬 استفسار عام</button>' +
             '</div>' +
             '</div>' +
             '</div>';

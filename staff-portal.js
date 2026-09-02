@@ -202,7 +202,7 @@ async function enterPortal() {
   const nav = $('side-nav');
   const menus = STAFF_PURE.menusForRole(S.role);
   nav.innerHTML = STAFF_PURE.MENU_DEFS.filter(m => menus.indexOf(m.id) >= 0).map(m =>
-    '<button class="nav-btn" data-sec="' + m.id + '" onclick="staffShow(\'' + m.id + '\')">' +
+    '<button class="nav-btn" data-sec="' + m.id + '" data-dora-call="staffShow:$element">' +
     m.icon + ' ' + m.label + '</button>').join('');
   // إخفاء كل الأقسام غير المسموحة (دفاع واجهة — السيرفر يتحقق أيضاً)
   document.querySelectorAll('.sec').forEach(s => {
@@ -211,6 +211,7 @@ async function enterPortal() {
   staffShow(menus[0]);
 }
 function staffShow(id) {
+  if (id && id.getAttribute) id = id.getAttribute('data-sec') || '';
   if (!S || STAFF_PURE.menusForRole(S.role).indexOf(id) < 0) {
     return toast('⛔ صلاحية غير كافية', false);
   }
@@ -238,11 +239,11 @@ async function loadOrders() {
       '<td>' + esc(o.status || '—') + '</td>' +
       '<td>' + new Date(o.created_at).toLocaleString('ar-SA') + '</td>' +
       '<td style="white-space:nowrap">' +
-        '<button class="btn" onclick="printA4(' + o.id + ', null)">🖨️ A4</button> ' +
+        '<button class="btn" data-order-id="' + o.id + '" data-dora-call="printA4:$element">🖨️ A4</button> ' +
         (o.einvoice
           ? '<span style="color:#34D399;font-weight:700">⚡ ' + esc(o.einvoice.status) + '</span> ' +
-            '<button class="btn" onclick="printEinvoice(\'' + o.einvoice.id + '\')">🖨️ طباعة</button>'
-          : '<button class="btn primary" onclick="issueEinvoice(' + o.id + ')">⚡ إصدار فاتورة معتمدة</button>') +
+            '<button class="btn" data-dora-call="printEinvoice:' + o.einvoice.id + '">🖨️ طباعة</button>'
+          : '<button class="btn primary" data-dora-call="issueEinvoice:' + o.id + '">⚡ إصدار فاتورة معتمدة</button>') +
       '</td></tr>').join('') || '<tr><td colspan="7">لا توجد طلبات</td></tr>';
   } catch (e) { tb.innerHTML = '<tr><td colspan="7">❌ ' + esc(e.message) + '</td></tr>'; }
 }
@@ -278,6 +279,10 @@ function activeEntityCfg() {
 }
 // طباعة A4 في تبويب جديد
 function printA4(orderId, entityId) {
+  if (orderId && orderId.getAttribute) {
+    entityId = orderId.getAttribute('data-entity-id') || null;
+    orderId = orderId.getAttribute('data-order-id') || '';
+  }
   let u = 'invoice-a4.html?order=' + encodeURIComponent(orderId) + '&autoprint=1';
   if (entityId) u += '&entity=' + encodeURIComponent(entityId);
   const w = window.open(u, '_blank');
@@ -361,7 +366,7 @@ async function printEinvoice(id) {
       '<div class="row"><span>الحالة:</span><b>' + esc(ei.status) + '</b></div>' +
       '<div class="row"><span>التاريخ:</span><b>' + new Date(ei.created_at).toLocaleString('ar-SA') + '</b></div>' +
       '<canvas id="q"></canvas><pre>' + esc(ei.uuid) + '</pre>' +
-      '<div style="text-align:center"><button onclick="print()">🖨️ طباعة</button></div>' +
+      '<div style="text-align:center"><button data-dora-call="doraPrint">🖨️ طباعة</button></div>' +
       '<script src="zatca-store.js"><\/script>' +
       '<script>ZATCA.drawQrToCanvas(document.getElementById("q"), ' + JSON.stringify(ei.qr_tlv) + ', 5);<\/script>' +
       '</body></html>');
@@ -381,8 +386,8 @@ async function loadEInvoices() {
       '<td dir="ltr" style="font-family:monospace;font-size:11px">' + esc(String(e.uuid || '').slice(0, 13)) + '…</td>' +
       '<td>' + (e.invoice_kind === 'standard' ? 'قياسية' : 'مبسطة') + '</td>' +
       '<td><b>' + (lbl[e.status] || e.status) + '</b></td>' +
-      '<td style="white-space:nowrap"><button class="btn" onclick="printEinvoice(\'' + e.id + '\')">🖨️ عرض/طباعة</button> ' +
-      (e.order_id ? '<button class="btn" onclick="printA4(' + e.order_id + ', \'' + (e.entity_id || '') + '\')">🖨️ A4</button>' : '') +
+      '<td style="white-space:nowrap"><button class="btn" data-dora-call="printEinvoice:' + e.id + '">🖨️ عرض/طباعة</button> ' +
+      (e.order_id ? '<button class="btn" data-order-id="' + e.order_id + '" data-entity-id="' + (e.entity_id || '') + '" data-dora-call="printA4:$element">🖨️ A4</button>' : '') +
       '</td></tr>'
     ).join('') || '<tr><td colspan="6">لا توجد فواتير اليوم</td></tr>';
   } catch (e) { tb.innerHTML = '<tr><td colspan="6">❌ ' + esc(e.message) + '</td></tr>'; }
@@ -427,7 +432,7 @@ function journalAddLine() {
     '<input class="in j-debit" placeholder="مدين" type="number" step="0.01" dir="ltr" style="width:100px">' +
     '<input class="in j-credit" placeholder="دائن" type="number" step="0.01" dir="ltr" style="width:100px">' +
     '<input class="in j-party" placeholder="طرف (اختياري)">' +
-    '<button class="btn" onclick="this.parentElement.remove()">✖</button>';
+    '<button class="btn" data-dora-call="doraRemoveParent" data-dora-use-element="true">✖</button>';
   box.appendChild(div);
 }
 async function saveJournal() {

@@ -41,9 +41,9 @@ async function loadStaffUsersTab() {
             : '<span style="color:#F87171;font-weight:700">معطّل</span>') + '</td>' +
           '<td>' + (u.last_login_at ? new Date(u.last_login_at).toLocaleString('ar-SA') : 'لم يدخل') + '</td>' +
           '<td style="white-space:nowrap">' +
-            '<button class="btn-edit" onclick="staffUserResetPw(\'' + u.id + '\',\'' + esc(u.username) + '\')">🔑 كلمة مرور</button> ' +
-            '<button class="btn-edit" onclick="staffUserRole(\'' + u.id + '\',\'' + esc(u.username) + '\',\'' + u.role + '\')">🎭 الدور</button> ' +
-            '<button class="btn-edit" onclick="staffUserToggle(\'' + u.id + '\',' + (!u.is_active) + ')">' +
+            '<button class="btn-edit" data-dora-call="staffUserResetPw:' + u.id + ':' + esc(u.username) + '">🔑 كلمة مرور</button> ' +
+            '<button class="btn-edit" data-dora-call="staffUserRole:' + u.id + ':' + esc(u.username) + ':' + u.role + '">🎭 الدور</button> ' +
+            '<button class="btn-edit" data-dora-call="staffUserToggle:' + u.id + ':' + (!u.is_active) + '">' +
               (u.is_active ? '⛔ تعطيل' : '✅ تفعيل') + '</button>' +
           '</td></tr>';
       }).join('') + '</tbody></table>';

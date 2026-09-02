@@ -119,7 +119,7 @@ async function loadStaff(){
     var badge=s.status==='active'
       ?'<span style="background:rgba(16,185,129,.15);color:#10B981;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700">✅ نشط — عيّن كلمته</span>'
       :'<span style="background:rgba(245,158,11,.15);color:#F59E0B;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700">⏳ بانتظار أول دخول</span>';
-    return '<tr><td style="direction:ltr;text-align:right;font-weight:700">'+s.email+'</td><td>'+badge+'</td><td>'+new Date(s.created_at).toLocaleDateString('ar-EG')+'</td><td>'+(s.activated_at?new Date(s.activated_at).toLocaleDateString('ar-EG'):'—')+'</td><td><button class="btn-delete" onclick="deleteStaff('+s.id+',\''+String(s.email).replace(/'/g,"")+'\')">🗑️ حذف</button></td></tr>';
+    return '<tr><td style="direction:ltr;text-align:right;font-weight:700">'+s.email+'</td><td>'+badge+'</td><td>'+new Date(s.created_at).toLocaleDateString('ar-EG')+'</td><td>'+(s.activated_at?new Date(s.activated_at).toLocaleDateString('ar-EG'):'—')+'</td><td><button class="btn-delete" data-staff-id="'+s.id+'" data-staff-email="'+esc(s.email)+'" data-dora-call="deleteStaff:$element">🗑️ حذف</button></td></tr>';
   }).join('')+'</tbody></table>';
 }
 
@@ -137,7 +137,10 @@ window.addStaff=async function(e){
   return false;
 };
 
-window.deleteStaff=async function(id,email){
+window.deleteStaff=async function(el){
+  if(!el || !el.getAttribute) return;
+  var id = el.getAttribute('data-staff-id');
+  var email = el.getAttribute('data-staff-email') || '';
   if(!confirm('حذف الموظف "'+email+'"؟ لن يستطيع الدخول للوحة بعد الآن (حسابه على الموقع يبقى عميلاً عادياً).'))return;
   var{error}=await supabaseClient.from('staff_members').delete().eq('id',id);
   if(error){adminToast('❌ '+error.message,'error');return;}

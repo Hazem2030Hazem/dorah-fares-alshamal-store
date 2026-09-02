@@ -355,12 +355,12 @@ window.purchAddLine = function(){
     return '<option value="' + p.id + '" data-name="' + erpEsc(p.name) + '">' + erpEsc(p.name) + ' (مخزون: ' + (p.stock || 0) + ')</option>';
   }).join('');
   row.innerHTML =
-    '<div style="display:flex;gap:6px"><select class="erp-in pl-product" onchange="purchLineProduct(this)">' + opts + '</select>' +
+    '<div style="display:flex;gap:6px"><select class="erp-in pl-product" data-dora-action-change="purchLineProduct:$element">' + opts + '</select>' +
     '<input type="text" class="erp-in pl-name" placeholder="اسم الصنف *"></div>' +
-    '<input type="number" class="erp-in pl-qty" placeholder="الكمية" min="0" step="any" oninput="purchRecalc()">' +
-    '<input type="number" class="erp-in pl-cost" placeholder="سعر التكلفة" min="0" step="any" oninput="purchRecalc()">' +
+    '<input type="number" class="erp-in pl-qty" placeholder="الكمية" min="0" step="any" data-dora-call-input="purchRecalc">' +
+    '<input type="number" class="erp-in pl-cost" placeholder="سعر التكلفة" min="0" step="any" data-dora-call-input="purchRecalc">' +
     '<span class="pl-total" style="font-weight:700;color:#22C55E">0</span>' +
-    '<button class="btn-add" style="background:#EF4444;padding:6px 10px" onclick="this.parentElement.remove();purchRecalc()">🗑️</button>';
+    '<button class="btn-add" style="background:#EF4444;padding:6px 10px" data-dora-call="doraRemoveParentAndCall:purchRecalc" data-dora-use-element="true">🗑️</button>';
   box.appendChild(row);
 };
 
@@ -539,12 +539,12 @@ window.retAddLine = function(){
     return '<option value="' + p.id + '" data-name="' + erpEsc(p.name) + '">' + erpEsc(p.name) + ' (مخزون: ' + (p.stock || 0) + ')</option>';
   }).join('');
   row.innerHTML =
-    '<div style="display:flex;gap:6px"><select class="erp-in rl-product" onchange="retLineProduct(this)">' + opts + '</select>' +
+    '<div style="display:flex;gap:6px"><select class="erp-in rl-product" data-dora-action-change="retLineProduct:$element">' + opts + '</select>' +
     '<input type="text" class="erp-in rl-name" placeholder="اسم الصنف *"></div>' +
-    '<input type="number" class="erp-in rl-qty" placeholder="الكمية" min="0" step="any" oninput="retRecalc()">' +
-    '<input type="number" class="erp-in rl-price" placeholder="السعر" min="0" step="any" oninput="retRecalc()">' +
+    '<input type="number" class="erp-in rl-qty" placeholder="الكمية" min="0" step="any" data-dora-call-input="retRecalc">' +
+    '<input type="number" class="erp-in rl-price" placeholder="السعر" min="0" step="any" data-dora-call-input="retRecalc">' +
     '<span class="rl-total" style="font-weight:700;color:#F97316">0</span>' +
-    '<button class="btn-add" style="background:#EF4444;padding:6px 10px" onclick="this.parentElement.remove();retRecalc()">🗑️</button>';
+    '<button class="btn-add" style="background:#EF4444;padding:6px 10px" data-dora-call="doraRemoveParentAndCall:retRecalc" data-dora-use-element="true">🗑️</button>';
   box.appendChild(row);
 };
 
@@ -917,7 +917,7 @@ window.afakyDailyPrintSummary = function(){
     + '<tr><th>توزيع طرق الدفع</th><td>نقدي/COD: ' + s.payDist.cod + ' (' + s.payDistSum.cod.toLocaleString() + ' ر.س) — تحويل: ' + s.payDist.transfer + ' (' + s.payDistSum.transfer.toLocaleString() + ' ر.س) — إلكتروني: ' + s.payDist.electronic + ' (' + s.payDistSum.electronic.toLocaleString() + ' ر.س)</td></tr>'
     + '</tbody></table>'
     + '<p style="margin-top:24px">توقيع المستلم: ______________________</p>'
-    + '<button onclick="window.print()">🖨️ طباعة</button>'
+    + '<button data-dora-call="doraPrint">🖨️ طباعة</button>'
     + '<script>window.onload=function(){window.print();}<\/script></body></html>';
   var w = window.open('', '_blank');
   if (!w) { erpToast('⚠️ المتصفح منع النافذة المنبثقة — اسمح بها وأعد المحاولة', 'warning'); return; }

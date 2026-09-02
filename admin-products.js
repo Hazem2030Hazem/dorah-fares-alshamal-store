@@ -50,7 +50,7 @@ window.loadProducts = async function() {
     `<tr>
       <td>${i+1}</td>
       <td style="width:50px; height:50px; text-align:center; vertical-align:middle; border-radius:6px; overflow:hidden; background:#f0f0f0;">
-        <img src="${p.image}" alt="${esc(p.name)}" loading="lazy" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <img src="${p.image}" alt="${esc(p.name)}" loading="lazy" style="width:100%; height:100%; object-fit:cover; display:block;" data-dora-error="admin-fallback">
         <svg style="display:none; width:24px; height:24px; margin:auto; color:#666;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
       </td>
       <td class="pt-name" title="${esc(p.name)}"><span class="pt-name-in">${esc(p.name)}</span></td>
@@ -58,8 +58,8 @@ window.loadProducts = async function() {
       <td class="pt-price">${Number(p.price).toLocaleString()} ر.س</td>
       <td>${p.category}</td>
       <td>
-        <button class="btn-edit" onclick="editProduct(${p.id})">✏️</button>
-        <button class="btn-delete" onclick="deleteProduct(${p.id})">🗑️</button>
+        <button class="btn-edit" data-dora-call="editProduct:${p.id}">✏️</button>
+        <button class="btn-delete" data-dora-call="deleteProduct:${p.id}">🗑️</button>
       </td>
     </tr>`
   ).join('');
@@ -403,7 +403,7 @@ window.loadBankAccounts=async function(){
     if(!data.length){c.innerHTML='<div class="admin-empty">🏦 لا توجد حسابات بنكية — اضغط ➕ إضافة حساب.</div>';return;}
     var html='<table><thead><tr><th>#</th><th>البنك</th><th>صاحب الحساب</th><th>رقم الحساب</th><th>الآيبان</th><th>الترتيب</th><th>الحالة</th><th>الإجراءات</th></tr></thead><tbody>';
     data.forEach(function(a,i){
-      html+='<tr><td>'+(i+1)+'</td><td><strong>'+esc(a.bank_name||'—')+'</strong></td><td>'+esc(a.account_name||'—')+'</td><td dir="ltr">'+esc(a.account_number||'—')+'</td><td dir="ltr">'+esc(a.iban||'—')+'</td><td>'+(a.sort_order==null?'—':a.sort_order)+'</td><td>'+(a.is_active?'<span class="sync-status-ok">✅ مفعّل</span>':'<span class="sync-status-fail">⛔ معطّل</span>')+'</td><td style="white-space:nowrap"><button class="btn-edit" onclick="editBankAccount(\''+a.id+'\')">✏️</button> <button class="btn-edit" onclick="toggleBankAccount(\''+a.id+'\','+(a.is_active?'true':'false')+')">'+(a.is_active?'⛔ تعطيل':'✅ تفعيل')+'</button> <button class="btn-delete" onclick="deleteBankAccount(\''+a.id+'\')">🗑️</button></td></tr>';
+      html+='<tr><td>'+(i+1)+'</td><td><strong>'+esc(a.bank_name||'—')+'</strong></td><td>'+esc(a.account_name||'—')+'</td><td dir="ltr">'+esc(a.account_number||'—')+'</td><td dir="ltr">'+esc(a.iban||'—')+'</td><td>'+(a.sort_order==null?'—':a.sort_order)+'</td><td>'+(a.is_active?'<span class="sync-status-ok">✅ مفعّل</span>':'<span class="sync-status-fail">⛔ معطّل</span>')+'</td><td style="white-space:nowrap"><button class="btn-edit" data-dora-call="editBankAccount:'+a.id+'">✏️</button> <button class="btn-edit" data-dora-call="toggleBankAccount:'+a.id+':'+(a.is_active?'true':'false')+'">'+(a.is_active?'⛔ تعطيل':'✅ تفعيل')+'</button> <button class="btn-delete" data-dora-call="deleteBankAccount:'+a.id+'">🗑️</button></td></tr>';
     });
     html+='</tbody></table>';
     c.innerHTML=html;
@@ -492,9 +492,9 @@ window.loadPaymentMethodsAdmin=async function(){
     adminState.paymentMethods=data||[];
     if(!data.length){c.innerHTML='<tr><td colspan="6">💳 لا توجد طرق دفع — اضغط ➕ إضافة طريقة.</td></tr>';return;}
     c.innerHTML=data.map(function(m,i){
-      var upBtn='<button class="btn-edit" title="أعلى" onclick="movePaymentMethod(\''+m.id+'\',-1)"'+(i===0?' disabled':'')+'>▲</button>';
-      var downBtn='<button class="btn-edit" title="أسفل" onclick="movePaymentMethod(\''+m.id+'\',1)"'+(i===data.length-1?' disabled':'')+'>▼</button>';
-      return '<tr><td>'+(i+1)+'</td><td style="font-size:20px">'+esc(m.icon||'💳')+'</td><td><strong>'+esc(m.name||'—')+'</strong></td><td>'+(m.sort_order==null?'—':m.sort_order)+'</td><td>'+(m.is_active?'<span class="sync-status-ok">✅ مفعّلة</span>':'<span class="sync-status-fail">⛔ معطّلة</span>')+'</td><td style="white-space:nowrap">'+upBtn+' '+downBtn+' <button class="btn-edit" onclick="editPaymentMethod(\''+m.id+'\')">✏️</button> <button class="btn-edit" onclick="togglePaymentMethod(\''+m.id+'\','+(m.is_active?'true':'false')+')">'+(m.is_active?'⛔':'✅')+'</button> <button class="btn-delete" onclick="deletePaymentMethod(\''+m.id+'\')">🗑️</button></td></tr>';
+      var upBtn='<button class="btn-edit" title="أعلى" data-dora-call="movePaymentMethod:'+m.id+':-1"'+(i===0?' disabled':'')+'>▲</button>';
+      var downBtn='<button class="btn-edit" title="أسفل" data-dora-call="movePaymentMethod:'+m.id+':1"'+(i===data.length-1?' disabled':'')+'>▼</button>';
+      return '<tr><td>'+(i+1)+'</td><td style="font-size:20px">'+esc(m.icon||'💳')+'</td><td><strong>'+esc(m.name||'—')+'</strong></td><td>'+(m.sort_order==null?'—':m.sort_order)+'</td><td>'+(m.is_active?'<span class="sync-status-ok">✅ مفعّلة</span>':'<span class="sync-status-fail">⛔ معطّلة</span>')+'</td><td style="white-space:nowrap">'+upBtn+' '+downBtn+' <button class="btn-edit" data-dora-call="editPaymentMethod:'+m.id+'">✏️</button> <button class="btn-edit" data-dora-call="togglePaymentMethod:'+m.id+':'+(m.is_active?'true':'false')+'">'+(m.is_active?'⛔':'✅')+'</button> <button class="btn-delete" data-dora-call="deletePaymentMethod:'+m.id+'">🗑️</button></td></tr>';
     }).join('');
   }catch(e){
     console.warn('loadPaymentMethodsAdmin:',e);
@@ -599,7 +599,7 @@ window.loadShippingRates=async function(){
     adminState.shippingRates=data||[];
     if(!data.length){c.innerHTML='<tr><td colspan="7">🚚 لا توجد أسعار شحن — اضغط ➕ إضافة سعر.</td></tr>';return;}
     c.innerHTML=data.map(function(r,i){
-      return '<tr><td>'+(i+1)+'</td><td>'+esc(r.from_city||'—')+'</td><td><strong>'+esc(r.to_city||'—')+'</strong></td><td>'+(r.weight_kg==null?'—':r.weight_kg)+'</td><td>'+money(r.price_sar)+'</td><td>'+(r.estimated_days==null?'—':r.estimated_days+' يوم')+'</td><td style="white-space:nowrap"><button class="btn-edit" onclick="editShippingRate(\''+r.id+'\')">✏️</button> <button class="btn-delete" onclick="deleteShippingRate(\''+r.id+'\')">🗑️</button></td></tr>';
+      return '<tr><td>'+(i+1)+'</td><td>'+esc(r.from_city||'—')+'</td><td><strong>'+esc(r.to_city||'—')+'</strong></td><td>'+(r.weight_kg==null?'—':r.weight_kg)+'</td><td>'+money(r.price_sar)+'</td><td>'+(r.estimated_days==null?'—':r.estimated_days+' يوم')+'</td><td style="white-space:nowrap"><button class="btn-edit" data-dora-call="editShippingRate:'+r.id+'">✏️</button> <button class="btn-delete" data-dora-call="deleteShippingRate:'+r.id+'">🗑️</button></td></tr>';
     }).join('');
   }catch(e){
     console.warn('loadShippingRates:',e);

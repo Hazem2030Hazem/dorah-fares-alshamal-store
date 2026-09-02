@@ -124,7 +124,7 @@
                 </div>
 
                 ${data.points >= 100 ? `
-                <button onclick="window.redeemLoyaltyPoints()" style="width:100%;margin-top:15px;padding:12px;background:linear-gradient(135deg,#F59E0B,#D97706);color:white;border:none;border-radius:10px;cursor:pointer;font-weight:700;font-size:14px">
+                <button data-dora-action="redeemLoyaltyPoints" style="width:100%;margin-top:15px;padding:12px;background:linear-gradient(135deg,#F59E0B,#D97706);color:white;border:none;border-radius:10px;cursor:pointer;font-weight:700;font-size:14px">
                     🎁 استبدل نقاطك (${data.points} نقطة = خصم ${window.doraLoyalty.redeemPoints(data.points)} ر.س)
                 </button>
                 ` : ''}

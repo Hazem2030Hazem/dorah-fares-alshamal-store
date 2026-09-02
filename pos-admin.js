@@ -37,8 +37,8 @@ async function loadCashiersTab() {
           : '<span style="color:#F87171;font-weight:700">معطّل</span>') + '</td>' +
         '<td>' + new Date(c.created_at).toLocaleDateString('ar-SA') + '</td>' +
         '<td style="white-space:nowrap">' +
-          '<button class="btn-edit" onclick="cashierResetPin(\'' + c.id + '\',\'' + esc(c.username) + '\')">🔑 PIN</button> ' +
-          '<button class="btn-edit" onclick="cashierToggle(\'' + c.id + '\',' + (!c.is_active) + ')">' +
+          '<button class="btn-edit" data-dora-call="cashierResetPin:' + c.id + ':' + esc(c.username) + '">🔑 PIN</button> ' +
+          '<button class="btn-edit" data-dora-call="cashierToggle:' + c.id + ':' + (!c.is_active) + '">' +
             (c.is_active ? '⛔ تعطيل' : '✅ تفعيل') + '</button>' +
         '</td></tr>';
     }).join('') + '</tbody></table>';

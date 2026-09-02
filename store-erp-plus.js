@@ -343,8 +343,8 @@ function renderEmps() {
     '<td dir="ltr">' + pEsc(e.phone || '—') + '</td><td>' + pEsc(e.job_title || '—') + '</td>' +
     '<td>' + pFmt(e.basic_salary) + '</td><td>' + pFmt(e.housing_allowance) + '</td><td>' + pFmt(e.other_allowances) + '</td>' +
     '<td>' + (e.status === 'active' ? '<span style="color:#22C55E;font-weight:700">نشط</span>' : '<span style="color:#EF4444">موقوف</span>') + '</td>' +
-    '<td style="white-space:nowrap"><button class="btn-add" style="padding:4px 10px;font-size:12px" onclick="hrpEditEmp(\'' + e.id + '\')">✏️</button> ' +
-    '<button class="btn-add" style="padding:4px 10px;font-size:12px;background:' + (e.status === 'active' ? '#F59E0B' : '#22C55E') + '" onclick="hrpToggleEmp(\'' + e.id + '\')">' + (e.status === 'active' ? '⏸️' : '▶️') + '</button></td></tr>').join('');
+    '<td style="white-space:nowrap"><button class="btn-add" style="padding:4px 10px;font-size:12px" data-dora-call="hrpEditEmp:' + e.id + '">✏️</button> ' +
+    '<button class="btn-add" style="padding:4px 10px;font-size:12px;background:' + (e.status === 'active' ? '#F59E0B' : '#22C55E') + '" data-dora-call="hrpToggleEmp:' + e.id + '">' + (e.status === 'active' ? '⏸️' : '▶️') + '</button></td></tr>').join('');
 }
 window.hrpSaveEmp = async function () {
   const id = $p('hrpEmpId').value;
@@ -401,10 +401,10 @@ function renderRuns() {
     '<td style="font-weight:700;color:#22C55E">' + pFmt(r.total_net) + '</td>' +
     '<td>' + (r.status === 'posted' ? '<span style="color:#22C55E;font-weight:700">✅ مرحّل (قيد ' + (r.entry_number || '—') + ')</span>' : '<span style="color:#F59E0B">مسودة</span>') + '</td>' +
     '<td style="white-space:nowrap">' +
-    '<button class="btn-add" style="padding:4px 10px;font-size:12px" onclick="hrpViewRun(\'' + r.id + '\')">📋 القسائم</button> ' +
-    (r.status === 'draft' ? '<button class="btn-add" style="padding:4px 10px;font-size:12px;background:#22C55E" onclick="hrpPostRun(\'' + r.id + '\')">📤 ترحيل القيد</button> ' : '') +
-    '<button class="btn-add" style="padding:4px 10px;font-size:12px;background:#0EA5E9" onclick="hrpExportWps(\'' + r.id + '\')">🏦 WPS</button> ' +
-    (r.status === 'draft' ? '<button class="btn-delete" style="padding:4px 10px;font-size:12px" onclick="hrpDeleteRun(\'' + r.id + '\')">🗑️</button>' : '') +
+    '<button class="btn-add" style="padding:4px 10px;font-size:12px" data-dora-call="hrpViewRun:' + r.id + '">📋 القسائم</button> ' +
+    (r.status === 'draft' ? '<button class="btn-add" style="padding:4px 10px;font-size:12px;background:#22C55E" data-dora-call="hrpPostRun:' + r.id + '">📤 ترحيل القيد</button> ' : '') +
+    '<button class="btn-add" style="padding:4px 10px;font-size:12px;background:#0EA5E9" data-dora-call="hrpExportWps:' + r.id + '">🏦 WPS</button> ' +
+    (r.status === 'draft' ? '<button class="btn-delete" style="padding:4px 10px;font-size:12px" data-dora-call="hrpDeleteRun:' + r.id + '">🗑️</button>' : '') +
     '</td></tr>').join('');
 }
 window.hrpGenerateRun = async function () {
@@ -448,7 +448,7 @@ window.hrpViewRun = async function (runId) {
     '<tr><td style="font-weight:700">' + pEsc(s.employee_name) + '</td><td>' + pFmt(s.basic) + '</td><td>' + pFmt(s.housing) + '</td>' +
     '<td>' + pFmt(s.other) + '</td><td>' + pFmt(s.gross) + '</td><td style="color:#EF4444">' + pFmt(s.gosi_employee) + '</td>' +
     '<td>' + pFmt(s.gosi_employer) + '</td><td style="font-weight:700;color:#22C55E">' + pFmt(s.net) + '</td>' +
-    '<td><button class="btn-add" style="padding:4px 10px;font-size:12px;background:#0EA5E9" onclick="hrpPrintSlip(\'' + s.id + '\')">🖨️ قسيمة</button></td></tr>').join('');
+    '<td><button class="btn-add" style="padding:4px 10px;font-size:12px;background:#0EA5E9" data-dora-call="hrpPrintSlip:' + s.id + '">🖨️ قسيمة</button></td></tr>').join('');
 };
 window.hrpPostRun = async function (runId) {
   const run = _runs.find(r => r.id === runId);
@@ -575,7 +575,7 @@ function renderAssets() {
       '<td dir="ltr">' + pEsc(a.purchase_date) + '</td><td>' + pFmt(a.cost) + '</td><td>' + pFmt(a.salvage) + '</td>' +
       '<td>' + a.life_years + ' سنوات</td><td>' + (DEP_LBL[a.dep_method] || a.dep_method) + '</td>' +
       '<td>' + pFmt(accum) + '</td><td style="font-weight:700;color:#22C55E">' + pFmt(bv) + '</td>' +
-      '<td><button class="btn-delete" style="padding:4px 10px;font-size:12px" onclick="astDelete(\'' + a.id + '\')">🗑️</button></td></tr>';
+      '<td><button class="btn-delete" style="padding:4px 10px;font-size:12px" data-dora-call="astDelete:' + a.id + '">🗑️</button></td></tr>';
   }).join('');
 }
 function renderDepLog() {
@@ -771,7 +771,7 @@ function renderRecs() {
     '<td dir="ltr">' + r.next_run_date + '</td><td>' + (r.runs_count || 0) + '</td>' +
     '<td>' + (r.is_active ? '<span style="color:#22C55E">نشط</span>' : '<span style="color:#94A3B8">موقوف</span>') + '</td>' +
     '<td><button class="btn-add" style="padding:4px 10px;font-size:12px;background:' + (r.is_active ? '#F59E0B' : '#22C55E') +
-    '" onclick="recToggle(\'' + r.id + '\')">' + (r.is_active ? '⏸️ إيقاف' : '▶️ تفعيل') + '</button></td></tr>').join('');
+    '" data-dora-call="recToggle:' + r.id + '">' + (r.is_active ? '⏸️ إيقاف' : '▶️ تفعيل') + '</button></td></tr>').join('');
 }
 window.recAdd = async function () {
   const rec = {

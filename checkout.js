@@ -140,7 +140,7 @@ function renderCheckout() {
         <div class="checkout-card">
             <h3>📦 ملخص الطلب</h3>
             ${cart.map(function(item) {
-                return '<div class="cart-item"><img src="' + (item.image || 'default-product.png') + '" alt="' + item.name + '" onerror="this.style.display=\'none\'" loading="lazy"><div class="cart-item-info"><h4>' + item.name + '</h4><span>الكمية: ' + item.qty + ' | ' + item.price.toLocaleString() + ' ر.س</span></div><div class="cart-item-price">' + (item.price * item.qty).toLocaleString() + ' ر.س</div></div>';
+                return '<div class="cart-item"><img src="' + (item.image || 'default-product.png') + '" alt="' + item.name + '" data-dora-error="hide" loading="lazy"><div class="cart-item-info"><h4>' + item.name + '</h4><span>الكمية: ' + item.qty + ' | ' + item.price.toLocaleString() + ' ر.س</span></div><div class="cart-item-price">' + (item.price * item.qty).toLocaleString() + ' ر.س</div></div>';
             }).join('')}
             <div class="total-row"><span>المجموع الفرعي</span><span>${subtotal.toLocaleString()} ر.س</span></div>
             <div class="total-row"><span>الضريبة (15%)</span><span>${tax.toLocaleString()} ر.س</span></div>
@@ -159,7 +159,7 @@ function renderCheckout() {
             <h3><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-4px"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg> كود خصم</h3>
             <div style="display:flex;gap:10px">
                 <input type="text" id="couponCode" placeholder="أدخل كود الخصم" style="flex:1;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:#fff;font-family:inherit">
-                <button onclick="applyCouponCode()" style="padding:12px 20px;background:#10B981;color:#fff;border:none;border-radius:12px;cursor:pointer;font-weight:700;font-family:inherit">تطبيق</button>
+                <button data-dora-call="applyCouponCode" style="padding:12px 20px;background:#10B981;color:#fff;border:none;border-radius:12px;cursor:pointer;font-weight:700;font-family:inherit">تطبيق</button>
             </div>
             <div id="couponMsg" style="margin-top:8px;font-size:13px;font-weight:700"></div>
         </div>
@@ -193,8 +193,8 @@ function renderCheckout() {
         <div class="checkout-card">
             <h3><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-4px"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg> طريقة الاستلام</h3>
             <div class="delivery-grid">
-                <div class="delivery-option selected" onclick="selectDelivery('delivery', this)"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-4px"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><span>توصيل للمنزل</span></div>
-                <div class="delivery-option" onclick="selectDelivery('pickup', this)"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-4px"><path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/></svg><span>استلام من المتجر</span></div>
+                <div class="delivery-option selected" data-dora-call="selectDelivery:delivery" data-dora-use-element="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-4px"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><span>توصيل للمنزل</span></div>
+                <div class="delivery-option" data-dora-call="selectDelivery:pickup" data-dora-use-element="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-4px"><path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/></svg><span>استلام من المتجر</span></div>
             </div>
         </div>
         
@@ -207,17 +207,17 @@ function renderCheckout() {
         <div class="quick-pay-section">
             <h4><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" style="vertical-align:-3px"><path d="M13 2 L3 14 h7 l-1 8 L21 9 h-7 z"/></svg> دفع سريع</h4>
             <div class="quick-pay-grid">
-                <button class="quick-pay-btn stc" onclick="payWithSTC(${finalTotal})">
+                <button class="quick-pay-btn stc" data-dora-call="payWithSTC:${finalTotal}">
                     ${DORA_BRAND_ICONS.stcpay}
                     STC Pay (تحويل)
                 </button>
-                <button class="quick-pay-btn mada" onclick="payWithMada(${finalTotal})">
+                <button class="quick-pay-btn mada" data-dora-call="payWithMada:${finalTotal}">
                     ${DORA_BRAND_ICONS.mada}
                     تحويل بنكي
                 </button>
             </div>
         </div>
-        <button class="btn-submit" onclick="placeOrder()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px"><polyline points="20 6 9 17 4 12"/></svg> تأكيد الطلب</button>
+        <button class="btn-submit" data-dora-call="placeOrder"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px"><polyline points="20 6 9 17 4 12"/></svg> تأكيد الطلب</button>
     `;
     
     loadPaymentMethods();
@@ -254,22 +254,22 @@ async function loadPaymentMethods() {
 
     if (!methods.length && !gateways.length) { grid.innerHTML = '<div style="text-align:center;padding:20px;grid-column:1/-1">لا توجد طرق دفع متاحة</div>'; return; }
     var html = methods.map(function(m) {
-        return '<div class="payment-option" onclick="selectPayment(\'' + m.id + '\',\'' + m.name + '\', this)"><span class="icon">' + doraBrandIcon(m.name) + '</span><span class="name">' + m.name + '</span></div>';
+        return '<div class="payment-option" data-payment-id="' + m.id + '" data-payment-name="' + esc(m.name) + '" data-dora-action="selectPayment:$element"><span class="icon">' + doraBrandIcon(m.name) + '</span><span class="name">' + m.name + '</span></div>';
     }).join('');
     html += gateways.map(function(g) {
-        // شارة 🧪 للوضع التجريبي — تنظيف النصوص من علامات الاقتباس حمايةً للـ onclick
+        // شارة 🧪 للوضع التجريبي — تنظيف النصوص من علامات الاقتباس حمايةً للـ inline handlers
         var gCode = String(g.gateway_code || '').replace(/['"\\]/g, '');
         var gName = String(g.gateway_name || 'دفع إلكتروني').replace(/['"\\]/g, '');
         var gMode = String(g.mode || 'test').replace(/['"\\]/g, '');
         var badge = gMode === 'test' ? ' <span style="background:rgba(245,158,11,0.2);color:#F59E0B;font-size:10px;padding:2px 6px;border-radius:6px;vertical-align:middle">🧪 تجريبي</span>' : '';
-        return '<div class="payment-option" onclick="selectGateway(\'' + gCode + '\',\'' + gName + '\',\'' + gMode + '\', this)"><span class="icon">' + DORA_BRAND_ICONS.card + '</span><span class="name">دفع إلكتروني — ' + gName + badge + '</span></div>';
+        return '<div class="payment-option" data-gateway-code="' + gCode + '" data-gateway-name="' + esc(gName) + '" data-gateway-mode="' + gMode + '" data-dora-action="selectGateway:$element"><span class="icon">' + DORA_BRAND_ICONS.card + '</span><span class="name">دفع إلكتروني — ' + gName + badge + '</span></div>';
     }).join('');
     // 💵 الدفع عند الاستلام — متاح دائماً (مهم للسوق السعودي)
-    html += '<div class="payment-option" onclick="selectPayment(\'cod\',\'الدفع عند الاستلام\', this)"><span class="icon">💵</span><span class="name">الدفع عند الاستلام</span></div>';
+    html += '<div class="payment-option" data-payment-id="cod" data-payment-name="الدفع عند الاستلام" data-dora-action="selectPayment:$element"><span class="icon">💵</span><span class="name">الدفع عند الاستلام</span></div>';
 
     // 💳 Moyasar — يظهر فقط عند لصق المفتاح العلني في main.js (MOYASAR_PUBLISHABLE_KEY)
     if (typeof MOYASAR_PUBLISHABLE_KEY !== 'undefined' && MOYASAR_PUBLISHABLE_KEY) {
-        html += '<div class="payment-option" onclick="selectMoyasar(this)"><span class="icon">' + DORA_BRAND_ICONS.card + '</span><span class="name">دفع إلكتروني — مدى / فيزا / Apple Pay</span></div>';
+        html += '<div class="payment-option" data-dora-action="selectMoyasar:$element"><span class="icon">' + DORA_BRAND_ICONS.card + '</span><span class="name">دفع إلكتروني — مدى / فيزا / Apple Pay</span></div>';
     }
     grid.innerHTML = html;
 }
@@ -282,7 +282,11 @@ function selectMoyasar(el) {
 }
 
 // 💳 اختيار بوابة دفع إلكترونية (من الـ View العامة)
-function selectGateway(code, name, mode, el) {
+function selectGateway(el) {
+    if (!el || !el.getAttribute) return;
+    var code = el.getAttribute('data-gateway-code') || '';
+    var name = el.getAttribute('data-gateway-name') || 'دفع إلكتروني';
+    var mode = el.getAttribute('data-gateway-mode') || 'test';
     selectedPayment = {
         id: 'gateway:' + code,
         name: 'دفع إلكتروني — ' + name + (mode === 'test' ? ' (تجريبي)' : ''),
@@ -294,7 +298,10 @@ function selectGateway(code, name, mode, el) {
     el.classList.add('selected');
 }
 
-function selectPayment(id, name, el) {
+function selectPayment(el) {
+    if (!el || !el.getAttribute) return;
+    var id = el.getAttribute('data-payment-id') || '';
+    var name = el.getAttribute('data-payment-name') || '';
     selectedPayment = { id: id, name: name };
     document.querySelectorAll('.payment-option').forEach(function(o) { o.classList.remove('selected'); });
     el.classList.add('selected');
@@ -315,11 +322,16 @@ function loadUpsellProducts() {
     if (!related.length) { grid.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.5)">لا توجد اقتراحات حالياً</p>'; return; }
     
     grid.innerHTML = related.map(function(p) {
-        return '<div class="upsell-item"><img src="' + p.image + '" alt="' + p.name + '" loading="lazy"><div style="font-size:12px;margin:4px 0">' + p.name.substring(0, 25) + '...</div><div class="price">' + p.price.toLocaleString() + ' ر.س</div><button class="btn-add" onclick="addToCartDirect(' + p.id + ', \'' + p.name + '\', ' + p.price + ', \'' + p.image + '\')">🛒 أضف</button></div>';
+        return '<div class="upsell-item"><img src="' + p.image + '" alt="' + p.name + '" loading="lazy"><div style="font-size:12px;margin:4px 0">' + p.name.substring(0, 25) + '...</div><div class="price">' + p.price.toLocaleString() + ' ر.س</div><button class="btn-add" data-product-id="' + p.id + '" data-product-name="' + esc(p.name) + '" data-product-price="' + p.price + '" data-product-image="' + esc(p.image) + '" data-dora-action="addToCartDirect:$element">🛒 أضف</button></div>';
     }).join('');
 }
 
-function addToCartDirect(id, name, price, image) {
+function addToCartDirect(el) {
+    if (!el || !el.getAttribute) return;
+    var id = el.getAttribute('data-product-id');
+    var name = el.getAttribute('data-product-name') || '';
+    var price = parseFloat(el.getAttribute('data-product-price')) || 0;
+    var image = el.getAttribute('data-product-image') || '';
     cart.push({ id: id, name: name, price: price, qty: 1, image: image });
     localStorage.setItem('doraCart', JSON.stringify(cart));
     renderCheckout();
@@ -373,7 +385,7 @@ async function showBankAccountsBox(methodId, methodName, amount) {
                 + (a.account_number ? '<div style="color:#6B7280;font-size:12px;direction:ltr">رقم الحساب: ' + esc(a.account_number) + '</div>' : '')
                 + '</div></div>'
                 + '<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">'
-                + (a.iban ? '<button type="button" data-copy="' + esc(a.iban) + '" onclick="navigator.clipboard.writeText(this.getAttribute(\'data-copy\'));this.textContent=\'✅ تم النسخ\'" style="flex:1;min-width:120px;padding:9px;background:rgba(16,185,129,.15);border:1px solid #10B981;color:#10B981;border-radius:10px;cursor:pointer;font-weight:700;font-family:inherit">📋 نسخ الآيبان</button>' : '')
+                + (a.iban ? '<button type="button" data-copy="' + esc(a.iban) + '" data-dora-call="doraCopyIban:$element" style="flex:1;min-width:120px;padding:9px;background:rgba(16,185,129,.15);border:1px solid #10B981;color:#10B981;border-radius:10px;cursor:pointer;font-weight:700;font-family:inherit">📋 نسخ الآيبان</button>' : '')
                 + '</div></div>';
         }).join('');
     showToast('✅ تم اختيار ' + methodName + ' — بيانات التحويل ظاهرة بالأسفل');

@@ -306,7 +306,7 @@ async function renderStaffSeparation(user){
       <p>الحساب <strong>${esc(email)}</strong> مخصص لمتابعة الطلبات وخدمة العملاء من لوحة التحكم، ولا يُستخدم كحساب عميل في صفحة الحساب العامة.</p>
       <div class="account-admin-separation-actions">
         <a href="admin.html" class="account-admin-panel-btn">فتح لوحة المتابعة</a>
-        <button type="button" class="account-customer-login-btn" onclick="doraBackToLogin()">تسجيل حساب عميل</button>
+        <button type="button" class="account-customer-login-btn" data-dora-call="doraBackToLogin">تسجيل حساب عميل</button>
       </div>
     </div>`;
 }
@@ -330,7 +330,7 @@ async function renderAdminSeparation(user){
       <p>الحساب <strong>${esc(email)}</strong> مخصص لإدارة الموقع والطلبات والعملاء. حفاظًا على الفصل والأمان، لا يتم استخدامه كحساب عميل داخل صفحة الحساب العامة.</p>
       <div class="account-admin-separation-actions">
         <a href="admin.html" class="account-admin-panel-btn">فتح لوحة الإدارة</a>
-        <button type="button" class="account-customer-login-btn" onclick="doraBackToLogin()">تسجيل حساب عميل</button>
+        <button type="button" class="account-customer-login-btn" data-dora-call="doraBackToLogin">تسجيل حساب عميل</button>
       </div>
     </div>
   `;
@@ -403,7 +403,7 @@ function injectPendingCheckoutBar(){
   bar.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:99999;background:linear-gradient(135deg,#0F0C29,#302b63);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;box-shadow:0 -4px 20px rgba(0,0,0,.4);font-family:inherit;';
   bar.innerHTML = `
     <span style="font-weight:700;font-size:15px">🛒 عندك طلب منتظر! احفظ بياناتك وعنوانك ثم أكمله من هنا</span>
-    <button type="button" onclick="window.checkout()" style="background:#10B981;color:#fff;border:none;padding:12px 26px;border-radius:12px;font-weight:800;font-size:15px;cursor:pointer;font-family:inherit;box-shadow:0 4px 12px rgba(16,185,129,.4)">إكمال الطلب ←</button>
+    <button type="button" data-dora-action="checkout" style="background:#10B981;color:#fff;border:none;padding:12px 26px;border-radius:12px;font-weight:800;font-size:15px;cursor:pointer;font-family:inherit;box-shadow:0 4px 12px rgba(16,185,129,.4)">إكمال الطلب ←</button>
   `;
   document.body.appendChild(bar);
 }
@@ -415,7 +415,7 @@ function renderAuth(message, forceRecovery){
   const passwordField = (id, placeholder) => `
     <div class="account-password-field">
       <input type="password" id="${id}" name="${id.includes('new') || id.includes('register') ? 'new-password' : 'current-password'}" autocomplete="${id.includes('new') || id.includes('register') ? 'new-password' : 'current-password'}" required placeholder="${placeholder}" minlength="6">
-      <button type="button" class="password-toggle" onclick="doraTogglePassword('${id}', this)" aria-label="إظهار كلمة المرور" aria-pressed="false"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+      <button type="button" class="password-toggle" data-dora-call="doraTogglePassword:${id}" data-dora-use-element="true" aria-label="إظهار كلمة المرور" aria-pressed="false"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
     </div>
   `;
 
@@ -447,7 +447,7 @@ function renderAuth(message, forceRecovery){
           ${passwordField('loginPassword', '••••••••')}
           <button type="submit" class="btn-primary account-submit">تسجيل الدخول</button>
           <p style="margin:10px 0 0;font-size:12px;color:var(--text-muted,#9CA3AF);display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#0B7A4B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> سيبقى تسجيل دخولك محفوظاً على هذا الجهاز تلقائياً</p>
-          <button type="button" class="account-link" onclick="doraShowPasswordReset()">هل نسيت كلمة المرور؟</button>
+          <button type="button" class="account-link" data-dora-call="doraShowPasswordReset">هل نسيت كلمة المرور؟</button>
         </form>
 
         <form id="accountRegisterForm" class="account-form" style="display:none">
@@ -470,7 +470,7 @@ function renderAuth(message, forceRecovery){
           <div id="signupOtpMsg" style="font-size:13px;min-height:18px"></div>
           <button type="submit" class="btn-primary account-submit">✅ تأكيد وتفعيل الحساب</button>
           <button type="button" id="signupOtpResend" class="account-link">إعادة إرسال الرمز</button>
-          <button type="button" class="account-link" onclick="doraCancelSignupOtp()">← العودة</button>
+          <button type="button" class="account-link" data-dora-call="doraCancelSignupOtp">← العودة</button>
         </form>
 
         <div id="passwordResetPanel" class="account-reset-panel" style="display:none">
@@ -481,7 +481,7 @@ function renderAuth(message, forceRecovery){
             <input type="email" id="resetEmail" name="username" autocomplete="username email" inputmode="email" required placeholder="example@email.com">
             <button type="submit" class="btn-primary account-submit">📧 إرسال رابط الاستعادة</button>
           </form>
-          <button type="button" class="account-link" onclick="doraBackToLogin()">← العودة لتسجيل الدخول</button>
+          <button type="button" class="account-link" data-dora-call="doraBackToLogin">← العودة لتسجيل الدخول</button>
         </div>
 
         <form id="passwordUpdateForm" class="account-form account-reset-panel" ${recoveryMode ? '' : 'style="display:none"'}>
@@ -763,7 +763,7 @@ function renderDashboard(){
           <h2>${esc(name)}</h2>
           <p>${esc(state.user.email || '')}</p>
         </div>
-        <button class="account-logout" type="button" onclick="doraSignOut()">🚪 تسجيل الخروج</button>
+        <button class="account-logout" type="button" data-dora-call="doraSignOut">🚪 تسجيل الخروج</button>
       </div>
 
       <div class="account-tabs">
@@ -781,7 +781,7 @@ function renderDashboard(){
 }
 
 function accountTabButton(tab, label){
-  return `<button type="button" class="${state.currentTab === tab ? 'active' : ''}" onclick="doraSwitchAccountTab('${tab}')">${label}</button>`;
+  return `<button type="button" class="${state.currentTab === tab ? 'active' : ''}" data-dora-call="doraSwitchAccountTab:${tab}">${label}</button>`;
 }
 
 window.doraSwitchAccountTab = function(tab){
@@ -820,9 +820,9 @@ function renderOverviewTab(){
       <h3>أهلاً بك في حسابك</h3>
       <p>من هنا يمكنك إدارة بياناتك وعناوينك، متابعة حالة الطلبات والخدمات، رفع إيصالات الدفع، والاطلاع على تقييماتك.</p>
       <div class="account-quick-actions">
-        <button class="btn-primary" onclick="doraSwitchAccountTab('orders')">📦 متابعة الطلبات</button>
-        <button class="btn-primary" onclick="doraSwitchAccountTab('addresses')">📍 إضافة عنوان</button>
-        <button class="btn-primary" onclick="doraSwitchAccountTab('services')">🔧 طلب خدمة</button>
+        <button class="btn-primary" data-dora-call="doraSwitchAccountTab:orders">📦 متابعة الطلبات</button>
+        <button class="btn-primary" data-dora-call="doraSwitchAccountTab:addresses">📍 إضافة عنوان</button>
+        <button class="btn-primary" data-dora-call="doraSwitchAccountTab:services">🔧 طلب خدمة</button>
       </div>
     </div>
   `;
@@ -835,7 +835,7 @@ function renderProfileTab(){
   return `
     <div class="account-card">
       <h3>👤 بياناتي</h3>
-      <form class="account-form" onsubmit="doraSaveProfile(event)">
+      <form class="account-form" data-dora-call-submit="doraSaveProfile">
         <label>الاسم الكامل</label>
         <input id="profileName" type="text" value="${esc(state.profile?.full_name || '')}" required>
         <label>رقم الجوال</label>
@@ -871,8 +871,8 @@ function renderAddressesTab(){
         ${address.notes ? `<small>${esc(address.notes)}</small>` : ''}
       </div>
       <div class="account-item-actions">
-        ${!address.is_default ? `<button onclick="doraSetDefaultAddress('${address.id}')">⭐ افتراضي</button>` : ''}
-        <button class="danger" onclick="doraDeleteAddress('${address.id}')">🗑️ حذف</button>
+        ${!address.is_default ? `<button data-dora-call="doraSetDefaultAddress:${address.id}">⭐ افتراضي</button>` : ''}
+        <button class="danger" data-dora-call="doraDeleteAddress:${address.id}">🗑️ حذف</button>
       </div>
     </div>
   `).join('') : '<div class="account-empty">📍 لم تحفظ أي عنوان بعد.</div>';
@@ -881,7 +881,7 @@ function renderAddressesTab(){
     <div class="account-two-col">
       <div class="account-card">
         <h3>📍 إضافة عنوان جديد</h3>
-        <form class="account-form" onsubmit="doraAddAddress(event)">
+        <form class="account-form" data-dora-call-submit="doraAddAddress">
           <label>اسم العنوان</label>
           <input id="addressLabel" value="المنزل" required>
           <label>المدينة</label>
@@ -949,14 +949,14 @@ function renderOrdersTab(){
           <span>${esc(paymentStatusLabels[order.payment_status] || order.payment_status)}</span>
         </div>
         <div class="account-order-actions" style="margin:12px 0; display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="btn-view" onclick="trackOrder('${order.id}')" style="background:linear-gradient(135deg, #3B82F6, #2563EB); color:white; border:none; padding:10px 20px; border-radius:10px; cursor:pointer; font-weight:bold; font-size:14px;">
+          <button class="btn-view" data-dora-call="trackOrder:${order.id}" style="background:linear-gradient(135deg, #3B82F6, #2563EB); color:white; border:none; padding:10px 20px; border-radius:10px; cursor:pointer; font-weight:bold; font-size:14px;">
             📦 تتبع الطلب
           </button>
         </div>
         <div class="account-receipt-box">
-          ${order.receipt_path ? `<span class="account-badge success">✅ تم رفع إيصال الدفع</span><button type="button" class="account-upload-btn" onclick="doraViewReceipt('${esc(order.receipt_path)}')">👁️ عرض الإيصال</button>` : `<span>لم يتم رفع إيصال الدفع بعد</span>`}
+          ${order.receipt_path ? `<span class="account-badge success">✅ تم رفع إيصال الدفع</span><button type="button" class="account-upload-btn" data-dora-call="doraViewReceipt:${esc(order.receipt_path)}">👁️ عرض الإيصال</button>` : `<span>لم يتم رفع إيصال الدفع بعد</span>`}
           <label class="account-upload-btn">🧾 رفع إيصال
-            <input type="file" accept="image/*" onchange="doraUploadReceipt('${order.id}', this)">
+            <input type="file" accept="image/*" data-dora-call-change="doraUploadReceipt:${order.id}" data-dora-use-element="true">
           </label>
         </div>
       </div>
@@ -1020,7 +1020,7 @@ function renderServicesTab(){
     <div class="account-two-col">
       <div class="account-card">
         <h3>🔧 طلب خدمة جديدة</h3>
-        <form class="account-form" onsubmit="doraSubmitAccountService(event)">
+        <form class="account-form" data-dora-call-submit="doraSubmitAccountService">
           <label>نوع الخدمة</label>
           <select id="accountServiceType" required>
             <option value="خدمات الطباعة">خدمات الطباعة</option>
@@ -1076,8 +1076,8 @@ function renderReviewsTab(){
       </div>
       <div style="display:flex;align-items:center;gap:10px">
         <span class="account-status">${esc(reviewStatusLabels[review.status] || review.status || 'منشور')}</span>
-        <button class="btn-edit" onclick="doraEditReview('${review.id}', '${esc(review.product || '')}', ${review.rating || 5}, '${esc((review.text || '').replace(/'/g, "\\'"))}')" style="background:rgba(59,130,246,0.2);color:#60A5FA;border:none;padding:6px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700">✏️ تعديل</button>
-        <button class="btn-delete" onclick="doraDeleteReview('${review.id}')" style="background:rgba(239,68,68,0.2);color:#F87171;border:none;padding:6px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700">🗑️ حذف</button>
+        <button class="btn-edit" data-review-id="${esc(review.id)}" data-review-product="${esc(review.product || '')}" data-review-rating="${review.rating || 5}" data-review-text="${esc((review.text || '').replace(/"/g, '&quot;'))}" data-dora-call="doraEditReview:$element" style="background:rgba(59,130,246,0.2);color:#60A5FA;border:none;padding:6px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700">✏️ تعديل</button>
+        <button class="btn-delete" data-dora-call="doraDeleteReview:${review.id}" style="background:rgba(239,68,68,0.2);color:#F87171;border:none;padding:6px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700">🗑️ حذف</button>
       </div>
     </div>
   `).join('') : '<div class="account-empty">⭐ لم تقم بإضافة تقييمات بعد.</div>';
@@ -1093,18 +1093,18 @@ function renderEditReviewModal(){
       <div class="modal-content" style="background:rgba(15,12,41,0.95);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.2);border-radius:24px;padding:40px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
           <h3 style="color:white;margin:0">✏️ تعديل التقييم</h3>
-          <button onclick="doraCloseEditReview()" style="background:none;border:none;color:white;font-size:24px;cursor:pointer">✕</button>
+          <button data-dora-call="doraCloseEditReview" style="background:none;border:none;color:white;font-size:24px;cursor:pointer">✕</button>
         </div>
-        <form onsubmit="doraSaveEditReview(event)">
+        <form data-dora-call-submit="doraSaveEditReview">
           <input type="hidden" id="editReviewId">
           <div class="form-group">
             <label style="color:rgba(255,255,255,0.8)">⭐ التقييم</label>
             <div id="editStarRating" style="font-size:32px">
-              <span onclick="doraSetEditStar(1)" style="cursor:pointer;color:#FFD700">★</span>
-              <span onclick="doraSetEditStar(2)" style="cursor:pointer;color:#FFD700">★</span>
-              <span onclick="doraSetEditStar(3)" style="cursor:pointer;color:#FFD700">★</span>
-              <span onclick="doraSetEditStar(4)" style="cursor:pointer;color:#FFD700">★</span>
-              <span onclick="doraSetEditStar(5)" style="cursor:pointer;color:#FFD700">★</span>
+              <span data-dora-call="doraSetEditStar:1" style="cursor:pointer;color:#FFD700">★</span>
+              <span data-dora-call="doraSetEditStar:2" style="cursor:pointer;color:#FFD700">★</span>
+              <span data-dora-call="doraSetEditStar:3" style="cursor:pointer;color:#FFD700">★</span>
+              <span data-dora-call="doraSetEditStar:4" style="cursor:pointer;color:#FFD700">★</span>
+              <span data-dora-call="doraSetEditStar:5" style="cursor:pointer;color:#FFD700">★</span>
             </div>
             <input type="hidden" id="editReviewRating" value="5">
           </div>
@@ -1119,7 +1119,11 @@ function renderEditReviewModal(){
   `;
 }
 
-window.doraEditReview = function(id, product, rating, text){
+window.doraEditReview = function(el){
+  if (!el || !el.getAttribute) return;
+  const id = el.getAttribute('data-review-id');
+  const rating = parseInt(el.getAttribute('data-review-rating') || '5', 10);
+  const text = el.getAttribute('data-review-text') || '';
   document.getElementById('editReviewId').value = id;
   document.getElementById('editReviewRating').value = rating;
   document.getElementById('editReviewText').value = text;
@@ -1261,7 +1265,7 @@ function injectServiceRequestForm(){
         <h2>اطلب الخدمة من حسابك</h2>
         <p>سيتم حفظ الطلب في حسابك وتظهر حالته في لوحة الإدارة.</p>
       </div>
-      <form class="account-form service-request-form" onsubmit="doraSubmitServicePageRequest(event)">
+      <form class="account-form service-request-form" data-dora-call-submit="doraSubmitServicePageRequest">
         <input type="hidden" id="servicePageType" value="${esc(serviceTitle)}">
         <input id="servicePageName" type="text" placeholder="الاسم الكامل" required>
         <input id="servicePagePhone" type="tel" placeholder="رقم الجوال" required>
@@ -1541,10 +1545,10 @@ window.trackOrder = function(orderId) {
   overlay.onclick = function(e) { if(e.target === overlay) overlay.remove(); };
   
   overlay.innerHTML = `
-    <div style="background:linear-gradient(135deg, #0f0c29, #302b63);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:30px;max-width:500px;width:100%;max-height:85vh;overflow-y:auto;color:white;" onclick="event.stopPropagation()">
+    <div style="background:linear-gradient(135deg, #0f0c29, #302b63);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:30px;max-width:500px;width:100%;max-height:85vh;overflow-y:auto;color:white;" data-dora-call="doraStopPropagationAction">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
         <h2 style="margin:0;">📦 تتبع الطلب</h2>
-        <button onclick="this.closest('[style*=fixed]').remove()" style="background:rgba(255,255,255,0.1);border:none;color:white;padding:8px 12px;border-radius:8px;cursor:pointer;">✕</button>
+        <button data-dora-action="doraRemoveOverlay" style="background:rgba(255,255,255,0.1);border:none;color:white;padding:8px 12px;border-radius:8px;cursor:pointer;">✕</button>
       </div>
       <div style="background:rgba(59,130,246,0.15);padding:15px;border-radius:12px;margin-bottom:20px;">
         <p style="margin:5px 0;"><strong>رقم الطلب:</strong> ${esc(order.order_number || orderId)}</p>
@@ -1566,7 +1570,7 @@ window.trackOrder = function(orderId) {
           `;
         }).join('')}
       </div>
-      <button onclick="this.closest('[style*=fixed]').remove()" style="width:100%;margin-top:20px;padding:12px;background:#3B82F6;color:white;border:none;border-radius:10px;cursor:pointer;font-weight:bold;">👍 حسناً</button>
+      <button data-dora-action="doraRemoveOverlay" style="width:100%;margin-top:20px;padding:12px;background:#3B82F6;color:white;border:none;border-radius:10px;cursor:pointer;font-weight:bold;">👍 حسناً</button>
     </div>
   `;
   

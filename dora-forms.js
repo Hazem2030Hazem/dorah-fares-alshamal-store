@@ -23,9 +23,9 @@ const supabaseClient = (typeof window.supabaseClient !== 'undefined') ? window.s
             <div class="dora-modal-content">
                 <div class="dora-modal-header">
                     <h3>⭐ أضف تقييمك</h3>
-                    <button class="dora-modal-close" onclick="closeReviewModal()">✕</button>
+                    <button class="dora-modal-close" data-dora-call="closeReviewModal">✕</button>
                 </div>
-                <form id="reviewForm" onsubmit="return submitReview(event)">
+                <form id="reviewForm" data-dora-call-submit="submitReview">
                     <div class="dora-form-group">
                         <label>👤 اسمك</label>
                         <input type="text" id="reviewName" placeholder="أدخل اسمك" required>
@@ -79,9 +79,9 @@ const supabaseClient = (typeof window.supabaseClient !== 'undefined') ? window.s
             <div class="dora-modal-content">
                 <div class="dora-modal-header">
                     <h3>📨 تواصل معنا</h3>
-                    <button class="dora-modal-close" onclick="closeMessageModal()">✕</button>
+                    <button class="dora-modal-close" data-dora-call="closeMessageModal">✕</button>
                 </div>
-                <form id="messageForm" onsubmit="return submitMessage(event)">
+                <form id="messageForm" data-dora-call-submit="submitMessage">
                     <div class="dora-form-group">
                         <label>👤 اسمك</label>
                         <input type="text" id="msgName" placeholder="أدخل اسمك" required>
@@ -282,6 +282,9 @@ async function submitMessage(e) {
     showToast('✅ تم إرسال رسالتك بنجاح! سنتواصل معك قريباً', 'success');
     return false;
 }
+
+window.submitReview = submitReview;
+window.submitMessage = submitMessage;
 
 // Close modals on outside click
 document.addEventListener('click', function(e) {

@@ -1024,9 +1024,9 @@ async function loadEInvoicesList() {
     '<td><b style="color:' + (col[e.status] || '#7A6A5C') + '">' + (lbl[e.status] || e.status) + '</b></td>' +
     '<td>' + new Date(e.created_at).toLocaleString('ar-SA') + '</td>' +
     '<td style="white-space:nowrap">' +
-      '<button class="btn-view" onclick="openInvoicePrint(\'' + e.id + '\')">🖨️ عرض/طباعة</button> ' +
+      '<button class="btn-view" data-dora-call="openInvoicePrint:' + e.id + '">🖨️ عرض/طباعة</button> ' +
       (e.status === 'failed' || e.status === 'draft'
-        ? '<button class="btn-edit" onclick="zatcaSubmit(\'' + e.id + '\')">' + (e.status === 'failed' ? '🔁 إعادة إرسال' : '📤 إرسال') + '</button>'
+        ? '<button class="btn-edit" data-dora-call="zatcaSubmit:' + e.id + '">' + (e.status === 'failed' ? '🔁 إعادة إرسال' : '📤 إرسال') + '</button>'
         : '') +
     '</td></tr>').join('') || '<tr><td colspan="7">🧾 لا توجد فواتير إلكترونية بعد</td></tr>';
 }
@@ -1050,7 +1050,7 @@ pre{direction:ltr;text-align:left;font-size:10px;background:#f5f5f5;padding:8px;
 <div class="row"><span>التاريخ:</span><b>${new Date(ei.created_at).toLocaleString('ar-SA')}</b></div>
 <canvas id="q"></canvas>
 <pre>${_esc(ei.uuid)}</pre>
-<div style="text-align:center"><button onclick="print()">🖨️ طباعة</button></div>
+<div style="text-align:center"><button data-dora-call="doraPrint">🖨️ طباعة</button></div>
 <script src="zatca-store.js"><\/script>
 <script>ZATCA.drawQrToCanvas(document.getElementById('q'), ${JSON.stringify(ei.qr_tlv)}, 5);<\/script>
 </body></html>`);
@@ -1059,6 +1059,6 @@ pre{direction:ltr;text-align:left;font-size:10px;background:#f5f5f5;padding:8px;
 
 /* ─── زر في بطاقات الطلبات (يُستدعى من admin-v2.js) ─── */
 window.zatcaOrderButton = function (o) {
-  return '<button class="btn-edit" style="margin-inline-start:6px" onclick="zatcaIssueForOrder(' + o.id + ')">⚡ إصدار فاتورة معتمدة</button>';
+  return '<button class="btn-edit" style="margin-inline-start:6px" data-dora-call="zatcaIssueForOrder: + o.id + ">⚡ إصدار فاتورة معتمدة</button>';
 };
 })();
