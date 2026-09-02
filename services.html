@@ -283,46 +283,7 @@
     </div>
 </section>
 
-<script>
-async function submitServiceRequest(event) {
-    event.preventDefault();
-    var btn = event.target.querySelector('button[type="submit"]');
-    var originalText = btn.textContent;
-    btn.textContent = '⏳ جاري الإرسال...';
-    btn.disabled = true;
-
-    var payload = {
-        service_type: document.getElementById('srService').value,
-        customer_name: document.getElementById('srName').value.trim(),
-        customer_phone: document.getElementById('srPhone').value.trim(),
-        customer_email: document.getElementById('srEmail').value.trim(),
-        city: document.getElementById('srCity').value.trim(),
-        description: document.getElementById('srDescription').value.trim(),
-        status: 'new'
-    };
-
-    try {
-        var result = await supabaseClient.from('service_requests').insert([payload]);
-        if (result.error) throw result.error;
-        // 📲 تحويل العميل لواتساب المندوب الأساسي بتفاصيل الطلب جاهزة للإرسال
-        var waMsg = '*طلب خدمة جديد — درة فارس الشمال*\n\n'
-            + '*الخدمة:* ' + payload.service_type + '\n'
-            + '*الاسم:* ' + payload.customer_name + '\n'
-            + '*الجوال:* ' + payload.customer_phone + '\n'
-            + (payload.customer_email ? '*البريد:* ' + payload.customer_email + '\n' : '')
-            + (payload.city ? '*المدينة:* ' + payload.city + '\n' : '')
-            + '\n*تفاصيل الخدمة:*\n' + payload.description;
-        alert('✅ تم تسجيل طلبك! جاري تحويلك للواتساب لإرسال التفاصيل للمندوب...');
-        location.href = 'https://wa.me/966545358773?text=' + encodeURIComponent(waMsg);
-    } catch(e) {
-        alert('❌ حدث خطأ: ' + (e.message || 'حاول مرة أخرى'));
-    } finally {
-        btn.textContent = originalText;
-        btn.disabled = false;
-    }
-    return false;
-}
-</script>
+<script src="service-request.js"></script>
   
     <footer class="footer" style="background:transparent;">
         <div class="container">
