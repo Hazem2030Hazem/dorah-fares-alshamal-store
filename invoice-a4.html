@@ -254,7 +254,7 @@ async function main() {
   var html = '';
   html += '<div class="sheet">';
   html += '<div class="hdr"><div class="co">' +
-    (entity.logo_url ? '<img src="' + esc(entity.logo_url) + '" alt="">' : '') +
+    (entity.logo_url ? '<img src="' + esc(entity.logo_url) + '" alt="" loading="lazy">' : '') +
     '<h1>' + esc(sellerName) + '</h1>' +
     (entity.name_en ? '<div class="en">' + esc(entity.name_en) + '</div>' : '') +
     '</div>' +

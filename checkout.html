@@ -381,7 +381,7 @@ function renderCheckout() {
         <div class="checkout-card">
             <h3>📦 ملخص الطلب</h3>
             ${cart.map(function(item) {
-                return '<div class="cart-item"><img src="' + (item.image || 'https://via.placeholder.com/50') + '" onerror="this.style.display=\'none\'"><div class="cart-item-info"><h4>' + item.name + '</h4><span>الكمية: ' + item.qty + ' | ' + item.price.toLocaleString() + ' ر.س</span></div><div class="cart-item-price">' + (item.price * item.qty).toLocaleString() + ' ر.س</div></div>';
+                return '<div class="cart-item"><img src="' + (item.image || 'https://via.placeholder.com/50') + '" onerror="this.style.display=\'none\'" loading="lazy"><div class="cart-item-info"><h4>' + item.name + '</h4><span>الكمية: ' + item.qty + ' | ' + item.price.toLocaleString() + ' ر.س</span></div><div class="cart-item-price">' + (item.price * item.qty).toLocaleString() + ' ر.س</div></div>';
             }).join('')}
             <div class="total-row"><span>المجموع الفرعي</span><span>${subtotal.toLocaleString()} ر.س</span></div>
             <div class="total-row"><span>الضريبة (15%)</span><span>${tax.toLocaleString()} ر.س</span></div>
@@ -556,7 +556,7 @@ function loadUpsellProducts() {
     if (!related.length) { grid.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.5)">لا توجد اقتراحات حالياً</p>'; return; }
     
     grid.innerHTML = related.map(function(p) {
-        return '<div class="upsell-item"><img src="' + p.image + '" alt="' + p.name + '"><div style="font-size:12px;margin:4px 0">' + p.name.substring(0, 25) + '...</div><div class="price">' + p.price.toLocaleString() + ' ر.س</div><button class="btn-add" onclick="addToCartDirect(' + p.id + ', \'' + p.name + '\', ' + p.price + ', \'' + p.image + '\')">🛒 أضف</button></div>';
+        return '<div class="upsell-item"><img src="' + p.image + '" alt="' + p.name + '" loading="lazy"><div style="font-size:12px;margin:4px 0">' + p.name.substring(0, 25) + '...</div><div class="price">' + p.price.toLocaleString() + ' ر.س</div><button class="btn-add" onclick="addToCartDirect(' + p.id + ', \'' + p.name + '\', ' + p.price + ', \'' + p.image + '\')">🛒 أضف</button></div>';
     }).join('');
 }
 
