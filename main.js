@@ -838,7 +838,7 @@ async function loadPartners() {
         }
 
         grid.innerHTML = partners.map(function(p) {
-            var imgHtml = p.image_url ? '<img src="' + esc(p.image_url) + '" alt="' + esc(p.name) + '" style="width:50px;height:50px;border-radius:10px;object-fit:cover">' : '<span style="font-size:30px">🏢</span>';
+            var imgHtml = p.image_url ? '<img src="' + esc(p.image_url) + '" alt="' + esc(p.name) + '" loading="lazy" style="width:50px;height:50px;border-radius:10px;object-fit:cover">' : '<span style="font-size:30px">🏢</span>';
             return '<div class="why-card">' +
                 '<div class="why-icon">' + imgHtml + '</div>' +
                 '<h4>' + esc(p.name) + '</h4>' +
@@ -1006,7 +1006,7 @@ function renderRecentlyViewed() {
           ${p.badge ? `<div class="prod-badge">${p.badge}</div>` : ''}
           ${hasDiscount && !p.badge ? `<div class="prod-badge discount">خصم</div>` : ''}
           <div style="position:relative; width:100%; height:180px; background:#f5f7fa; display:flex; align-items:center; justify-content:center; overflow:hidden;">
-            <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${sanitizeInput(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null;this.src='default-product.png';">
+            <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${sanitizeInput(p.name)}" loading="lazy" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null;this.src='default-product.png';">
             <svg style="display:none; width:48px; height:48px; color:#9aa5b9;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
           </div>
         </div>
@@ -1182,7 +1182,7 @@ function renderBestSellers() {
           ${p.badge ? `<div class="prod-badge">${p.badge}</div>` : ''}
           ${hasDiscount && !p.badge ? `<div class="prod-badge discount">خصم</div>` : ''}
           <div style="position:relative; width:100%; height:180px; background:#f5f7fa; display:flex; align-items:center; justify-content:center; overflow:hidden;">
-            <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${sanitizeInput(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null;this.src='default-product.png';">
+            <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${sanitizeInput(p.name)}" loading="lazy" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null;this.src='default-product.png';">
             <svg style="display:none; width:48px; height:48px; color:#9aa5b9;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
           </div>
         </div>
@@ -1527,7 +1527,7 @@ function doraIcon(sectionKey, meta) {
             '<h4>' + esc(item.title_ar || 'عميل') + '</h4>' +
             '<p>"' + esc(item.description_ar || '') + '"</p>' +
            '<div class="client-name">' + 
-  (meta.client_logo ? '<img src="' + esc(meta.client_logo) + '" alt="logo" style="width:20px;height:20px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-left:4px" onerror="this.style.display=\'none\'">' : '<svg style="width:14px;height:14px;vertical-align:middle;margin-left:4px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>') + 
+  (meta.client_logo ? '<img src="' + esc(meta.client_logo) + '" alt="logo" loading="lazy" style="width:20px;height:20px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-left:4px" onerror="this.style.display=\'none\'">' : '<svg style="width:14px;height:14px;vertical-align:middle;margin-left:4px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>') +
   esc(meta.client_name || meta.company_name || 'جهة معتمدة') + 
 '</div>' +
             '</div>';
