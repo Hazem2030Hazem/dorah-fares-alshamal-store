@@ -1,6 +1,6 @@
-// Service Worker for Dora Fares Al Shamal — v3.0 (network-first)
+// Service Worker for Dora Fares Al Shamal — v3.1 (network-first)
 // الاستراتيجية: الشبكة أولًا دائمًا — الكاش احتياطي فقط عند انقطاع النت
-const CACHE_NAME = 'dora-cache-v3.0';
+const CACHE_NAME = 'dora-cache-v3.1';
 const OFFLINE_FALLBACKS = [
   '/index.html',
   '/manifest.json',
@@ -55,7 +55,6 @@ self.addEventListener('fetch', function(event) {
           if (cached) return cached;
           if (event.request.mode === 'navigate') return caches.match('/index.html');
           return new Response('Offline', { status: 503, headers: { 'Content-Type': 'text/plain' } });
-;
         });
       })
   );
