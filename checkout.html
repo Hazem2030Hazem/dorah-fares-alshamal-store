@@ -386,7 +386,7 @@ function renderCheckout() {
         <div class="checkout-card">
             <h3>📦 ملخص الطلب</h3>
             ${cart.map(function(item) {
-                return '<div class="cart-item"><img src="' + (item.image || 'https://via.placeholder.com/50') + '" onerror="this.style.display=\'none\'" loading="lazy"><div class="cart-item-info"><h4>' + item.name + '</h4><span>الكمية: ' + item.qty + ' | ' + item.price.toLocaleString() + ' ر.س</span></div><div class="cart-item-price">' + (item.price * item.qty).toLocaleString() + ' ر.س</div></div>';
+                return '<div class="cart-item"><img src="' + (item.image || 'default-product.png') + '" alt="' + item.name + '" onerror="this.style.display=\'none\'" loading="lazy"><div class="cart-item-info"><h4>' + item.name + '</h4><span>الكمية: ' + item.qty + ' | ' + item.price.toLocaleString() + ' ر.س</span></div><div class="cart-item-price">' + (item.price * item.qty).toLocaleString() + ' ر.س</div></div>';
             }).join('')}
             <div class="total-row"><span>المجموع الفرعي</span><span>${subtotal.toLocaleString()} ر.س</span></div>
             <div class="total-row"><span>الضريبة (15%)</span><span>${tax.toLocaleString()} ر.س</span></div>
