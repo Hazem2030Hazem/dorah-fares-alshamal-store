@@ -142,7 +142,7 @@
       <p>نفس الرقم اللي طلبت بيه من المتجر — وهتظهر لك كل طلباتك وفواتيرك على طول.<br>مفيش تسجيل ولا كلمة سر 👌</p>
       <div class="mac-phone-row">
         <input type="tel" id="macPhoneInput" placeholder="05xxxxxxxx" maxlength="13" inputmode="tel">
-        <button class="mac-btn" onclick="macLogin()">دخول</button>
+        <button class="mac-btn" data-dora-action="macLogin">دخول</button>
       </div>
       <div id="macGateErr" class="mac-err" style="display:none"></div>
     </div>
@@ -155,7 +155,7 @@
           <h2 id="macHelloName">مرحبًا بك 👋</h2>
           <div class="mac-phone-lbl" id="macHelloPhone"></div>
         </div>
-        <button class="mac-switch" onclick="macLogout()">تغيير الرقم</button>
+        <button class="mac-switch" data-dora-action="macLogout">تغيير الرقم</button>
       </div>
 
       <div class="mac-quick">
@@ -177,6 +177,7 @@
 
   <script src="config.js"></script>
 <script src="core-utils.js"></script>
+<script src="dora-actions.js"></script>
 <script src="nav-fixes.js"></script>
 <script src="floating-logos.js" defer></script>
 <script src="theme.js"></script>

@@ -123,18 +123,18 @@
             const stars = '★'.repeat(Math.floor(p.rating || 0)) + '☆'.repeat(5 - Math.floor(p.rating || 0));
             const hasDiscount = p.oldPrice && p.oldPrice > p.price;
             return `<div class="prod-card wishlisted" data-id="${p.id}">
-                <div class="prod-img" onclick="openQuickView(${p.id})">${p.badge ? `<div class="prod-badge">${p.badge}</div>` : ''}<img src="${p.image}" alt="${window.sanitizeInput(p.name)}" loading="lazy"></div>
-                <button class="wishlist-btn active" onclick="toggleWishlist(${p.id}, event); renderWishlistPage();">❤️</button>
+                <div class="prod-img" data-action="quick-view" data-product-id="${p.id}">${p.badge ? `<div class="prod-badge">${p.badge}</div>` : ''}<img src="${p.image}" alt="${window.sanitizeInput(p.name)}" loading="lazy"></div>
+                <button class="wishlist-btn active" data-action="wishlist" data-product-id="${p.id}" data-re-render="wishlist">❤️</button>
                 <div class="prod-body">
                     <span class="prod-tag">${window.catLabels[p.category]}</span>
-                    <h4 class="prod-name" onclick="openProductModal(${p.id})">${window.sanitizeInput(p.name)}</h4>
+                    <h4 class="prod-name" data-action="open-modal" data-product-id="${p.id}">${window.sanitizeInput(p.name)}</h4>
                     <div class="modal-rating" style="margin-bottom:8px"><span class="stars">${stars}</span><span class="rating-text">${p.rating || 0}</span></div>
                     <p class="prod-desc">${window.sanitizeInput(p.desc)}</p>
                     <div class="prod-footer">
                         <div class="prod-price">${hasDiscount ? `<span class="old-price">${window.formatPrice(p.oldPrice)}</span>` : ''} ${window.formatPrice(p.price)}</div>
                         <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
-                            <button class="add-btn" onclick="addToCart(${p.id})">🛒 أضف للسلة</button>
-                            <button class="quote-btn" onclick="requestQuote(${p.id}, event)">📋 عرض سعر</button>
+                            <button class="add-btn" data-action="add-to-cart" data-product-id="${p.id}">🛒 أضف للسلة</button>
+                            <button class="quote-btn" data-action="quote" data-product-id="${p.id}">📋 عرض سعر</button>
                         </div>
                     </div>
                 </div>
@@ -181,7 +181,7 @@
                 <div class="compare-item">
                     <img src="${p.image}" alt="" loading="lazy">
                     <span class="compare-item-name">${window.sanitizeInput(p.name.substring(0, 20))}...</span>
-                    <button class="compare-item-remove" onclick="toggleCompare(${p.id})">✕</button>
+                    <button class="compare-item-remove" data-action="compare" data-product-id="${p.id}">✕</button>
                 </div>`;
         }).join('');
     };

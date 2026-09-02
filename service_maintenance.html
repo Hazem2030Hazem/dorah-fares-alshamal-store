@@ -67,7 +67,7 @@
 
     <!-- عن الشركة -->
     <div class="nav-item">
-        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="عن الشركة">
+        <button class="nav-trigger" data-dora-action="stopPropagation" data-dora-stop-propagation="true" aria-label="عن الشركة">
             عن الشركة <span class="arrow">▼</span>
         </button>
         <div class="dropdown-menu">
@@ -81,7 +81,7 @@
 
     <!-- التصنيفات -->
     <div class="nav-item">
-        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="التصنيفات">
+        <button class="nav-trigger" data-dora-action="stopPropagation" data-dora-stop-propagation="true" aria-label="التصنيفات">
             التصنيفات <span class="arrow">▼</span>
         </button>
         <div class="dropdown-menu">
@@ -96,7 +96,7 @@
 
     <!-- المنتجات -->
     <div class="nav-item">
-        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="المنتجات">
+        <button class="nav-trigger" data-dora-action="stopPropagation" data-dora-stop-propagation="true" aria-label="المنتجات">
             المنتجات <span class="arrow">▼</span>
         </button>
         <div class="dropdown-menu">
@@ -111,7 +111,7 @@
 
     <!-- المعلومات -->
     <div class="nav-item">
-        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="المعلومات">
+        <button class="nav-trigger" data-dora-action="stopPropagation" data-dora-stop-propagation="true" aria-label="المعلومات">
             المعلومات <span class="arrow">▼</span>
         </button>
         <div class="dropdown-menu">
@@ -123,7 +123,7 @@
 
     <!-- الدعم -->
     <div class="nav-item">
-        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="الدعم">
+        <button class="nav-trigger" data-dora-action="stopPropagation" data-dora-stop-propagation="true" aria-label="الدعم">
             الدعم <span class="arrow">▼</span>
         </button>
         <div class="dropdown-menu">
@@ -132,7 +132,7 @@
     </div>
 </nav>
 <div class="header-controls">
-<button onclick="location.href='https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/releases/download/v1.0/app-release.apk'" class="install-btn" title="تثبيت تطبيق درة فارس الشمال" aria-label="تثبيت تطبيق درة فارس الشمال">
+<button data-dora-action="navigate:https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/releases/download/v1.0/app-release.apk" class="install-btn" title="تثبيت تطبيق درة فارس الشمال" aria-label="تثبيت تطبيق درة فارس الشمال">
   <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
     <line x1="12" y1="18" x2="12.01" y2="18"></line>
@@ -140,7 +140,7 @@
   <span class="icon-glow"></span>
 </button>
 <div class="audio-toggle-wrapper">
-  <button class="audio-toggle" onclick="toggleAudioVolumePopup(event)" title="تشغيل/إيقاف الصوت" aria-label="تشغيل/إيقاف الصوت" id="audioToggleBtn">
+  <button class="audio-toggle" data-dora-action="toggleAudioVolumePopup" title="تشغيل/إيقاف الصوت" aria-label="تشغيل/إيقاف الصوت" id="audioToggleBtn">
     <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="speakerIconSvg">
       <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
       <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
@@ -149,16 +149,16 @@
   </button>
   <div class="audio-volume-popup" id="audioVolumePopup">
     <h4>🔊 مستوى الصوت</h4>
-    <div class="volume-slider-container" id="volumeSlider" onclick="setVolumeFromClick(event)">
+    <div class="volume-slider-container" id="volumeSlider" data-dora-action="setVolumeFromClick">
       <div class="volume-slider-fill" id="volumeSliderFill" style="width: 30%"></div>
       <div class="volume-slider-thumb" id="volumeSliderThumb"></div>
     </div>
     <div class="volume-value" id="volumeValue">30%</div>
-    <button class="volume-mute-btn" onclick="toggleMute()">🔇 كتم / تشغيل</button>
+    <button class="volume-mute-btn" data-dora-action="toggleMute">🔇 كتم / تشغيل</button>
   </div>
 </div>
 <div class="search-bar">
-  <input type="text" id="searchInput" placeholder="ابحث عن منتج..." oninput="handleSearch(this.value)" aria-label="البحث عن منتج">
+  <input type="text" id="searchInput" placeholder="ابحث عن منتج..." data-dora-action-input="handleSearch:$value" aria-label="البحث عن منتج">
   <span class="search-icon">
     <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="11" cy="11" r="8"></circle>
@@ -167,7 +167,7 @@
   </span>
   <div class="search-results" id="searchResults"></div>
 </div>
-<button class="theme-toggle" onclick="toggleTheme()" title="تبديل الوضع" aria-label="تبديل الوضع الداكن/الفاتح" id="themeToggleBtn">
+<button class="theme-toggle" data-dora-action="toggleTheme" title="تبديل الوضع" aria-label="تبديل الوضع الداكن/الفاتح" id="themeToggleBtn">
   <svg id="themeIcon" class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="12" cy="12" r="5"></circle>
     <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -181,7 +181,7 @@
   </svg>
   <span class="icon-glow"></span>
 </button>
-<button class="cart-btn" onclick="toggleCart()" aria-label="سلة المشتريات">
+<button class="cart-btn" data-dora-action="toggleCart" aria-label="سلة المشتريات">
   <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="9" cy="21" r="1"></circle>
     <circle cx="20" cy="21" r="1"></circle>
@@ -223,7 +223,7 @@
         <div class="service-request-box" style="background:rgba(15,12,41,0.7);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:40px;max-width:700px;margin:0 auto">
             <h2 style="color:#fff;font-size:24px;margin-bottom:10px;text-align:center">📋 اطلب هذه الخدمة الآن</h2>
             <p style="color:rgba(255,255,255,0.6);text-align:center;margin-bottom:25px">املأ النموذج وسنتواصل معك في أقرب وقت</p>
-            <form id="serviceRequestForm" onsubmit="return submitServiceRequest(event)" style="display:grid;gap:15px">
+            <form id="serviceRequestForm" data-dora-action-submit="submitServiceRequest" style="display:grid;gap:15px">
                 <input type="hidden" id="srServiceType" value="خدمات الصيانة والإصلاح المتكاملة">
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px">
                     <input type="text" id="srName" placeholder="الاسم الكامل *" required style="padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;font-family:inherit">
@@ -234,7 +234,7 @@
                 <textarea id="srDescription" rows="4" placeholder="اشرح الخدمة المطلوبة بالتفصيل..." required style="padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;font-family:inherit"></textarea>
                 <label style="color:rgba(255,255,255,0.7);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px">
                     📸 <span>إرفاق صور (اختياري)</span>
-                    <input type="file" id="srImages" multiple accept="image/*" style="display:none" onchange="document.getElementById('imageCount').textContent = this.files.length + ' صور مختارة'">
+                    <input type="file" id="srImages" multiple accept="image/*" style="display:none" data-dora-action-change="doraUpdateImageCount:imageCount: صور مختارة">
                     <span id="imageCount" style="color:#10B981;font-size:12px"></span>
                 </label>
                 <button type="submit" style="padding:16px;background:linear-gradient(135deg,#10B981,#059669);color:#fff;border:none;border-radius:12px;font-size:18px;font-weight:700;cursor:pointer;font-family:inherit">📨 إرسال الطلب</button>
@@ -339,6 +339,7 @@
 
   <script src="config.js"></script>
 <script src="core-utils.js"></script>
+<script src="dora-actions.js"></script>
 <script src="nav-fixes.js"></script>
 <script src="floating-logos.js" defer></script>
 <script src="theme.js"></script>

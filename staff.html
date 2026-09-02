@@ -74,12 +74,12 @@
 <!-- ═══ شاشة الدخول الموحّدة ═══ -->
 <div id="staff-login">
   <div class="login-card">
-    <img src="logo-icon.png" alt="درة فارس الشمال" onerror="this.style.display='none'" loading="lazy">
+    <img src="logo-icon.png" alt="درة فارس الشمال" data-dora-error="hide" loading="lazy">
     <h1 id="login-title">بوابة الموظفين</h1>
     <div class="sub" id="login-sub">درة فارس الشمال — دخول بصلاحيات الأدوار</div>
     <input type="text" id="login-user" placeholder="اسم المستخدم" dir="ltr" autocomplete="username">
     <input type="password" id="login-pass" placeholder="كلمة المرور" dir="ltr" autocomplete="current-password">
-    <button id="login-btn" onclick="doLogin()">🔐 دخول</button>
+    <button id="login-btn" data-dora-action="doLogin">🔐 دخول</button>
     <div id="login-err"></div>
     <div class="sub" style="margin:14px 0 0">⏰ الجلسة 12 ساعة — 5 محاولات خاطئة تقفل الحساب 5 دقائق</div>
   </div>
@@ -88,10 +88,10 @@
 <!-- ═══ البوابة (SPA — الأقسام تُبنى حسب الدور) ═══ -->
 <div id="portal">
   <aside>
-    <div class="brand"><img src="logo-icon.png" alt="" onerror="this.style.display='none'" loading="lazy"><b>بوابة الموظفين</b></div>
+    <div class="brand"><img src="logo-icon.png" alt="" data-dora-error="hide" loading="lazy"><b>بوابة الموظفين</b></div>
     <div id="side-nav" style="display:flex;flex-direction:column;gap:6px"></div>
     <div style="flex:1"></div>
-    <button class="nav-btn" onclick="doLogout()" style="color:#FCA5A5">🚪 تسجيل الخروج</button>
+    <button class="nav-btn" data-dora-action="doLogout" style="color:#FCA5A5">🚪 تسجيل الخروج</button>
   </aside>
   <main>
     <header class="top">
@@ -112,8 +112,8 @@
           <h4>🧾 الطلبات — إصدار فواتير معتمدة</h4>
           <div style="display:flex;gap:8px;align-items:center">
             <label style="font-size:13px">الكيان المُصدِر:</label>
-            <select id="entity-picker" class="in" style="min-width:200px" onchange="pickEntity(this.value)"></select>
-            <button class="btn" onclick="loadOrders()">🔄 تحديث</button>
+            <select id="entity-picker" class="in" style="min-width:200px" data-dora-action-change="pickEntity:$value"></select>
+            <button class="btn" data-dora-action="loadOrders">🔄 تحديث</button>
           </div>
         </div>
         <div style="overflow-x:auto"><table><thead><tr>
@@ -127,7 +127,7 @@
       <div class="box">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
           <h4>⚡ فواتير اليوم الإلكترونية</h4>
-          <button class="btn" onclick="loadEInvoices()">🔄 تحديث</button>
+          <button class="btn" data-dora-action="loadEInvoices">🔄 تحديث</button>
         </div>
         <div style="overflow-x:auto"><table><thead><tr>
           <th>ICV</th><th>المرجع</th><th>UUID</th><th>النوع</th><th>الحالة</th><th>طباعة</th>
@@ -145,8 +145,8 @@
           <input class="in" id="vou-memo" placeholder="البيان">
         </div>
         <div style="margin-top:10px;display:flex;gap:8px">
-          <button class="btn primary" onclick="saveVoucher('receipt')">📥 سند قبض</button>
-          <button class="btn" onclick="saveVoucher('payment')">📤 سند صرف</button>
+          <button class="btn primary" data-dora-action="saveVoucher:receipt">📥 سند قبض</button>
+          <button class="btn" data-dora-action="saveVoucher:payment">📤 سند صرف</button>
         </div>
         <div style="color:#64748B;font-size:12px;margin-top:8px">قيد تلقائي: قبض = خزينة/عملاء — صرف = موردون/خزينة</div>
       </div>
@@ -164,8 +164,8 @@
         <input class="in" id="j-memo" placeholder="بيان القيد *" style="width:100%;margin-bottom:10px">
         <div id="j-lines" style="display:flex;flex-direction:column;gap:8px"></div>
         <div style="margin-top:10px;display:flex;gap:8px">
-          <button class="btn" onclick="journalAddLine()">➕ سطر</button>
-          <button class="btn primary" onclick="saveJournal()">💾 ترحيل القيد</button>
+          <button class="btn" data-dora-action="journalAddLine">➕ سطر</button>
+          <button class="btn primary" data-dora-action="saveJournal">💾 ترحيل القيد</button>
         </div>
         <div style="color:#64748B;font-size:12px;margin-top:8px">السيرفر يرفض أي قيد غير متوازن. الحساب غير الموجود يُنشأ تلقائياً بالكود.</div>
       </div>
@@ -182,7 +182,7 @@
           <select class="in" id="exp-payfrom"><option value="1100">💵 خزينة</option><option value="1110">🏦 بنك</option></select>
           <input class="in" id="exp-memo" placeholder="ملاحظة">
         </div>
-        <button class="btn primary" style="margin-top:10px" onclick="saveExpense()">💾 تسجيل المصروف</button>
+        <button class="btn primary" style="margin-top:10px" data-dora-action="saveExpense">💾 تسجيل المصروف</button>
       </div>
       <div class="box"><h4 style="margin-bottom:10px">آخر المصروفات</h4>
         <div style="overflow-x:auto"><table><thead><tr>
@@ -197,7 +197,7 @@
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
           <h4>📅 يومية المبيعات</h4>
           <input class="in" type="date" id="rep-date" dir="ltr">
-          <button class="btn" onclick="loadDailyReport()">عرض</button>
+          <button class="btn" data-dora-action="loadDailyReport">عرض</button>
         </div>
         <div id="rep-daily"></div>
       </div>
@@ -206,20 +206,20 @@
           <h4>💵 قائمة الدخل</h4>
           <input class="in" type="date" id="rep-from" dir="ltr"><span>←</span>
           <input class="in" type="date" id="rep-to" dir="ltr">
-          <button class="btn" onclick="loadIncome()">عرض</button>
+          <button class="btn" data-dora-action="loadIncome">عرض</button>
         </div>
         <div id="rep-income"></div>
       </div>
       <div class="box">
         <div style="display:flex;justify-content:space-between;margin-bottom:10px"><h4>⚖️ ميزان المراجعة</h4>
-          <button class="btn" onclick="loadTrialBalance()">عرض</button></div>
+          <button class="btn" data-dora-action="loadTrialBalance">عرض</button></div>
         <div style="overflow-x:auto"><table><thead><tr>
           <th>الكود</th><th>الحساب</th><th>النوع</th><th>مدين</th><th>دائن</th><th>الرصيد</th>
         </tr></thead><tbody id="rep-tb-tb"></tbody></table></div>
       </div>
       <div class="box">
         <div style="display:flex;justify-content:space-between;margin-bottom:10px"><h4>⏳ أعمار الذمم</h4>
-          <button class="btn" onclick="loadAging()">عرض</button></div>
+          <button class="btn" data-dora-action="loadAging">عرض</button></div>
         <div id="rep-aging"></div>
       </div>
     </section>
@@ -234,7 +234,7 @@
       <div class="box">
         <div style="display:flex;justify-content:space-between;margin-bottom:10px">
           <h4>🕒 سجل مراجعة البوابات — آخر 100 حدث</h4>
-          <button class="btn" onclick="staffShow('audit')">🔄 تحديث</button>
+          <button class="btn" data-dora-action="staffShow:audit">🔄 تحديث</button>
         </div>
         <div style="overflow-x:auto"><table><thead><tr>
           <th>الوقت</th><th>الموظف</th><th>الحدث</th><th>التفاصيل</th>
@@ -251,6 +251,7 @@
 <script src="staff-login-label.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
+<script src="dora-actions.js"></script>
 <script src="staff-portal.js"></script>
 </body>
 </html>

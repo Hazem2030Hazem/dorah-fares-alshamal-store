@@ -218,7 +218,7 @@
     <div class="login-box">
         <h2>درة فارس الشمال</h2>
         <p class="subtitle">لوحة الإدارة</p>
-        <form onsubmit="return handleLogin(event)">
+        <form data-dora-action-submit="handleLogin">
             <label>البريد الإلكتروني</label>
             <input type="email" id="username" placeholder="admin@alshamal-df.com" required>
             <label>كلمة المرور</label>
@@ -236,66 +236,66 @@
             <div class="sidebar-logo"><h2>درة فارس</h2></div>
             <nav class="sidebar-nav">
                 <div class="nav-section">الرئيسية</div>
-                <a onclick="showTab('dashboard')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg> لوحة المؤشرات</a>
-                <a onclick="showTab('products')" class="active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg> المنتجات</a>
-                <a onclick="showTab('orders')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> الطلبات</a>
-                <a onclick="showTab('customers')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg> العملاء</a>
+                <a data-dora-action="showTab:dashboard"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg> لوحة المؤشرات</a>
+                <a data-dora-action="showTab:products" class="active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg> المنتجات</a>
+                <a data-dora-action="showTab:orders"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> الطلبات</a>
+                <a data-dora-action="showTab:customers"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg> العملاء</a>
                 <div class="nav-section">الإدارة</div>
-                <a onclick="showTab('services')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg> الخدمات</a>
-                <a onclick="showTab('receipts')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> المدفوعات</a>
-                <a onclick="showTab('reviews')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> التقييمات</a>
-                <a onclick="showTab('messages')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> الرسائل</a>
-                <a onclick="showTab('invoices')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg> الفواتير</a>
-                <a onclick="showTab('accounting')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V7l7-4 7 4v14"></path><line x1="9" y1="21" x2="9" y2="12"></line><line x1="15" y1="21" x2="15" y2="12"></line></svg> 🏛️ المحاسبة</a>
-                <a onclick="showTab('purchases')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> 🛒 المشتريات</a>
-                <a onclick="showTab('treasury')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="3"></circle></svg> 💰 السندات والخزينة</a>
-                <a onclick="showTab('returns')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg> 🔄 المرتجعات</a>
-                <a onclick="showTab('expenses')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"></path><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg> 🧾 المصروفات</a>
-                <a onclick="showTab('hrplus')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> 👥 الموظفون والرواتب</a>
-                <a onclick="showTab('assetsplus')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V7l7-4 7 4v14"></path><line x1="9" y1="21" x2="9" y2="12"></line><line x1="15" y1="21" x2="15" y2="12"></line></svg> 🏢 الأصول الثابتة</a>
-                <a onclick="showTab('cashiers')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg> 🧑‍💼 الكاشيرون</a>
-                <a onclick="showTab('staffUsers')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> 🔐 مستخدمو البوابات</a>
-                <a onclick="showTab('crm')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg> 🤝 CRM</a>
-                <a onclick="showTab('manufacturing')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg> 🏭 التصنيع</a>
-                <a onclick="showTab('assistant')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> 🤖 المساعد الذكي</a>
-                <a onclick="showTab('auditLog')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> سجل التدقيق</a>
+                <a data-dora-action="showTab:services"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg> الخدمات</a>
+                <a data-dora-action="showTab:receipts"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> المدفوعات</a>
+                <a data-dora-action="showTab:reviews"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> التقييمات</a>
+                <a data-dora-action="showTab:messages"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> الرسائل</a>
+                <a data-dora-action="showTab:invoices"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg> الفواتير</a>
+                <a data-dora-action="showTab:accounting"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V7l7-4 7 4v14"></path><line x1="9" y1="21" x2="9" y2="12"></line><line x1="15" y1="21" x2="15" y2="12"></line></svg> 🏛️ المحاسبة</a>
+                <a data-dora-action="showTab:purchases"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> 🛒 المشتريات</a>
+                <a data-dora-action="showTab:treasury"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="3"></circle></svg> 💰 السندات والخزينة</a>
+                <a data-dora-action="showTab:returns"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg> 🔄 المرتجعات</a>
+                <a data-dora-action="showTab:expenses"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"></path><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg> 🧾 المصروفات</a>
+                <a data-dora-action="showTab:hrplus"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> 👥 الموظفون والرواتب</a>
+                <a data-dora-action="showTab:assetsplus"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V7l7-4 7 4v14"></path><line x1="9" y1="21" x2="9" y2="12"></line><line x1="15" y1="21" x2="15" y2="12"></line></svg> 🏢 الأصول الثابتة</a>
+                <a data-dora-action="showTab:cashiers"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg> 🧑‍💼 الكاشيرون</a>
+                <a data-dora-action="showTab:staffUsers"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> 🔐 مستخدمو البوابات</a>
+                <a data-dora-action="showTab:crm"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg> 🤝 CRM</a>
+                <a data-dora-action="showTab:manufacturing"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg> 🏭 التصنيع</a>
+                <a data-dora-action="showTab:assistant"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> 🤖 المساعد الذكي</a>
+                <a data-dora-action="showTab:auditLog"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> سجل التدقيق</a>
                 <div class="nav-section">المحتوى</div>
-                <a onclick="showTab('why_us')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> لماذا تختارنا</a>
-                <a onclick="showTab('vision_mission')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> رؤيتنا ورسالتنا</a>
-                <a onclick="showTab('hero_stats')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg> الإحصائيات</a>
-                <a onclick="showTab('home_hero')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> محتوى الرئيسية</a>
-                <a onclick="showTab('about')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg> عن الشركة</a>
-                <a onclick="showTab('testimonials')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg> آراء العملاء</a>
-                <a onclick="showTab('projects')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg> المشاريع</a>
-                <a onclick="showTab('blog')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> المقالات</a>
-                <a onclick="showTab('certifications')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg> الشهادات</a>
-                <a onclick="showTab('contact')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> التواصل</a>
-                <a onclick="showTab('announcements')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-5v12L3 14v-3z"></path><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"></path></svg> إعلانات الزوار</a>
+                <a data-dora-action="showTab:why_us"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> لماذا تختارنا</a>
+                <a data-dora-action="showTab:vision_mission"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> رؤيتنا ورسالتنا</a>
+                <a data-dora-action="showTab:hero_stats"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg> الإحصائيات</a>
+                <a data-dora-action="showTab:home_hero"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> محتوى الرئيسية</a>
+                <a data-dora-action="showTab:about"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg> عن الشركة</a>
+                <a data-dora-action="showTab:testimonials"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg> آراء العملاء</a>
+                <a data-dora-action="showTab:projects"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg> المشاريع</a>
+                <a data-dora-action="showTab:blog"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> المقالات</a>
+                <a data-dora-action="showTab:certifications"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg> الشهادات</a>
+                <a data-dora-action="showTab:contact"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> التواصل</a>
+                <a data-dora-action="showTab:announcements"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-5v12L3 14v-3z"></path><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"></path></svg> إعلانات الزوار</a>
                 <div class="nav-section">المالية</div>
-                <a onclick="showTab('bank_accounts')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><line x1="3" y1="10" x2="21" y2="10"></line><polyline points="7 3 12 3 17 7 17 21"></polyline></svg> الحسابات البنكية</a>
-                <a onclick="showTab('payment_methods')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg> طرق الدفع</a>
-                <a onclick="showTab('shipping')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg> الشحن</a>
-                <a onclick="showTab('afaky')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg> ربط أفاقي</a>
-                <a onclick="showTab('gateways')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line><line x1="6" y1="15" x2="10" y2="15"></line></svg> 💳 بوابات الدفع</a>
+                <a data-dora-action="showTab:bank_accounts"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><line x1="3" y1="10" x2="21" y2="10"></line><polyline points="7 3 12 3 17 7 17 21"></polyline></svg> الحسابات البنكية</a>
+                <a data-dora-action="showTab:payment_methods"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg> طرق الدفع</a>
+                <a data-dora-action="showTab:shipping"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg> الشحن</a>
+                <a data-dora-action="showTab:afaky"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg> ربط أفاقي</a>
+                <a data-dora-action="showTab:gateways"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line><line x1="6" y1="15" x2="10" y2="15"></line></svg> 💳 بوابات الدفع</a>
                 <div class="nav-section">الإعدادات</div>
-                <a onclick="showTab('settings')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> عام</a>
-                <a onclick="showTab('company_info')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> بيانات الشركة</a>
-                <a onclick="showTab('staff')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> الموظفون</a>
-                <a onclick="showTab('security')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> كلمة المرور</a>
-                <a onclick="showTab('gov_docs')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg> التوثيق الحكومي</a>
-                <a onclick="showTab('einvoice')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><rect x="8" y="13" width="8" height="2" rx="1"></rect></svg> فوترة إلكترونية</a>
-                <a onclick="showTab('zatca')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> ⚡ زاتكا — الربط والاعتماد</a>
-                <a onclick="showTab('marketing')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> التسويق</a>
-                <a onclick="showTab('files')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg> الملفات</a>
+                <a data-dora-action="showTab:settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> عام</a>
+                <a data-dora-action="showTab:company_info"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> بيانات الشركة</a>
+                <a data-dora-action="showTab:staff"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> الموظفون</a>
+                <a data-dora-action="showTab:security"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> كلمة المرور</a>
+                <a data-dora-action="showTab:gov_docs"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg> التوثيق الحكومي</a>
+                <a data-dora-action="showTab:einvoice"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><rect x="8" y="13" width="8" height="2" rx="1"></rect></svg> فوترة إلكترونية</a>
+                <a data-dora-action="showTab:zatca"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> ⚡ زاتكا — الربط والاعتماد</a>
+                <a data-dora-action="showTab:marketing"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> التسويق</a>
+                <a data-dora-action="showTab:files"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg> الملفات</a>
             </nav>
-            <div class="sidebar-footer"><button onclick="logout()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:6px"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> تسجيل الخروج</button></div>
+            <div class="sidebar-footer"><button data-dora-action="logout"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:6px"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> تسجيل الخروج</button></div>
         </div>
     </aside>
     
     <header class="header">
         <div class="header-breadcrumb">الرئيسية / <span id="pageTitle">المنتجات</span></div>
         <div class="header-right">
-            <div class="header-notif" onclick="showTab('messages')"><span class="badge" id="notifBadge">0</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></div>
+            <div class="header-notif" data-dora-action="showTab:messages"><span class="badge" id="notifBadge">0</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></div>
             <div class="header-user"><div class="avatar">م</div><div class="name">مدير النظام</div></div>
         </div>
     </header>
@@ -314,7 +314,7 @@
         
         <div class="content-card">
             <div class="tab-content" id="dashboardTab">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg> لوحة المؤشرات</h3><button class="btn-add" onclick="renderDashboardCharts()">🔄 تحديث</button></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg> لوحة المؤشرات</h3><button class="btn-add" data-dora-action="renderDashboardCharts">🔄 تحديث</button></div>
                 <div class="dash-charts-grid">
                     <div class="dash-chart-card">
                         <h4>📈 مبيعات آخر 7 أيام</h4>
@@ -328,16 +328,16 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-content active" id="productsTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg> المنتجات</h3><button class="btn-add" onclick="openModal()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><table><thead><tr><th>#</th><th>الصورة</th><th>الاسم</th><th>الوصف</th><th>السعر</th><th>التصنيف</th><th>الإجراءات</th></tr></thead><tbody id="productsTable"></tbody></table></div>
+            <div class="tab-content active" id="productsTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg> المنتجات</h3><button class="btn-add" data-dora-action="openModal"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><table><thead><tr><th>#</th><th>الصورة</th><th>الاسم</th><th>الوصف</th><th>السعر</th><th>التصنيف</th><th>الإجراءات</th></tr></thead><tbody id="productsTable"></tbody></table></div>
             <div class="tab-content" id="ordersTab"><div id="ordersList"></div></div>
             <div class="tab-content" id="reviewsTab"><div id="reviewsList"></div></div>
-            <div class="tab-content" id="servicesTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg> طلبات الخدمات</h3><button class="btn-add" onclick="addService()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><div id="servicesList"></div></div>
+            <div class="tab-content" id="servicesTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg> طلبات الخدمات</h3><button class="btn-add" data-dora-action="addService"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><div id="servicesList"></div></div>
             <div class="tab-content" id="customersTab"><div id="customersList"></div></div>
             <div class="tab-content" id="receiptsTab"><div id="receiptsList"></div></div>
             <div class="tab-content" id="messagesTab"><div id="messagesList"></div></div>
             <div class="tab-content" id="invoicesTab"><div id="invoicesTable"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
             <div class="tab-content" id="purchasesTab">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px"><h3>🛒 المشتريات والموردون</h3><button class="btn-add" onclick="loadPurchasesTab()">🔄 تحديث</button></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px"><h3>🛒 المشتريات والموردون</h3><button class="btn-add" data-dora-action="loadPurchasesTab">🔄 تحديث</button></div>
 
                 <!-- إضافة مورد -->
                 <div class="erp-box" style="border:2px solid #8B5CF6;border-radius:14px;padding:18px;margin-bottom:22px">
@@ -348,7 +348,7 @@
                         <input type="text" id="supEmail" placeholder="البريد الإلكتروني" class="erp-in" dir="ltr" style="text-align:right">
                         <input type="text" id="supNotes" placeholder="ملاحظات" class="erp-in">
                     </div>
-                    <button class="btn-add" style="margin-top:12px" onclick="purchAddSupplier()">➕ حفظ المورد</button>
+                    <button class="btn-add" style="margin-top:12px" data-dora-action="purchAddSupplier">➕ حفظ المورد</button>
                 </div>
 
                 <!-- فاتورة شراء جديدة -->
@@ -360,9 +360,9 @@
                     </div>
                     <div id="purchLines"></div>
                     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px">
-                        <button class="btn-add" style="background:#64748B" onclick="purchAddLine()">➕ إضافة صنف</button>
+                        <button class="btn-add" style="background:#64748B" data-dora-action="purchAddLine">➕ إضافة صنف</button>
                         <span style="font-size:18px;font-weight:700">الإجمالي: <span id="purchTotal" style="color:#22C55E">0</span> ر.س</span>
-                        <button class="btn-add" style="margin-inline-start:auto" onclick="purchSave()">💾 حفظ وترحيل الفاتورة</button>
+                        <button class="btn-add" style="margin-inline-start:auto" data-dora-action="purchSave">💾 حفظ وترحيل الفاتورة</button>
                     </div>
                 </div>
 
@@ -375,7 +375,7 @@
                 <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>المورد</th><th>الجوال</th><th>عدد الفواتير</th><th>إجمالي المشتريات</th></tr></thead><tbody id="suppliersTable"><tr><td colspan="4" class="admin-empty">⏳ جاري التحميل...</td></tr></tbody></table></div>
             </div>
             <div class="tab-content" id="treasuryTab">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px"><h3>💰 سندات القبض والصرف والخزينة</h3><button class="btn-add" onclick="loadTreasuryTab()">🔄 تحديث</button></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px"><h3>💰 سندات القبض والصرف والخزينة</h3><button class="btn-add" data-dora-action="loadTreasuryTab">🔄 تحديث</button></div>
 
                 <!-- رصيد الخزينة -->
                 <div class="erp-box" style="border:2px solid #F59E0B;border-radius:14px;padding:18px;margin-bottom:22px;text-align:center">
@@ -390,7 +390,7 @@
                         <input type="text" id="receiptParty" placeholder="اسم العميل *" class="erp-in" style="margin-bottom:8px">
                         <input type="number" id="receiptAmount" placeholder="المبلغ *" min="0" step="any" class="erp-in" style="margin-bottom:8px">
                         <input type="text" id="receiptMemo" placeholder="بيان (اختياري)" class="erp-in" style="margin-bottom:8px">
-                        <button class="btn-add" onclick="voucherSave('receipt')">📥 حفظ سند القبض</button>
+                        <button class="btn-add" data-dora-action="voucherSave:receipt">📥 حفظ سند القبض</button>
                     </div>
                     <!-- سند صرف -->
                     <div class="erp-box" style="border:2px solid #EF4444;border-radius:14px;padding:18px">
@@ -398,7 +398,7 @@
                         <input type="text" id="paymentParty" placeholder="اسم المورد *" class="erp-in" style="margin-bottom:8px">
                         <input type="number" id="paymentAmount" placeholder="المبلغ *" min="0" step="any" class="erp-in" style="margin-bottom:8px">
                         <input type="text" id="paymentMemo" placeholder="بيان (اختياري)" class="erp-in" style="margin-bottom:8px">
-                        <button class="btn-add" style="background:#EF4444" onclick="voucherSave('payment')">📤 حفظ سند الصرف</button>
+                        <button class="btn-add" style="background:#EF4444" data-dora-action="voucherSave:payment">📤 حفظ سند الصرف</button>
                     </div>
                 </div>
 
@@ -411,7 +411,7 @@
                 <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>الطرف</th><th>الحساب</th><th>مدين</th><th>دائن</th><th>الرصيد</th></tr></thead><tbody id="partyBalancesTable"><tr><td colspan="5" class="admin-empty">⏳ جاري التحميل...</td></tr></tbody></table></div>
             </div>
             <div class="tab-content" id="returnsTab">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px"><h3>🔄 المرتجعات — بقيود عكسية وحركة مخزون تلقائية</h3><button class="btn-add" onclick="loadReturnsTab()">🔄 تحديث</button></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px"><h3>🔄 المرتجعات — بقيود عكسية وحركة مخزون تلقائية</h3><button class="btn-add" data-dora-action="loadReturnsTab">🔄 تحديث</button></div>
 
                 <!-- مرتجع جديد -->
                 <div class="erp-box" style="border:2px solid #F97316;border-radius:14px;padding:18px;margin-bottom:22px">
@@ -426,9 +426,9 @@
                     </div>
                     <div id="retLines"></div>
                     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px">
-                        <button class="btn-add" style="background:#64748B" onclick="retAddLine()">➕ إضافة صنف</button>
+                        <button class="btn-add" style="background:#64748B" data-dora-action="retAddLine">➕ إضافة صنف</button>
                         <span style="font-size:18px;font-weight:700">الإجمالي: <span id="retTotal" style="color:#F97316">0</span> ر.س</span>
-                        <button class="btn-add" style="background:#F97316;margin-inline-start:auto" onclick="retSave()">↩️ حفظ وترحيل المرتجع</button>
+                        <button class="btn-add" style="background:#F97316;margin-inline-start:auto" data-dora-action="retSave">↩️ حفظ وترحيل المرتجع</button>
                     </div>
                     <div style="margin-top:10px;font-size:12px;color:#94A3B8">💡 مرتجع المبيعات: قيد عكسي (مدين مبيعات ← دائن عميل) + البضاعة ترجع للمخزن • مرتجع المشتريات: (مدين مورد ← دائن مخزون) + البضاعة تخرج من المخزن</div>
                 </div>
@@ -438,7 +438,7 @@
                 <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>رقم</th><th>النوع</th><th>التاريخ</th><th>الطرف</th><th>الإجمالي</th><th>البيان</th></tr></thead><tbody id="returnsTable"><tr><td colspan="6" class="admin-empty">⏳ جاري التحميل...</td></tr></tbody></table></div>
             </div>
             <div class="tab-content" id="expensesTab">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px"><h3>🧾 المصروفات وشجرة الحسابات</h3><button class="btn-add" onclick="loadExpensesTab()">🔄 تحديث</button></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px"><h3>🧾 المصروفات وشجرة الحسابات</h3><button class="btn-add" data-dora-action="loadExpensesTab">🔄 تحديث</button></div>
 
                 <!-- سند مصروف -->
                 <div class="erp-box" style="border:2px solid #EF4444;border-radius:14px;padding:18px;margin-bottom:22px">
@@ -450,7 +450,7 @@
                         <select id="expPayFrom" class="erp-in"><option value="1100">💵 من الخزينة</option><option value="1110">🏦 من البنك</option></select>
                         <input type="text" id="expMemo" placeholder="البيان (اختياري)" class="erp-in">
                     </div>
-                    <button class="btn-add" style="background:#EF4444;margin-top:12px" onclick="expSave()">🧾 حفظ المصروف</button>
+                    <button class="btn-add" style="background:#EF4444;margin-top:12px" data-dora-action="expSave">🧾 حفظ المصروف</button>
                 </div>
 
                 <!-- إضافة حساب -->
@@ -464,7 +464,7 @@
                             <option value="equity">حقوق ملكية</option><option value="revenue">إيرادات</option>
                             <option value="expense" selected>مصروفات</option>
                         </select>
-                        <button class="btn-add" onclick="accAdd()">➕ إضافة</button>
+                        <button class="btn-add" data-dora-action="accAdd">➕ إضافة</button>
                     </div>
                 </div>
 
@@ -488,12 +488,12 @@
                             <div class="form-group" style="margin:0"><label>البيان</label><input type="text" id="exp2Memo" class="erp-in"></div>
                             <div class="form-group" style="margin:0;grid-column:1/-1"><label>رابط مرفق (اختياري)</label><input type="url" id="exp2Attach" class="erp-in" dir="ltr" style="text-align:left" placeholder="https://..."></div>
                         </div>
-                        <button class="btn-add" style="background:#F59E0B;margin-top:12px" onclick="exp2Save()">💾 حفظ المصروف + ترحيل القيد</button>
+                        <button class="btn-add" style="background:#F59E0B;margin-top:12px" data-dora-action="exp2Save">💾 حفظ المصروف + ترحيل القيد</button>
                     </div>
                     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin-bottom:12px">
                         <div class="form-group" style="margin:0"><label>شهر الفلترة</label><input type="month" id="exp2Month" class="erp-in" dir="ltr"></div>
                         <div class="form-group" style="margin:0"><label>التصنيف</label><input type="text" id="exp2FilterCat" class="erp-in" placeholder="الكل"></div>
-                        <button class="btn-add" onclick="exp2Reload()">🔍 عرض</button>
+                        <button class="btn-add" data-dora-action="exp2Reload">🔍 عرض</button>
                     </div>
                     <div style="overflow-x:auto;margin-bottom:22px"><table class="admin-table"><thead><tr><th>التاريخ</th><th>التصنيف</th><th>المبلغ</th><th>مركز التكلفة</th><th>المورد</th><th>البيان</th><th>مرفق</th><th>القيد</th></tr></thead><tbody id="exp2Table"><tr><td colspan="8" class="admin-empty">⏳ جاري التحميل...</td></tr></tbody></table></div>
 
@@ -502,7 +502,7 @@
                         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
                             <input type="text" id="ccCode" class="erp-in" style="max-width:130px" placeholder="الكود" dir="ltr">
                             <input type="text" id="ccName" class="erp-in" style="max-width:240px" placeholder="الاسم *">
-                            <button class="btn-add" style="background:#8B5CF6" onclick="ccAdd()">➕ إضافة</button>
+                            <button class="btn-add" style="background:#8B5CF6" data-dora-action="ccAdd">➕ إضافة</button>
                         </div>
                     </div>
 
@@ -517,7 +517,7 @@
                             <select id="recAcc" class="erp-in"></select>
                             <select id="recPayFrom" class="erp-in"><option value="1100">💵 الخزينة</option><option value="1110">🏦 البنك</option></select>
                             <div class="form-group" style="margin:0"><label>تاريخ البداية/الاستحقاق القادم</label><input type="date" id="recStart" class="erp-in" dir="ltr"></div>
-                            <button class="btn-add" style="background:#22C55E" onclick="recAdd()">➕ إضافة</button>
+                            <button class="btn-add" style="background:#22C55E" data-dora-action="recAdd">➕ إضافة</button>
                         </div>
                         <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>البند</th><th>المبلغ</th><th>الاستحقاق القادم</th><th>عدد التوليدات</th><th>الحالة</th><th></th></tr></thead><tbody id="recTable"><tr><td colspan="6" class="admin-empty">⏳ جاري التحميل...</td></tr></tbody></table></div>
                     </div>
@@ -527,9 +527,9 @@
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
                     <h3>👥 الموظفون والرواتب (GOSI السعودي)</h3>
                     <div style="display:flex;gap:8px;flex-wrap:wrap">
-                        <button class="btn-add" id="hrp-sub-emps" style="background:#8B5CF6" onclick="hrpSub('emps')">👥 الموظفون</button>
-                        <button class="btn-add" id="hrp-sub-runs" style="background:rgba(148,163,184,.2)" onclick="hrpSub('runs')">🧾 مسيّرات الرواتب</button>
-                        <button class="btn-add" id="hrp-sub-eos" style="background:rgba(148,163,184,.2)" onclick="hrpSub('eos')">🏁 نهاية الخدمة</button>
+                        <button class="btn-add" id="hrp-sub-emps" style="background:#8B5CF6" data-dora-action="hrpSub:emps">👥 الموظفون</button>
+                        <button class="btn-add" id="hrp-sub-runs" style="background:rgba(148,163,184,.2)" data-dora-action="hrpSub:runs">🧾 مسيّرات الرواتب</button>
+                        <button class="btn-add" id="hrp-sub-eos" style="background:rgba(148,163,184,.2)" data-dora-action="hrpSub:eos">🏁 نهاية الخدمة</button>
                     </div>
                 </div>
                 <div class="zatca-note">ℹ️ GOSI: سعودي = خصم موظف 10% + حصة صاحب عمل 12% على (الأساسي + بدل السكن) بسقف 45,000 ر.س — غير سعودي = 2% أخطار مهنية على صاحب العمل فقط بلا خصم من الموظف. القيد: مدين رواتب وأجور (5200) + حصة صاحب العمل (5210) / دائن رواتب مستحقة (2300) + GOSI مستحق (2310).</div>
@@ -550,8 +550,8 @@
                             <input type="text" id="hrpEmpIban" class="erp-in" placeholder="IBAN" dir="ltr" style="text-align:right">
                         </div>
                         <div style="display:flex;gap:10px;margin-top:12px">
-                            <button class="btn-add" id="hrpEmpSaveBtn" onclick="hrpSaveEmp()">➕ إضافة الموظف</button>
-                            <button class="btn-add" style="background:rgba(148,163,184,.3)" onclick="hrpResetEmpForm()">↩️ تفريغ</button>
+                            <button class="btn-add" id="hrpEmpSaveBtn" data-dora-action="hrpSaveEmp">➕ إضافة الموظف</button>
+                            <button class="btn-add" style="background:rgba(148,163,184,.3)" data-dora-action="hrpResetEmpForm">↩️ تفريغ</button>
                         </div>
                     </div>
                     <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>الاسم</th><th>الجنسية</th><th>الجوال</th><th>الوظيفة</th><th>الأساسي</th><th>السكن</th><th>أخرى</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody id="hrpEmpsTable"><tr><td colspan="9" class="admin-empty">⏳ جاري التحميل...</td></tr></tbody></table></div>
@@ -562,7 +562,7 @@
                         <h4 style="margin:0 0 12px">🧾 توليد مسيّر رواتب شهري</h4>
                         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end">
                             <div class="form-group" style="margin:0"><label>الشهر</label><input type="month" id="hrpRunMonth" class="erp-in" dir="ltr"></div>
-                            <button class="btn-add" style="background:#22C55E" onclick="hrpGenerateRun()">⚙️ توليد المسيّر (لكل الموظفين النشطين)</button>
+                            <button class="btn-add" style="background:#22C55E" data-dora-action="hrpGenerateRun">⚙️ توليد المسيّر (لكل الموظفين النشطين)</button>
                         </div>
                     </div>
                     <div style="overflow-x:auto;margin-bottom:18px"><table class="admin-table"><thead><tr><th>الشهر</th><th>الموظفون</th><th>الإجمالي</th><th>GOSI موظف</th><th>GOSI صاحب عمل</th><th>الصافي</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody id="hrpRunsTable"><tr><td colspan="8" class="admin-empty">⏳ جاري التحميل...</td></tr></tbody></table></div>
@@ -577,15 +577,15 @@
                         <h4 style="margin:0 0 6px">🏁 حاسبة مكافأة نهاية الخدمة (نظام العمل السعودي)</h4>
                         <p style="margin:0 0 12px;color:#94A3B8;font-size:13px">نصف شهر عن كل سنة من أول 5 سنوات + شهر كامل عمّا بعدها (الأجر الشامل). الاستقالة: أقل من سنتين لا شيء، 2-5 ثلث، 5-10 ثلثان، 10+ كاملة. الإنهاء من صاحب العمل = كاملة.</p>
                         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">
-                            <select id="hrpEosEmp" class="erp-in" onchange="hrpEosFill()"></select>
+                            <select id="hrpEosEmp" class="erp-in" data-dora-action-change="hrpEosFill"></select>
                             <div class="form-group" style="margin:0"><label>تاريخ التعيين</label><input type="date" id="hrpEosHire" class="erp-in" dir="ltr"></div>
                             <div class="form-group" style="margin:0"><label>تاريخ نهاية العلاقة</label><input type="date" id="hrpEosEnd" class="erp-in" dir="ltr"></div>
                             <div class="form-group" style="margin:0"><label>الأجر الشامل الشهري</label><input type="number" id="hrpEosWage" class="erp-in" min="0" step="any"></div>
                             <select id="hrpEosReason" class="erp-in"><option value="termination">إنهاء من صاحب العمل</option><option value="resignation">استقالة الموظف</option></select>
                         </div>
                         <div style="display:flex;gap:10px;margin-top:12px">
-                            <button class="btn-add" style="background:#F59E0B" onclick="hrpEosCalc()">🧮 احسب المكافأة</button>
-                            <button class="btn-add" style="background:#22C55E" onclick="hrpEosPost()">📤 ترحيل قيد المكافأة</button>
+                            <button class="btn-add" style="background:#F59E0B" data-dora-action="hrpEosCalc">🧮 احسب المكافأة</button>
+                            <button class="btn-add" style="background:#22C55E" data-dora-action="hrpEosPost">📤 ترحيل قيد المكافأة</button>
                         </div>
                         <div id="hrpEosResult"></div>
                     </div>
@@ -593,7 +593,7 @@
             </div>
 
             <div class="tab-content" id="assetsplusTab">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px"><h3>🏢 الأصول الثابتة والإهلاك</h3><button class="btn-add" onclick="loadAssetsPlusTab()">🔄 تحديث</button></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px"><h3>🏢 الأصول الثابتة والإهلاك</h3><button class="btn-add" data-dora-action="loadAssetsPlusTab">🔄 تحديث</button></div>
                 <div class="zatca-note">ℹ️ بداية الإهلاك من الشهر التالي لتاريخ الشراء. القسط الثابت: (التكلفة − الخردة)/العمر شهرياً. المتناقص: معدل سنوي 2× القسط الثابت على القيمة الدفترية بلا تجاوز الخردة. وحدات الإنتاج: حسب الاستهلاك الفعلي المُدخل عند الترحيل. قيد الشهر: مدين مصروف الإهلاك (5300) / دائن مجمع الإهلاك (1590).</div>
 
                 <div class="erp-box" style="border:2px solid #8B5CF6;border-radius:14px;padding:18px;margin:16px 0 22px">
@@ -605,18 +605,18 @@
                         <div class="form-group" style="margin:0"><label>التكلفة *</label><input type="number" id="astCost" class="erp-in" min="0" step="any"></div>
                         <div class="form-group" style="margin:0"><label>قيمة الخردة</label><input type="number" id="astSalvage" class="erp-in" min="0" step="any"></div>
                         <div class="form-group" style="margin:0"><label>العمر الإنتاجي (سنوات)</label><input type="number" id="astLife" class="erp-in" min="1" step="1" value="5"></div>
-                        <select id="astMethod" class="erp-in" onchange="astMethodChange()"><option value="sl">قسط ثابت</option><option value="db">قسط متناقص 2×</option><option value="uop">وحدات إنتاج</option></select>
+                        <select id="astMethod" class="erp-in" data-dora-action-change="astMethodChange"><option value="sl">قسط ثابت</option><option value="db">قسط متناقص 2×</option><option value="uop">وحدات إنتاج</option></select>
                         <input type="number" id="astUnits" class="erp-in" min="0" step="any" placeholder="إجمالي الوحدات المقدرة" style="display:none">
                     </div>
-                    <button class="btn-add" style="margin-top:12px" onclick="astSave()">💾 حفظ الأصل</button>
+                    <button class="btn-add" style="margin-top:12px" data-dora-action="astSave">💾 حفظ الأصل</button>
                 </div>
 
                 <div class="erp-box" style="border:2px solid #22C55E;border-radius:14px;padding:18px;margin-bottom:22px">
                     <h4 style="margin:0 0 12px">📤 ترحيل إهلاك الشهر</h4>
                     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end">
                         <div class="form-group" style="margin:0"><label>الشهر</label><input type="month" id="astDepMonth" class="erp-in" dir="ltr"></div>
-                        <button class="btn-add" onclick="astPreviewDep()">🔍 معاينة المستحق</button>
-                        <button class="btn-add" id="astDepPostBtn" style="background:#22C55E;display:none" onclick="astPostDep()">📤 ترحيل القيد</button>
+                        <button class="btn-add" data-dora-action="astPreviewDep">🔍 معاينة المستحق</button>
+                        <button class="btn-add" id="astDepPostBtn" style="background:#22C55E;display:none" data-dora-action="astPostDep">📤 ترحيل القيد</button>
                     </div>
                     <div id="astDepPreview" style="display:none;margin-top:14px;overflow-x:auto"><table class="admin-table"><thead><tr><th>الأصل</th><th>الطريقة</th><th>وحدات الشهر (لوحدات الإنتاج)</th><th>الإهلاك</th></tr></thead><tbody id="astDepPreviewTable"></tbody></table></div>
                 </div>
@@ -629,7 +629,7 @@
             </div>
 
             <div class="tab-content" id="accountingTab">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3>🏛️ المحاسبة — قيود اليومية والتقارير</h3><button class="btn-add" onclick="erpPostUnposted()">⚡ ترحيل الطلبات غير المرحّلة</button></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3>🏛️ المحاسبة — قيود اليومية والتقارير</h3><button class="btn-add" data-dora-action="erpPostUnposted">⚡ ترحيل الطلبات غير المرحّلة</button></div>
                 <div class="zatca-note">ℹ️ كل قيد يتولد من طلب بيع موجود (مدين: العملاء / دائن: المبيعات) — القيود لا تُعدَّل ولا تُحذف، التصحيح بقيود عكسية فقط. الأرصدة مشتقة تلقائياً.</div>
                 <h4 style="margin:16px 0 8px">📒 قيود اليومية</h4>
                 <table><thead><tr><th>رقم القيد</th><th>التاريخ</th><th>البيان</th><th>الحساب</th><th>الطرف</th><th>مدين</th><th>دائن</th></tr></thead><tbody id="erpJournalTable"><tr><td colspan="7">⏳ جاري التحميل...</td></tr></tbody></table>
@@ -644,19 +644,19 @@
                     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin-bottom:14px">
                         <div class="form-group" style="margin:0"><label>من تاريخ</label><input type="date" id="afakyDailyFrom" class="erp-in" dir="ltr"></div>
                         <div class="form-group" style="margin:0"><label>إلى تاريخ</label><input type="date" id="afakyDailyTo" class="erp-in" dir="ltr"></div>
-                        <button class="btn-add" onclick="afakyDailyGenerate()">⚙️ توليد الكشف</button>
-                        <button class="btn-add" style="background:#16A34A" onclick="afakyDailyExport()">📥 تصدير Excel</button>
-                        <button class="btn-add" style="background:#0EA5E9" onclick="afakyDailyPrintSummary()">🖨️ تصدير ملخص يومي</button>
+                        <button class="btn-add" data-dora-action="afakyDailyGenerate">⚙️ توليد الكشف</button>
+                        <button class="btn-add" style="background:#16A34A" data-dora-action="afakyDailyExport">📥 تصدير Excel</button>
+                        <button class="btn-add" style="background:#0EA5E9" data-dora-action="afakyDailyPrintSummary">🖨️ تصدير ملخص يومي</button>
                     </div>
                     <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>رقم الفاتورة/الطلب</th><th>الوقت</th><th>العميل</th><th>الأصناف</th><th>قبل الضريبة</th><th>الضريبة 15%</th><th>الشحن</th><th>الإجمالي</th><th>طريقة الدفع</th><th>حالة الدفع</th><th>زاتكا</th></tr></thead><tbody id="afakyDailyTable"><tr><td colspan="11" class="admin-empty">اختر التاريخ واضغط «توليد الكشف»</td></tr></tbody></table></div>
                     <div id="afakyDailyTotals" style="margin-top:14px"></div>
                 </div>
                 <h4 style="margin:24px 0 8px">📥 تصدير التقارير — Excel</h4>
                 <div style="display:flex;gap:10px;flex-wrap:wrap">
-                    <button class="btn-add" style="background:#0EA5E9" onclick="erpExport('journal')">📒 دفتر اليومية</button>
-                    <button class="btn-add" style="background:#0EA5E9" onclick="erpExport('trial')">⚖️ ميزان المراجعة</button>
-                    <button class="btn-add" style="background:#0EA5E9" onclick="erpExport('income')">📈 قائمة الدخل</button>
-                    <button class="btn-add" style="background:#0EA5E9" onclick="erpExport('monthly')">📊 الأرباح الشهرية</button>
+                    <button class="btn-add" style="background:#0EA5E9" data-dora-action="erpExport:journal">📒 دفتر اليومية</button>
+                    <button class="btn-add" style="background:#0EA5E9" data-dora-action="erpExport:trial">⚖️ ميزان المراجعة</button>
+                    <button class="btn-add" style="background:#0EA5E9" data-dora-action="erpExport:income">📈 قائمة الدخل</button>
+                    <button class="btn-add" style="background:#0EA5E9" data-dora-action="erpExport:monthly">📊 الأرباح الشهرية</button>
                 </div>
 
                 <!-- ═══ Z3: تقارير متقدمة ═══ -->
@@ -668,8 +668,8 @@
                         <h4 style="margin:0 0 6px">⏳ أعمار ذمم العملاء (0-30 / 31-60 / 61-90 / +90)</h4>
                         <p style="margin:0 0 12px;color:#94A3B8;font-size:13px">من طلبات المتجر غير المدفوعة، مع توزيع سندات القبض FIFO على الأقدم فالأحدث — الاستحقاق = تاريخ الطلب + 30 يوماً.</p>
                         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
-                            <button class="btn-add" style="background:#F59E0B" onclick="rpAgingRun()">⚙️ تشغيل التقرير</button>
-                            <button class="btn-add" style="background:#16A34A" onclick="rpAgingExport()">📥 تصدير Excel</button>
+                            <button class="btn-add" style="background:#F59E0B" data-dora-action="rpAgingRun">⚙️ تشغيل التقرير</button>
+                            <button class="btn-add" style="background:#16A34A" data-dora-action="rpAgingExport">📥 تصدير Excel</button>
                         </div>
                         <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>العميل</th><th>0-30 يوم</th><th>31-60 يوم</th><th>61-90 يوم</th><th>+90 يوم</th><th>الإجمالي</th></tr></thead><tbody id="rpAgingTable"><tr><td colspan="6" class="admin-empty">اضغط «تشغيل التقرير»</td></tr></tbody></table></div>
                     </div>
@@ -678,7 +678,7 @@
                         <h4 style="margin:0 0 12px">💵 التدفق النقدي الشهري المبسط (من السندات)</h4>
                         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin-bottom:12px">
                             <div class="form-group" style="margin:0"><label>الشهر</label><input type="month" id="rpCfMonth" class="erp-in" dir="ltr"></div>
-                            <button class="btn-add" style="background:#22C55E" onclick="rpCashflowRun()">⚙️ عرض</button>
+                            <button class="btn-add" style="background:#22C55E" data-dora-action="rpCashflowRun">⚙️ عرض</button>
                         </div>
                         <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>الشهر</th><th>📥 المقبوضات</th><th>📤 المدفوعات</th><th>الصافي</th></tr></thead><tbody id="rpCfTable"><tr><td colspan="4" class="admin-empty">اختر الشهر واضغط «عرض»</td></tr></tbody></table></div>
                     </div>
@@ -688,7 +688,7 @@
                         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end">
                             <div class="form-group" style="margin:0"><label>من تاريخ</label><input type="date" id="rpVatFrom" class="erp-in" dir="ltr"></div>
                             <div class="form-group" style="margin:0"><label>إلى تاريخ</label><input type="date" id="rpVatTo" class="erp-in" dir="ltr"></div>
-                            <button class="btn-add" style="background:#0EA5E9" onclick="rpVatRun()">⚙️ حساب الملخص</button>
+                            <button class="btn-add" style="background:#0EA5E9" data-dora-action="rpVatRun">⚙️ حساب الملخص</button>
                         </div>
                         <div id="rpVatResult"></div>
                     </div>
@@ -707,7 +707,7 @@
                         <input type="text" id="cashBranch" placeholder="الفرع" class="erp-in">
                         <input type="password" id="cashPin" placeholder="PIN — 4-6 أرقام *" class="erp-in" dir="ltr" style="text-align:center" maxlength="6" inputmode="numeric">
                     </div>
-                    <button class="btn-add" style="margin-top:12px" onclick="cashierAdd()">💾 حفظ الكاشير</button>
+                    <button class="btn-add" style="margin-top:12px" data-dora-action="cashierAdd">💾 حفظ الكاشير</button>
                     <div style="color:#94A3B8;font-size:12px;margin-top:8px">🔐 يُخزَّن الرمز كهاش SHA-256 فقط — 5 محاولات خاطئة تقفل الحساب 5 دقائق. الكاشير يدخل من pos.html ولا يملك أي صلاحية على لوحة الأدمن.</div>
                 </div>
                 <div id="cashiersList"><div class="admin-empty">⏳ جاري التحميل...</div></div>
@@ -731,7 +731,7 @@
                         </select>
                         <input type="password" id="suPassword" placeholder="كلمة المرور (6+) *" class="erp-in" dir="ltr" style="text-align:center">
                     </div>
-                    <button class="btn-add" style="margin-top:12px" onclick="staffUserAdd()">💾 حفظ المستخدم</button>
+                    <button class="btn-add" style="margin-top:12px" data-dora-action="staffUserAdd">💾 حفظ المستخدم</button>
                     <div style="color:#94A3B8;font-size:12px;margin-top:8px">🔐 تُخزَّن كلمة المرور كهاش SHA-256 مع salt فقط — 5 محاولات خاطئة تقفل الحساب 5 دقائق، والجلسة 12 ساعة. الموظف يدخل من staff.html فقط ولا يملك أي صلاحية على هذه اللوحة. إدارة المستخدمين وإعدادات زاتكا تبقى حصراً هنا.</div>
                 </div>
                 <div id="staffUsersList"><div class="admin-empty">⏳ جاري التحميل...</div></div>
@@ -741,7 +741,7 @@
             <div class="tab-content" id="crmTab">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
                     <h3 data-i18n="crm_title">🤝 إدارة علاقات العملاء (CRM) — العملاء المحتملون</h3>
-                    <select class="erp-in store-lang-sel" style="width:auto" onchange="storeLangSet(this.value)">
+                    <select class="erp-in store-lang-sel" style="width:auto" data-dora-action-change="storeLangSet:$value">
                         <option value="ar">🇸🇦 عربي</option><option value="en">🇬🇧 English</option>
                     </select>
                 </div>
@@ -756,8 +756,8 @@
                         <input type="text" id="crmLeadNotes" class="erp-in" data-i18n="crm_ph_notes" data-i18n-ph placeholder="ملاحظات">
                     </div>
                     <div style="margin-top:12px;display:flex;gap:8px">
-                        <button class="btn-add" onclick="crmLeadSave()" data-i18n="crm_save">💾 حفظ</button>
-                        <button class="btn-edit" onclick="crmLeadReset()" data-i18n="crm_clear">مسح</button>
+                        <button class="btn-add" data-dora-action="crmLeadSave" data-i18n="crm_save">💾 حفظ</button>
+                        <button class="btn-edit" data-dora-action="crmLeadReset" data-i18n="crm_clear">مسح</button>
                     </div>
                 </div>
                 <div id="crmActBox" class="erp-box" style="display:none;border:1px solid rgba(139,92,246,.4);border-radius:14px;padding:18px;margin-bottom:18px">
@@ -772,11 +772,11 @@
                         <input type="text" id="crmActNote" class="erp-in" placeholder="ملاحظة النشاط">
                         <input type="date" id="crmActRemind" class="erp-in" title="تاريخ تذكير المتابعة">
                     </div>
-                    <button class="btn-add" style="margin-top:12px" onclick="crmActSave()" data-i18n="crm_act_save">💾 حفظ النشاط</button>
+                    <button class="btn-add" style="margin-top:12px" data-dora-action="crmActSave" data-i18n="crm_act_save">💾 حفظ النشاط</button>
                 </div>
                 <div style="display:flex;gap:8px;margin-bottom:12px">
-                    <button class="btn-edit sub-tab active" id="crmSub_board" onclick="crmSubShow('board')" data-i18n="crm_sub_board">🗂️ لوحة الحالات</button>
-                    <button class="btn-edit sub-tab" id="crmSub_followups" onclick="crmSubShow('followups')" data-i18n="crm_sub_follow">⏰ متابعات اليوم</button>
+                    <button class="btn-edit sub-tab active" id="crmSub_board" data-dora-action="crmSubShow:board" data-i18n="crm_sub_board">🗂️ لوحة الحالات</button>
+                    <button class="btn-edit sub-tab" id="crmSub_followups" data-dora-action="crmSubShow:followups" data-i18n="crm_sub_follow">⏰ متابعات اليوم</button>
                 </div>
                 <div id="crmPaneBoard">
                     <div id="crmCounters" style="margin-bottom:12px"></div>
@@ -793,13 +793,13 @@
             <div class="tab-content" id="manufacturingTab">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
                     <h3 data-i18n="mfg_title">🏭 التصنيع — قوائم المكونات وأوامر التصنيع</h3>
-                    <select class="erp-in store-lang-sel" style="width:auto" onchange="storeLangSet(this.value)">
+                    <select class="erp-in store-lang-sel" style="width:auto" data-dora-action-change="storeLangSet:$value">
                         <option value="ar">🇸🇦 عربي</option><option value="en">🇬🇧 English</option>
                     </select>
                 </div>
                 <div style="display:flex;gap:8px;margin-bottom:12px">
-                    <button class="btn-edit sub-tab active" id="mfgSub_bom" onclick="mfgSubShow('bom')" data-i18n="mfg_sub_bom">📋 قوائم المكونات (BOM)</button>
-                    <button class="btn-edit sub-tab" id="mfgSub_orders" onclick="mfgSubShow('orders')" data-i18n="mfg_sub_orders">🏭 أوامر التصنيع</button>
+                    <button class="btn-edit sub-tab active" id="mfgSub_bom" data-dora-action="mfgSubShow:bom" data-i18n="mfg_sub_bom">📋 قوائم المكونات (BOM)</button>
+                    <button class="btn-edit sub-tab" id="mfgSub_orders" data-dora-action="mfgSubShow:orders" data-i18n="mfg_sub_orders">🏭 أوامر التصنيع</button>
                 </div>
                 <div id="mfgPaneBom">
                     <div class="erp-box" style="border:1px solid rgba(148,163,184,.25);border-radius:14px;padding:18px;margin-bottom:18px">
@@ -811,8 +811,8 @@
                         <label data-i18n="mfg_components">المكونات (لكل وحدة منتج تام)</label>
                         <div id="mfgBomLines" style="margin:8px 0"></div>
                         <div style="display:flex;gap:8px">
-                            <button class="btn-edit" onclick="mfgBomAddLine()" data-i18n="mfg_add_line">➕ إضافة مكوّن</button>
-                            <button class="btn-add" onclick="mfgBomSave()" data-i18n="mfg_save_bom">💾 حفظ القائمة</button>
+                            <button class="btn-edit" data-dora-action="mfgBomAddLine" data-i18n="mfg_add_line">➕ إضافة مكوّن</button>
+                            <button class="btn-add" data-dora-action="mfgBomSave" data-i18n="mfg_save_bom">💾 حفظ القائمة</button>
                         </div>
                     </div>
                     <div id="mfgBomViewBox" class="erp-box" style="display:none;border:1px solid rgba(34,197,94,.35);border-radius:14px;padding:18px;margin-bottom:18px"></div>
@@ -829,8 +829,8 @@
                         <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
                             <label data-i18n="mfg_qty">الكمية</label>
                             <input type="number" id="mfgOrderQty" class="erp-in" style="width:120px" min="1" step="any" value="1">
-                            <button class="btn-edit" onclick="mfgOrderCheckNow()" data-i18n="mfg_check">🔍 تحقق من التوفر</button>
-                            <button class="btn-add" onclick="mfgOrderSave()" data-i18n="mfg_create">💾 إنشاء (مسودة)</button>
+                            <button class="btn-edit" data-dora-action="mfgOrderCheckNow" data-i18n="mfg_check">🔍 تحقق من التوفر</button>
+                            <button class="btn-add" data-dora-action="mfgOrderSave" data-i18n="mfg_create">💾 إنشاء (مسودة)</button>
                         </div>
                         <div id="mfgOrderCheck" style="margin-top:10px"></div>
                     </div>
@@ -845,7 +845,7 @@
             <div class="tab-content" id="assistantTab">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
                     <h3 data-i18n="asst_title">🤖 المساعد الذكي — اسأل عن أرقام متجرك</h3>
-                    <select class="erp-in store-lang-sel" style="width:auto" onchange="storeLangSet(this.value)">
+                    <select class="erp-in store-lang-sel" style="width:auto" data-dora-action-change="storeLangSet:$value">
                         <option value="ar">🇸🇦 عربي</option><option value="en">🇬🇧 English</option>
                     </select>
                 </div>
@@ -854,28 +854,28 @@
                     <div id="asstMessages" style="max-height:420px;overflow-y:auto;margin-bottom:12px"></div>
                     <div style="display:flex;gap:8px">
                         <input type="text" id="asstInput" class="erp-in" style="flex:1" data-i18n="asst_ph" data-i18n-ph placeholder="مثال: مبيعات الشهر الماضي؟ أفضل الأصناف؟ المتأخرات؟">
-                        <button class="btn-add" onclick="asstAsk()" data-i18n="asst_send">إرسال</button>
+                        <button class="btn-add" data-dora-action="asstAsk" data-i18n="asst_send">إرسال</button>
                     </div>
                 </div>
             </div>
             <div class="tab-content" id="auditLogTab">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> سجل التدقيق — آخر 100 عملية</h3><button class="btn-add" onclick="loadAuditLog()">🔄 تحديث</button></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> سجل التدقيق — آخر 100 عملية</h3><button class="btn-add" data-dora-action="loadAuditLog">🔄 تحديث</button></div>
                 <div id="auditLogList"><div class="admin-empty">⏳ جاري التحميل...</div></div>
             </div>
             <div class="tab-content" id="einvoiceTab">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><rect x="8" y="13" width="8" height="2" rx="1"></rect></svg> الفوترة الإلكترونية — ZATCA (هيئة الزكاة والضريبة والجمارك)</h3><button class="btn-add" onclick="loadZatcaInvoices()">🔄 تحديث</button></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><rect x="8" y="13" width="8" height="2" rx="1"></rect></svg> الفوترة الإلكترونية — ZATCA (هيئة الزكاة والضريبة والجمارك)</h3><button class="btn-add" data-dora-action="loadZatcaInvoices">🔄 تحديث</button></div>
                 <div class="zatca-note">ℹ️ هذا الـ QR يغطي <strong>المرحلة الأولى (التوليد)</strong> بصيغة TLV القياسية — الربط الكامل مع هيئة الزكاة والضريبة والجمارك (المرحلة الثانية - الربط والتكامل) يتطلب شهادة رسمية (CSID) وتوقيعاً رقمياً عبر حل معتمد.</div>
                 <div class="afaky-form" style="margin-bottom:24px">
                     <h4>⚙️ إعدادات الفوترة الإلكترونية</h4>
                     <div class="form-group"><label>اسم البائع (Tag 1)</label><input type="text" id="zatcaSellerName" placeholder="شركة درة فارس الشمال للتجارة"></div>
                     <div class="form-group"><label>الرقم الضريبي (Tag 2)</label><input type="text" id="zatcaVatNumber" placeholder="3XXXXXXXXXXXX3" dir="ltr" style="text-align:left"></div>
-                    <button class="btn-save" onclick="saveZatcaSettings()">💾 حفظ إعدادات الفوترة</button>
+                    <button class="btn-save" data-dora-action="saveZatcaSettings">💾 حفظ إعدادات الفوترة</button>
                 </div>
                 <table><thead><tr><th>#</th><th>رقم الفاتورة</th><th>العميل</th><th>الإجمالي</th><th>الضريبة</th><th>التاريخ</th><th>QR</th></tr></thead><tbody id="zatcaInvoicesTable"><tr><td colspan="7">⏳ جاري التحميل...</td></tr></tbody></table>
             </div>
 
             <div class="tab-content" id="zatcaTab">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3>⚡ زاتكا — الربط والاعتماد (المرحلة الثانية)</h3><button class="btn-add" onclick="loadZatcaTab()">🔄 تحديث</button></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3>⚡ زاتكا — الربط والاعتماد (المرحلة الثانية)</h3><button class="btn-add" data-dora-action="loadZatcaTab">🔄 تحديث</button></div>
                 <div class="zatca-note">ℹ️ ابدأ ببيئة <strong>المحاكاة</strong>، وبعد نجاح الامتثال والحصول على شهادة الإنتاج بدّل إلى <strong>الإنتاج</strong>. فواتير طلبات المتجر تُرسل كـ <strong>مبسطة B2C (Reporting)</strong> افتراضياً.</div>
                 <div id="zatcaSqlWarn" class="admin-note" style="display:none;margin-bottom:16px">⚠️ جداول زاتكا غير موجودة بعد — نفّذ ملف <code>store-zatca.sql</code> في SQL Editor أولاً.</div>
                 <div id="zcStatus" class="admin-data-card" style="margin-bottom:16px">⏳ ...</div>
@@ -883,9 +883,9 @@
                 <div class="admin-data-card" style="margin-bottom:16px;display:flex;gap:10px;align-items:end;flex-wrap:wrap">
                     <div class="form-group" style="flex:1;min-width:220px;margin:0">
                         <label>🏢 الكيان الحالي (الشركة / المؤسسة)</label>
-                        <select id="zcEntity" onchange="zatcaPickEntity(this.value)"><option value="">⏳ ...</option></select>
+                        <select id="zcEntity" data-dora-action-change="zatcaPickEntity:$value"><option value="">⏳ ...</option></select>
                     </div>
-                    <button class="btn-add" onclick="zatcaNewEntity()">➕ إضافة كيان جديد (المؤسسة)</button>
+                    <button class="btn-add" data-dora-action="zatcaNewEntity">➕ إضافة كيان جديد (المؤسسة)</button>
                 </div>
                 <div class="zatca-note" style="margin-bottom:16px">💡 كل كيان له بياناته وشهادته الخاصة في زاتكا. اختر الكيان من القائمة، أكمل بياناته واحفظ، ثم نفّذ خطوات الاعتماد (OTP) الخاصة به. الفواتير تُصدر باسم الكيان المختار في بوابة المفوتر.</div>
 
@@ -903,7 +903,7 @@
                         <div class="form-group"><label>البيئة</label><select id="zcEnv"><option value="simulation">🧪 محاكاة (Developer Portal)</option><option value="production">🟢 إنتاج</option></select></div>
                         <div class="form-group" style="grid-column:1/-1"><label>وسيط الإرسال (Proxy URL) — اختياري لتجاوز CORS</label><input type="url" id="zcProxy" dir="ltr" style="text-align:left" placeholder="https://kcbmvxuzjlaooknwhqqb.functions.supabase.co/zatca-store-proxy"></div>
                     </div>
-                    <button class="btn-save" onclick="saveZatcaConfig()">💾 حفظ إعدادات المنشأة</button>
+                    <button class="btn-save" data-dora-action="saveZatcaConfig">💾 حفظ إعدادات المنشأة</button>
                 </div>
 
                 <div class="afaky-form" style="margin-bottom:24px">
@@ -911,9 +911,9 @@
                     <div class="admin-note">الخطوات: 1) أدخل OTP من حسابك في منصة فاتورة ثم اضغط «توليد المفاتيح وطلب الربط» 2) أرسل فواتير الامتثال 3) اطلب شهادة الإنتاج.</div>
                     <div class="form-group" style="max-width:260px"><label>OTP (6 أرقام من منصة فاتورة)</label><input type="text" id="zcOtp" dir="ltr" style="text-align:left" maxlength="6" placeholder="123456"></div>
                     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
-                        <button class="btn-save" onclick="zatcaOnboardStep1()">🔑 توليد المفاتيح وطلب الربط</button>
-                        <button class="btn-add" onclick="zatcaOnboardStep2()">📨 إرسال فواتير الامتثال</button>
-                        <button class="btn-add" onclick="zatcaOnboardStep3()">🏅 طلب شهادة الإنتاج</button>
+                        <button class="btn-save" data-dora-action="zatcaOnboardStep1">🔑 توليد المفاتيح وطلب الربط</button>
+                        <button class="btn-add" data-dora-action="zatcaOnboardStep2">📨 إرسال فواتير الامتثال</button>
+                        <button class="btn-add" data-dora-action="zatcaOnboardStep3">🏅 طلب شهادة الإنتاج</button>
                     </div>
                     <pre id="zcOnboardLog" dir="rtl" style="margin-top:12px;background:#FAF6F1;padding:12px;border-radius:8px;font-size:12px;white-space:pre-wrap;max-height:220px;overflow:auto">سجل الربط يظهر هنا...</pre>
                 </div>
@@ -924,13 +924,13 @@
                 </div>
             </div>
             
-            <div class="tab-content" id="why_usTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> لماذا تختارنا</h3><button class="btn-add" onclick="addSiteItem('why_us')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><div id="why_usList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-            <div class="tab-content" id="vision_missionTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> رؤيتنا - رسالتنا - قيمنا</h3><button class="btn-add" onclick="addSiteItem('vision_mission')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><div id="vision_missionList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-            <div class="tab-content" id="hero_statsTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg> الإحصائيات</h3><button class="btn-add" onclick="addSiteItem('hero_stats')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><div id="hero_statsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+            <div class="tab-content" id="why_usTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> لماذا تختارنا</h3><button class="btn-add" data-dora-action="addSiteItem:why_us"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><div id="why_usList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+            <div class="tab-content" id="vision_missionTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> رؤيتنا - رسالتنا - قيمنا</h3><button class="btn-add" data-dora-action="addSiteItem:vision_mission"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><div id="vision_missionList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+            <div class="tab-content" id="hero_statsTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg> الإحصائيات</h3><button class="btn-add" data-dora-action="addSiteItem:hero_stats"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><div id="hero_statsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
 
             <div class="tab-content" id="home_heroTab">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> 🏠 محتوى الصفحة الرئيسية (الهيرو)</h3></div>
-                <form class="afaky-form" onsubmit="return saveHomeHero(event)">
+                <form class="afaky-form" data-dora-action-submit="saveHomeHero">
                     <h4>✏️ نصوص الواجهة الرئيسية — تُقرأ حيًّا من قاعدة البيانات وتتطبق فورًا</h4>
                     <div class="admin-form-grid">
                         <div class="form-group"><label>الشارة العلوية (Badge)</label><input type="text" id="heroBadgeInput" placeholder="✨ حلول تقنية متكاملة للشركات والأفراد"></div>
@@ -945,23 +945,23 @@
                     <button type="submit" class="btn-save">💾 حفظ محتوى الصفحة الرئيسية</button>
                 </form>
             </div>
-            <div class="tab-content" id="aboutTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg> عن الشركة</h3><button class="btn-add" onclick="addSiteItem('about')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><div id="aboutList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-            <div class="tab-content" id="testimonialsTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg> آراء العملاء</h3><button class="btn-add" onclick="addSiteItem('testimonials')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><div id="testimonialsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-            <div class="tab-content" id="projectsTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg> المشاريع</h3><button class="btn-add" onclick="addSiteItem('projects')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><div id="projectsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-            <div class="tab-content" id="blogTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> المقالات</h3><button class="btn-add" onclick="addSiteItem('blog')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><div id="blogList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-            <div class="tab-content" id="certificationsTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg> الشهادات</h3><button class="btn-add" onclick="addSiteItem('certifications')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><div id="certificationsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-            <div class="tab-content" id="contactTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> التواصل</h3><button class="btn-add" onclick="addSiteItem('contact')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><div id="contactList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
-            <div class="tab-content" id="announcementsTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><path d="M3 11l18-5v12L3 14v-3z"></path><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"></path></svg> إعلانات الزوار</h3><button class="btn-add" onclick="addSiteItem('announcements')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><div id="announcementsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+            <div class="tab-content" id="aboutTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg> عن الشركة</h3><button class="btn-add" data-dora-action="addSiteItem:about"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><div id="aboutList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+            <div class="tab-content" id="testimonialsTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg> آراء العملاء</h3><button class="btn-add" data-dora-action="addSiteItem:testimonials"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><div id="testimonialsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+            <div class="tab-content" id="projectsTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg> المشاريع</h3><button class="btn-add" data-dora-action="addSiteItem:projects"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><div id="projectsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+            <div class="tab-content" id="blogTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> المقالات</h3><button class="btn-add" data-dora-action="addSiteItem:blog"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><div id="blogList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+            <div class="tab-content" id="certificationsTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg> الشهادات</h3><button class="btn-add" data-dora-action="addSiteItem:certifications"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><div id="certificationsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+            <div class="tab-content" id="contactTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> التواصل</h3><button class="btn-add" data-dora-action="addSiteItem:contact"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><div id="contactList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
+            <div class="tab-content" id="announcementsTab"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><path d="M3 11l18-5v12L3 14v-3z"></path><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"></path></svg> إعلانات الزوار</h3><button class="btn-add" data-dora-action="addSiteItem:announcements"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة</button></div><div id="announcementsList"><div class="admin-empty">⏳ جاري التحميل...</div></div></div>
             <div class="tab-content" id="afakyTab">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg> ربط أفاقي — التكامل مع نظام الحسابات</h3></div>
                 <div class="afaky-status-card">
                     <div class="afaky-status-badge" id="afakyStatus">⚪ غير مفعل</div>
                     <div class="afaky-status-note" id="afakyStatusNote">لم يتم تفعيل الربط بعد — اضبط الإعدادات بالأسفل ثم احفظ.</div>
                 </div>
-                <form class="afaky-form" onsubmit="return saveAfakySettings(event)">
+                <form class="afaky-form" data-dora-action-submit="saveAfakySettings">
                     <h4>⚙️ إعدادات الربط</h4>
                     <label class="afaky-check"><input type="checkbox" id="afakyEnabled"> تفعيل الربط مع نظام أفاقي</label>
-                    <div class="form-group"><label>وضع الربط</label><select id="afakyMode" onchange="toggleAfakyModeFields()"><option value="api">API مباشر</option><option value="database">قاعدة بيانات SQL Server</option><option value="csv">ملفات CSV</option><option value="webhook">Webhook</option><option value="email">البريد الإلكتروني</option></select></div>
+                    <div class="form-group"><label>وضع الربط</label><select id="afakyMode" data-dora-action-change="toggleAfakyModeFields"><option value="api">API مباشر</option><option value="database">قاعدة بيانات SQL Server</option><option value="csv">ملفات CSV</option><option value="webhook">Webhook</option><option value="email">البريد الإلكتروني</option></select></div>
                     <div class="afaky-mode-fields" id="afakyFieldsApi">
                         <div class="mode-title">🔑 إعدادات API</div>
                         <div class="form-group"><label>مفتاح API</label><input type="text" id="afakyApiKey" placeholder="AFAKY-API-KEY"></div>
@@ -1000,8 +1000,8 @@
                     <h4>📄 أدوات CSV — تصدير واستيراد</h4>
                     <div class="afaky-csv-row">
                         <div class="csv-label">تصدير البيانات لنظام أفاقي (ملفات CSV متوافقة مع Excel):</div>
-                        <button class="btn-add" onclick="exportProductsCSV()">📦 تصدير المنتجات CSV</button>
-                        <button class="btn-add" onclick="exportOrdersCSV()">🛒 تصدير الطلبات CSV</button>
+                        <button class="btn-add" data-dora-action="exportProductsCSV">📦 تصدير المنتجات CSV</button>
+                        <button class="btn-add" data-dora-action="exportOrdersCSV">🛒 تصدير الطلبات CSV</button>
                     </div>
                 </div>
                 <div class="afaky-csv-tools" style="margin-top:24px;border:2px solid #22C55E;border-radius:14px">
@@ -1009,18 +1009,18 @@
                     <p style="color:var(--text-muted);font-size:12px;line-height:1.9;margin:0 0 12px">ارفع ملف Excel المُصدَّر من برنامج آفاق (تقرير «أرصدة الأصناف»). الأداة تقرأ <b>الكود والاسم والكمية</b> فقط — <b>بدون أسعار</b>، تضيف الأصناف الجديدة <b>مخفية</b> حتى تسعّرها بنفسك من صفحة المنتجات، وتحدّث كميات الأصناف الموجودة بدون لمس أسعارها أو صورها.</p>
                     <div class="afaky-csv-row">
                         <div class="csv-label">ملف آفاق (xlsx أو CSV):</div>
-                        <input type="file" class="afaky-import-file" id="afaqXlsFile" accept=".xlsx,.xls,.csv,text/csv" onchange="afaqXlsPreview(this)">
+                        <input type="file" class="afaky-import-file" id="afaqXlsFile" accept=".xlsx,.xls,.csv,text/csv" data-dora-action-change="afaqXlsPreview:$element">
                     </div>
                     <label class="afaky-check" style="margin:6px 0"><input type="checkbox" id="afaqHideNew" checked> إخفاء الأصناف الجديدة عن المتجر حتى تسعيرها (يظهر سعرها 0 في لوحة المنتجات فقط)</label>
                     <label class="afaky-check" style="margin:6px 0"><input type="checkbox" id="afaqAutoCat" checked> تصنيف تلقائي بالكلمات (حبر/TONER→أحبار، CABLE→وصلات… وغير المعروف → إكسسوارات)</label>
                     <div class="afaky-import-preview" id="afaqXlsPreviewBox"></div>
-                    <button class="btn-save" id="afaqXlsImportBtn" style="display:none" onclick="afaqXlsRun()">⬆️ تنفيذ الاستيراد الآن</button>
+                    <button class="btn-save" id="afaqXlsImportBtn" style="display:none" data-dora-action="afaqXlsRun">⬆️ تنفيذ الاستيراد الآن</button>
                 </div>
                 <div class="afaky-csv-tools" style="margin-top:24px">
                     <h4>🔄 المزامنة مع أفاقي</h4>
                     <div class="afaky-csv-row">
                         <div class="csv-label">مزامنة فورية حسب وضع الربط المحفوظ (Webhook: إرسال آخر 20 طلب — CSV: تصدير الطلبات — البريد: فتح رسالة تقرير):</div>
-                        <button class="btn-add" onclick="syncAfakyNow()">🔄 مزامنة الآن</button>
+                        <button class="btn-add" data-dora-action="syncAfakyNow">🔄 مزامنة الآن</button>
                     </div>
                     <h4 style="margin-top:8px">🧾 سجل المزامنة — آخر 20 عملية</h4>
                     <div id="afakySyncLogList"><div class="admin-empty">⏳ جاري التحميل...</div></div>
@@ -1028,29 +1028,29 @@
             </div>
 
             <div class="tab-content" id="bank_accountsTab">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><path d="M3 21h18"></path><line x1="3" y1="10" x2="21" y2="10"></line><polyline points="7 3 12 3 17 7 17 21"></polyline></svg> الحسابات البنكية</h3><button class="btn-add" onclick="addBankAccount()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة حساب</button></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><path d="M3 21h18"></path><line x1="3" y1="10" x2="21" y2="10"></line><polyline points="7 3 12 3 17 7 17 21"></polyline></svg> الحسابات البنكية</h3><button class="btn-add" data-dora-action="addBankAccount"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة حساب</button></div>
                 <div class="zatca-note">ℹ️ هذه الحسابات تظهر للعملاء عند اختيار التحويل البنكي في صفحة الدفع — الحسابات المعطّلة لا تظهر.</div>
                 <div id="bankAccountsList"><div class="admin-empty">⏳ جاري التحميل...</div></div>
             </div>
 
             <div class="tab-content" id="payment_methodsTab">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg> طرق الدفع</h3><button class="btn-add" onclick="openPaymentMethodModal()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة طريقة</button></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg> طرق الدفع</h3><button class="btn-add" data-dora-action="openPaymentMethodModal"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة طريقة</button></div>
                 <div class="zatca-note">ℹ️ صفحة الدفع (checkout) تقرأ هذا الجدول مباشرة — تظهر للعميل الطرق المفعّلة فقط ومرتبة حسب "الترتيب".</div>
                 <table><thead><tr><th>#</th><th>الأيقونة</th><th>الاسم</th><th>الترتيب</th><th>الحالة</th><th>الإجراءات</th></tr></thead><tbody id="paymentMethodsTable"><tr><td colspan="6">⏳ جاري التحميل...</td></tr></tbody></table>
             </div>
 
             <div class="tab-content" id="shippingTab">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg> الشحن — أسعار التوصيل حسب المدينة</h3><button class="btn-add" onclick="openShippingRateModal()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة سعر</button></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg> الشحن — أسعار التوصيل حسب المدينة</h3><button class="btn-add" data-dora-action="openShippingRateModal"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة سعر</button></div>
                 <div class="afaky-form" style="margin-bottom:24px">
                     <h4>⚙️ الإعدادات العامة للشحن</h4>
                     <div class="form-group"><label>سعر الشحن الافتراضي (ر.س) — يُستخدم عند عدم وجود سعر خاص بمدينة العميل</label><input type="number" id="shippingDefaultPrice" step="0.01" min="0" placeholder="25"></div>
-                    <button class="btn-save" onclick="saveShippingSettings()">💾 حفظ إعدادات الشحن</button>
+                    <button class="btn-save" data-dora-action="saveShippingSettings">💾 حفظ إعدادات الشحن</button>
                 </div>
                 <table><thead><tr><th>#</th><th>من مدينة</th><th>إلى مدينة</th><th>الوزن (كجم)</th><th>السعر</th><th>مدة التوصيل</th><th>الإجراءات</th></tr></thead><tbody id="shippingRatesTable"><tr><td colspan="7">⏳ جاري التحميل...</td></tr></tbody></table>
             </div>
 
             <div class="tab-content" id="gatewaysTab">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line><line x1="6" y1="15" x2="10" y2="15"></line></svg> بوابات الدفع — Moyasar / Tap / HyperPay</h3><button class="btn-add" onclick="loadPaymentGateways()">🔄 تحديث</button></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line><line x1="6" y1="15" x2="10" y2="15"></line></svg> بوابات الدفع — Moyasar / Tap / HyperPay</h3><button class="btn-add" data-dora-action="loadPaymentGateways">🔄 تحديث</button></div>
                 <div class="zatca-note">ℹ️ بيانات هذا التبويب محمية بسياسات RLS — لا تُقرأ ولا تُحدَّث إلا بجلسة دخول حقيقية (بريد + كلمة مرور) من Supabase Authentication.</div>
                 <div class="gateways-grid" id="gatewaysList"><div class="admin-empty">⏳ جاري التحميل...</div></div>
             </div>
@@ -1058,7 +1058,7 @@
             <div class="tab-content" id="staffTab">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px"><h3><svg width="18" height="18" style="vertical-align:middle;margin-left:8px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> إدارة الموظفين</h3></div>
                 <div class="zatca-note">ℹ️ أضف إيميل الموظف هنا ← ثم أخبره أن يفتح الموقع وينشئ حساباً <b>بنفس الإيميل</b> ويختار كلمة المرور التي تعجبه ← تصبح كلمته الأساسية تلقائياً ويتحول حسابه لحساب موظف بصلاحيات المتابعة فقط.</div>
-                <form onsubmit="return addStaff(event)" style="display:flex;gap:10px;margin:16px 0;flex-wrap:wrap">
+                <form data-dora-action-submit="addStaff" style="display:flex;gap:10px;margin:16px 0;flex-wrap:wrap">
                     <input type="email" id="newStaffEmail" required placeholder="employee@email.com" style="flex:1;min-width:240px;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:#fff;font-family:inherit;direction:ltr;text-align:right">
                     <button type="submit" class="btn-add">+ إضافة موظف</button>
                 </form>
@@ -1068,7 +1068,7 @@
             <div class="tab-content" id="securityTab">
                 <h3 style="margin-bottom:16px"><svg style="vertical-align:middle;margin-left:8px" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> تغيير كلمة المرور الخاصة بي</h3>
                 <div class="zatca-note">🔐 كل مستخدم يغيّر كلمة مروره بنفسه فقط — لا يستطيع أي أدمن رؤية أو تغيير كلمة مرور غيره.</div>
-                <form onsubmit="return changeMyPassword(event)" style="max-width:420px;display:grid;gap:12px;margin-top:16px">
+                <form data-dora-action-submit="changeMyPassword" style="max-width:420px;display:grid;gap:12px;margin-top:16px">
                     <label style="color:#B9BCE0;font-size:13px;font-weight:700">كلمة المرور الجديدة</label>
                     <input type="password" id="myNewPassword" required minlength="6" autocomplete="new-password" style="padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:#fff;font-family:inherit">
                     <label style="color:#B9BCE0;font-size:13px;font-weight:700">تأكيد كلمة المرور الجديدة</label>
@@ -1079,7 +1079,7 @@
 
             <div class="tab-content" id="settingsTab">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82.33l.06.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> الإعدادات العامة</h3></div>
-                <form class="afaky-form" onsubmit="return saveSettings(event)">
+                <form class="afaky-form" data-dora-action-submit="saveSettings">
                     <h4>🏪 إعدادات المتجر</h4>
                     <div class="admin-form-grid">
                         <div class="form-group"><label>اسم المتجر</label><input type="text" id="setStoreName" placeholder="شركة درة فارس الشمال"></div>
@@ -1091,7 +1091,7 @@
                     <button type="submit" class="btn-save">💾 حفظ الإعدادات العامة</button>
                 </form>
 
-                <form class="afaky-form" onsubmit="return saveSocialLinks(event)" style="margin-top:24px">
+                <form class="afaky-form" data-dora-action-submit="saveSocialLinks" style="margin-top:24px">
                     <h4>🔗 روابط السوشيال ميديا</h4>
                     <p style="color:var(--text-muted,#9CA3AF);font-size:13px;margin-bottom:12px">الأيقونات ظاهرة في الموقع بدون روابط حاليًا. عند إنشاء الحسابات الرسمية، الصق الروابط هنا واحفظ — وستتفعّل الأيقونات تلقائيًا في كل صفحات الموقع. اترك الحقل فارغًا لإبقاء الأيقونة بدون رابط.</p>
                     <div class="admin-form-grid">
@@ -1103,7 +1103,7 @@
                     <button type="submit" class="btn-save">💾 حفظ روابط السوشيال</button>
                 </form>
 
-                <form class="afaky-form" onsubmit="return saveStoreStatus(event)" style="margin-top:24px">
+                <form class="afaky-form" data-dora-action-submit="saveStoreStatus" style="margin-top:24px">
                     <h4>🛒 حالة المتجر (تشغيل / إيقاف البيع)</h4>
                     <p style="color:var(--text-muted,#9CA3AF);font-size:13px;margin-bottom:12px">عند اختيار «مغلق للتجهيز» يستطيع الزوار تصفح المنتجات فقط، ويظهر لهم «المتجر تحت التجهيز — قريباً» بدل إتمام الشراء. عند الانتهاء من إضافة المنتجات اختر «مفتوح» واحفظ — ويتفعّل البيع فورًا في كل الأجهزة.</p>
                     <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
@@ -1123,7 +1123,7 @@
 
             <div class="tab-content" id="company_infoTab">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> بيانات الشركة</h3></div>
-                <form class="afaky-form" onsubmit="return saveCompanyInfo(event)">
+                <form class="afaky-form" data-dora-action-submit="saveCompanyInfo">
                     <h4>🏢 البيانات الرسمية للشركة</h4>
                     <div class="admin-form-grid">
                         <div class="form-group form-group-full"><label>الاسم الرسمي</label><input type="text" id="compOfficialName" placeholder="شركة درة فارس الشمال للتجارة"></div>
@@ -1143,7 +1143,7 @@
                     <div class="afaky-status-badge" id="govDocsStatus">⚪ غير موثق</div>
                     <div class="afaky-status-note" id="govDocsStatusNote">التوثيق غير مكتمل — أدخل رقم السجل التجاري والرقم الضريبي ثم احفظ.</div>
                 </div>
-                <form class="afaky-form" onsubmit="return saveGovDocs(event)">
+                <form class="afaky-form" data-dora-action-submit="saveGovDocs">
                     <h4>🛡️ أرقام وروابط التوثيق</h4>
                     <div class="admin-form-grid">
                         <div class="form-group"><label>رقم السجل التجاري</label><input type="text" id="govCR" dir="ltr" style="text-align:left" placeholder="1010XXXXXX"></div>
@@ -1161,7 +1161,7 @@
                     <div class="afaky-status-badge" id="marketingStatus">⚪ معطل</div>
                     <div class="afaky-status-note" id="marketingStatusNote">التسويق معطل حالياً — فعّل الحملة واحفظ لتظهر للزوار.</div>
                 </div>
-                <form class="afaky-form" onsubmit="return saveMarketing(event)">
+                <form class="afaky-form" data-dora-action-submit="saveMarketing">
                     <h4>⚡ إعدادات الحملة التسويقية</h4>
                     <label class="afaky-check"><input type="checkbox" id="mktEnabled"> تفعيل الحملة التسويقية (البانر الترويجي + الكوبون الترحيبي)</label>
                     <div class="form-group"><label>كود الكوبون الترحيبي</label><input type="text" id="mktWelcomeCoupon" dir="ltr" style="text-align:left" placeholder="WELCOME10"></div>
@@ -1171,7 +1171,7 @@
             </div>
 
             <div class="tab-content" id="filesTab">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg> الملفات الثابتة للموقع</h3><button class="btn-add" onclick="loadSiteFiles()">🔄 تحديث</button></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg> الملفات الثابتة للموقع</h3><button class="btn-add" data-dora-action="loadSiteFiles">🔄 تحديث</button></div>
                 <div class="zatca-note">ℹ️ هذه قائمة قراءة فقط بالملفات المعروفة في الموقع — يمكن فتحها أو نسخ روابطها، والرفع غير متاح من اللوحة.</div>
                 <div id="siteFilesList"><div class="admin-empty">⏳ جاري التحميل...</div></div>
             </div>
@@ -1183,11 +1183,11 @@
     <div class="modal-content">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
             <h3 style="color:white;margin:0">🧾 QR الفاتورة الإلكترونية</h3>
-            <button onclick="closeZatcaQrModal()" style="background:rgba(255,255,255,0.1);border:none;color:white;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:16px">✕</button>
+            <button data-dora-action="closeZatcaQrModal" style="background:rgba(255,255,255,0.1);border:none;color:white;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:16px">✕</button>
         </div>
         <div class="zatca-qr-wrap"><img id="zatcaQrImage" alt="ZATCA QR" loading="lazy"></div>
         <div class="form-group" style="margin-top:16px"><label>نص TLV بصيغة Base64</label><textarea id="zatcaQrBase64" rows="4" readonly dir="ltr" style="text-align:left;font-family:monospace;font-size:12px"></textarea></div>
-        <button class="btn-save" onclick="copyZatcaQr()">📋 نسخ Base64</button>
+        <button class="btn-save" data-dora-action="copyZatcaQr">📋 نسخ Base64</button>
     </div>
 </div>
 
@@ -1195,9 +1195,9 @@
     <div class="modal-content">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
             <h3 id="productModalTitle" style="color:white;margin:0">📦 إضافة منتج</h3>
-            <button onclick="closeProductModal()" style="background:rgba(255,255,255,0.1);border:none;color:white;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:16px">✕</button>
+            <button data-dora-action="closeProductModal" style="background:rgba(255,255,255,0.1);border:none;color:white;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:16px">✕</button>
         </div>
-        <form id="productForm" onsubmit="return saveProduct(event)">
+        <form id="productForm" data-dora-action-submit="saveProduct">
             <input type="hidden" id="productId">
             <div class="form-group"><label>الباركود (امسح بقارئ الباركود)</label><input type="text" id="productBarcode" dir="ltr" style="text-align:left" placeholder="امسح الباركود هنا..."></div>
             <div class="form-group"><label>اسم المنتج</label><input type="text" id="productName" required></div>
@@ -1218,9 +1218,9 @@
     <div class="modal-content">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
             <h3 id="bankAccountModalTitle" style="color:white;margin:0">🏦 إضافة حساب بنكي</h3>
-            <button onclick="closeBankAccountModal()" style="background:rgba(255,255,255,0.1);border:none;color:white;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:16px">✕</button>
+            <button data-dora-action="closeBankAccountModal" style="background:rgba(255,255,255,0.1);border:none;color:white;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:16px">✕</button>
         </div>
-        <form id="bankAccountForm" onsubmit="return saveBankAccount(event)">
+        <form id="bankAccountForm" data-dora-action-submit="saveBankAccount">
             <input type="hidden" id="bankAccountId">
             <div class="form-group"><label>اسم البنك</label><input type="text" id="bankName" required placeholder="مصرف الراجحي"></div>
             <div class="form-group"><label>اسم صاحب الحساب</label><input type="text" id="bankAccountName" placeholder="شركة درة فارس الشمال للتجارة"></div>
@@ -1237,9 +1237,9 @@
     <div class="modal-content">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
             <h3 id="paymentMethodModalTitle" style="color:white;margin:0">💳 إضافة طريقة دفع</h3>
-            <button onclick="closePaymentMethodModal()" style="background:rgba(255,255,255,0.1);border:none;color:white;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:16px">✕</button>
+            <button data-dora-action="closePaymentMethodModal" style="background:rgba(255,255,255,0.1);border:none;color:white;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:16px">✕</button>
         </div>
-        <form id="paymentMethodForm" onsubmit="return savePaymentMethod(event)">
+        <form id="paymentMethodForm" data-dora-action-submit="savePaymentMethod">
             <input type="hidden" id="paymentMethodId">
             <div class="form-group"><label>اسم طريقة الدفع</label><input type="text" id="pmName" required placeholder="تحويل بنكي"></div>
             <div class="form-group"><label>الأيقونة (إيموجي)</label><input type="text" id="pmIcon" placeholder="💳" maxlength="8"></div>
@@ -1254,9 +1254,9 @@
     <div class="modal-content">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
             <h3 id="shippingRateModalTitle" style="color:white;margin:0">🚚 إضافة سعر شحن</h3>
-            <button onclick="closeShippingRateModal()" style="background:rgba(255,255,255,0.1);border:none;color:white;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:16px">✕</button>
+            <button data-dora-action="closeShippingRateModal" style="background:rgba(255,255,255,0.1);border:none;color:white;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:16px">✕</button>
         </div>
-        <form id="shippingRateForm" onsubmit="return saveShippingRate(event)">
+        <form id="shippingRateForm" data-dora-action-submit="saveShippingRate">
             <input type="hidden" id="shippingRateId">
             <div class="form-group"><label>من مدينة</label><input type="text" id="shipFromCity" placeholder="الرياض"></div>
             <div class="form-group"><label>إلى مدينة</label><input type="text" id="shipToCity" required placeholder="جدة"></div>
@@ -1272,6 +1272,7 @@
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="config.js"></script>
 <script src="core-utils.js"></script>
+<script src="dora-actions.js"></script>
 <script src="admin-utils.js"></script>
 <script src="zatca-store.js"></script>
 <script src="admin-auth.js"></script>

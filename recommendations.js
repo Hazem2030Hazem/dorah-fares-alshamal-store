@@ -48,12 +48,12 @@
             const stars = '★'.repeat(Math.floor(p.rating || 0)) + '☆'.repeat(5 - Math.floor(p.rating || 0));
             const hasDiscount = p.oldPrice && p.oldPrice > p.price;
             return `
-                <div class="prod-card" data-id="${p.id}" onclick="window.openProductModal(${p.id})" style="cursor:pointer">
+                <div class="prod-card" data-id="${p.id}" data-action="open-modal" data-product-id="${p.id}" style="cursor:pointer">
                     <div class="prod-img" style="height:180px">
                         ${p.badge ? `<div class="prod-badge">${p.badge}</div>` : ''}
                         ${hasDiscount && !p.badge ? `<div class="prod-badge discount">خصم</div>` : ''}
                         <div style="position:relative; width:100%; height:180px; background:#f5f7fa; display:flex; align-items:center; justify-content:center; overflow:hidden;">
-                            <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${window.sanitizeInput(p.name)}" loading="lazy" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null;this.src='default-product.png';">
+                            <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${window.sanitizeInput(p.name)}" loading="lazy" style="max-width:100%; max-height:100%; object-fit:contain;" data-dora-error="fallback">
                             <svg style="display:none; width:48px; height:48px; color:#9aa5b9;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                         </div>
                     </div>
@@ -150,9 +150,9 @@
                             </h4>
                             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px">
                                 ${fbtProducts.map(p => `
-                                    <div onclick="window.openProductModal(${p.id})" style="cursor:pointer;background:white;border-radius:12px;padding:12px;text-align:center;border:1px solid rgba(0,0,0,0.1);transition:all 0.3s ease" onmouseenter="this.style.borderColor='#3B82F6';this.style.boxShadow='0 4px 12px rgba(59,130,246,0.2)'" onmouseleave="this.style.borderColor='rgba(0,0,0,0.1)';this.style.boxShadow='none'">
+                                    <div data-action="open-modal" data-product-id="${p.id}" style="cursor:pointer;background:white;border-radius:12px;padding:12px;text-align:center;" class="fbt-card">
                                         <div style="background:#f5f7fa; width:100%; height:180px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
-                                            <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${window.sanitizeInput(p.name)}" loading="lazy" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null;this.src='default-product.png';"
+                                            <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${window.sanitizeInput(p.name)}" loading="lazy" style="max-width:100%; max-height:100%; object-fit:contain;" data-dora-error="fallback"
                                             <svg style="display:none; width:40px; height:40px; color:#9aa5b9;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                                         </div>
                                         <div style="font-size:12px;font-weight:bold;margin-bottom:4px;color:#1F2937">${window.sanitizeInput(p.name.substring(0, 25))}...</div>
@@ -188,7 +188,7 @@
                 <div class="container">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px">
                         <h2 style="font-size:28px;display:flex;align-items:center;gap:10px">👁️ شاهدتها مؤخراً</h2>
-                        <button onclick="localStorage.removeItem('doraRecentlyViewed');recentlyViewed=[];renderRecentlyViewed();" style="background:none;border:1px solid rgba(0,0,0,0.2);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px">🗑️ مسح السجل</button>
+                        <button data-action="clear-recently-viewed" style="background:none;border:1px solid rgba(0,0,0,0.2);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px">🗑️ مسح السجل</button>
                     </div>
                     <div id="recentlyViewedGrid" class="prod-grid"></div>
                 </div>
@@ -223,13 +223,13 @@
             const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
 
             return `
-                <div class="prod-card best-seller-card" data-id="${p.id}" onclick="window.openProductModal(${p.id})" style="cursor:pointer;position:relative">
+                <div class="prod-card best-seller-card" data-id="${p.id}" data-action="open-modal" data-product-id="${p.id}" style="cursor:pointer;position:relative">
                     ${medal ? `<div style="position:absolute;top:10px;left:10px;font-size:30px;z-index:10">${medal}</div>` : ''}
                     <div class="prod-img" style="height:180px">
                         ${p.badge ? `<div class="prod-badge">${p.badge}</div>` : ''}
                         ${hasDiscount && !p.badge ? `<div class="prod-badge discount">خصم</div>` : ''}
                         <div style="position:relative; width:100%; height:180px; background:#f5f7fa; display:flex; align-items:center; justify-content:center; overflow:hidden;">
-                            <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${window.sanitizeInput(p.name)}" loading="lazy" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null;this.src='default-product.png';">
+                            <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${window.sanitizeInput(p.name)}" loading="lazy" style="max-width:100%; max-height:100%; object-fit:contain;" data-dora-error="fallback">
                             <svg style="display:none; width:48px; height:48px; color:#9aa5b9;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                         </div>
                     </div>
@@ -272,6 +272,16 @@
 
                 .fbt-section {
                     animation: fadeInUp 0.4s ease;
+                }
+
+                .fbt-card {
+                    border: 1px solid rgba(0,0,0,0.1);
+                    transition: all 0.3s ease;
+                }
+
+                .fbt-card:hover {
+                    border-color: #3B82F6;
+                    box-shadow: 0 4px 12px rgba(59,130,246,0.2);
                 }
 
                 @keyframes fadeInUp {

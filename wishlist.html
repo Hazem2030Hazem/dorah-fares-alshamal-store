@@ -71,7 +71,7 @@
 
     <!-- عن الشركة -->
     <div class="nav-item">
-        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="عن الشركة">
+        <button class="nav-trigger" data-dora-action="stopPropagation" data-dora-stop-propagation="true" aria-label="عن الشركة">
             عن الشركة <span class="arrow">▼</span>
         </button>
         <div class="dropdown-menu">
@@ -85,7 +85,7 @@
 
     <!-- التصنيفات -->
     <div class="nav-item">
-        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="التصنيفات">
+        <button class="nav-trigger" data-dora-action="stopPropagation" data-dora-stop-propagation="true" aria-label="التصنيفات">
             التصنيفات <span class="arrow">▼</span>
         </button>
         <div class="dropdown-menu">
@@ -100,7 +100,7 @@
 
     <!-- المنتجات -->
     <div class="nav-item">
-        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="المنتجات">
+        <button class="nav-trigger" data-dora-action="stopPropagation" data-dora-stop-propagation="true" aria-label="المنتجات">
             المنتجات <span class="arrow">▼</span>
         </button>
         <div class="dropdown-menu">
@@ -115,7 +115,7 @@
 
     <!-- المعلومات -->
     <div class="nav-item">
-        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="المعلومات">
+        <button class="nav-trigger" data-dora-action="stopPropagation" data-dora-stop-propagation="true" aria-label="المعلومات">
             المعلومات <span class="arrow">▼</span>
         </button>
         <div class="dropdown-menu">
@@ -127,7 +127,7 @@
 
     <!-- الدعم -->
     <div class="nav-item">
-        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="الدعم">
+        <button class="nav-trigger" data-dora-action="stopPropagation" data-dora-stop-propagation="true" aria-label="الدعم">
             الدعم <span class="arrow">▼</span>
         </button>
         <div class="dropdown-menu">
@@ -136,7 +136,7 @@
     </div>
 </nav>
 <div class="header-controls">
-<button onclick="location.href='https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/releases/download/v1.0/app-release.apk'" class="install-btn" title="تثبيت تطبيق درة فارس الشمال" aria-label="تثبيت تطبيق درة فارس الشمال">
+<button data-dora-action="navigate:https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/releases/download/v1.0/app-release.apk" class="install-btn" title="تثبيت تطبيق درة فارس الشمال" aria-label="تثبيت تطبيق درة فارس الشمال">
   <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
     <line x1="12" y1="18" x2="12.01" y2="18"></line>
@@ -144,7 +144,7 @@
   <span class="icon-glow"></span>
 </button>
 <div class="audio-toggle-wrapper">
-  <button class="audio-toggle" onclick="toggleAudioVolumePopup(event)" title="تشغيل/إيقاف الصوت" aria-label="تشغيل/إيقاف الصوت" id="audioToggleBtn">
+  <button class="audio-toggle" data-dora-action="toggleAudioVolumePopup" title="تشغيل/إيقاف الصوت" aria-label="تشغيل/إيقاف الصوت" id="audioToggleBtn">
     <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="speakerIconSvg">
       <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
       <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
@@ -153,16 +153,16 @@
   </button>
   <div class="audio-volume-popup" id="audioVolumePopup">
     <h4>🔊 مستوى الصوت</h4>
-    <div class="volume-slider-container" id="volumeSlider" onclick="setVolumeFromClick(event)">
+    <div class="volume-slider-container" id="volumeSlider" data-dora-action="setVolumeFromClick">
       <div class="volume-slider-fill" id="volumeSliderFill" style="width: 30%"></div>
       <div class="volume-slider-thumb" id="volumeSliderThumb"></div>
     </div>
     <div class="volume-value" id="volumeValue">30%</div>
-    <button class="volume-mute-btn" onclick="toggleMute()">🔇 كتم / تشغيل</button>
+    <button class="volume-mute-btn" data-dora-action="toggleMute">🔇 كتم / تشغيل</button>
   </div>
 </div>
 <div class="search-bar">
-  <input type="text" id="searchInput" placeholder="ابحث عن منتج..." oninput="handleSearch(this.value)" aria-label="البحث عن منتج">
+  <input type="text" id="searchInput" placeholder="ابحث عن منتج..." data-dora-action-input="handleSearch:$value" aria-label="البحث عن منتج">
   <span class="search-icon">
     <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="11" cy="11" r="8"></circle>
@@ -171,7 +171,7 @@
   </span>
   <div class="search-results" id="searchResults"></div>
 </div>
-<button class="theme-toggle" onclick="toggleTheme()" title="تبديل الوضع" aria-label="تبديل الوضع الداكن/الفاتح" id="themeToggleBtn">
+<button class="theme-toggle" data-dora-action="toggleTheme" title="تبديل الوضع" aria-label="تبديل الوضع الداكن/الفاتح" id="themeToggleBtn">
   <svg id="themeIcon" class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="12" cy="12" r="5"></circle>
     <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -185,7 +185,7 @@
   </svg>
   <span class="icon-glow"></span>
 </button>
-<button class="cart-btn" onclick="toggleCart()" aria-label="سلة المشتريات">
+<button class="cart-btn" data-dora-action="toggleCart" aria-label="سلة المشتريات">
   <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="9" cy="21" r="1"></circle>
     <circle cx="20" cy="21" r="1"></circle>
@@ -237,15 +237,15 @@
 <div class="footer-grid">
 <div class="footer-brand"><h4>شركة درة فارس الشمال</h4><p>وجهتك الأولى لكل ما يتعلق بالتقنية. نقدم منتجات عالية الجودة بأسعار تنافسية.</p><div class="footer-social"><a href="javascript:void(0)" data-social="twitter" target="_blank" rel="noopener" aria-label="تويتر">𝕏</a><a href="javascript:void(0)" data-social="instagram" target="_blank" rel="noopener" aria-label="انستقرام">📷</a><a href="javascript:void(0)" data-social="facebook" target="_blank" rel="noopener" aria-label="فيسبوك">f</a><a href="javascript:void(0)" data-social="linkedin" target="_blank" rel="noopener" aria-label="لينكدإن">in</a></div></div>
 <div class="footer-col"><h5>روابط سريعة</h5><ul><li><a href="#home">الرئيسية</a></li><li><a href="#products">المنتجات</a></li><li><a href="about.html">عن الشركة</a></li><li><a href="#contact">تواصل معنا</a></li></ul></div>
-<div class="footer-col"><h5>التصنيفات</h5><ul><li><a href="#products" onclick="filterProducts('printers')">طابعات</a></li><li><a href="#products" onclick="filterProducts('computers')">كمبيوتر</a></li><li><a href="#products" onclick="filterProducts('ram')">رامات</a></li><li><a href="#products" onclick="filterProducts('storage')">هاردات</a></li></ul></div>
+<div class="footer-col"><h5>التصنيفات</h5><ul><li><a href="#products" data-dora-action="filterProducts:printers">طابعات</a></li><li><a href="#products" data-dora-action="filterProducts:computers">كمبيوتر</a></li><li><a href="#products" data-dora-action="filterProducts:ram">رامات</a></li><li><a href="#products" data-dora-action="filterProducts:storage">هاردات</a></li></ul></div>
 <div class="footer-col"><h5>طرق الدفع</h5><div class="payment-methods"><span>💳 Visa</span><span>💳 Mastercard</span><span>💳 Apple Pay</span><span>💳 مدى</span><span>💳 STC Pay</span></div></div>
 </div>
-<div class="footer-bottom"><p>© <span class="dora-year">2026</span> شركة درة فارس الشمال. جميع الحقوق محفوظة.</p><p class="footer-legal-ids" style="opacity:.75;font-size:13px;margin-top:4px">سجل تجاري: <span data-company="cr">—</span> &nbsp;|&nbsp; الرقم الضريبي: <span data-company="tax">—</span></p><div><a href="#" onclick="showPrivacyPolicy();return false">سياسة الخصوصية</a><a href="#" onclick="showTerms();return false">شروط الاستخدام</a></div></div>
+<div class="footer-bottom"><p>© <span class="dora-year">2026</span> شركة درة فارس الشمال. جميع الحقوق محفوظة.</p><p class="footer-legal-ids" style="opacity:.75;font-size:13px;margin-top:4px">سجل تجاري: <span data-company="cr">—</span> &nbsp;|&nbsp; الرقم الضريبي: <span data-company="tax">—</span></p><div><a href="#" data-dora-action="showPrivacyPolicy" data-dora-prevent-default="true">سياسة الخصوصية</a><a href="#" data-dora-action="showTerms" data-dora-prevent-default="true">شروط الاستخدام</a></div></div>
 <div style="text-align:center;padding:26px 20px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));margin-top:20px;border-radius:14px;">
  <p style="color:white;font-size:17px;margin-bottom:16px;font-weight:800;">📲 حمّل تطبيق درة فارس الشمال على جوالك أو الكمبيوتر، أو اطلب عرض سعر الآن!</p>
  <div class="app-download-btns">
   <a href="https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/releases/download/v1.0/app-release.apk" download="" class="btn-primary">📱 تحميل تطبيق Android</a>
-  <a href="javascript:void(0)" onclick="installPWA()" id="installBtn" class="btn-primary">💻 حمّل تطبيق درة فارس الشمال</a>
+  <a href="javascript:void(0)" data-dora-action="installPWA" id="installBtn" class="btn-primary">💻 حمّل تطبيق درة فارس الشمال</a>
   <a href="https://wa.me/966545358773?text=مرحباً%20أرغب%20في%20طلب%20عرض%20سعر%20من%20شركة%20درة%20فارس%20الشمال" target="_blank" class="btn-primary">📋 اطلب عرض سعر</a>
  </div>
  <p style="color:rgba(255,255,255,0.7);font-size:12px;margin-top:14px;">اضغط للتثبيت على الشاشة الرئيسية</p>
@@ -259,9 +259,9 @@
 
 
 
-<div class="product-modal-overlay" id="productModalOverlay" onclick="closeProductModal(event)">
+<div class="product-modal-overlay" id="productModalOverlay" data-dora-action="closeProductModal">
 <div class="product-modal" id="productModal">
-<button class="modal-close" onclick="closeProductModal()" aria-label="إغلاق">✕</button>
+<button class="modal-close" data-dora-action="closeProductModal" aria-label="إغلاق">✕</button>
 <div class="product-modal-content" id="productModalContent"></div>
 </div>
 </div>
@@ -270,22 +270,22 @@
 <div class="compare-bar-inner">
 <div class="compare-items" id="compareItems"></div>
 <div class="compare-actions">
-<button class="compare-btn-action" onclick="showCompareModal()">📊 مقارنة</button>
-<button class="compare-btn-clear" onclick="clearCompare()">❌ إفراغ</button>
+<button class="compare-btn-action" data-dora-action="showCompareModal">📊 مقارنة</button>
+<button class="compare-btn-clear" data-dora-action="clearCompare">❌ إفراغ</button>
 </div>
 </div>
 </div>
 
-<div class="compare-modal-overlay" id="compareModalOverlay" onclick="closeCompareModal(event)">
+<div class="compare-modal-overlay" id="compareModalOverlay" data-dora-action="closeCompareModal">
 <div class="compare-modal" id="compareModal">
-<button class="modal-close" onclick="closeCompareModal()" aria-label="إغلاق">✕</button>
+<button class="modal-close" data-dora-action="closeCompareModal" aria-label="إغلاق">✕</button>
 <div id="compareModalContent"></div>
 </div>
 </div>
 
-<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-overlay" id="cartOverlay" data-dora-action="toggleCart"></div>
 <div class="cart-sidebar" id="cartSidebar">
-<div class="cart-header"><h3>🛒 سلة المشتريات</h3><button class="close-cart" onclick="toggleCart()" aria-label="إغلاق السلة">✕</button></div>
+<div class="cart-header"><h3>🛒 سلة المشتريات</h3><button class="close-cart" data-dora-action="toggleCart" aria-label="إغلاق السلة">✕</button></div>
 <div class="cart-items" id="cartItems">
    <div class="cart-empty">
     <span class="icon">🛒</span>
@@ -295,13 +295,13 @@
 <div class="coupon-section" id="couponSection" style="display: none;">
 <div class="coupon-input-wrapper">
 <input type="text" class="coupon-input" id="couponInput" placeholder="أدخل كود الخصم">
-<button class="coupon-btn" onclick="applyCoupon()">تطبيق</button>
+<button class="coupon-btn" data-dora-action="applyCoupon">تطبيق</button>
 </div>
 </div>
 <div class="cart-footer">
 <div class="cart-total"><span>المجموع:</span><strong id="cartTotal">٠ ر.س</strong></div>
 <div class="cart-tax" id="cartTax">شامل الضريبة (15%): ٠ ر.س</div>
-<button class="checkout-btn" onclick="checkout()">🛒 إتمام الشراء</button>
+<button class="checkout-btn" data-dora-action="checkout">🛒 إتمام الشراء</button>
 </div>
 </div>
 
@@ -316,9 +316,9 @@
  اطلب عرض سعر الآن
 </a>
 
-<div class="install-prompt show" id="installPrompt" onclick="installPWA()" style="cursor:pointer;">
+<div class="install-prompt show" id="installPrompt" data-dora-action="installPWA" style="cursor:pointer;">
  <span>💻 حمّل تطبيق درة فارس الشمال!</span>
- <button class="close-prompt" onclick="event.stopPropagation();dismissInstallPrompt()" aria-label="إغلاق">✕</button>
+ <button class="close-prompt" data-dora-action="dismissInstallPrompt" data-dora-stop-propagation="true" aria-label="إغلاق">✕</button>
 </div>
 
 
@@ -326,9 +326,9 @@
             <div class="dora-modal-content">
                 <div class="dora-modal-header">
                     <h3>⭐ أضف تقييمك</h3>
-                    <button class="dora-modal-close" onclick="closeReviewModal()">✕</button>
+                    <button class="dora-modal-close" data-dora-action="closeReviewModal">✕</button>
                 </div>
-                <form id="reviewForm" onsubmit="return submitReview(event)">
+                <form id="reviewForm" data-dora-action-submit="submitReview">
                     <div class="dora-form-group">
                         <label>👤 اسمك</label>
                         <input type="text" id="reviewName" placeholder="أدخل اسمك" required="">
@@ -359,9 +359,9 @@
             <div class="dora-modal-content">
                 <div class="dora-modal-header">
                     <h3>📨 تواصل معنا</h3>
-                    <button class="dora-modal-close" onclick="closeMessageModal()">✕</button>
+                    <button class="dora-modal-close" data-dora-action="closeMessageModal">✕</button>
                 </div>
-                <form id="messageForm" onsubmit="return submitMessage(event)">
+                <form id="messageForm" data-dora-action-submit="submitMessage">
                     <div class="dora-form-group">
                         <label>👤 اسمك</label>
                         <input type="text" id="msgName" placeholder="أدخل اسمك" required="">
@@ -397,19 +397,19 @@
 
 
 <!-- ===== SITE RATING MODAL ===== -->
-<div class="rating-modal-overlay" id="siteRatingModal" onclick="closeSiteRatingModal(event)">
+<div class="rating-modal-overlay" id="siteRatingModal" data-dora-action="closeSiteRatingModal">
     <div class="rating-modal-content" style="position:relative">
-        <button class="rating-close" onclick="closeSiteRatingModal()" aria-label="إغلاق">✕</button>
+        <button class="rating-close" data-dora-action="closeSiteRatingModal" aria-label="إغلاق">✕</button>
         <h3>⭐ قيّم تجربتك</h3>
         <p>شاركنا رأيك في موقع شركة درة فارس الشمال</p>
         <div class="rating-stars" id="siteRatingStars">
-            <span class="star" data-value="1" onclick="setRating(1)">★</span>
-            <span class="star" data-value="2" onclick="setRating(2)">★</span>
-            <span class="star" data-value="3" onclick="setRating(3)">★</span>
-            <span class="star" data-value="4" onclick="setRating(4)">★</span>
-            <span class="star" data-value="5" onclick="setRating(5)">★</span>
+            <span class="star" data-value="1" data-dora-action="setRating:1">★</span>
+            <span class="star" data-value="2" data-dora-action="setRating:2">★</span>
+            <span class="star" data-value="3" data-dora-action="setRating:3">★</span>
+            <span class="star" data-value="4" data-dora-action="setRating:4">★</span>
+            <span class="star" data-value="5" data-dora-action="setRating:5">★</span>
         </div>
-        <form class="rating-form" id="siteRatingForm" onsubmit="submitSiteRating(event)">
+        <form class="rating-form" id="siteRatingForm" data-dora-action-submit="submitSiteRating">
             <input type="text" id="siteRaterName" placeholder="اسمك" required>
             <input type="text" id="siteRaterProduct" placeholder="المنتج أو الخدمة (اختياري)">
             <textarea id="siteRaterComment" placeholder="اكتب تقييمك هنا..." required></textarea>
@@ -420,19 +420,19 @@
 </div>
 
 <!-- ===== PRODUCT RATING MODAL ===== -->
-<div class="rating-modal-overlay" id="productRatingModal" onclick="closeProductRatingModal(event)">
+<div class="rating-modal-overlay" id="productRatingModal" data-dora-action="closeProductRatingModal">
     <div class="rating-modal-content" style="position:relative">
-        <button class="rating-close" onclick="closeProductRatingModal()" aria-label="إغلاق">✕</button>
+        <button class="rating-close" data-dora-action="closeProductRatingModal" aria-label="إغلاق">✕</button>
         <h3>⭐ قيّم المنتج</h3>
         <p id="productRatingTitle">شاركنا رأيك في المنتج</p>
         <div class="rating-stars" id="productRatingStars">
-            <span class="star" data-value="1" onclick="setProductRating(1)">★</span>
-            <span class="star" data-value="2" onclick="setProductRating(2)">★</span>
-            <span class="star" data-value="3" onclick="setProductRating(3)">★</span>
-            <span class="star" data-value="4" onclick="setProductRating(4)">★</span>
-            <span class="star" data-value="5" onclick="setProductRating(5)">★</span>
+            <span class="star" data-value="1" data-dora-action="setProductRating:1">★</span>
+            <span class="star" data-value="2" data-dora-action="setProductRating:2">★</span>
+            <span class="star" data-value="3" data-dora-action="setProductRating:3">★</span>
+            <span class="star" data-value="4" data-dora-action="setProductRating:4">★</span>
+            <span class="star" data-value="5" data-dora-action="setProductRating:5">★</span>
         </div>
-        <form class="rating-form" id="productRatingForm" onsubmit="submitProductRating(event)">
+        <form class="rating-form" id="productRatingForm" data-dora-action-submit="submitProductRating">
             <input type="text" id="productRaterName" placeholder="اسمك" required>
             <textarea id="productRaterComment" placeholder="اكتب تقييمك للمنتج هنا..." required></textarea>
             <input type="hidden" id="productRatingValue" value="5">
@@ -444,6 +444,7 @@
 
   <script src="config.js"></script>
 <script src="core-utils.js"></script>
+<script src="dora-actions.js"></script>
 <script src="nav-fixes.js"></script>
 <script src="floating-logos.js" defer></script>
 <script src="theme.js"></script>

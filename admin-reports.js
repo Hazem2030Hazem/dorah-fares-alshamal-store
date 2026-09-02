@@ -442,7 +442,7 @@ window.loadZatcaInvoices=async function(){
     if(!data||!data.length){c.innerHTML='<tr><td colspan="7">🧾 لا توجد فواتير</td></tr>';adminState.zatcaInvoices=[];return;}
     adminState.zatcaInvoices=data;
     c.innerHTML=data.map(function(inv,i){
-      return '<tr><td>'+(i+1)+'</td><td><strong>'+esc(inv.invoice_number||'—')+'</strong></td><td>'+esc(inv.customer_name||'—')+'</td><td>'+money(inv.total)+'</td><td>'+money(inv.tax)+'</td><td>'+dateAr(inv.created_at)+'</td><td><button class="btn-edit" onclick="generateZatcaQR('+i+')">🔳 توليد QR</button></td></tr>';
+      return '<tr><td>'+(i+1)+'</td><td><strong>'+esc(inv.invoice_number||'—')+'</strong></td><td>'+esc(inv.customer_name||'—')+'</td><td>'+money(inv.total)+'</td><td>'+money(inv.tax)+'</td><td>'+dateAr(inv.created_at)+'</td><td><button class="btn-edit" data-dora-call="generateZatcaQR:+i+">🔳 توليد QR</button></td></tr>';
     }).join('');
   }catch(e){
     console.warn('loadZatcaInvoices:',e);

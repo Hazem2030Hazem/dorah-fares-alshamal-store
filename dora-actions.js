@@ -63,9 +63,16 @@
                 applyModifiers(el, e, undefined);
                 return;
             }
+            // استبدال onclick="event.stopPropagation()" بدون تحذير
+            if (action === 'stopPropagation') {
+                applyModifiers(el, e, undefined);
+                return;
+            }
         }
 
         var parsed = parseArgs(action, el);
+        // تمرير الحدث كآخر معامل لأي دالة تحتاجه (e.g. setVolumeFromClick)
+        parsed.args.push(e);
         var result = runGlobal(parsed.name, parsed.args);
         applyModifiers(el, e, result);
     }

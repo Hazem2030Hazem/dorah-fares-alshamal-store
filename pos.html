@@ -150,7 +150,7 @@
         <button class="btn-ghost" id="btn-park">⏸️ تعليق فاتورة</button>
         <button class="btn-ghost" id="btn-parked">📑 المعلقة</button>
         <button class="btn-ghost" id="btn-return">↩️ مرتجع</button>
-        <button class="btn-ghost" onclick="window._posReprint && window._posReprint()">🖨️ إعادة طباعة</button>
+        <button class="btn-ghost" data-dora-action="doraPosReprint">🖨️ إعادة طباعة</button>
       </div>
     </div>
   </div>
@@ -294,6 +294,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
+<script src="dora-actions.js"></script>
     <script src="pos-store.js"></script>
 <script src="pos-page.js"></script>
 </body>

@@ -96,19 +96,19 @@
 
             return `
                 <div class="prod-card ${isWishlisted ? 'wishlisted' : ''}" data-category="${p.category}" data-id="${p.id}">
-                    <div class="prod-img" onclick="openProductModal(${p.id})">
+                    <div class="prod-img" data-action="open-modal" data-product-id="${p.id}">
                         ${p.badge ? `<div class="prod-badge ${p.badge === 'جديد' ? 'new' : p.badge === 'خصم' ? 'discount' : ''}">${p.badge}${hasDiscount && p.badge === 'خصم' ? ' -' + discountPercent + '%' : ''}</div>` : ''}
                         ${hasDiscount && !p.badge ? `<div class="prod-badge discount">خصم -${discountPercent}%</div>` : ''}
                         <div style="position:relative; width:100%; height:220px; background:#f5f7fa; display:flex; align-items:center; justify-content:center; overflow:hidden;">
-                            <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${window.sanitizeInput(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null;this.src='default-product.png';" loading="lazy">
+                            <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${window.sanitizeInput(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" data-dora-error="fallback" loading="lazy">
                         </div>
                     </div>
-                    <button class="wishlist-btn ${isWishlisted ? 'active' : ''}" onclick="toggleWishlist(${p.id}, event)" aria-label="${isWishlisted ? 'إزالة من المفضلة' : 'إضافة للمفضلة'}">
+                    <button class="wishlist-btn ${isWishlisted ? 'active' : ''}" data-action="wishlist" data-product-id="${p.id}" aria-label="${isWishlisted ? 'إزالة من المفضلة' : 'إضافة للمفضلة'}">
                         ${isWishlisted ? '❤️' : '🤍'}
                     </button>
                     <div class="prod-body">
                         <span class="prod-tag">${catLabels[p.category]}</span>
-                        <h4 class="prod-name" onclick="openProductModal(${p.id})">${window.sanitizeInput(p.name)}</h4>
+                        <h4 class="prod-name" data-action="open-modal" data-product-id="${p.id}">${window.sanitizeInput(p.name)}</h4>
                         <div class="modal-rating" style="margin-bottom:8px">
                             <span class="stars">${stars}</span>
                             <span class="rating-text">${p.rating || 0} (${p.reviews ? p.reviews.length : 0} تقييم)</span>
@@ -129,10 +129,10 @@
                                 ${window.formatPrice(p.price)}
                             </div>
                             <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
-                                <button class="quote-btn" onclick="requestQuote(${p.id}, event)" aria-label="اطلب عرض سعر">📋 عرض سعر</button>
-                                <button class="quick-view-btn-icon" onclick="openQuickView(${p.id})" aria-label="نظرة سريعة" style="background:transparent;border:1px solid #D1D5DB;color:#374151;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;display:inline-flex;align-items:center;gap:4px;transition:all 0.3s ease">👁️</button>
-                                <button class="compare-btn ${isCompared ? 'active' : ''}" onclick="toggleCompare(${p.id}, event)" aria-label="مقارنة">${isCompared ? '✓' : '⚖️'}</button>
-                                <button class="add-btn" onclick="addToCart(${p.id})" ${!canAdd ? 'disabled' : ''} aria-label="${outOfStock ? 'نفذت الكمية' : 'أضف للسلة'}">
+                                <button class="quote-btn" data-action="quote" data-product-id="${p.id}" aria-label="اطلب عرض سعر">📋 عرض سعر</button>
+                                <button class="quick-view-btn-icon" data-action="quick-view" data-product-id="${p.id}" aria-label="نظرة سريعة" style="background:transparent;border:1px solid #D1D5DB;color:#374151;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;display:inline-flex;align-items:center;gap:4px;transition:all 0.3s ease">👁️</button>
+                                <button class="compare-btn ${isCompared ? 'active' : ''}" data-action="compare" data-product-id="${p.id}" aria-label="مقارنة">${isCompared ? '✓' : '⚖️'}</button>
+                                <button class="add-btn" data-action="add-to-cart" data-product-id="${p.id}" ${!canAdd ? 'disabled' : ''} aria-label="${outOfStock ? 'نفذت الكمية' : 'أضف للسلة'}">
                                     ${p.badge === 'تحت التسعير' ? '🔒 قيد التسعير' : (outOfStock ? '❌ نفذت' : (canAdd ? '🛒 أضف' : '⚠️ الكمية محدودة'))}
                                 </button>
                             </div>
@@ -156,7 +156,7 @@
             if (filtered.length > visible.length) {
                 wrap.style.display = 'flex';
                 wrap.innerHTML = '<div style="color:#6B7280;font-size:14px">عرض ' + visible.length + ' من ' + filtered.length + ' منتجاً</div>' +
-                    '<button type="button" onclick="loadMoreProducts()" class="load-more-btn" style="background:#1D4ED8;color:#fff;border:none;padding:12px 34px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">عرض المزيد ⬇</button>';
+                    '<button type="button" data-action="load-more" class="load-more-btn" style="background:#1D4ED8;color:#fff;border:none;padding:12px 34px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">عرض المزيد ⬇</button>';
             } else {
                 wrap.style.display = 'none';
                 wrap.innerHTML = '';
@@ -243,7 +243,7 @@
         if (content) content.innerHTML = `
             <div class="modal-image">
                 <div style="position:relative; width:100%; height:300px; background:#f5f7fa; display:flex; align-items:center; justify-content:center; border-radius:12px; overflow:hidden;">
-                    <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${window.sanitizeInput(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null;this.src='default-product.png';" loading="lazy">
+                    <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${window.sanitizeInput(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" data-dora-error="fallback" loading="lazy">
                 </div>
             </div>
             <div class="modal-info">
@@ -260,14 +260,14 @@
                     ${hasDiscount ? `<span style="background:var(--accent);color:white;padding:4px 10px;border-radius:20px;font-size:12px;margin-right:10px">خصم ${discountPercent}%</span>` : ''}
                 </div>
                 <div class="modal-actions">
-                    <button class="modal-btn modal-btn-primary" onclick="addToCart(${p.id}); closeProductModal();">🛒 أضف للسلة</button>
-                    <button class="modal-btn modal-btn-secondary" onclick="toggleWishlist(${p.id}, event); closeProductModal();">${getWishlistRef().includes(p.id) ? '❤️ في المفضلة' : '🤍 أضف للمفضلة'}</button>
+                    <button class="modal-btn modal-btn-primary" data-action="add-to-cart" data-product-id="${p.id}" data-close-modal="productModal">🛒 أضف للسلة</button>
+                    <button class="modal-btn modal-btn-secondary" data-action="wishlist" data-product-id="${p.id}" data-close-modal="productModal">${getWishlistRef().includes(p.id) ? '❤️ في المفضلة' : '🤍 أضف للمفضلة'}</button>
                 </div>
                 <div class="modal-reviews">
                     <h4>📋 مراجعات العملاء</h4>
                     ${reviewsHtml}
                     <div class="product-rating-section">
-                        <button class="product-rating-btn" onclick="openProductRatingModal(${p.id}, '${window.sanitizeInput(p.name)}')">⭐ قيّم هذا المنتج</button>
+                        <button class="product-rating-btn" data-action="rate" data-product-id="${p.id}" data-product-name="${window.sanitizeInput(p.name)}">⭐ قيّم هذا المنتج</button>
                     </div>
                 </div>
             </div>`;
@@ -277,7 +277,7 @@
         if (relBox && relGrid && relatedProducts.length > 0) {
             relBox.style.display = 'block';
             relGrid.innerHTML = relatedProducts.map(rp => `
-                <div class="prod-card" onclick="openProductModal(${rp.id})" style="cursor:pointer">
+                <div class="prod-card" data-action="open-modal" data-product-id="${rp.id}" style="cursor:pointer">
                     <div class="prod-img" style="height:160px">
                         <img src="${rp.image}" alt="${window.sanitizeInput(rp.name)}" loading="lazy" style="height:100%">
                     </div>
@@ -319,7 +319,7 @@
 
         content.innerHTML = `
             <div class="quick-view-image"><div style="position:relative; width:100%; height:300px; background:#f5f7fa; display:flex; align-items:center; justify-content:center; border-radius:12px; overflow:hidden;">
-                <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${window.sanitizeInput(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null;this.src='default-product.png';" loading="lazy">
+                <img src="${p.image && p.image.length > 0 ? p.image : ''}" alt="${window.sanitizeInput(p.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" data-dora-error="fallback" loading="lazy">
             </div></div>
             <div class="quick-view-info">
                 <span class="quick-view-category">${catLabels[p.category]}</span>
@@ -329,9 +329,9 @@
                 <div class="quick-view-stock ${stockClass}"><span class="quick-view-stock-label">📦 المخزون:</span><span class="quick-view-stock-value">${stockLabel}</span><div class="quick-view-stock-bar"><div class="quick-view-stock-fill" style="width:${stockPercent}%"></div></div></div>
                 <div class="quick-view-price">${hasDiscount ? `<span class="old-price">${window.formatPrice(p.oldPrice)}</span>` : ''} ${window.formatPrice(p.price)}</div>
                 <div class="quick-view-actions">
-                    <button class="quick-view-btn quick-view-btn-primary" onclick="addToCart(${p.id}); closeQuickView();">🛒 أضف للسلة</button>
-                    <button class="quick-view-btn quick-view-btn-wishlist ${isWishlisted ? 'active' : ''}" onclick="toggleWishlist(${p.id}, event); this.classList.toggle('active'); this.innerHTML = this.classList.contains('active') ? '❤️' : '🤍';">${isWishlisted ? '❤️' : '🤍'}</button>
-                    <button class="quick-view-btn quick-view-btn-secondary" onclick="openProductModal(${p.id}); closeQuickView();">📋 التفاصيل</button>
+                    <button class="quick-view-btn quick-view-btn-primary" data-action="add-to-cart" data-product-id="${p.id}" data-close-modal="quickView">🛒 أضف للسلة</button>
+                    <button class="quick-view-btn quick-view-btn-wishlist ${isWishlisted ? 'active' : ''}" data-action="wishlist" data-product-id="${p.id}">${isWishlisted ? '❤️' : '🤍'}</button>
+                    <button class="quick-view-btn quick-view-btn-secondary" data-action="open-modal" data-product-id="${p.id}" data-close-modal="quickView">📋 التفاصيل</button>
                 </div>
             </div>`;
         const overlay = document.getElementById('quickViewOverlay');

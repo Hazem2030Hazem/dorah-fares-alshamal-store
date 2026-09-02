@@ -68,7 +68,7 @@
 
     <!-- عن الشركة -->
     <div class="nav-item">
-        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="عن الشركة">
+        <button class="nav-trigger" data-dora-action="stopPropagation" data-dora-stop-propagation="true" aria-label="عن الشركة">
             عن الشركة <span class="arrow">▼</span>
         </button>
         <div class="dropdown-menu">
@@ -82,7 +82,7 @@
 
     <!-- التصنيفات -->
     <div class="nav-item">
-        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="التصنيفات">
+        <button class="nav-trigger" data-dora-action="stopPropagation" data-dora-stop-propagation="true" aria-label="التصنيفات">
             التصنيفات <span class="arrow">▼</span>
         </button>
         <div class="dropdown-menu">
@@ -97,7 +97,7 @@
 
     <!-- المنتجات -->
     <div class="nav-item">
-        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="المنتجات">
+        <button class="nav-trigger" data-dora-action="stopPropagation" data-dora-stop-propagation="true" aria-label="المنتجات">
             المنتجات <span class="arrow">▼</span>
         </button>
         <div class="dropdown-menu">
@@ -112,7 +112,7 @@
 
     <!-- المعلومات -->
     <div class="nav-item">
-        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="المعلومات">
+        <button class="nav-trigger" data-dora-action="stopPropagation" data-dora-stop-propagation="true" aria-label="المعلومات">
             المعلومات <span class="arrow">▼</span>
         </button>
         <div class="dropdown-menu">
@@ -124,7 +124,7 @@
 
     <!-- الدعم -->
     <div class="nav-item">
-        <button class="nav-trigger" onclick="event.stopPropagation()" aria-label="الدعم">
+        <button class="nav-trigger" data-dora-action="stopPropagation" data-dora-stop-propagation="true" aria-label="الدعم">
             الدعم <span class="arrow">▼</span>
         </button>
         <div class="dropdown-menu">
@@ -133,7 +133,7 @@
     </div>
 </nav>
 <div class="header-controls">
-<button onclick="location.href='https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/releases/download/v1.0/app-release.apk'" class="install-btn" title="تثبيت تطبيق درة فارس الشمال" aria-label="تثبيت تطبيق درة فارس الشمال">
+<button data-dora-action="navigate:https://github.com/Hazem2030Hazem/dorah-fares-alshamal-store/releases/download/v1.0/app-release.apk" class="install-btn" title="تثبيت تطبيق درة فارس الشمال" aria-label="تثبيت تطبيق درة فارس الشمال">
   <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
     <line x1="12" y1="18" x2="12.01" y2="18"></line>
@@ -141,7 +141,7 @@
   <span class="icon-glow"></span>
 </button>
 <div class="audio-toggle-wrapper">
-  <button class="audio-toggle" onclick="toggleAudioVolumePopup(event)" title="تشغيل/إيقاف الصوت" aria-label="تشغيل/إيقاف الصوت" id="audioToggleBtn">
+  <button class="audio-toggle" data-dora-action="toggleAudioVolumePopup" title="تشغيل/إيقاف الصوت" aria-label="تشغيل/إيقاف الصوت" id="audioToggleBtn">
     <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="speakerIconSvg">
       <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
       <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
@@ -150,16 +150,16 @@
   </button>
   <div class="audio-volume-popup" id="audioVolumePopup">
     <h4>🔊 مستوى الصوت</h4>
-    <div class="volume-slider-container" id="volumeSlider" onclick="setVolumeFromClick(event)">
+    <div class="volume-slider-container" id="volumeSlider" data-dora-action="setVolumeFromClick">
       <div class="volume-slider-fill" id="volumeSliderFill" style="width: 30%"></div>
       <div class="volume-slider-thumb" id="volumeSliderThumb"></div>
     </div>
     <div class="volume-value" id="volumeValue">30%</div>
-    <button class="volume-mute-btn" onclick="toggleMute()">🔇 كتم / تشغيل</button>
+    <button class="volume-mute-btn" data-dora-action="toggleMute">🔇 كتم / تشغيل</button>
   </div>
 </div>
 <div class="search-bar">
-  <input type="text" id="searchInput" placeholder="ابحث عن منتج..." oninput="handleSearch(this.value)" aria-label="البحث عن منتج">
+  <input type="text" id="searchInput" placeholder="ابحث عن منتج..." data-dora-action-input="handleSearch:$value" aria-label="البحث عن منتج">
   <span class="search-icon">
     <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="11" cy="11" r="8"></circle>
@@ -168,7 +168,7 @@
   </span>
   <div class="search-results" id="searchResults"></div>
 </div>
-<button class="theme-toggle" onclick="toggleTheme()" title="تبديل الوضع" aria-label="تبديل الوضع الداكن/الفاتح" id="themeToggleBtn">
+<button class="theme-toggle" data-dora-action="toggleTheme" title="تبديل الوضع" aria-label="تبديل الوضع الداكن/الفاتح" id="themeToggleBtn">
   <svg id="themeIcon" class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="12" cy="12" r="5"></circle>
     <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -182,7 +182,7 @@
   </svg>
   <span class="icon-glow"></span>
 </button>
-<button class="cart-btn" onclick="toggleCart()" aria-label="سلة المشتريات">
+<button class="cart-btn" data-dora-action="toggleCart" aria-label="سلة المشتريات">
   <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="9" cy="21" r="1"></circle>
     <circle cx="20" cy="21" r="1"></circle>
@@ -258,7 +258,7 @@
             
             <div class="products-toolbar">
                 <div class="products-toolbar-left">
-                    <select class="sort-select" id="sortSelect" onchange="sortProducts()">
+                    <select class="sort-select" id="sortSelect" data-dora-action-change="sortProducts">
                         <option value="featured">الأكثر مبيعاً</option>
                         <option value="price-low">السعر: من الأقل</option>
                         <option value="price-high">السعر: من الأعلى</option>
@@ -267,18 +267,18 @@
                 </div>
                 <div class="products-toolbar-right">
                     <div class="view-toggle">
-                        <button class="view-btn active" data-view="grid" onclick="setView('grid')">⊞</button>
-                        <button class="view-btn" data-view="list" onclick="setView('list')">☰</button>
+                        <button class="view-btn active" data-view="grid" data-dora-action="setView:grid">⊞</button>
+                        <button class="view-btn" data-view="list" data-dora-action="setView:list">☰</button>
                     </div>
                 </div>
             </div>
 
             <div class="filter-tabs">
-                <button class="filter-tab active" data-cat="all" onclick="filterProducts('all')">الكل</button>
-                <button class="filter-tab" data-cat="كاميرات IP" onclick="filterProducts('كاميرات IP')">📹 كاميرات IP</button>
-                <button class="filter-tab" data-cat="أجهزة تسجيل" onclick="filterProducts('أجهزة تسجيل')">💾 أجهزة تسجيل</button>
-                <button class="filter-tab" data-cat="كاميرات متحركة" onclick="filterProducts('كاميرات متحركة')">🎥 كاميرات متحركة</button>
-                <button class="filter-tab" data-cat="ملحقات" onclick="filterProducts('ملحقات')">🔌 ملحقات</button>
+                <button class="filter-tab active" data-cat="all" data-dora-action="filterProducts:all">الكل</button>
+                <button class="filter-tab" data-cat="كاميرات IP" data-dora-action="filterProducts:كاميرات IP">📹 كاميرات IP</button>
+                <button class="filter-tab" data-cat="أجهزة تسجيل" data-dora-action="filterProducts:أجهزة تسجيل">💾 أجهزة تسجيل</button>
+                <button class="filter-tab" data-cat="كاميرات متحركة" data-dora-action="filterProducts:كاميرات متحركة">🎥 كاميرات متحركة</button>
+                <button class="filter-tab" data-cat="ملحقات" data-dora-action="filterProducts:ملحقات">🔌 ملحقات</button>
             </div>
 
             <div class="prod-grid" id="prodGrid"></div>
@@ -302,7 +302,7 @@
         <div class="service-request-box" style="background:rgba(15,12,41,0.7);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:40px;max-width:700px;margin:0 auto">
             <h2 style="color:#fff;font-size:24px;margin-bottom:10px;text-align:center">📋 اطلب هذه الخدمة الآن</h2>
             <p style="color:rgba(255,255,255,0.6);text-align:center;margin-bottom:25px">املأ النموذج وسنتواصل معك في أقرب وقت</p>
-            <form id="serviceRequestForm" onsubmit="return submitServiceRequest(event)" style="display:grid;gap:15px">
+            <form id="serviceRequestForm" data-dora-action-submit="submitServiceRequest" style="display:grid;gap:15px">
                 <input type="hidden" id="srServiceType" value="أنظمة كاميرات المراقبة المتكاملة">
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px">
                     <input type="text" id="srName" placeholder="الاسم الكامل *" required style="padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;font-family:inherit">
@@ -313,7 +313,7 @@
                 <textarea id="srDescription" rows="4" placeholder="اشرح الخدمة المطلوبة بالتفصيل..." required style="padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;font-family:inherit"></textarea>
                 <label style="color:rgba(255,255,255,0.7);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px">
                     📸 <span>إرفاق صور (اختياري)</span>
-                    <input type="file" id="srImages" multiple accept="image/*" style="display:none" onchange="document.getElementById('imageCount').textContent = this.files.length + ' صور مختارة'">
+                    <input type="file" id="srImages" multiple accept="image/*" style="display:none" data-dora-action-change="doraUpdateImageCount:imageCount: صور مختارة">
                     <span id="imageCount" style="color:#10B981;font-size:12px"></span>
                 </label>
                 <button type="submit" style="padding:16px;background:linear-gradient(135deg,#10B981,#059669);color:#fff;border:none;border-radius:12px;font-size:18px;font-weight:700;cursor:pointer;font-family:inherit">📨 إرسال الطلب</button>
@@ -377,11 +377,11 @@
     </a>
 
     <!-- Cart Sidebar -->
-    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-overlay" id="cartOverlay" data-dora-action="toggleCart"></div>
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
             <h3>🛒 سلة المشتريات</h3>
-            <button class="close-cart" onclick="toggleCart()">✕</button>
+            <button class="close-cart" data-dora-action="toggleCart">✕</button>
         </div>
         <div class="cart-items" id="cartItems">
             <div class="cart-empty">
@@ -394,16 +394,16 @@
                 <span>المجموع:</span>
                 <strong id="cartTotal">0 ر.س</strong>
             </div>
-            <button class="checkout-btn" onclick="checkout()">
+            <button class="checkout-btn" data-dora-action="checkout">
                 📱 إتمام الطلب عبر واتساب
             </button>
         </div>
     </div>
 
     <!-- Product Modal -->
-    <div class="product-modal-overlay" id="productModalOverlay" onclick="if(event.target===this)closeProductModal()">
+    <div class="product-modal-overlay" id="productModalOverlay" data-dora-overlay-close="closeProductModal">
         <div class="product-modal">
-            <button class="modal-close" onclick="closeProductModal()">✕</button>
+            <button class="modal-close" data-dora-action="closeProductModal">✕</button>
             <div class="product-modal-content">
                 <div class="modal-image" id="modalImage">
                     <span style="font-size:120px">📦</span>
@@ -419,7 +419,7 @@
                     <div class="modal-price" id="modalPrice">0 <span>ر.س</span></div>
                     <div class="modal-actions">
                         <button class="modal-btn modal-btn-primary" id="modalAddBtn">🛒 أضف للسلة</button>
-                        <button class="modal-btn modal-btn-secondary" onclick="closeProductModal()">إغلاق</button>
+                        <button class="modal-btn modal-btn-secondary" data-dora-action="closeProductModal">إغلاق</button>
                     </div>
                 </div>
             </div>
@@ -431,16 +431,16 @@
         <div class="compare-bar-inner">
             <div class="compare-items" id="compareItems"></div>
             <div class="compare-actions">
-                <button class="compare-btn-action" onclick="showCompareModal()">⚖️ مقارنة</button>
-                <button class="compare-btn-clear" onclick="clearCompare()">🗑️ مسح</button>
+                <button class="compare-btn-action" data-dora-action="showCompareModal">⚖️ مقارنة</button>
+                <button class="compare-btn-clear" data-dora-action="clearCompare">🗑️ مسح</button>
             </div>
         </div>
     </div>
 
     <!-- Compare Modal -->
-    <div class="compare-modal-overlay" id="compareModalOverlay" onclick="if(event.target===this)closeCompareModal()">
+    <div class="compare-modal-overlay" id="compareModalOverlay" data-dora-overlay-close="closeCompareModal">
         <div class="compare-modal">
-            <button class="modal-close" onclick="closeCompareModal()">✕</button>
+            <button class="modal-close" data-dora-action="closeCompareModal">✕</button>
             <table class="compare-table">
                 <thead><tr><th>الخاصية</th><th>المنتج 1</th><th>المنتج 2</th><th>المنتج 3</th></tr></thead>
                 <tbody id="compareTableBody"></tbody>
@@ -455,11 +455,11 @@
     </div>
 
     <!-- Admin Toggle -->
-    <button class="admin-toggle" id="adminToggle" onclick="showPasswordModal()">⚙️ إدارة المنتجات</button>
+    <button class="admin-toggle" id="adminToggle" data-dora-action="showPasswordModal">⚙️ إدارة المنتجات</button>
 
     <!-- Admin Panel -->
     <div class="admin-panel" id="adminPanel">
-        <button class="admin-close" onclick="toggleAdminPanel()">✕</button>
+        <button class="admin-close" data-dora-action="toggleAdminPanel">✕</button>
         <h4>⚙️ إدارة منتجات المراقبة</h4>
         <div class="form-group">
             <label>اسم المنتج</label>
@@ -484,22 +484,22 @@
             <label>الوصف</label>
             <textarea id="adminDesc" rows="2" placeholder="وصف المنتج"></textarea>
         </div>
-        <button class="admin-btn" onclick="addProduct()">➕ إضافة منتج</button>
+        <button class="admin-btn" data-dora-action="addProduct">➕ إضافة منتج</button>
         <div class="admin-product-list" id="adminProductList"></div>
         <div class="admin-actions">
-            <button class="admin-btn secondary" onclick="exportProducts()">📥 تصدير</button>
-            <button class="admin-btn" onclick="importProducts()">📤 استيراد</button>
+            <button class="admin-btn secondary" data-dora-action="exportProducts">📥 تصدير</button>
+            <button class="admin-btn" data-dora-action="importProducts">📤 استيراد</button>
         </div>
     </div>
 
     <!-- Password Modal -->
-    <div class="password-modal" id="passwordModal" onclick="if(event.target===this)closePasswordModal()">
+    <div class="password-modal" id="passwordModal" data-dora-overlay-close="closePasswordModal">
         <div class="password-box">
             <h4>🔐 تسجيل الدخول</h4>
             <p>أدخل كلمة المرور للوصول إلى لوحة الإدارة</p>
             <input type="password" id="passwordInput" placeholder="كلمة المرور">
             <div class="error" id="passwordError">كلمة المرور غير صحيحة</div>
-            <button onclick="checkPassword()">دخول</button>
+            <button data-dora-action="checkPassword">دخول</button>
             <div class="hint">اضغط Shift+Alt+A لإظهار زر الإدارة</div>
         </div>
     </div>
@@ -510,6 +510,7 @@
 
   <script src="config.js"></script>
 <script src="core-utils.js"></script>
+<script src="dora-actions.js"></script>
 <script src="nav-fixes.js"></script>
 <script src="floating-logos.js" defer></script>
 <script src="theme.js"></script>

@@ -139,17 +139,17 @@
                 return `
                     <div class="cart-item">
                         <div class="cart-item-img">
-                            <img src="${item.image}" alt="" onerror="this.style.display='none';this.parentElement.textContent='📦'" loading="lazy">
+                            <img src="${item.image}" alt="" data-dora-error="cart-fallback" loading="lazy">
                         </div>
                         <div class="cart-item-info">
                             <div class="cart-item-name">${window.sanitizeInput(item.name)}</div>
                             <div class="cart-item-price">${window.formatPrice(item.price)}</div>
                             <div class="cart-item-stock">متبقي في المخزن: ${remaining} | الكمية في السلة: ${item.qty}</div>
                             <div class="cart-item-actions">
-                                <button class="qty-btn" onclick="updateQty(${item.id}, -1)" aria-label="تقليل الكمية">−</button>
+                                <button class="qty-btn" data-dora-call="updateQty:${item.id}:-1" aria-label="تقليل الكمية">−</button>
                                 <span>${item.qty}</span>
-                                <button class="qty-btn" onclick="updateQty(${item.id}, 1)" aria-label="زيادة الكمية">+</button>
-                                <span class="remove-btn" onclick="removeFromCart(${item.id})" aria-label="حذف من السلة">🗑️</span>
+                                <button class="qty-btn" data-dora-call="updateQty:${item.id}:1" aria-label="زيادة الكمية">+</button>
+                                <span class="remove-btn" data-dora-call="removeFromCart:${item.id}" aria-label="حذف من السلة">🗑️</span>
                             </div>
                         </div>
                     </div>`;
@@ -189,7 +189,7 @@
                 couponSection.innerHTML = `
                     <div class="coupon-applied">
                         ✅ ${coupon.label} مُطبق
-                        <button class="remove-coupon" onclick="removeCoupon()">✕</button>
+                        <button class="remove-coupon" data-dora-call="removeCoupon">✕</button>
                     </div>`;
             }
             window.updateCartUI();
@@ -220,7 +220,7 @@
             couponSection.innerHTML = `
                 <div class="coupon-input-wrapper">
                     <input type="text" class="coupon-input" id="couponInputAdmin" placeholder="أدخل كود الخصم">
-                    <button class="coupon-btn" onclick="applyCoupon()">تطبيق</button>
+                    <button class="coupon-btn" data-dora-call="applyCoupon">تطبيق</button>
                 </div>`;
         }
         window.updateCartUI();

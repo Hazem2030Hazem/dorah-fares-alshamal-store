@@ -34,8 +34,8 @@
             </style>
             <p>🍪 نحن نستخدم ملفات تعريف الارتباط (Cookies) لتحسين تجربتك في موقع <strong>درة فارس الشمال</strong>.</p>
             <div class="cookie-actions">
-                <button class="cookie-btn decline" onclick="document.getElementById('customCookieBanner').classList.add('hidden'); localStorage.setItem('cookie_consent', 'declined')">رفض</button>
-                <button class="cookie-btn accept" onclick="document.getElementById('customCookieBanner').classList.add('hidden'); localStorage.setItem('cookie_consent', 'accepted')">قبول</button>
+                <button class="cookie-btn decline" data-dora-hide-banner="customCookieBanner:cookie_consent:declined">رفض</button>
+                <button class="cookie-btn accept" data-dora-hide-banner="customCookieBanner:cookie_consent:accepted">قبول</button>
             </div>
         `;
         document.body.appendChild(banner);
@@ -81,12 +81,12 @@
                 #popup-footer { margin-top: 15px; font-size: 12px; color: #94a3b8; }
             </style>
             <div id="welcome-popup-box">
-                <button id="popup-close-btn" onclick="closeWelcomePopup()">✕</button>
+                <button id="popup-close-btn" data-dora-call="closeWelcomePopup">✕</button>
                 <div id="popup-icon">🎁</div>
                 <h3 id="popup-title">خصم خاص لك!</h3>
                 <p id="popup-desc">احصل على خصم <strong>15%</strong> على أول طلب لك في متجر درة فارس الشمال.</p>
                 <div id="popup-code-box">WELCOME15</div>
-                <button id="popup-btn" onclick="copyCodeAndClose()">📋 نسخ الكود وبدء التسوق</button>
+                <button id="popup-btn" data-dora-call="copyCodeAndClose">📋 نسخ الكود وبدء التسوق</button>
                 <p id="popup-footer">العرض ساري لمدة 24 ساعة</p>
             </div>
         `;

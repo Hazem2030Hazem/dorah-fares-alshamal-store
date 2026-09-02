@@ -78,13 +78,14 @@
 </head>
 <body>
 <div class="toolbar">
-  <button onclick="window.print()">🖨️ طباعة</button>
-  <button class="ghost" onclick="window.close()">✖ إغلاق</button>
+  <button data-dora-action="doraPrint">🖨️ طباعة</button>
+  <button class="ghost" data-dora-action="doraWindowClose">✖ إغلاق</button>
 </div>
 <div id="app"><div class="sheet" style="text-align:center;padding-top:40mm">⏳ جاري تحميل الفاتورة...</div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
+<script src="dora-actions.js"></script>
 <script src="invoice-a4.js"></script>
 </body>
 </html>

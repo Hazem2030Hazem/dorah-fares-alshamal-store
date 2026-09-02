@@ -7,9 +7,10 @@
     function injectCard(){
         var info = document.querySelector('#productModal .modal-info');
         if (!info || info.querySelector('.mdf-card')) return;
-        var m = info.innerHTML.match(/addToCart\((\d+)\)/);
-        if (!m) return;
-        var id = parseInt(m[1]);
+        var productBtn = info.querySelector('[data-action="add-to-cart"]');
+        if (!productBtn) return;
+        var id = parseInt(productBtn.getAttribute('data-product-id'), 10);
+        if (!id) return;
         var p = (typeof window.productsData !== 'undefined' && window.productsData && window.productsData.find) ? window.productsData.find(function(x){ return x.id == id; }) : null;
         if (!p) return;
         var catName = (typeof window.catLabels !== 'undefined' && window.catLabels[p.category]) ? window.catLabels[p.category] : p.category;

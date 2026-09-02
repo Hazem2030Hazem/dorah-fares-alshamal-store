@@ -20,7 +20,7 @@
             resultsDiv.innerHTML = '<div class="search-no-results">لا توجد نتائج مطابقة</div>';
         } else {
             resultsDiv.innerHTML = filtered.slice(0, 6).map(p => `
-                <div class="search-result-item" onclick="window.openProductModal(${p.id}); document.getElementById('searchResults').classList.remove('active'); document.getElementById('searchInput').value='';">
+                <div class="search-result-item" data-action="open-modal" data-product-id="${p.id}" data-dismiss-search="true">
                     <img class="search-result-img" src="${p.image}" alt="" loading="lazy">
                     <div class="search-result-info">
                         <div class="search-result-name">${window.sanitizeInput(p.name)}</div>
