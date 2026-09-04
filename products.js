@@ -68,7 +68,7 @@
             lastRenderFilter = filter;
         }
         window.currentFilter = filter;
-        const grid = document.getElementById('productsGrid');
+        const grid = document.getElementById('productsGrid') || document.getElementById('prodGrid');
         if (!grid) return;
 
         const filtered = getSortedProducts(filter);
@@ -181,12 +181,35 @@
         window.updateBreadcrumb(filter);
     };
 
-    window.setViewMode = function(mode) {
+    window.setViewMode = function(mode, e) {
         viewMode = mode;
         document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
-        if (event && event.target) event.target.classList.add('active');
-        const grid = document.getElementById('productsGrid');
+        const target = e && e.target ? e.target : document.querySelector('.view-btn[data-view="' + mode + '"]');
+        if (target) target.classList.add('active');
+        const grid = document.getElementById('productsGrid') || document.getElementById('prodGrid');
         if (grid) grid.classList.toggle('list-view', mode === 'list');
+    };
+
+    // alias used by legacy service pages
+    window.setView = function(mode, e) {
+        window.setViewMode(mode, e);
+    };
+
+    window.sortProducts = function(sortValue) {
+        const map = {
+            'featured': 'default',
+            'default': 'default',
+            'price-low': 'price-asc',
+            'price-asc': 'price-asc',
+            'price-high': 'price-desc',
+            'price-desc': 'price-desc',
+            'name': 'name-asc',
+            'name-asc': 'name-asc',
+            'name-desc': 'name-desc',
+            'stock': 'stock'
+        };
+        currentSort = map[sortValue] || sortValue || 'default';
+        window.renderProducts(window.currentFilter || 'all');
     };
 
     window.updateCategoryCounts = function() {
