@@ -964,13 +964,13 @@
                     <div class="form-group"><label>وضع الربط</label><select id="afakyMode" data-dora-action-change="toggleAfakyModeFields"><option value="api">API مباشر</option><option value="database">قاعدة بيانات SQL Server</option><option value="csv">ملفات CSV</option><option value="webhook">Webhook</option><option value="email">البريد الإلكتروني</option></select></div>
                     <div class="afaky-mode-fields" id="afakyFieldsApi">
                         <div class="mode-title">🔑 إعدادات API</div>
-                        <div class="form-group"><label>مفتاح API</label><input type="text" id="afakyApiKey" placeholder="AFAKY-API-KEY"></div>
-                        <div class="form-group"><label>رابط API</label><input type="url" id="afakyApiUrl" placeholder="https://afaky.example.com/api"></div>
+                        <div class="form-group"><label>مفتاح API</label><input type="text" id="afakyApiKey" placeholder="أدخل مفتاح API"></div>
+                        <div class="form-group"><label>رابط API</label><input type="url" id="afakyApiUrl" placeholder="https://api.afaky.com/v1"></div>
                     </div>
                     <div class="afaky-mode-fields" id="afakyFieldsDatabase" style="display:none">
                         <div class="mode-title">🗄️ بيانات SQL Server</div>
-                        <div class="form-group"><label>اسم السيرفر</label><input type="text" id="afakySqlServer" placeholder="SERVER\INSTANCE"></div>
-                        <div class="form-group"><label>اسم قاعدة البيانات</label><input type="text" id="afakySqlDatabase" placeholder="AFAKY_DB"></div>
+                        <div class="form-group"><label>اسم السيرفر</label><input type="text" id="afakySqlServer" placeholder="SERVER\SQLEXPRESS"></div>
+                        <div class="form-group"><label>اسم قاعدة البيانات</label><input type="text" id="afakySqlDatabase" placeholder="اسم قاعدة البيانات"></div>
                         <div class="form-group"><label>اسم المستخدم</label><input type="text" id="afakySqlUser" placeholder="sa"></div>
                         <div class="form-group"><label>كلمة المرور</label><input type="password" id="afakySqlPassword" placeholder="••••••"></div>
                     </div>
@@ -980,11 +980,11 @@
                     </div>
                     <div class="afaky-mode-fields" id="afakyFieldsWebhook" style="display:none">
                         <div class="mode-title">🪝 إعدادات Webhook</div>
-                        <div class="form-group"><label>رابط Webhook</label><input type="url" id="afakyWebhookUrl" placeholder="https://afaky.example.com/webhook"></div>
+                        <div class="form-group"><label>رابط Webhook</label><input type="url" id="afakyWebhookUrl" placeholder="https://api.afaky.com/webhook"></div>
                     </div>
                     <div class="afaky-mode-fields" id="afakyFieldsEmail" style="display:none">
                         <div class="mode-title">📧 إعدادات البريد الإلكتروني</div>
-                        <div class="form-group"><label>بريد أفاقي المستلم</label><input type="email" id="afakyEmail" placeholder="accounting@afaky.example.com"></div>
+                        <div class="form-group"><label>بريد أفاقي المستلم</label><input type="email" id="afakyEmail" placeholder="accounting@company.com"></div>
                         <p style="color:var(--text-muted);font-size:12px;line-height:1.8;margin:0">عند الحفظ تُفتح رسالة بريد جاهزة — أرفق بها ملفات CSV المُصدّرة لإرسال تقارير تلقائية إلى أفاقي.</p>
                     </div>
                     <button type="submit" class="btn-save">💾 حفظ إعدادات الربط</button>

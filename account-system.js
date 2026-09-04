@@ -442,7 +442,7 @@ function renderAuth(message, forceRecovery){
 
         <form id="accountLoginForm" class="account-form" ${recoveryMode ? 'style="display:none"' : ''}>
           <label>البريد الإلكتروني</label>
-          <input type="email" id="loginEmail" name="username" autocomplete="username email" inputmode="email" required placeholder="example@email.com">
+          <input type="email" id="loginEmail" name="username" autocomplete="username email" inputmode="email" required placeholder="your@email.com">
           <label>كلمة المرور</label>
           ${passwordField('loginPassword', '••••••••')}
           <button type="submit" class="btn-primary account-submit">تسجيل الدخول</button>
@@ -456,7 +456,7 @@ function renderAuth(message, forceRecovery){
           <label>رقم الجوال</label>
           <input type="tel" id="registerPhone" name="tel" autocomplete="tel" inputmode="tel" required placeholder="05xxxxxxxx">
           <label>البريد الإلكتروني</label>
-          <input type="email" id="registerEmail" name="username" autocomplete="username email" inputmode="email" required placeholder="example@email.com">
+          <input type="email" id="registerEmail" name="username" autocomplete="username email" inputmode="email" required placeholder="your@email.com">
           <label>كلمة المرور</label>
           ${passwordField('registerPassword', '6 أحرف على الأقل')}
           <button type="submit" class="btn-primary account-submit">إنشاء الحساب</button>
@@ -478,7 +478,7 @@ function renderAuth(message, forceRecovery){
           <p>أدخل بريدك الإلكتروني وسنرسل لك رابطاً آمناً لتعيين كلمة مرور جديدة.</p>
           <form id="passwordResetForm" class="account-form">
             <label>البريد الإلكتروني</label>
-            <input type="email" id="resetEmail" name="username" autocomplete="username email" inputmode="email" required placeholder="example@email.com">
+            <input type="email" id="resetEmail" name="username" autocomplete="username email" inputmode="email" required placeholder="your@email.com">
             <button type="submit" class="btn-primary account-submit">📧 إرسال رابط الاستعادة</button>
           </form>
           <button type="button" class="account-link" data-dora-call="doraBackToLogin">← العودة لتسجيل الدخول</button>
