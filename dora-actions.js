@@ -240,7 +240,10 @@
         var args = [];
         for (var i = 1; i < parts.length; i++) {
             var a = parts[i];
-            if (a === 'true') args.push(true);
+            if (a === '$element') args.push(el);
+            else if (a === '$value') args.push(el ? el.value : '');
+            else if (a === '$checked') args.push(el ? el.checked : false);
+            else if (a === 'true') args.push(true);
             else if (a === 'false') args.push(false);
             else if (!isNaN(a) && a !== '') args.push(Number(a));
             else args.push(a);
