@@ -220,9 +220,9 @@
         <p class="subtitle">لوحة الإدارة</p>
         <form data-dora-action-submit="handleLogin">
             <label>البريد الإلكتروني</label>
-            <input type="email" id="username" placeholder="admin@alshamal-df.com" required>
+            <input type="email" id="username" placeholder="admin@alshamal-df.com" required aria-label="admin@alshamal-df.com">
             <label>كلمة المرور</label>
-            <input type="password" id="password" placeholder="أدخل كلمة المرور" required>
+            <input type="password" id="password" placeholder="أدخل كلمة المرور" required aria-label="أدخل كلمة المرور">
             <button type="submit">دخول إلى لوحة التحكم</button>
             <div class="login-error" id="errorMsg">❌ بيانات الدخول غير صحيحة</div>
             <p class="login-hint">دخول الأدمن بحساب Supabase — لو واجهت مشكلة راجع: Authentication → Users في لوحة Supabase</p>
@@ -343,10 +343,10 @@
                 <div class="erp-box" style="border:2px solid #8B5CF6;border-radius:14px;padding:18px;margin-bottom:22px">
                     <h4 style="margin:0 0 12px">🤝 إضافة مورد جديد</h4>
                     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px">
-                        <input type="text" id="supName" placeholder="اسم المورد *" class="erp-in">
-                        <input type="text" id="supPhone" placeholder="الجوال" class="erp-in" dir="ltr" style="text-align:right">
-                        <input type="text" id="supEmail" placeholder="البريد الإلكتروني" class="erp-in" dir="ltr" style="text-align:right">
-                        <input type="text" id="supNotes" placeholder="ملاحظات" class="erp-in">
+                        <input type="text" id="supName" placeholder="اسم المورد *" class="erp-in" aria-label="اسم المورد">
+                        <input type="text" id="supPhone" placeholder="الجوال" class="erp-in" dir="ltr" style="text-align:right" aria-label="الجوال">
+                        <input type="text" id="supEmail" placeholder="البريد الإلكتروني" class="erp-in" dir="ltr" style="text-align:right" aria-label="البريد الإلكتروني">
+                        <input type="text" id="supNotes" placeholder="ملاحظات" class="erp-in" aria-label="ملاحظات">
                     </div>
                     <button class="btn-add" style="margin-top:12px" data-dora-action="purchAddSupplier">➕ حفظ المورد</button>
                 </div>
@@ -355,8 +355,8 @@
                 <div class="erp-box" style="border:2px solid #22C55E;border-radius:14px;padding:18px;margin-bottom:22px">
                     <h4 style="margin:0 0 12px">🧾 فاتورة شراء جديدة — بترحّل تلقائياً: زيادة مخزون + قيد (مدين مخزون ← دائن موردون)</h4>
                     <div style="display:grid;grid-template-columns:2fr 2fr;gap:10px;margin-bottom:12px">
-                        <select id="purchSupplier" class="erp-in"><option value="">— اختر المورد —</option></select>
-                        <input type="text" id="purchMemo" placeholder="بيان / ملاحظات الفاتورة (اختياري)" class="erp-in">
+                        <select id="purchSupplier" class="erp-in" aria-label="Purch Supplier"><option value="">— اختر المورد —</option></select>
+                        <input type="text" id="purchMemo" placeholder="بيان / ملاحظات الفاتورة (اختياري)" class="erp-in" aria-label="بيان / ملاحظات الفاتورة (اختياري)">
                     </div>
                     <div id="purchLines"></div>
                     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px">
@@ -387,17 +387,17 @@
                     <!-- سند قبض -->
                     <div class="erp-box" style="border:2px solid #22C55E;border-radius:14px;padding:18px">
                         <h4 style="margin:0 0 12px">📥 سند قبض — استلام مبلغ من عميل</h4>
-                        <input type="text" id="receiptParty" placeholder="اسم العميل *" class="erp-in" style="margin-bottom:8px">
-                        <input type="number" id="receiptAmount" placeholder="المبلغ *" min="0" step="any" class="erp-in" style="margin-bottom:8px">
-                        <input type="text" id="receiptMemo" placeholder="بيان (اختياري)" class="erp-in" style="margin-bottom:8px">
+                        <input type="text" id="receiptParty" placeholder="اسم العميل *" class="erp-in" style="margin-bottom:8px" aria-label="اسم العميل">
+                        <input type="number" id="receiptAmount" placeholder="المبلغ *" min="0" step="any" class="erp-in" style="margin-bottom:8px" aria-label="المبلغ">
+                        <input type="text" id="receiptMemo" placeholder="بيان (اختياري)" class="erp-in" style="margin-bottom:8px" aria-label="بيان (اختياري)">
                         <button class="btn-add" data-dora-action="voucherSave:receipt">📥 حفظ سند القبض</button>
                     </div>
                     <!-- سند صرف -->
                     <div class="erp-box" style="border:2px solid #EF4444;border-radius:14px;padding:18px">
                         <h4 style="margin:0 0 12px">📤 سند صرف — دفع مبلغ لمورد</h4>
-                        <input type="text" id="paymentParty" placeholder="اسم المورد *" class="erp-in" style="margin-bottom:8px">
-                        <input type="number" id="paymentAmount" placeholder="المبلغ *" min="0" step="any" class="erp-in" style="margin-bottom:8px">
-                        <input type="text" id="paymentMemo" placeholder="بيان (اختياري)" class="erp-in" style="margin-bottom:8px">
+                        <input type="text" id="paymentParty" placeholder="اسم المورد *" class="erp-in" style="margin-bottom:8px" aria-label="اسم المورد">
+                        <input type="number" id="paymentAmount" placeholder="المبلغ *" min="0" step="any" class="erp-in" style="margin-bottom:8px" aria-label="المبلغ">
+                        <input type="text" id="paymentMemo" placeholder="بيان (اختياري)" class="erp-in" style="margin-bottom:8px" aria-label="بيان (اختياري)">
                         <button class="btn-add" style="background:#EF4444" data-dora-action="voucherSave:payment">📤 حفظ سند الصرف</button>
                     </div>
                 </div>
@@ -417,12 +417,12 @@
                 <div class="erp-box" style="border:2px solid #F97316;border-radius:14px;padding:18px;margin-bottom:22px">
                     <h4 style="margin:0 0 12px">↩️ مرتجع جديد</h4>
                     <div style="display:grid;grid-template-columns:1fr 2fr 2fr;gap:10px;margin-bottom:12px">
-                        <select id="retType" class="erp-in">
+                        <select id="retType" class="erp-in" aria-label="Ret Type">
                             <option value="sales">مرتجع مبيعات (من عميل)</option>
                             <option value="purchase">مرتجع مشتريات (إلى مورد)</option>
                         </select>
-                        <input type="text" id="retParty" placeholder="اسم العميل / المورد *" class="erp-in">
-                        <input type="text" id="retMemo" placeholder="بيان / سبب المرتجع (اختياري)" class="erp-in">
+                        <input type="text" id="retParty" placeholder="اسم العميل / المورد *" class="erp-in" aria-label="اسم العميل / المورد">
+                        <input type="text" id="retMemo" placeholder="بيان / سبب المرتجع (اختياري)" class="erp-in" aria-label="بيان / سبب المرتجع (اختياري)">
                     </div>
                     <div id="retLines"></div>
                     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px">
@@ -444,11 +444,11 @@
                 <div class="erp-box" style="border:2px solid #EF4444;border-radius:14px;padding:18px;margin-bottom:22px">
                     <h4 style="margin:0 0 12px">🧾 سند مصروف جديد — القيد: مدين حساب المصروف ← دائن الخزينة/البنك</h4>
                     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">
-                        <select id="expAccount" class="erp-in"><option value="">— حساب المصروف —</option></select>
-                        <input type="number" id="expAmount" placeholder="المبلغ *" min="0" step="any" class="erp-in">
-                        <input type="text" id="expParty" placeholder="الجهة (اختياري)" class="erp-in">
-                        <select id="expPayFrom" class="erp-in"><option value="1100">💵 من الخزينة</option><option value="1110">🏦 من البنك</option></select>
-                        <input type="text" id="expMemo" placeholder="البيان (اختياري)" class="erp-in">
+                        <select id="expAccount" class="erp-in" aria-label="Exp Account"><option value="">— حساب المصروف —</option></select>
+                        <input type="number" id="expAmount" placeholder="المبلغ *" min="0" step="any" class="erp-in" aria-label="المبلغ">
+                        <input type="text" id="expParty" placeholder="الجهة (اختياري)" class="erp-in" aria-label="الجهة (اختياري)">
+                        <select id="expPayFrom" class="erp-in" aria-label="Exp Pay From"><option value="1100">💵 من الخزينة</option><option value="1110">🏦 من البنك</option></select>
+                        <input type="text" id="expMemo" placeholder="البيان (اختياري)" class="erp-in" aria-label="البيان (اختياري)">
                     </div>
                     <button class="btn-add" style="background:#EF4444;margin-top:12px" data-dora-action="expSave">🧾 حفظ المصروف</button>
                 </div>
@@ -457,9 +457,9 @@
                 <div class="erp-box" style="border:2px solid #0EA5E9;border-radius:14px;padding:18px;margin-bottom:22px">
                     <h4 style="margin:0 0 12px">🌳 إضافة حساب جديد لشجرة الحسابات</h4>
                     <div style="display:grid;grid-template-columns:1fr 2fr 2fr auto;gap:10px;align-items:center">
-                        <input type="text" id="accCode" placeholder="الكود (4 أرقام)" class="erp-in" dir="ltr" style="text-align:center" maxlength="4">
-                        <input type="text" id="accName" placeholder="اسم الحساب *" class="erp-in">
-                        <select id="accKind" class="erp-in">
+                        <input type="text" id="accCode" placeholder="الكود (4 أرقام)" class="erp-in" dir="ltr" style="text-align:center" maxlength="4" aria-label="الكود (4 أرقام)">
+                        <input type="text" id="accName" placeholder="اسم الحساب *" class="erp-in" aria-label="اسم الحساب">
+                        <select id="accKind" class="erp-in" aria-label="Acc Kind">
                             <option value="asset">أصول</option><option value="liability">التزامات</option>
                             <option value="equity">حقوق ملكية</option><option value="revenue">إيرادات</option>
                             <option value="expense" selected>مصروفات</option>
@@ -478,21 +478,21 @@
                     <h4 style="margin:0 0 10px">💸 المصروفات الموسّعة — تصنيفات ومراكز تكلفة ومرفقات</h4>
                     <div class="erp-box" style="border:2px solid #F59E0B;border-radius:14px;padding:18px;margin-bottom:22px">
                         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">
-                            <div class="form-group" style="margin:0"><label>التاريخ</label><input type="date" id="exp2Date" class="erp-in" dir="ltr"></div>
-                            <div class="form-group" style="margin:0"><label>البند/التصنيف *</label><input type="text" id="exp2Cat" class="erp-in" placeholder="كهرباء، إيجار، اتصالات..."></div>
-                            <div class="form-group" style="margin:0"><label>المبلغ (شامل الضريبة) *</label><input type="number" id="exp2Amount" class="erp-in" min="0" step="any" placeholder="0.00"></div>
-                            <div class="form-group" style="margin:0"><label>مركز التكلفة</label><select id="exp2Cc" class="erp-in"></select></div>
-                            <div class="form-group" style="margin:0"><label>حساب المصروف</label><select id="exp2Acc" class="erp-in"></select></div>
-                            <div class="form-group" style="margin:0"><label>الدفع من</label><select id="exp2PayFrom" class="erp-in"><option value="1100">💵 الخزينة</option><option value="1110">🏦 البنك</option></select></div>
-                            <div class="form-group" style="margin:0"><label>المورد</label><input type="text" id="exp2Vendor" class="erp-in"></div>
-                            <div class="form-group" style="margin:0"><label>البيان</label><input type="text" id="exp2Memo" class="erp-in"></div>
-                            <div class="form-group" style="margin:0;grid-column:1/-1"><label>رابط مرفق (اختياري)</label><input type="url" id="exp2Attach" class="erp-in" dir="ltr" style="text-align:left" placeholder="https://..."></div>
+                            <div class="form-group" style="margin:0"><label>التاريخ</label><input type="date" id="exp2Date" class="erp-in" dir="ltr" aria-label="Exp2 Date"></div>
+                            <div class="form-group" style="margin:0"><label>البند/التصنيف *</label><input type="text" id="exp2Cat" class="erp-in" placeholder="كهرباء، إيجار، اتصالات..." aria-label="كهرباء، إيجار، اتصالات..."></div>
+                            <div class="form-group" style="margin:0"><label>المبلغ (شامل الضريبة) *</label><input type="number" id="exp2Amount" class="erp-in" min="0" step="any" placeholder="0.00" aria-label="0.00"></div>
+                            <div class="form-group" style="margin:0"><label>مركز التكلفة</label><select id="exp2Cc" class="erp-in" aria-label="Exp2 Cc"></select></div>
+                            <div class="form-group" style="margin:0"><label>حساب المصروف</label><select id="exp2Acc" class="erp-in" aria-label="Exp2 Acc"></select></div>
+                            <div class="form-group" style="margin:0"><label>الدفع من</label><select id="exp2PayFrom" class="erp-in" aria-label="Exp2 Pay From"><option value="1100">💵 الخزينة</option><option value="1110">🏦 البنك</option></select></div>
+                            <div class="form-group" style="margin:0"><label>المورد</label><input type="text" id="exp2Vendor" class="erp-in" aria-label="Exp2 Vendor"></div>
+                            <div class="form-group" style="margin:0"><label>البيان</label><input type="text" id="exp2Memo" class="erp-in" aria-label="Exp2 Memo"></div>
+                            <div class="form-group" style="margin:0;grid-column:1/-1"><label>رابط مرفق (اختياري)</label><input type="url" id="exp2Attach" class="erp-in" dir="ltr" style="text-align:left" placeholder="https://..." aria-label="https://..."></div>
                         </div>
                         <button class="btn-add" style="background:#F59E0B;margin-top:12px" data-dora-action="exp2Save">💾 حفظ المصروف + ترحيل القيد</button>
                     </div>
                     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin-bottom:12px">
-                        <div class="form-group" style="margin:0"><label>شهر الفلترة</label><input type="month" id="exp2Month" class="erp-in" dir="ltr"></div>
-                        <div class="form-group" style="margin:0"><label>التصنيف</label><input type="text" id="exp2FilterCat" class="erp-in" placeholder="الكل"></div>
+                        <div class="form-group" style="margin:0"><label>شهر الفلترة</label><input type="month" id="exp2Month" class="erp-in" dir="ltr" aria-label="Exp2 Month"></div>
+                        <div class="form-group" style="margin:0"><label>التصنيف</label><input type="text" id="exp2FilterCat" class="erp-in" placeholder="الكل" aria-label="الكل"></div>
                         <button class="btn-add" data-dora-action="exp2Reload">🔍 عرض</button>
                     </div>
                     <div style="overflow-x:auto;margin-bottom:22px"><table class="admin-table"><thead><tr><th>التاريخ</th><th>التصنيف</th><th>المبلغ</th><th>مركز التكلفة</th><th>المورد</th><th>البيان</th><th>مرفق</th><th>القيد</th></tr></thead><tbody id="exp2Table"><tr><td colspan="8" class="admin-empty">⏳ جاري التحميل...</td></tr></tbody></table></div>
@@ -500,8 +500,8 @@
                     <div class="erp-box" style="border:2px solid #8B5CF6;border-radius:14px;padding:18px;margin-bottom:22px">
                         <h4 style="margin:0 0 12px">🏷️ مراكز التكلفة</h4>
                         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-                            <input type="text" id="ccCode" class="erp-in" style="max-width:130px" placeholder="الكود" dir="ltr">
-                            <input type="text" id="ccName" class="erp-in" style="max-width:240px" placeholder="الاسم *">
+                            <input type="text" id="ccCode" class="erp-in" style="max-width:130px" placeholder="الكود" dir="ltr" aria-label="الكود">
+                            <input type="text" id="ccName" class="erp-in" style="max-width:240px" placeholder="الاسم *" aria-label="الاسم">
                             <button class="btn-add" style="background:#8B5CF6" data-dora-action="ccAdd">➕ إضافة</button>
                         </div>
                     </div>
@@ -510,13 +510,13 @@
                         <h4 style="margin:0 0 6px">🔁 مصروف متكرر (شهري)</h4>
                         <p style="margin:0 0 12px;color:#94A3B8;font-size:13px">يُولَّد قيده تلقائياً عند فتح هذه الشاشة إذا حان موعد استحقاقه.</p>
                         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px">
-                            <input type="text" id="recCat" class="erp-in" placeholder="البند * (إيجار مثلاً)">
-                            <input type="number" id="recAmount" class="erp-in" min="0" step="any" placeholder="المبلغ *">
-                            <input type="text" id="recVendor" class="erp-in" placeholder="المورد">
-                            <select id="recCc" class="erp-in"></select>
-                            <select id="recAcc" class="erp-in"></select>
-                            <select id="recPayFrom" class="erp-in"><option value="1100">💵 الخزينة</option><option value="1110">🏦 البنك</option></select>
-                            <div class="form-group" style="margin:0"><label>تاريخ البداية/الاستحقاق القادم</label><input type="date" id="recStart" class="erp-in" dir="ltr"></div>
+                            <input type="text" id="recCat" class="erp-in" placeholder="البند * (إيجار مثلاً)" aria-label="البند * (إيجار مثلاً)">
+                            <input type="number" id="recAmount" class="erp-in" min="0" step="any" placeholder="المبلغ *" aria-label="المبلغ">
+                            <input type="text" id="recVendor" class="erp-in" placeholder="المورد" aria-label="المورد">
+                            <select id="recCc" class="erp-in" aria-label="Rec Cc"></select>
+                            <select id="recAcc" class="erp-in" aria-label="Rec Acc"></select>
+                            <select id="recPayFrom" class="erp-in" aria-label="Rec Pay From"><option value="1100">💵 الخزينة</option><option value="1110">🏦 البنك</option></select>
+                            <div class="form-group" style="margin:0"><label>تاريخ البداية/الاستحقاق القادم</label><input type="date" id="recStart" class="erp-in" dir="ltr" aria-label="Rec Start"></div>
                             <button class="btn-add" style="background:#22C55E" data-dora-action="recAdd">➕ إضافة</button>
                         </div>
                         <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>البند</th><th>المبلغ</th><th>الاستحقاق القادم</th><th>عدد التوليدات</th><th>الحالة</th><th></th></tr></thead><tbody id="recTable"><tr><td colspan="6" class="admin-empty">⏳ جاري التحميل...</td></tr></tbody></table></div>
@@ -539,15 +539,15 @@
                         <h4 style="margin:0 0 12px">➕ إضافة / تعديل موظف</h4>
                         <input type="hidden" id="hrpEmpId">
                         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">
-                            <input type="text" id="hrpEmpName" class="erp-in" placeholder="اسم الموظف *">
-                            <select id="hrpEmpNat" class="erp-in"><option value="سعودي">🇸🇦 سعودي</option><option value="غير سعودي">🌍 غير سعودي</option></select>
-                            <input type="tel" id="hrpEmpPhone" class="erp-in" placeholder="الجوال" dir="ltr" style="text-align:right">
-                            <input type="text" id="hrpEmpJob" class="erp-in" placeholder="الوظيفة">
-                            <div class="form-group" style="margin:0"><label>الراتب الأساسي *</label><input type="number" id="hrpEmpBasic" class="erp-in" min="0" step="any"></div>
-                            <div class="form-group" style="margin:0"><label>بدل السكن</label><input type="number" id="hrpEmpHousing" class="erp-in" min="0" step="any"></div>
-                            <div class="form-group" style="margin:0"><label>بدلات أخرى</label><input type="number" id="hrpEmpOther" class="erp-in" min="0" step="any"></div>
-                            <div class="form-group" style="margin:0"><label>تاريخ التعيين</label><input type="date" id="hrpEmpHire" class="erp-in" dir="ltr"></div>
-                            <input type="text" id="hrpEmpIban" class="erp-in" placeholder="IBAN" dir="ltr" style="text-align:right">
+                            <input type="text" id="hrpEmpName" class="erp-in" placeholder="اسم الموظف *" aria-label="اسم الموظف">
+                            <select id="hrpEmpNat" class="erp-in" aria-label="Hrp Emp Nat"><option value="سعودي">🇸🇦 سعودي</option><option value="غير سعودي">🌍 غير سعودي</option></select>
+                            <input type="tel" id="hrpEmpPhone" class="erp-in" placeholder="الجوال" dir="ltr" style="text-align:right" aria-label="الجوال">
+                            <input type="text" id="hrpEmpJob" class="erp-in" placeholder="الوظيفة" aria-label="الوظيفة">
+                            <div class="form-group" style="margin:0"><label>الراتب الأساسي *</label><input type="number" id="hrpEmpBasic" class="erp-in" min="0" step="any" aria-label="Hrp Emp Basic"></div>
+                            <div class="form-group" style="margin:0"><label>بدل السكن</label><input type="number" id="hrpEmpHousing" class="erp-in" min="0" step="any" aria-label="Hrp Emp Housing"></div>
+                            <div class="form-group" style="margin:0"><label>بدلات أخرى</label><input type="number" id="hrpEmpOther" class="erp-in" min="0" step="any" aria-label="Hrp Emp Other"></div>
+                            <div class="form-group" style="margin:0"><label>تاريخ التعيين</label><input type="date" id="hrpEmpHire" class="erp-in" dir="ltr" aria-label="Hrp Emp Hire"></div>
+                            <input type="text" id="hrpEmpIban" class="erp-in" placeholder="IBAN" dir="ltr" style="text-align:right" aria-label="IBAN">
                         </div>
                         <div style="display:flex;gap:10px;margin-top:12px">
                             <button class="btn-add" id="hrpEmpSaveBtn" data-dora-action="hrpSaveEmp">➕ إضافة الموظف</button>
@@ -561,7 +561,7 @@
                     <div class="erp-box" style="border:2px solid #22C55E;border-radius:14px;padding:18px;margin:16px 0 22px">
                         <h4 style="margin:0 0 12px">🧾 توليد مسيّر رواتب شهري</h4>
                         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end">
-                            <div class="form-group" style="margin:0"><label>الشهر</label><input type="month" id="hrpRunMonth" class="erp-in" dir="ltr"></div>
+                            <div class="form-group" style="margin:0"><label>الشهر</label><input type="month" id="hrpRunMonth" class="erp-in" dir="ltr" aria-label="Hrp Run Month"></div>
                             <button class="btn-add" style="background:#22C55E" data-dora-action="hrpGenerateRun">⚙️ توليد المسيّر (لكل الموظفين النشطين)</button>
                         </div>
                     </div>
@@ -577,11 +577,11 @@
                         <h4 style="margin:0 0 6px">🏁 حاسبة مكافأة نهاية الخدمة (نظام العمل السعودي)</h4>
                         <p style="margin:0 0 12px;color:#94A3B8;font-size:13px">نصف شهر عن كل سنة من أول 5 سنوات + شهر كامل عمّا بعدها (الأجر الشامل). الاستقالة: أقل من سنتين لا شيء، 2-5 ثلث، 5-10 ثلثان، 10+ كاملة. الإنهاء من صاحب العمل = كاملة.</p>
                         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">
-                            <select id="hrpEosEmp" class="erp-in" data-dora-action-change="hrpEosFill"></select>
-                            <div class="form-group" style="margin:0"><label>تاريخ التعيين</label><input type="date" id="hrpEosHire" class="erp-in" dir="ltr"></div>
-                            <div class="form-group" style="margin:0"><label>تاريخ نهاية العلاقة</label><input type="date" id="hrpEosEnd" class="erp-in" dir="ltr"></div>
-                            <div class="form-group" style="margin:0"><label>الأجر الشامل الشهري</label><input type="number" id="hrpEosWage" class="erp-in" min="0" step="any"></div>
-                            <select id="hrpEosReason" class="erp-in"><option value="termination">إنهاء من صاحب العمل</option><option value="resignation">استقالة الموظف</option></select>
+                            <select id="hrpEosEmp" class="erp-in" data-dora-action-change="hrpEosFill" aria-label="Hrp Eos Emp"></select>
+                            <div class="form-group" style="margin:0"><label>تاريخ التعيين</label><input type="date" id="hrpEosHire" class="erp-in" dir="ltr" aria-label="Hrp Eos Hire"></div>
+                            <div class="form-group" style="margin:0"><label>تاريخ نهاية العلاقة</label><input type="date" id="hrpEosEnd" class="erp-in" dir="ltr" aria-label="Hrp Eos End"></div>
+                            <div class="form-group" style="margin:0"><label>الأجر الشامل الشهري</label><input type="number" id="hrpEosWage" class="erp-in" min="0" step="any" aria-label="Hrp Eos Wage"></div>
+                            <select id="hrpEosReason" class="erp-in" aria-label="Hrp Eos Reason"><option value="termination">إنهاء من صاحب العمل</option><option value="resignation">استقالة الموظف</option></select>
                         </div>
                         <div style="display:flex;gap:10px;margin-top:12px">
                             <button class="btn-add" style="background:#F59E0B" data-dora-action="hrpEosCalc">🧮 احسب المكافأة</button>
@@ -599,14 +599,14 @@
                 <div class="erp-box" style="border:2px solid #8B5CF6;border-radius:14px;padding:18px;margin:16px 0 22px">
                     <h4 style="margin:0 0 12px">➕ إضافة أصل</h4>
                     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">
-                        <input type="text" id="astName" class="erp-in" placeholder="اسم الأصل *">
-                        <input type="text" id="astCat" class="erp-in" placeholder="التصنيف (أجهزة، أثاث...)">
-                        <div class="form-group" style="margin:0"><label>تاريخ الشراء *</label><input type="date" id="astDate" class="erp-in" dir="ltr"></div>
-                        <div class="form-group" style="margin:0"><label>التكلفة *</label><input type="number" id="astCost" class="erp-in" min="0" step="any"></div>
-                        <div class="form-group" style="margin:0"><label>قيمة الخردة</label><input type="number" id="astSalvage" class="erp-in" min="0" step="any"></div>
-                        <div class="form-group" style="margin:0"><label>العمر الإنتاجي (سنوات)</label><input type="number" id="astLife" class="erp-in" min="1" step="1" value="5"></div>
-                        <select id="astMethod" class="erp-in" data-dora-action-change="astMethodChange"><option value="sl">قسط ثابت</option><option value="db">قسط متناقص 2×</option><option value="uop">وحدات إنتاج</option></select>
-                        <input type="number" id="astUnits" class="erp-in" min="0" step="any" placeholder="إجمالي الوحدات المقدرة" style="display:none">
+                        <input type="text" id="astName" class="erp-in" placeholder="اسم الأصل *" aria-label="اسم الأصل">
+                        <input type="text" id="astCat" class="erp-in" placeholder="التصنيف (أجهزة، أثاث...)" aria-label="التصنيف (أجهزة، أثاث...)">
+                        <div class="form-group" style="margin:0"><label>تاريخ الشراء *</label><input type="date" id="astDate" class="erp-in" dir="ltr" aria-label="Ast Date"></div>
+                        <div class="form-group" style="margin:0"><label>التكلفة *</label><input type="number" id="astCost" class="erp-in" min="0" step="any" aria-label="Ast Cost"></div>
+                        <div class="form-group" style="margin:0"><label>قيمة الخردة</label><input type="number" id="astSalvage" class="erp-in" min="0" step="any" aria-label="Ast Salvage"></div>
+                        <div class="form-group" style="margin:0"><label>العمر الإنتاجي (سنوات)</label><input type="number" id="astLife" class="erp-in" min="1" step="1" value="5" aria-label="Ast Life"></div>
+                        <select id="astMethod" class="erp-in" data-dora-action-change="astMethodChange" aria-label="Ast Method"><option value="sl">قسط ثابت</option><option value="db">قسط متناقص 2×</option><option value="uop">وحدات إنتاج</option></select>
+                        <input type="number" id="astUnits" class="erp-in" min="0" step="any" placeholder="إجمالي الوحدات المقدرة" style="display:none" aria-label="إجمالي الوحدات المقدرة">
                     </div>
                     <button class="btn-add" style="margin-top:12px" data-dora-action="astSave">💾 حفظ الأصل</button>
                 </div>
@@ -614,7 +614,7 @@
                 <div class="erp-box" style="border:2px solid #22C55E;border-radius:14px;padding:18px;margin-bottom:22px">
                     <h4 style="margin:0 0 12px">📤 ترحيل إهلاك الشهر</h4>
                     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end">
-                        <div class="form-group" style="margin:0"><label>الشهر</label><input type="month" id="astDepMonth" class="erp-in" dir="ltr"></div>
+                        <div class="form-group" style="margin:0"><label>الشهر</label><input type="month" id="astDepMonth" class="erp-in" dir="ltr" aria-label="Ast Dep Month"></div>
                         <button class="btn-add" data-dora-action="astPreviewDep">🔍 معاينة المستحق</button>
                         <button class="btn-add" id="astDepPostBtn" style="background:#22C55E;display:none" data-dora-action="astPostDep">📤 ترحيل القيد</button>
                     </div>
@@ -642,8 +642,8 @@
                 <h4 style="margin:24px 0 8px">📤 كشف آفاق اليومي — فواتير المبيعات للرفع على برنامج الحسابات</h4>
                 <div class="erp-box" style="border:2px solid #22C55E;border-radius:14px;padding:18px;margin-bottom:22px">
                     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin-bottom:14px">
-                        <div class="form-group" style="margin:0"><label>من تاريخ</label><input type="date" id="afakyDailyFrom" class="erp-in" dir="ltr"></div>
-                        <div class="form-group" style="margin:0"><label>إلى تاريخ</label><input type="date" id="afakyDailyTo" class="erp-in" dir="ltr"></div>
+                        <div class="form-group" style="margin:0"><label>من تاريخ</label><input type="date" id="afakyDailyFrom" class="erp-in" dir="ltr" aria-label="Afaky Daily From"></div>
+                        <div class="form-group" style="margin:0"><label>إلى تاريخ</label><input type="date" id="afakyDailyTo" class="erp-in" dir="ltr" aria-label="Afaky Daily To"></div>
                         <button class="btn-add" data-dora-action="afakyDailyGenerate">⚙️ توليد الكشف</button>
                         <button class="btn-add" style="background:#16A34A" data-dora-action="afakyDailyExport">📥 تصدير Excel</button>
                         <button class="btn-add" style="background:#0EA5E9" data-dora-action="afakyDailyPrintSummary">🖨️ تصدير ملخص يومي</button>
@@ -677,7 +677,7 @@
                     <div class="erp-box" style="border:2px solid #22C55E;border-radius:14px;padding:18px;margin-bottom:22px">
                         <h4 style="margin:0 0 12px">💵 التدفق النقدي الشهري المبسط (من السندات)</h4>
                         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin-bottom:12px">
-                            <div class="form-group" style="margin:0"><label>الشهر</label><input type="month" id="rpCfMonth" class="erp-in" dir="ltr"></div>
+                            <div class="form-group" style="margin:0"><label>الشهر</label><input type="month" id="rpCfMonth" class="erp-in" dir="ltr" aria-label="Rp Cf Month"></div>
                             <button class="btn-add" style="background:#22C55E" data-dora-action="rpCashflowRun">⚙️ عرض</button>
                         </div>
                         <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>الشهر</th><th>📥 المقبوضات</th><th>📤 المدفوعات</th><th>الصافي</th></tr></thead><tbody id="rpCfTable"><tr><td colspan="4" class="admin-empty">اختر الشهر واضغط «عرض»</td></tr></tbody></table></div>
@@ -686,8 +686,8 @@
                     <div class="erp-box" style="border:2px solid #0EA5E9;border-radius:14px;padding:18px">
                         <h4 style="margin:0 0 12px">🧾 ملخص ضريبة القيمة المضافة 15% للفترة</h4>
                         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end">
-                            <div class="form-group" style="margin:0"><label>من تاريخ</label><input type="date" id="rpVatFrom" class="erp-in" dir="ltr"></div>
-                            <div class="form-group" style="margin:0"><label>إلى تاريخ</label><input type="date" id="rpVatTo" class="erp-in" dir="ltr"></div>
+                            <div class="form-group" style="margin:0"><label>من تاريخ</label><input type="date" id="rpVatFrom" class="erp-in" dir="ltr" aria-label="Rp Vat From"></div>
+                            <div class="form-group" style="margin:0"><label>إلى تاريخ</label><input type="date" id="rpVatTo" class="erp-in" dir="ltr" aria-label="Rp Vat To"></div>
                             <button class="btn-add" style="background:#0EA5E9" data-dora-action="rpVatRun">⚙️ حساب الملخص</button>
                         </div>
                         <div id="rpVatResult"></div>
@@ -702,10 +702,10 @@
                 <div class="erp-box" style="border:2px solid #10B981;border-radius:14px;padding:18px;margin-bottom:22px">
                     <h4 style="margin:0 0 12px">➕ إضافة كاشير جديد</h4>
                     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px">
-                        <input type="text" id="cashUsername" placeholder="اسم المستخدم *" class="erp-in" dir="ltr" style="text-align:right">
-                        <input type="text" id="cashFullName" placeholder="الاسم الكامل" class="erp-in">
-                        <input type="text" id="cashBranch" placeholder="الفرع" class="erp-in">
-                        <input type="password" id="cashPin" placeholder="PIN — 4-6 أرقام *" class="erp-in" dir="ltr" style="text-align:center" maxlength="6" inputmode="numeric">
+                        <input type="text" id="cashUsername" placeholder="اسم المستخدم *" class="erp-in" dir="ltr" style="text-align:right" aria-label="اسم المستخدم">
+                        <input type="text" id="cashFullName" placeholder="الاسم الكامل" class="erp-in" aria-label="الاسم الكامل">
+                        <input type="text" id="cashBranch" placeholder="الفرع" class="erp-in" aria-label="الفرع">
+                        <input type="password" id="cashPin" placeholder="PIN — 4-6 أرقام *" class="erp-in" dir="ltr" style="text-align:center" maxlength="6" inputmode="numeric" aria-label="PIN — 4-6 أرقام">
                     </div>
                     <button class="btn-add" style="margin-top:12px" data-dora-action="cashierAdd">💾 حفظ الكاشير</button>
                     <div style="color:#94A3B8;font-size:12px;margin-top:8px">🔐 يُخزَّن الرمز كهاش SHA-256 فقط — 5 محاولات خاطئة تقفل الحساب 5 دقائق. الكاشير يدخل من pos.html ولا يملك أي صلاحية على لوحة الأدمن.</div>
@@ -720,16 +720,16 @@
                 <div class="erp-box" style="border:2px solid #1D4ED8;border-radius:14px;padding:18px;margin-bottom:22px">
                     <h4 style="margin:0 0 12px">➕ إضافة مستخدم جديد</h4>
                     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px">
-                        <input type="text" id="suUsername" placeholder="اسم المستخدم (إنجليزي) *" class="erp-in" dir="ltr" style="text-align:right">
-                        <input type="text" id="suFullName" placeholder="الاسم الكامل" class="erp-in">
-                        <select id="suRole" class="erp-in">
+                        <input type="text" id="suUsername" placeholder="اسم المستخدم (إنجليزي) *" class="erp-in" dir="ltr" style="text-align:right" aria-label="اسم المستخدم (إنجليزي)">
+                        <input type="text" id="suFullName" placeholder="الاسم الكامل" class="erp-in" aria-label="الاسم الكامل">
+                        <select id="suRole" class="erp-in" aria-label="Su Role">
                             <option value="viewer">👤 عرض — تقارير أساسية</option>
                             <option value="biller">🧾 مفوتر — طلبات وفواتير</option>
                             <option value="accountant">📒 محاسب — سندات وقيود وتقارير</option>
                             <option value="hr">👥 موارد بشرية — رواتب عرضاً</option>
                             <option value="manager">👔 مدير — كل الصلاحيات</option>
                         </select>
-                        <input type="password" id="suPassword" placeholder="كلمة المرور (6+) *" class="erp-in" dir="ltr" style="text-align:center">
+                        <input type="password" id="suPassword" placeholder="كلمة المرور (6+) *" class="erp-in" dir="ltr" style="text-align:center" aria-label="كلمة المرور (6+)">
                     </div>
                     <button class="btn-add" style="margin-top:12px" data-dora-action="staffUserAdd">💾 حفظ المستخدم</button>
                     <div style="color:#94A3B8;font-size:12px;margin-top:8px">🔐 تُخزَّن كلمة المرور كهاش SHA-256 مع salt فقط — 5 محاولات خاطئة تقفل الحساب 5 دقائق، والجلسة 12 ساعة. الموظف يدخل من staff.html فقط ولا يملك أي صلاحية على هذه اللوحة. إدارة المستخدمين وإعدادات زاتكا تبقى حصراً هنا.</div>
@@ -749,11 +749,11 @@
                     <h4 style="margin:0 0 12px" data-i18n="crm_new_lead">➕ عميل محتمل جديد</h4>
                     <input type="hidden" id="crmLeadId">
                     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">
-                        <input type="text" id="crmLeadName" class="erp-in" data-i18n="crm_ph_name" data-i18n-ph placeholder="الاسم *">
-                        <input type="text" id="crmLeadPhone" class="erp-in" dir="ltr" data-i18n="crm_ph_phone" data-i18n-ph placeholder="الجوال">
-                        <input type="text" id="crmLeadSource" class="erp-in" data-i18n="crm_ph_source" data-i18n-ph placeholder="المصدر (واتساب/موقع/معرض...)">
-                        <input type="text" id="crmLeadInterest" class="erp-in" data-i18n="crm_ph_interest" data-i18n-ph placeholder="الاهتمام (منتج/خدمة)">
-                        <input type="text" id="crmLeadNotes" class="erp-in" data-i18n="crm_ph_notes" data-i18n-ph placeholder="ملاحظات">
+                        <input type="text" id="crmLeadName" class="erp-in" data-i18n="crm_ph_name" data-i18n-ph placeholder="الاسم *" aria-label="الاسم">
+                        <input type="text" id="crmLeadPhone" class="erp-in" dir="ltr" data-i18n="crm_ph_phone" data-i18n-ph placeholder="الجوال" aria-label="الجوال">
+                        <input type="text" id="crmLeadSource" class="erp-in" data-i18n="crm_ph_source" data-i18n-ph placeholder="المصدر (واتساب/موقع/معرض...)" aria-label="المصدر (واتساب/موقع/معرض...)">
+                        <input type="text" id="crmLeadInterest" class="erp-in" data-i18n="crm_ph_interest" data-i18n-ph placeholder="الاهتمام (منتج/خدمة)" aria-label="الاهتمام (منتج/خدمة)">
+                        <input type="text" id="crmLeadNotes" class="erp-in" data-i18n="crm_ph_notes" data-i18n-ph placeholder="ملاحظات" aria-label="ملاحظات">
                     </div>
                     <div style="margin-top:12px;display:flex;gap:8px">
                         <button class="btn-add" data-dora-action="crmLeadSave" data-i18n="crm_save">💾 حفظ</button>
@@ -764,13 +764,13 @@
                     <h4 style="margin:0 0 12px"><span data-i18n="crm_act_title">📞 تسجيل نشاط متابعة</span> — <b id="crmActLeadName"></b></h4>
                     <input type="hidden" id="crmActLeadId">
                     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">
-                        <select id="crmActType" class="erp-in">
+                        <select id="crmActType" class="erp-in" aria-label="Crm Act Type">
                             <option value="call">📞 مكالمة</option>
                             <option value="message">💬 رسالة</option>
                             <option value="meeting">🤝 اجتماع</option>
                         </select>
-                        <input type="text" id="crmActNote" class="erp-in" placeholder="ملاحظة النشاط">
-                        <input type="date" id="crmActRemind" class="erp-in" title="تاريخ تذكير المتابعة">
+                        <input type="text" id="crmActNote" class="erp-in" placeholder="ملاحظة النشاط" aria-label="ملاحظة النشاط">
+                        <input type="date" id="crmActRemind" class="erp-in" title="تاريخ تذكير المتابعة" aria-label="Crm Act Remind">
                     </div>
                     <button class="btn-add" style="margin-top:12px" data-dora-action="crmActSave" data-i18n="crm_act_save">💾 حفظ النشاط</button>
                 </div>
@@ -805,9 +805,9 @@
                     <div class="erp-box" style="border:1px solid rgba(148,163,184,.25);border-radius:14px;padding:18px;margin-bottom:18px">
                         <h4 style="margin:0 0 12px" data-i18n="mfg_new_bom">➕ قائمة مكونات جديدة</h4>
                         <div class="form-group"><label data-i18n="mfg_finished">المنتج التام</label>
-                            <select id="mfgBomProduct" class="erp-in"></select></div>
+                            <select id="mfgBomProduct" class="erp-in" aria-label="Mfg Bom Product"></select></div>
                         <div class="form-group"><label data-i18n="crm_ph_notes">ملاحظات</label>
-                            <input type="text" id="mfgBomNotes" class="erp-in"></div>
+                            <input type="text" id="mfgBomNotes" class="erp-in" aria-label="Mfg Bom Notes"></div>
                         <label data-i18n="mfg_components">المكونات (لكل وحدة منتج تام)</label>
                         <div id="mfgBomLines" style="margin:8px 0"></div>
                         <div style="display:flex;gap:8px">
@@ -828,7 +828,7 @@
                         <input type="hidden" id="mfgOrderBomId">
                         <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
                             <label data-i18n="mfg_qty">الكمية</label>
-                            <input type="number" id="mfgOrderQty" class="erp-in" style="width:120px" min="1" step="any" value="1">
+                            <input type="number" id="mfgOrderQty" class="erp-in" style="width:120px" min="1" step="any" value="1" aria-label="Mfg Order Qty">
                             <button class="btn-edit" data-dora-action="mfgOrderCheckNow" data-i18n="mfg_check">🔍 تحقق من التوفر</button>
                             <button class="btn-add" data-dora-action="mfgOrderSave" data-i18n="mfg_create">💾 إنشاء (مسودة)</button>
                         </div>
@@ -853,7 +853,7 @@
                 <div class="erp-box" style="border:1px solid rgba(148,163,184,.25);border-radius:14px;padding:18px">
                     <div id="asstMessages" style="max-height:420px;overflow-y:auto;margin-bottom:12px"></div>
                     <div style="display:flex;gap:8px">
-                        <input type="text" id="asstInput" class="erp-in" style="flex:1" data-i18n="asst_ph" data-i18n-ph placeholder="مثال: مبيعات الشهر الماضي؟ أفضل الأصناف؟ المتأخرات؟">
+                        <input type="text" id="asstInput" class="erp-in" style="flex:1" data-i18n="asst_ph" data-i18n-ph placeholder="مثال: مبيعات الشهر الماضي؟ أفضل الأصناف؟ المتأخرات؟" aria-label="مثال: مبيعات الشهر الماضي؟ أفضل الأصناف؟ المتأخرات؟">
                         <button class="btn-add" data-dora-action="asstAsk" data-i18n="asst_send">إرسال</button>
                     </div>
                 </div>
@@ -867,8 +867,8 @@
                 <div class="zatca-note">ℹ️ هذا الـ QR يغطي <strong>المرحلة الأولى (التوليد)</strong> بصيغة TLV القياسية — الربط الكامل مع هيئة الزكاة والضريبة والجمارك (المرحلة الثانية - الربط والتكامل) يتطلب شهادة رسمية (CSID) وتوقيعاً رقمياً عبر حل معتمد.</div>
                 <div class="afaky-form" style="margin-bottom:24px">
                     <h4>⚙️ إعدادات الفوترة الإلكترونية</h4>
-                    <div class="form-group"><label>اسم البائع (Tag 1)</label><input type="text" id="zatcaSellerName" placeholder="شركة درة فارس الشمال للتجارة"></div>
-                    <div class="form-group"><label>الرقم الضريبي (Tag 2)</label><input type="text" id="zatcaVatNumber" placeholder="3XXXXXXXXXXXX3" dir="ltr" style="text-align:left"></div>
+                    <div class="form-group"><label>اسم البائع (Tag 1)</label><input type="text" id="zatcaSellerName" placeholder="شركة درة فارس الشمال للتجارة" aria-label="شركة درة فارس الشمال للتجارة"></div>
+                    <div class="form-group"><label>الرقم الضريبي (Tag 2)</label><input type="text" id="zatcaVatNumber" placeholder="3XXXXXXXXXXXX3" dir="ltr" style="text-align:left" aria-label="3XXXXXXXXXXXX3"></div>
                     <button class="btn-save" data-dora-action="saveZatcaSettings">💾 حفظ إعدادات الفوترة</button>
                 </div>
                 <table><thead><tr><th>#</th><th>رقم الفاتورة</th><th>العميل</th><th>الإجمالي</th><th>الضريبة</th><th>التاريخ</th><th>QR</th></tr></thead><tbody id="zatcaInvoicesTable"><tr><td colspan="7">⏳ جاري التحميل...</td></tr></tbody></table>
@@ -883,7 +883,7 @@
                 <div class="admin-data-card" style="margin-bottom:16px;display:flex;gap:10px;align-items:end;flex-wrap:wrap">
                     <div class="form-group" style="flex:1;min-width:220px;margin:0">
                         <label>🏢 الكيان الحالي (الشركة / المؤسسة)</label>
-                        <select id="zcEntity" data-dora-action-change="zatcaPickEntity:$value"><option value="">⏳ ...</option></select>
+                        <select id="zcEntity" data-dora-action-change="zatcaPickEntity:$value" aria-label="Zc Entity"><option value="">⏳ ...</option></select>
                     </div>
                     <button class="btn-add" data-dora-action="zatcaNewEntity">➕ إضافة كيان جديد (المؤسسة)</button>
                 </div>
@@ -892,16 +892,16 @@
                 <div class="afaky-form" style="margin-bottom:24px">
                     <h4>🏢 إعدادات المنشأة</h4>
                     <div class="admin-form-grid">
-                        <div class="form-group"><label>اسم المنشأة</label><input type="text" id="zcName" placeholder="شركة درة فارس الشمال للتجارة"></div>
-                        <div class="form-group"><label>السجل التجاري</label><input type="text" id="zcCr" dir="ltr" style="text-align:left"></div>
-                        <div class="form-group"><label>الرقم الضريبي (15 رقماً يبدأ وينتهي بـ 3)</label><input type="text" id="zcVat" dir="ltr" style="text-align:left" placeholder="3XXXXXXXXXXXXX3"></div>
-                        <div class="form-group"><label>المدينة</label><input type="text" id="zcCity"></div>
-                        <div class="form-group"><label>الحي</label><input type="text" id="zcDistrict"></div>
-                        <div class="form-group"><label>الشارع</label><input type="text" id="zcStreet"></div>
-                        <div class="form-group"><label>الرمز البريدي</label><input type="text" id="zcPostal" dir="ltr" style="text-align:left"></div>
-                        <div class="form-group"><label>رقم المبنى</label><input type="text" id="zcBuilding" dir="ltr" style="text-align:left"></div>
-                        <div class="form-group"><label>البيئة</label><select id="zcEnv"><option value="simulation">🧪 محاكاة (Developer Portal)</option><option value="production">🟢 إنتاج</option></select></div>
-                        <div class="form-group" style="grid-column:1/-1"><label>وسيط الإرسال (Proxy URL) — اختياري لتجاوز CORS</label><input type="url" id="zcProxy" dir="ltr" style="text-align:left" placeholder="https://kcbmvxuzjlaooknwhqqb.functions.supabase.co/zatca-store-proxy"></div>
+                        <div class="form-group"><label>اسم المنشأة</label><input type="text" id="zcName" placeholder="شركة درة فارس الشمال للتجارة" aria-label="شركة درة فارس الشمال للتجارة"></div>
+                        <div class="form-group"><label>السجل التجاري</label><input type="text" id="zcCr" dir="ltr" style="text-align:left" aria-label="Zc Cr"></div>
+                        <div class="form-group"><label>الرقم الضريبي (15 رقماً يبدأ وينتهي بـ 3)</label><input type="text" id="zcVat" dir="ltr" style="text-align:left" placeholder="3XXXXXXXXXXXXX3" aria-label="3XXXXXXXXXXXXX3"></div>
+                        <div class="form-group"><label>المدينة</label><input type="text" id="zcCity" aria-label="Zc City"></div>
+                        <div class="form-group"><label>الحي</label><input type="text" id="zcDistrict" aria-label="Zc District"></div>
+                        <div class="form-group"><label>الشارع</label><input type="text" id="zcStreet" aria-label="Zc Street"></div>
+                        <div class="form-group"><label>الرمز البريدي</label><input type="text" id="zcPostal" dir="ltr" style="text-align:left" aria-label="Zc Postal"></div>
+                        <div class="form-group"><label>رقم المبنى</label><input type="text" id="zcBuilding" dir="ltr" style="text-align:left" aria-label="Zc Building"></div>
+                        <div class="form-group"><label>البيئة</label><select id="zcEnv" aria-label="Zc Env"><option value="simulation">🧪 محاكاة (Developer Portal)</option><option value="production">🟢 إنتاج</option></select></div>
+                        <div class="form-group" style="grid-column:1/-1"><label>وسيط الإرسال (Proxy URL) — اختياري لتجاوز CORS</label><input type="url" id="zcProxy" dir="ltr" style="text-align:left" placeholder="https://kcbmvxuzjlaooknwhqqb.functions.supabase.co/zatca-store-proxy" aria-label="https://kcbmvxuzjlaooknwhqqb.functions.supabase.co/zatca-store-proxy"></div>
                     </div>
                     <button class="btn-save" data-dora-action="saveZatcaConfig">💾 حفظ إعدادات المنشأة</button>
                 </div>
@@ -909,7 +909,7 @@
                 <div class="afaky-form" style="margin-bottom:24px">
                     <h4>🔗 الربط مع منصة فاتورة (Onboarding)</h4>
                     <div class="admin-note">الخطوات: 1) أدخل OTP من حسابك في منصة فاتورة ثم اضغط «توليد المفاتيح وطلب الربط» 2) أرسل فواتير الامتثال 3) اطلب شهادة الإنتاج.</div>
-                    <div class="form-group" style="max-width:260px"><label>OTP (6 أرقام من منصة فاتورة)</label><input type="text" id="zcOtp" dir="ltr" style="text-align:left" maxlength="6" placeholder="123456"></div>
+                    <div class="form-group" style="max-width:260px"><label>OTP (6 أرقام من منصة فاتورة)</label><input type="text" id="zcOtp" dir="ltr" style="text-align:left" maxlength="6" placeholder="123456" aria-label="123456"></div>
                     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
                         <button class="btn-save" data-dora-action="zatcaOnboardStep1">🔑 توليد المفاتيح وطلب الربط</button>
                         <button class="btn-add" data-dora-action="zatcaOnboardStep2">📨 إرسال فواتير الامتثال</button>
@@ -933,14 +933,14 @@
                 <form class="afaky-form" data-dora-action-submit="saveHomeHero">
                     <h4>✏️ نصوص الواجهة الرئيسية — تُقرأ حيًّا من قاعدة البيانات وتتطبق فورًا</h4>
                     <div class="admin-form-grid">
-                        <div class="form-group"><label>الشارة العلوية (Badge)</label><input type="text" id="heroBadgeInput" placeholder="✨ حلول تقنية متكاملة للشركات والأفراد"></div>
-                        <div class="form-group"><label>العنوان الرئيسي</label><input type="text" id="heroTitleInput" placeholder="شركة درة فارس الشمال"></div>
-                        <div class="form-group"><label>الجزء المميّز من العنوان (بجانبه)</label><input type="text" id="heroHighlightInput" placeholder="للتجارة"></div>
-                        <div class="form-group"><label>نص زر التواصل</label><input type="text" id="heroCtaTextInput" placeholder="تحدث مع خبير"></div>
-                        <div class="form-group" style="grid-column:1/-1"><label>الوصف (الفقرة تحت العنوان)</label><textarea id="heroDescInput" rows="3" placeholder="نوفر لك أحدث الأجهزة التقنية..."></textarea></div>
-                        <div class="form-group"><label>رابط زر التواصل</label><input type="url" id="heroCtaUrlInput" dir="ltr" style="text-align:left" placeholder="https://wa.me/9665XXXXXXXX"></div>
-                        <div class="form-group"><label>رقم إحصائية العملاء</label><input type="text" id="heroStatClientsInput" dir="ltr" style="text-align:left" placeholder="+500"></div>
-                        <div class="form-group"><label>عنوان إحصائية العملاء</label><input type="text" id="heroStatClientsLabelInput" placeholder="عميل سعيد"></div>
+                        <div class="form-group"><label>الشارة العلوية (Badge)</label><input type="text" id="heroBadgeInput" placeholder="✨ حلول تقنية متكاملة للشركات والأفراد" aria-label="✨ حلول تقنية متكاملة للشركات والأفراد"></div>
+                        <div class="form-group"><label>العنوان الرئيسي</label><input type="text" id="heroTitleInput" placeholder="شركة درة فارس الشمال" aria-label="شركة درة فارس الشمال"></div>
+                        <div class="form-group"><label>الجزء المميّز من العنوان (بجانبه)</label><input type="text" id="heroHighlightInput" placeholder="للتجارة" aria-label="للتجارة"></div>
+                        <div class="form-group"><label>نص زر التواصل</label><input type="text" id="heroCtaTextInput" placeholder="تحدث مع خبير" aria-label="تحدث مع خبير"></div>
+                        <div class="form-group" style="grid-column:1/-1"><label>الوصف (الفقرة تحت العنوان)</label><textarea id="heroDescInput" rows="3" placeholder="نوفر لك أحدث الأجهزة التقنية..." aria-label="نوفر لك أحدث الأجهزة التقنية..."></textarea></div>
+                        <div class="form-group"><label>رابط زر التواصل</label><input type="url" id="heroCtaUrlInput" dir="ltr" style="text-align:left" placeholder="https://wa.me/9665XXXXXXXX" aria-label="https://wa.me/9665XXXXXXXX"></div>
+                        <div class="form-group"><label>رقم إحصائية العملاء</label><input type="text" id="heroStatClientsInput" dir="ltr" style="text-align:left" placeholder="+500" aria-label="+500"></div>
+                        <div class="form-group"><label>عنوان إحصائية العملاء</label><input type="text" id="heroStatClientsLabelInput" placeholder="عميل سعيد" aria-label="عميل سعيد"></div>
                     </div>
                     <button type="submit" class="btn-save">💾 حفظ محتوى الصفحة الرئيسية</button>
                 </form>
@@ -961,18 +961,18 @@
                 <form class="afaky-form" data-dora-action-submit="saveAfakySettings">
                     <h4>⚙️ إعدادات الربط</h4>
                     <label class="afaky-check"><input type="checkbox" id="afakyEnabled"> تفعيل الربط مع نظام أفاقي</label>
-                    <div class="form-group"><label>وضع الربط</label><select id="afakyMode" data-dora-action-change="toggleAfakyModeFields"><option value="api">API مباشر</option><option value="database">قاعدة بيانات SQL Server</option><option value="csv">ملفات CSV</option><option value="webhook">Webhook</option><option value="email">البريد الإلكتروني</option></select></div>
+                    <div class="form-group"><label>وضع الربط</label><select id="afakyMode" data-dora-action-change="toggleAfakyModeFields" aria-label="Afaky Mode"><option value="api">API مباشر</option><option value="database">قاعدة بيانات SQL Server</option><option value="csv">ملفات CSV</option><option value="webhook">Webhook</option><option value="email">البريد الإلكتروني</option></select></div>
                     <div class="afaky-mode-fields" id="afakyFieldsApi">
                         <div class="mode-title">🔑 إعدادات API</div>
-                        <div class="form-group"><label>مفتاح API</label><input type="text" id="afakyApiKey" placeholder="أدخل مفتاح API"></div>
-                        <div class="form-group"><label>رابط API</label><input type="url" id="afakyApiUrl" placeholder="https://api.afaky.com/v1"></div>
+                        <div class="form-group"><label>مفتاح API</label><input type="text" id="afakyApiKey" placeholder="أدخل مفتاح API" aria-label="أدخل مفتاح API"></div>
+                        <div class="form-group"><label>رابط API</label><input type="url" id="afakyApiUrl" placeholder="https://api.afaky.com/v1" aria-label="https://api.afaky.com/v1"></div>
                     </div>
                     <div class="afaky-mode-fields" id="afakyFieldsDatabase" style="display:none">
                         <div class="mode-title">🗄️ بيانات SQL Server</div>
-                        <div class="form-group"><label>اسم السيرفر</label><input type="text" id="afakySqlServer" placeholder="SERVER\SQLEXPRESS"></div>
-                        <div class="form-group"><label>اسم قاعدة البيانات</label><input type="text" id="afakySqlDatabase" placeholder="اسم قاعدة البيانات"></div>
-                        <div class="form-group"><label>اسم المستخدم</label><input type="text" id="afakySqlUser" placeholder="sa"></div>
-                        <div class="form-group"><label>كلمة المرور</label><input type="password" id="afakySqlPassword" placeholder="••••••"></div>
+                        <div class="form-group"><label>اسم السيرفر</label><input type="text" id="afakySqlServer" placeholder="SERVER\SQLEXPRESS" aria-label="SERVER\SQLEXPRESS"></div>
+                        <div class="form-group"><label>اسم قاعدة البيانات</label><input type="text" id="afakySqlDatabase" placeholder="اسم قاعدة البيانات" aria-label="اسم قاعدة البيانات"></div>
+                        <div class="form-group"><label>اسم المستخدم</label><input type="text" id="afakySqlUser" placeholder="sa" aria-label="sa"></div>
+                        <div class="form-group"><label>كلمة المرور</label><input type="password" id="afakySqlPassword" placeholder="••••••" aria-label="••••••"></div>
                     </div>
                     <div class="afaky-mode-fields" id="afakyFieldsCsv" style="display:none">
                         <div class="mode-title">📄 وضع ملفات CSV</div>
@@ -980,11 +980,11 @@
                     </div>
                     <div class="afaky-mode-fields" id="afakyFieldsWebhook" style="display:none">
                         <div class="mode-title">🪝 إعدادات Webhook</div>
-                        <div class="form-group"><label>رابط Webhook</label><input type="url" id="afakyWebhookUrl" placeholder="https://api.afaky.com/webhook"></div>
+                        <div class="form-group"><label>رابط Webhook</label><input type="url" id="afakyWebhookUrl" placeholder="https://api.afaky.com/webhook" aria-label="https://api.afaky.com/webhook"></div>
                     </div>
                     <div class="afaky-mode-fields" id="afakyFieldsEmail" style="display:none">
                         <div class="mode-title">📧 إعدادات البريد الإلكتروني</div>
-                        <div class="form-group"><label>بريد أفاقي المستلم</label><input type="email" id="afakyEmail" placeholder="accounting@company.com"></div>
+                        <div class="form-group"><label>بريد أفاقي المستلم</label><input type="email" id="afakyEmail" placeholder="accounting@company.com" aria-label="accounting@company.com"></div>
                         <p style="color:var(--text-muted);font-size:12px;line-height:1.8;margin:0">عند الحفظ تُفتح رسالة بريد جاهزة — أرفق بها ملفات CSV المُصدّرة لإرسال تقارير تلقائية إلى أفاقي.</p>
                     </div>
                     <button type="submit" class="btn-save">💾 حفظ إعدادات الربط</button>
@@ -1009,7 +1009,7 @@
                     <p style="color:var(--text-muted);font-size:12px;line-height:1.9;margin:0 0 12px">ارفع ملف Excel المُصدَّر من برنامج آفاق (تقرير «أرصدة الأصناف»). الأداة تقرأ <b>الكود والاسم والكمية</b> فقط — <b>بدون أسعار</b>، تضيف الأصناف الجديدة <b>مخفية</b> حتى تسعّرها بنفسك من صفحة المنتجات، وتحدّث كميات الأصناف الموجودة بدون لمس أسعارها أو صورها.</p>
                     <div class="afaky-csv-row">
                         <div class="csv-label">ملف آفاق (xlsx أو CSV):</div>
-                        <input type="file" class="afaky-import-file" id="afaqXlsFile" accept=".xlsx,.xls,.csv,text/csv" data-dora-action-change="afaqXlsPreview:$element">
+                        <input type="file" class="afaky-import-file" id="afaqXlsFile" accept=".xlsx,.xls,.csv,text/csv" data-dora-action-change="afaqXlsPreview:$element" aria-label="Afaq Xls File">
                     </div>
                     <label class="afaky-check" style="margin:6px 0"><input type="checkbox" id="afaqHideNew" checked> إخفاء الأصناف الجديدة عن المتجر حتى تسعيرها (يظهر سعرها 0 في لوحة المنتجات فقط)</label>
                     <label class="afaky-check" style="margin:6px 0"><input type="checkbox" id="afaqAutoCat" checked> تصنيف تلقائي بالكلمات (حبر/TONER→أحبار، CABLE→وصلات… وغير المعروف → إكسسوارات)</label>
@@ -1043,7 +1043,7 @@
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg> الشحن — أسعار التوصيل حسب المدينة</h3><button class="btn-add" data-dora-action="openShippingRateModal"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> إضافة سعر</button></div>
                 <div class="afaky-form" style="margin-bottom:24px">
                     <h4>⚙️ الإعدادات العامة للشحن</h4>
-                    <div class="form-group"><label>سعر الشحن الافتراضي (ر.س) — يُستخدم عند عدم وجود سعر خاص بمدينة العميل</label><input type="number" id="shippingDefaultPrice" step="0.01" min="0" placeholder="25"></div>
+                    <div class="form-group"><label>سعر الشحن الافتراضي (ر.س) — يُستخدم عند عدم وجود سعر خاص بمدينة العميل</label><input type="number" id="shippingDefaultPrice" step="0.01" min="0" placeholder="25" aria-label="25"></div>
                     <button class="btn-save" data-dora-action="saveShippingSettings">💾 حفظ إعدادات الشحن</button>
                 </div>
                 <table><thead><tr><th>#</th><th>من مدينة</th><th>إلى مدينة</th><th>الوزن (كجم)</th><th>السعر</th><th>مدة التوصيل</th><th>الإجراءات</th></tr></thead><tbody id="shippingRatesTable"><tr><td colspan="7">⏳ جاري التحميل...</td></tr></tbody></table>
@@ -1059,7 +1059,7 @@
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px"><h3><svg width="18" height="18" style="vertical-align:middle;margin-left:8px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> إدارة الموظفين</h3></div>
                 <div class="zatca-note">ℹ️ أضف إيميل الموظف هنا ← ثم أخبره أن يفتح الموقع وينشئ حساباً <b>بنفس الإيميل</b> ويختار كلمة المرور التي تعجبه ← تصبح كلمته الأساسية تلقائياً ويتحول حسابه لحساب موظف بصلاحيات المتابعة فقط.</div>
                 <form data-dora-action-submit="addStaff" style="display:flex;gap:10px;margin:16px 0;flex-wrap:wrap">
-                    <input type="email" id="newStaffEmail" required placeholder="employee@email.com" style="flex:1;min-width:240px;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:#fff;font-family:inherit;direction:ltr;text-align:right">
+                    <input type="email" id="newStaffEmail" required placeholder="employee@email.com" style="flex:1;min-width:240px;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:#fff;font-family:inherit;direction:ltr;text-align:right" aria-label="employee@email.com">
                     <button type="submit" class="btn-add">+ إضافة موظف</button>
                 </form>
                 <div id="staffList"><div class="admin-empty">⏳ جاري التحميل...</div></div>
@@ -1070,9 +1070,9 @@
                 <div class="zatca-note">🔐 كل مستخدم يغيّر كلمة مروره بنفسه فقط — لا يستطيع أي أدمن رؤية أو تغيير كلمة مرور غيره.</div>
                 <form data-dora-action-submit="changeMyPassword" style="max-width:420px;display:grid;gap:12px;margin-top:16px">
                     <label style="color:#B9BCE0;font-size:13px;font-weight:700">كلمة المرور الجديدة</label>
-                    <input type="password" id="myNewPassword" required minlength="6" autocomplete="new-password" style="padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:#fff;font-family:inherit">
+                    <input type="password" id="myNewPassword" required minlength="6" autocomplete="new-password" style="padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:#fff;font-family:inherit" aria-label="My New Password">
                     <label style="color:#B9BCE0;font-size:13px;font-weight:700">تأكيد كلمة المرور الجديدة</label>
-                    <input type="password" id="myNewPassword2" required minlength="6" autocomplete="new-password" style="padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:#fff;font-family:inherit">
+                    <input type="password" id="myNewPassword2" required minlength="6" autocomplete="new-password" style="padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:#fff;font-family:inherit" aria-label="My New Password2">
                     <button type="submit" class="btn-add" style="justify-self:start">حفظ كلمة المرور</button>
                 </form>
             </div>
@@ -1082,11 +1082,11 @@
                 <form class="afaky-form" data-dora-action-submit="saveSettings">
                     <h4>🏪 إعدادات المتجر</h4>
                     <div class="admin-form-grid">
-                        <div class="form-group"><label>اسم المتجر</label><input type="text" id="setStoreName" placeholder="شركة درة فارس الشمال"></div>
-                        <div class="form-group"><label>العملة</label><input type="text" id="setCurrency" placeholder="ر.س"></div>
-                        <div class="form-group"><label>نسبة الضريبة %</label><input type="number" id="setTaxPercent" step="0.01" min="0" placeholder="15"></div>
-                        <div class="form-group"><label>حد الشحن المجاني (ر.س) — 0 لتعطيل الشحن المجاني</label><input type="number" id="setFreeShippingMin" step="0.01" min="0" placeholder="200"></div>
-                        <div class="form-group form-group-full"><label>رقم الواتساب</label><input type="text" id="setWhatsapp" dir="ltr" style="text-align:left" placeholder="9665XXXXXXXX"></div>
+                        <div class="form-group"><label>اسم المتجر</label><input type="text" id="setStoreName" placeholder="شركة درة فارس الشمال" aria-label="شركة درة فارس الشمال"></div>
+                        <div class="form-group"><label>العملة</label><input type="text" id="setCurrency" placeholder="ر.س" aria-label="ر.س"></div>
+                        <div class="form-group"><label>نسبة الضريبة %</label><input type="number" id="setTaxPercent" step="0.01" min="0" placeholder="15" aria-label="15"></div>
+                        <div class="form-group"><label>حد الشحن المجاني (ر.س) — 0 لتعطيل الشحن المجاني</label><input type="number" id="setFreeShippingMin" step="0.01" min="0" placeholder="200" aria-label="200"></div>
+                        <div class="form-group form-group-full"><label>رقم الواتساب</label><input type="text" id="setWhatsapp" dir="ltr" style="text-align:left" placeholder="9665XXXXXXXX" aria-label="9665XXXXXXXX"></div>
                     </div>
                     <button type="submit" class="btn-save">💾 حفظ الإعدادات العامة</button>
                 </form>
@@ -1095,10 +1095,10 @@
                     <h4>🔗 روابط السوشيال ميديا</h4>
                     <p style="color:var(--text-muted,#9CA3AF);font-size:13px;margin-bottom:12px">الأيقونات ظاهرة في الموقع بدون روابط حاليًا. عند إنشاء الحسابات الرسمية، الصق الروابط هنا واحفظ — وستتفعّل الأيقونات تلقائيًا في كل صفحات الموقع. اترك الحقل فارغًا لإبقاء الأيقونة بدون رابط.</p>
                     <div class="admin-form-grid">
-                        <div class="form-group"><label>📘 فيسبوك</label><input type="url" id="setSocialFacebook" dir="ltr" style="text-align:left" placeholder="https://facebook.com/..."></div>
-                        <div class="form-group"><label>📸 انستقرام</label><input type="url" id="setSocialInstagram" dir="ltr" style="text-align:left" placeholder="https://instagram.com/..."></div>
-                        <div class="form-group"><label>🐦 تويتر / X</label><input type="url" id="setSocialTwitter" dir="ltr" style="text-align:left" placeholder="https://x.com/..."></div>
-                        <div class="form-group"><label>💼 لينكدإن</label><input type="url" id="setSocialLinkedin" dir="ltr" style="text-align:left" placeholder="https://linkedin.com/company/..."></div>
+                        <div class="form-group"><label>📘 فيسبوك</label><input type="url" id="setSocialFacebook" dir="ltr" style="text-align:left" placeholder="https://facebook.com/..." aria-label="https://facebook.com/..."></div>
+                        <div class="form-group"><label>📸 انستقرام</label><input type="url" id="setSocialInstagram" dir="ltr" style="text-align:left" placeholder="https://instagram.com/..." aria-label="https://instagram.com/..."></div>
+                        <div class="form-group"><label>🐦 تويتر / X</label><input type="url" id="setSocialTwitter" dir="ltr" style="text-align:left" placeholder="https://x.com/..." aria-label="https://x.com/..."></div>
+                        <div class="form-group"><label>💼 لينكدإن</label><input type="url" id="setSocialLinkedin" dir="ltr" style="text-align:left" placeholder="https://linkedin.com/company/..." aria-label="https://linkedin.com/company/..."></div>
                     </div>
                     <button type="submit" class="btn-save">💾 حفظ روابط السوشيال</button>
                 </form>
@@ -1111,7 +1111,7 @@
                     </div>
                     <div class="admin-form-grid">
                         <div class="form-group"><label>حالة البيع</label>
-                            <select id="setStoreStatus">
+                            <select id="setStoreStatus" aria-label="Set Store Status">
                                 <option value="closed">🔴 مغلق للتجهيز — إيقاف البيع مؤقتًا</option>
                                 <option value="open">🟢 مفتوح — البيع مفعّل</option>
                             </select>
@@ -1126,12 +1126,12 @@
                 <form class="afaky-form" data-dora-action-submit="saveCompanyInfo">
                     <h4>🏢 البيانات الرسمية للشركة</h4>
                     <div class="admin-form-grid">
-                        <div class="form-group form-group-full"><label>الاسم الرسمي</label><input type="text" id="compOfficialName" placeholder="شركة درة فارس الشمال للتجارة"></div>
-                        <div class="form-group"><label>السجل التجاري</label><input type="text" id="compCR" dir="ltr" style="text-align:left" placeholder="1010XXXXXX"></div>
-                        <div class="form-group"><label>الرقم الضريبي</label><input type="text" id="compTaxNumber" dir="ltr" style="text-align:left" placeholder="3XXXXXXXXXXXX3"></div>
-                        <div class="form-group"><label>البريد الإلكتروني</label><input type="email" id="compEmail" dir="ltr" style="text-align:left" placeholder="info@alshamal-df.com"></div>
-                        <div class="form-group"><label>الهاتف</label><input type="text" id="compPhone" dir="ltr" style="text-align:left" placeholder="9665XXXXXXXX"></div>
-                        <div class="form-group form-group-full"><label>العنوان</label><textarea id="compAddress" rows="2" placeholder="المدينة — الحي — الشارع"></textarea></div>
+                        <div class="form-group form-group-full"><label>الاسم الرسمي</label><input type="text" id="compOfficialName" placeholder="شركة درة فارس الشمال للتجارة" aria-label="شركة درة فارس الشمال للتجارة"></div>
+                        <div class="form-group"><label>السجل التجاري</label><input type="text" id="compCR" dir="ltr" style="text-align:left" placeholder="1010XXXXXX" aria-label="1010XXXXXX"></div>
+                        <div class="form-group"><label>الرقم الضريبي</label><input type="text" id="compTaxNumber" dir="ltr" style="text-align:left" placeholder="3XXXXXXXXXXXX3" aria-label="3XXXXXXXXXXXX3"></div>
+                        <div class="form-group"><label>البريد الإلكتروني</label><input type="email" id="compEmail" dir="ltr" style="text-align:left" placeholder="info@alshamal-df.com" aria-label="info@alshamal-df.com"></div>
+                        <div class="form-group"><label>الهاتف</label><input type="text" id="compPhone" dir="ltr" style="text-align:left" placeholder="9665XXXXXXXX" aria-label="9665XXXXXXXX"></div>
+                        <div class="form-group form-group-full"><label>العنوان</label><textarea id="compAddress" rows="2" placeholder="المدينة — الحي — الشارع" aria-label="المدينة — الحي — الشارع"></textarea></div>
                     </div>
                     <button type="submit" class="btn-save">💾 حفظ بيانات الشركة</button>
                 </form>
@@ -1146,10 +1146,10 @@
                 <form class="afaky-form" data-dora-action-submit="saveGovDocs">
                     <h4>🛡️ أرقام وروابط التوثيق</h4>
                     <div class="admin-form-grid">
-                        <div class="form-group"><label>رقم السجل التجاري</label><input type="text" id="govCR" dir="ltr" style="text-align:left" placeholder="1010XXXXXX"></div>
-                        <div class="form-group"><label>الرقم الضريبي</label><input type="text" id="govTaxNumber" dir="ltr" style="text-align:left" placeholder="3XXXXXXXXXXXX3"></div>
-                        <div class="form-group form-group-full"><label>رابط منصة "معروف"</label><input type="url" id="govMaroofUrl" dir="ltr" style="text-align:left" placeholder="https://maroof.sa/..."></div>
-                        <div class="form-group form-group-full"><label>ملاحظات</label><textarea id="govNotes" rows="3" placeholder="أي ملاحظات إضافية عن التوثيق (شهادات، تراخيص، تواريخ تجديد...)"></textarea></div>
+                        <div class="form-group"><label>رقم السجل التجاري</label><input type="text" id="govCR" dir="ltr" style="text-align:left" placeholder="1010XXXXXX" aria-label="1010XXXXXX"></div>
+                        <div class="form-group"><label>الرقم الضريبي</label><input type="text" id="govTaxNumber" dir="ltr" style="text-align:left" placeholder="3XXXXXXXXXXXX3" aria-label="3XXXXXXXXXXXX3"></div>
+                        <div class="form-group form-group-full"><label>رابط منصة "معروف"</label><input type="url" id="govMaroofUrl" dir="ltr" style="text-align:left" placeholder="https://maroof.sa/..." aria-label="https://maroof.sa/..."></div>
+                        <div class="form-group form-group-full"><label>ملاحظات</label><textarea id="govNotes" rows="3" placeholder="أي ملاحظات إضافية عن التوثيق (شهادات، تراخيص، تواريخ تجديد...)" aria-label="أي ملاحظات إضافية عن التوثيق (شهادات، تراخيص، تواريخ تجديد...)"></textarea></div>
                     </div>
                     <button type="submit" class="btn-save">💾 حفظ بيانات التوثيق</button>
                 </form>
@@ -1164,8 +1164,8 @@
                 <form class="afaky-form" data-dora-action-submit="saveMarketing">
                     <h4>⚡ إعدادات الحملة التسويقية</h4>
                     <label class="afaky-check"><input type="checkbox" id="mktEnabled"> تفعيل الحملة التسويقية (البانر الترويجي + الكوبون الترحيبي)</label>
-                    <div class="form-group"><label>كود الكوبون الترحيبي</label><input type="text" id="mktWelcomeCoupon" dir="ltr" style="text-align:left" placeholder="WELCOME10"></div>
-                    <div class="form-group"><label>رسالة البانر الترويجي</label><textarea id="mktBannerMessage" rows="3" placeholder="🎉 خصم ترحيبي على أول طلب — استخدم كود الكوبون عند الدفع"></textarea></div>
+                    <div class="form-group"><label>كود الكوبون الترحيبي</label><input type="text" id="mktWelcomeCoupon" dir="ltr" style="text-align:left" placeholder="WELCOME10" aria-label="WELCOME10"></div>
+                    <div class="form-group"><label>رسالة البانر الترويجي</label><textarea id="mktBannerMessage" rows="3" placeholder="🎉 خصم ترحيبي على أول طلب — استخدم كود الكوبون عند الدفع" aria-label="🎉 خصم ترحيبي على أول طلب — استخدم كود الكوبون عند الدفع"></textarea></div>
                     <button type="submit" class="btn-save">💾 حفظ إعدادات التسويق</button>
                 </form>
             </div>
@@ -1186,7 +1186,7 @@
             <button data-dora-action="closeZatcaQrModal" style="background:rgba(255,255,255,0.1);border:none;color:white;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:16px">✕</button>
         </div>
         <div class="zatca-qr-wrap"><img id="zatcaQrImage" alt="ZATCA QR" loading="lazy"></div>
-        <div class="form-group" style="margin-top:16px"><label>نص TLV بصيغة Base64</label><textarea id="zatcaQrBase64" rows="4" readonly dir="ltr" style="text-align:left;font-family:monospace;font-size:12px"></textarea></div>
+        <div class="form-group" style="margin-top:16px"><label>نص TLV بصيغة Base64</label><textarea id="zatcaQrBase64" rows="4" readonly dir="ltr" style="text-align:left;font-family:monospace;font-size:12px" aria-label="Zatca Qr Base64"></textarea></div>
         <button class="btn-save" data-dora-action="copyZatcaQr">📋 نسخ Base64</button>
     </div>
 </div>
@@ -1199,16 +1199,16 @@
         </div>
         <form id="productForm" data-dora-action-submit="saveProduct">
             <input type="hidden" id="productId">
-            <div class="form-group"><label>الباركود (امسح بقارئ الباركود)</label><input type="text" id="productBarcode" dir="ltr" style="text-align:left" placeholder="امسح الباركود هنا..."></div>
-            <div class="form-group"><label>اسم المنتج</label><input type="text" id="productName" required></div>
-            <div class="form-group"><label>الوصف</label><textarea id="productDesc" rows="3"></textarea></div>
-            <div class="form-group"><label>السعر (ر.س)</label><input type="number" id="productPrice" step="0.01" required></div>
-            <div class="form-group"><label>السعر القديم (اختياري)</label><input type="number" id="productOldPrice" step="0.01"></div>
-            <div class="form-group"><label>المخزون</label><input type="number" id="productStock" value="0" required></div>
-            <div class="form-group"><label>التصنيف</label><select id="productCategory"><option value="printers">طابعات</option><option value="computers">كمبيوتر</option><option value="ram">رامات</option><option value="storage">هاردات</option><option value="cables">وصلات</option><option value="projectors">بروجكتور</option><option value="accessories">إكسسوارات</option><option value="ink">أحبار</option><option value="food">مواد غذائية</option></select></div>
-            <div class="form-group"><label>الشارة</label><select id="productBadge"><option value="">بدون</option><option value="جديد">جديد</option><option value="خصم">خصم</option><option value="الأكثر مبيعاً">الأكثر مبيعاً</option></select></div>
-            <div class="form-group"><label>رابط الصورة</label><input type="url" id="productImage" placeholder="https://..."></div>
-            <div class="form-group"><label>التقييم</label><input type="number" id="productRating" value="0" min="0" max="5" step="0.1"></div>
+            <div class="form-group"><label>الباركود (امسح بقارئ الباركود)</label><input type="text" id="productBarcode" dir="ltr" style="text-align:left" placeholder="امسح الباركود هنا..." aria-label="امسح الباركود هنا..."></div>
+            <div class="form-group"><label>اسم المنتج</label><input type="text" id="productName" required aria-label="Product Name"></div>
+            <div class="form-group"><label>الوصف</label><textarea id="productDesc" rows="3" aria-label="Product Desc"></textarea></div>
+            <div class="form-group"><label>السعر (ر.س)</label><input type="number" id="productPrice" step="0.01" required aria-label="Product Price"></div>
+            <div class="form-group"><label>السعر القديم (اختياري)</label><input type="number" id="productOldPrice" step="0.01" aria-label="Product Old Price"></div>
+            <div class="form-group"><label>المخزون</label><input type="number" id="productStock" value="0" required aria-label="Product Stock"></div>
+            <div class="form-group"><label>التصنيف</label><select id="productCategory" aria-label="Product Category"><option value="printers">طابعات</option><option value="computers">كمبيوتر</option><option value="ram">رامات</option><option value="storage">هاردات</option><option value="cables">وصلات</option><option value="projectors">بروجكتور</option><option value="accessories">إكسسوارات</option><option value="ink">أحبار</option><option value="food">مواد غذائية</option></select></div>
+            <div class="form-group"><label>الشارة</label><select id="productBadge" aria-label="Product Badge"><option value="">بدون</option><option value="جديد">جديد</option><option value="خصم">خصم</option><option value="الأكثر مبيعاً">الأكثر مبيعاً</option></select></div>
+            <div class="form-group"><label>رابط الصورة</label><input type="url" id="productImage" placeholder="https://..." aria-label="https://..."></div>
+            <div class="form-group"><label>التقييم</label><input type="number" id="productRating" value="0" min="0" max="5" step="0.1" aria-label="Product Rating"></div>
             <button type="submit" class="btn-save">💾 حفظ المنتج</button>
         </form>
     </div>
@@ -1222,11 +1222,11 @@
         </div>
         <form id="bankAccountForm" data-dora-action-submit="saveBankAccount">
             <input type="hidden" id="bankAccountId">
-            <div class="form-group"><label>اسم البنك</label><input type="text" id="bankName" required placeholder="مصرف الراجحي"></div>
-            <div class="form-group"><label>اسم صاحب الحساب</label><input type="text" id="bankAccountName" placeholder="شركة درة فارس الشمال للتجارة"></div>
-            <div class="form-group"><label>رقم الحساب</label><input type="text" id="bankAccountNumber" required dir="ltr" style="text-align:left"></div>
-            <div class="form-group"><label>الآيبان (IBAN)</label><input type="text" id="bankIban" dir="ltr" style="text-align:left" placeholder="SA..."></div>
-            <div class="form-group"><label>الترتيب</label><input type="number" id="bankSortOrder" value="1"></div>
+            <div class="form-group"><label>اسم البنك</label><input type="text" id="bankName" required placeholder="مصرف الراجحي" aria-label="مصرف الراجحي"></div>
+            <div class="form-group"><label>اسم صاحب الحساب</label><input type="text" id="bankAccountName" placeholder="شركة درة فارس الشمال للتجارة" aria-label="شركة درة فارس الشمال للتجارة"></div>
+            <div class="form-group"><label>رقم الحساب</label><input type="text" id="bankAccountNumber" required dir="ltr" style="text-align:left" aria-label="Bank Account Number"></div>
+            <div class="form-group"><label>الآيبان (IBAN)</label><input type="text" id="bankIban" dir="ltr" style="text-align:left" placeholder="SA..." aria-label="SA..."></div>
+            <div class="form-group"><label>الترتيب</label><input type="number" id="bankSortOrder" value="1" aria-label="Bank Sort Order"></div>
             <label class="afaky-check"><input type="checkbox" id="bankIsActive" checked> حساب مفعّل (يظهر للعملاء)</label>
             <button type="submit" class="btn-save">💾 حفظ الحساب البنكي</button>
         </form>
@@ -1241,9 +1241,9 @@
         </div>
         <form id="paymentMethodForm" data-dora-action-submit="savePaymentMethod">
             <input type="hidden" id="paymentMethodId">
-            <div class="form-group"><label>اسم طريقة الدفع</label><input type="text" id="pmName" required placeholder="تحويل بنكي"></div>
-            <div class="form-group"><label>الأيقونة (إيموجي)</label><input type="text" id="pmIcon" placeholder="💳" maxlength="8"></div>
-            <div class="form-group"><label>الترتيب</label><input type="number" id="pmSortOrder" value="1"></div>
+            <div class="form-group"><label>اسم طريقة الدفع</label><input type="text" id="pmName" required placeholder="تحويل بنكي" aria-label="تحويل بنكي"></div>
+            <div class="form-group"><label>الأيقونة (إيموجي)</label><input type="text" id="pmIcon" placeholder="💳" maxlength="8" aria-label="💳"></div>
+            <div class="form-group"><label>الترتيب</label><input type="number" id="pmSortOrder" value="1" aria-label="Pm Sort Order"></div>
             <label class="afaky-check"><input type="checkbox" id="pmIsActive" checked> طريقة مفعّلة (تظهر في صفحة الدفع)</label>
             <button type="submit" class="btn-save">💾 حفظ طريقة الدفع</button>
         </form>
@@ -1258,11 +1258,11 @@
         </div>
         <form id="shippingRateForm" data-dora-action-submit="saveShippingRate">
             <input type="hidden" id="shippingRateId">
-            <div class="form-group"><label>من مدينة</label><input type="text" id="shipFromCity" placeholder="الرياض"></div>
-            <div class="form-group"><label>إلى مدينة</label><input type="text" id="shipToCity" required placeholder="جدة"></div>
-            <div class="form-group"><label>الوزن (كجم) — اختياري</label><input type="number" id="shipWeight" step="0.1" min="0" placeholder="1"></div>
-            <div class="form-group"><label>السعر (ر.س)</label><input type="number" id="shipPrice" step="0.01" min="0" required placeholder="25"></div>
-            <div class="form-group"><label>مدة التوصيل (أيام) — اختياري</label><input type="number" id="shipDays" min="0" placeholder="3"></div>
+            <div class="form-group"><label>من مدينة</label><input type="text" id="shipFromCity" placeholder="الرياض" aria-label="الرياض"></div>
+            <div class="form-group"><label>إلى مدينة</label><input type="text" id="shipToCity" required placeholder="جدة" aria-label="جدة"></div>
+            <div class="form-group"><label>الوزن (كجم) — اختياري</label><input type="number" id="shipWeight" step="0.1" min="0" placeholder="1" aria-label="1"></div>
+            <div class="form-group"><label>السعر (ر.س)</label><input type="number" id="shipPrice" step="0.01" min="0" required placeholder="25" aria-label="25"></div>
+            <div class="form-group"><label>مدة التوصيل (أيام) — اختياري</label><input type="number" id="shipDays" min="0" placeholder="3" aria-label="3"></div>
             <button type="submit" class="btn-save">💾 حفظ سعر الشحن</button>
         </form>
     </div>
